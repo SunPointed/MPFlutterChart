@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart' show NumberFormat;
@@ -432,11 +434,16 @@ abstract class BarLineChartBasePainter extends ChartPainter {
           TextSpan(text: _legendNames[i], style: _yLegendTextStyle);
       _yLegendPaint.layout();
       canvas.drawRect(
-          Rect.fromLTRB(_dataLeft + offset, bottomCenter - _yLegendFontSize / 2,
-              _dataLeft + rectWidth + offset, bottomCenter + _yLegendFontSize / 2),
+          Rect.fromLTRB(
+              _dataLeft + offset,
+              bottomCenter - _yLegendFontSize / 2,
+              _dataLeft + rectWidth + offset,
+              bottomCenter + _yLegendFontSize / 2),
           _drawPaints[i]);
-      _yLegendPaint.paint(canvas,
-          Offset(_dataLeft + rectWidth + offset, bottomCenter - _yLegendFontSize / 2));
+      _yLegendPaint.paint(
+          canvas,
+          Offset(_dataLeft + rectWidth + offset,
+              bottomCenter - _yLegendFontSize / 2));
       offset += rectWidth;
       offset += _yLegendPaint.width;
     }
@@ -1090,5 +1097,153 @@ class LineChartPainter extends BarLineChartBasePainter {
         ..strokeWidth = _lineWidth
         ..color = _drawColors[i];
     }
+  }
+}
+
+class PieChartPainter extends ChartPainter {
+  NumberFormat _formatValue;
+
+  PieChartPainter(
+      {List<String> pieXVals,
+      List<double> pieYVals,
+      double paddingLeft = 30,
+      double paddingTop = 20,
+      double paddingRight = 30,
+      double paddingBottom = 40,
+      List<Color> drawColors = null,
+      String description = "Description",
+      bool drawAdditional = true,
+      bool drawValues = true,
+      Color backgroundColor = const Color(0xFFFFFFFF),
+      Color descriptionColor = const Color(0xFF000000),
+      double descriptionFontSize = 12,
+      Color infoColor = const Color.fromARGB(255, 247, 189, 51),
+      double infoFontSize = 12,
+      Color valueColor = const Color.fromARGB(255, 0, 0, 0),
+      double valueFontSize = 9})
+      : super(
+            paddingLeft: paddingLeft,
+            paddingTop: paddingTop,
+            paddingRight: paddingRight,
+            paddingBottom: paddingBottom,
+            xVals: List()..add(pieXVals),
+            yVals: List()..add(pieYVals),
+            drawColors: drawColors,
+            description: description,
+            drawAdditional: drawAdditional,
+            drawValues: drawValues,
+            backgroundColor: backgroundColor,
+            descriptionColor: descriptionColor,
+            descriptionFontSize: descriptionFontSize,
+            infoColor: infoColor,
+            infoFontSize: infoFontSize,
+            valueColor: valueColor,
+            valueFontSize: valueFontSize) {
+    if (pieXVals == null ||
+        pieXVals.length == 0 ||
+        pieYVals == null ||
+        pieYVals.length == 0) {
+      _dataNotSet = true;
+      return;
+    }
+
+    _dataNotSet = false;
+
+    prepare();
+  }
+
+  @override
+  void drawAdditional(Canvas canvas, Size size) {}
+
+  @override
+  void drawData(Canvas canvas, Size size) {
+    double startAngle = 0.0;
+    double len = (_dataWidth - _dataHeight).abs() / 2;
+    Rect rect = _dataWidth > _dataHeight
+        ? Rect.fromLTRB(
+            _dataLeft + len, _dataTop, _dataRight - len, _dataBottom)
+        : Rect.fromLTRB(
+            _dataLeft, _dataTop + len, _dataRight, _dataBottom - len);
+    for (int i = 0; i < _yVals[0].length; i++) {
+      double sweepAngle = _yVals[0][i] / _total * 2 * pi;
+      canvas.drawArc(rect, startAngle, sweepAngle, true, _drawPaints[i]);
+      startAngle += sweepAngle;
+    }
+
+    canvas.drawCircle(
+        Offset(_dataLeft + _dataWidth / 2, _dataTop + _dataHeight / 2),
+        len,
+        _drawBackgroundPaint);
+  }
+
+  @override
+  void drawValues(Canvas canvas, Size size) {
+    double startAngle = 0.0;
+    double radius =
+        _dataHeight < _dataWidth ? _dataHeight / 4 * 1.5 : _dataWidth / 4 * 1.5;
+    double x = (_dataLeft + _dataWidth / 2);
+    double y = (_dataTop + _dataHeight / 2);
+    for (int i = 0; i < _yVals[0].length; i++) {
+      double sweepAngle = _yVals[0][i] / _total * 2 * pi;
+      _valuePainter.text = TextSpan(
+          text: "${_xVals[0][i]}-${_formatValue.format(_yVals[0][i])}",
+          style: _valueTextStyle);
+      _valuePainter.layout();
+      _valuePainter.paint(
+          canvas,
+          Offset(x + radius * cos(startAngle + sweepAngle / 2),
+              y + radius * sin(startAngle + sweepAngle / 2)));
+      startAngle += sweepAngle;
+    }
+  }
+
+  double _total;
+
+  @override
+  void firstDraw(Size size) {
+    _dataLeft = _paddingLeft;
+    _dataTop = _paddingTop;
+    _dataRight = size.width - _paddingRight;
+    _dataBottom = size.height - _paddingBottom;
+
+    _dataWidth = size.width - _paddingLeft - _paddingRight;
+    _dataHeight = size.height - _paddingTop - _paddingBottom;
+
+    _total = 0.0;
+    for (int i = 0; i < _yVals[0].length; i++) {
+      _total += _yVals[0][i];
+    }
+  }
+
+  @override
+  void prepare() {
+    _formatValue = new NumberFormat("###,###,###,##0.00");
+    _drawPaints = List<Paint>(_yVals[0].length);
+    for (int i = 0; i < _drawPaints.length; i++) {
+      _drawPaints[i] = Paint()
+        ..isAntiAlias = true
+        ..style = PaintingStyle.fill
+        ..color = _drawColors[i];
+    }
+  }
+
+  void _drawDescription(Canvas canvas, Size size) {
+    _descPainter.text = TextSpan(text: _description, style: _descTextStyle);
+    _descPainter.layout();
+    _descPainter.paint(
+        canvas,
+        Offset(size.width - _descPainter.width,
+            size.height - _descPainter.height));
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    super.paint(canvas, size);
+
+    if (_dataNotSet) return;
+    drawData(canvas, size);
+    drawValues(canvas, size);
+    drawAdditional(canvas, size);
+    _drawDescription(canvas, size);
   }
 }

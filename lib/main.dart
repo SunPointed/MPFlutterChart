@@ -56,6 +56,9 @@ class _MyHomePageState extends State<MyHomePage> {
   List<List<double>> _yLineVals = List();
   List<String> _legendNames = List();
 
+  List<String> _xPieVals = List();
+  List<double> _yPieVals = List();
+
   @override
   void initState() {
     _xBarVals.clear();
@@ -66,7 +69,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
     List<String> xData = List();
     for (int i = 1; i <= 50; i++) {
-      xData.add((i - 1).toString());
+      var d = (i - 1).toString();
+      xData.add(d);
+      if(i < 8){
+        _xPieVals.add(d);
+      }
     }
     _xBarVals.add(xData);
     _xLineVals.add(xData);
@@ -80,6 +87,9 @@ class _MyHomePageState extends State<MyHomePage> {
       yData.add(d);
       yData1.add(d + 10);
       yData2.add(random.nextDouble() * 20);
+      if(i < 8){
+        _yPieVals.add(data);
+      }
     }
     _yBarVals.add(yData);
     _yBarVals.add(yData1);
@@ -91,6 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _legendNames.add("1");
     _legendNames.add("two");
     _legendNames.add("three");
+
     super.initState();
   }
 
@@ -132,14 +143,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: ConstrainedBox(
                   constraints:
                       BoxConstraints(maxWidth: double.infinity, maxHeight: 300),
-                  child: LineChart.values(_xLineVals, _yLineVals, _legendNames),
+                  child: PieChart.values(_xPieVals, _yPieVals),
                 )),
                 Center(
                     child: ConstrainedBox(
                   constraints:
                       BoxConstraints(maxWidth: double.infinity, maxHeight: 300),
                   child: LineChart.values(_xLineVals, _yLineVals, _legendNames),
-                ))
+                )),
               ],
             ),
           ),
