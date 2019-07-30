@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
     List<double> yData1 = List();
     List<double> yData2 = List();
     for (int i = 1; i <= 50; i++) {
-      var data = random.nextDouble() * 10;
+      var data = random.nextDouble() * 100;
       var d = random.nextDouble() > 0.5 ? data : -data;
       yData.add(d);
       yData1.add(d + 10);

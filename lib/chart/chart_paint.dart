@@ -239,6 +239,7 @@ abstract class BarLineChartBasePainter extends ChartPainter {
   bool _drawGrid;
   double _gridWidth;
   double _stepSpace;
+  int _yLineSizes;
 
   Color _gridColor;
   Color _xLegendColor;
@@ -257,6 +258,7 @@ abstract class BarLineChartBasePainter extends ChartPainter {
   int _curXPos = 0;
   double _xPaintOffset = 0.0;
   bool _drawChartFirst = false;
+  int _verticalPosInterval = 1;
 
   Paint _gridPaint;
   Paint _gridBackgroundPaint;
@@ -278,6 +280,7 @@ abstract class BarLineChartBasePainter extends ChartPainter {
       {double xPosOffset = 0,
       double stepSpace = 15,
       double gridWidth = 0.3,
+      int yLineSizes = 10,
       bool drawGrid = true,
       Color gridColor = const Color.fromARGB(90, 33, 33, 33),
       Color xLegendColor = const Color(0xFF000000),
@@ -309,6 +312,7 @@ abstract class BarLineChartBasePainter extends ChartPainter {
         _drawGrid = drawGrid,
         _gridWidth = gridWidth,
         _stepSpace = stepSpace,
+        _yLineSizes = yLineSizes,
         _gridColor = gridColor,
         _xLegendColor = xLegendColor,
         _xLegendFontSize = xLegendFontSize,
@@ -471,10 +475,13 @@ abstract class BarLineChartBasePainter extends ChartPainter {
     _dataHeight = size.height - _paddingTop - _paddingBottom;
     if (_yMin < 0 && _yMax > 0) {
       _zeroYPos = _paddingTop + _dataHeight / _deltaY * _yMax;
+      _verticalPosInterval = (_yMax - _yMin) ~/ _yLineSizes;
     } else if (_yMax < 0 && _yMax < 0) {
       _zeroYPos = _paddingTop;
+      _verticalPosInterval = _yMin ~/ _yLineSizes;
     } else {
       _zeroYPos = size.height - _paddingBottom;
+      _verticalPosInterval = _yMax ~/ _yLineSizes;
     }
     _xTotalSize =
         _xVals.length > 0 ? _xVals[0].length * _stepSpace * 2 : size.width;
@@ -575,10 +582,12 @@ abstract class BarLineChartBasePainter extends ChartPainter {
     for (int i = 0; i < upNum + 1; i++) {
       var position = _zeroYPos - i * lineSpace;
       if (position > _dataTop) {
-        p.reset();
-        p.moveTo(_dataLeft, position);
-        p.lineTo(_dataRight, position);
-        canvas.drawPath(p, _gridPaint);
+        if (i % _verticalPosInterval == 0) {
+          p.reset();
+          p.moveTo(_dataLeft, position);
+          p.lineTo(_dataRight, position);
+          canvas.drawPath(p, _gridPaint);
+        }
       } else {
         addNum += 1;
       }
@@ -587,10 +596,12 @@ abstract class BarLineChartBasePainter extends ChartPainter {
     for (int i = 1; i < downNum + addNum; i++) {
       var position = _zeroYPos + i * lineSpace;
       if (position < _dataBottom) {
-        p.reset();
-        p.moveTo(_dataLeft, position);
-        p.lineTo(_dataRight, position);
-        canvas.drawPath(p, _gridPaint);
+        if (i % _verticalPosInterval == 0) {
+          p.reset();
+          p.moveTo(_dataLeft, position);
+          p.lineTo(_dataRight, position);
+          canvas.drawPath(p, _gridPaint);
+        }
       }
     }
   }
@@ -657,12 +668,15 @@ abstract class BarLineChartBasePainter extends ChartPainter {
 
     for (int i = 0; i < upNum + 1; i++) {
       var position = _zeroYPos - i * lineSpace;
-      _yLegendPaint.text =
-          TextSpan(text: _formatYLegend.format(i), style: _yLegendTextStyle);
-      _yLegendPaint.layout();
+
       if (position > _dataTop) {
-        _yLegendPaint.paint(
-            canvas, Offset(0, position - _yLegendPaint.height / 2));
+        if (i % _verticalPosInterval == 0) {
+          _yLegendPaint.text = TextSpan(
+              text: _formatYLegend.format(i), style: _yLegendTextStyle);
+          _yLegendPaint.layout();
+          _yLegendPaint.paint(
+              canvas, Offset(0, position - _yLegendPaint.height / 2));
+        }
       } else {
         addNum += 1;
       }
@@ -670,12 +684,14 @@ abstract class BarLineChartBasePainter extends ChartPainter {
 
     for (int i = 1; i < downNum + addNum; i++) {
       var position = _zeroYPos + i * lineSpace;
-      _yLegendPaint.text =
-          TextSpan(text: _formatYLegend.format(-i), style: _yLegendTextStyle);
-      _yLegendPaint.layout();
       if (position < _dataBottom) {
-        _yLegendPaint.paint(
-            canvas, Offset(0, position - _yLegendPaint.height / 2));
+        if (i % _verticalPosInterval == 0) {
+          _yLegendPaint.text = TextSpan(
+              text: _formatYLegend.format(-i), style: _yLegendTextStyle);
+          _yLegendPaint.layout();
+          _yLegendPaint.paint(
+              canvas, Offset(0, position - _yLegendPaint.height / 2));
+        }
       }
     }
   }
@@ -720,6 +736,7 @@ class BarChartPainter extends BarLineChartBasePainter {
       {double xPosOffset = 0,
       double stepSpace = 15,
       double gridWidth = 0.3,
+      int yLineSizes = 10,
       bool drawGrid = true,
       Color gridColor = const Color.fromARGB(90, 33, 33, 33),
       Color xLegendColor = const Color(0xFF000000),
@@ -752,6 +769,7 @@ class BarChartPainter extends BarLineChartBasePainter {
             stepSpace: stepSpace,
             gridWidth: gridWidth,
             drawGrid: drawGrid,
+            yLineSizes: yLineSizes,
             gridColor: gridColor,
             xLegendColor: xLegendColor,
             xLegendFontSize: xLegendFontSize,
@@ -945,6 +963,7 @@ class LineChartPainter extends BarLineChartBasePainter {
       double xPosOffset = 0,
       double stepSpace = 15,
       double gridWidth = 0.3,
+      int yLineSizes = 10,
       bool drawGrid = true,
       Color gridColor = const Color.fromARGB(90, 33, 33, 33),
       Color xLegendColor = const Color(0xFF000000),
@@ -978,6 +997,7 @@ class LineChartPainter extends BarLineChartBasePainter {
             stepSpace: stepSpace,
             gridWidth: gridWidth,
             drawGrid: drawGrid,
+            yLineSizes: yLineSizes,
             gridColor: gridColor,
             xLegendColor: xLegendColor,
             xLegendFontSize: xLegendFontSize,
@@ -1190,12 +1210,14 @@ class PieChartPainter extends ChartPainter {
           style: _valueTextStyle);
       _valuePainter.layout();
 
-      double px = x + radius * cos(startAngle + sweepAngle / 2) - _valuePainter.width / 2;
-      double py =  y + radius * sin(startAngle + sweepAngle / 2) - _valuePainter.height / 2;
+      double px = x +
+          radius * cos(startAngle + sweepAngle / 2) -
+          _valuePainter.width / 2;
+      double py = y +
+          radius * sin(startAngle + sweepAngle / 2) -
+          _valuePainter.height / 2;
 
-      _valuePainter.paint(
-          canvas,
-          Offset(px, py));
+      _valuePainter.paint(canvas, Offset(px, py));
 
       startAngle += sweepAngle;
     }
