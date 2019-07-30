@@ -1186,13 +1186,17 @@ class PieChartPainter extends ChartPainter {
     for (int i = 0; i < _yVals[0].length; i++) {
       double sweepAngle = _yVals[0][i] / _total * 2 * pi;
       _valuePainter.text = TextSpan(
-          text: "${_xVals[0][i]}-${_formatValue.format(_yVals[0][i])}",
+          text: "${_xVals[0][i]}:${_formatValue.format(_yVals[0][i])}%",
           style: _valueTextStyle);
       _valuePainter.layout();
+
+      double px = x + radius * cos(startAngle + sweepAngle / 2) - _valuePainter.width / 2;
+      double py =  y + radius * sin(startAngle + sweepAngle / 2) - _valuePainter.height / 2;
+
       _valuePainter.paint(
           canvas,
-          Offset(x + radius * cos(startAngle + sweepAngle / 2),
-              y + radius * sin(startAngle + sweepAngle / 2)));
+          Offset(px, py));
+
       startAngle += sweepAngle;
     }
   }
