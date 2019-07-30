@@ -493,12 +493,17 @@ abstract class BarLineChartBasePainter extends ChartPainter {
         _xVals.length > 0 ? _xVals[0].length * _stepSpace * 2 : size.width;
 
     if(_dataWidth < _xTotalSize) {
+      if(_xPosOffset > _xTotalSize - _dataWidth){
+        _xPosOffset = _xTotalSize - _dataWidth;
+      }
+
       _xPaintOffset = _xPosOffset % (2 * _stepSpace);
       _drawChartFirst = _xPaintOffset <= _stepSpace;
       _xPaintOffset =
       _drawChartFirst ? _xPaintOffset : _xPaintOffset - _stepSpace;
       _curXPos = _xPosOffset ~/ (2 * _stepSpace);
     } else {
+      _xPosOffset = 0;
       _xPaintOffset = 0;
       _drawChartFirst = true;
       _curXPos = 0;
@@ -834,6 +839,10 @@ class BarChartPainter extends BarLineChartBasePainter {
         ? (offsetPos - 0.5) * _stepSpace
         : offsetPos * _stepSpace;
     int position = _curXPos;
+    if(position > maxPos){
+      return;
+    }
+
     if (position > 0) {
       _xLegendPaint.text =
           TextSpan(text: _xVals[0][position - 1], style: _xLegendTextStyle);
@@ -870,6 +879,10 @@ class BarChartPainter extends BarLineChartBasePainter {
     var paintOffset = _xPosOffset % ((_yVals.length + 1) * _stepSpace);
     var maxPos = _yVals[0].length - 1;
     int position = _curXPos;
+    if(position > maxPos){
+      return;
+    }
+
     if (position > 0) {
       for (int j = 0; j < _yVals.length; j++) {
         double y = _yVals[j][position - 1] * _dataHeight / _deltaY;
@@ -920,6 +933,10 @@ class BarChartPainter extends BarLineChartBasePainter {
     var paintOffset = _xPosOffset % ((_yVals.length + 1) * _stepSpace);
     var maxPos = _yVals[0].length - 1;
     int position = _curXPos;
+    if(position > maxPos){
+      return;
+    }
+
     if (position > 0) {
       _drawItems(canvas, position - 1, size, -1, paintOffset);
     }
