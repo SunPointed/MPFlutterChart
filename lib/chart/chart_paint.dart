@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart' show NumberFormat;
+import 'package:mp_flutter_chart/chart/chart_enums.dart';
 import 'package:mp_flutter_chart/chart/color_template.dart';
 import 'package:mp_flutter_chart/chart/utils.dart';
 
@@ -483,18 +484,25 @@ abstract class BarLineChartBasePainter extends ChartPainter {
       _zeroYPos = size.height - _paddingBottom;
       _verticalPosInterval = _yMax ~/ _yLineSizes;
     }
-    _xTotalSize =
-        _xVals.length > 0 ? _xVals[0].length * _stepSpace * 2 : size.width;
-    _xPaintOffset = _xPosOffset % (2 * _stepSpace);
-    _drawChartFirst = _xPaintOffset <= _stepSpace;
-    _xPaintOffset =
-        _drawChartFirst ? _xPaintOffset : _xPaintOffset - _stepSpace;
-    _curXPos = _xPosOffset ~/ (2 * _stepSpace);
 
     double doubleCount = _dataWidth / _stepSpace;
     _maxVisibleCount = doubleCount.toInt();
     _maxVisibleOffset =
         _dataWidth / doubleCount * (doubleCount - _maxVisibleCount);
+    _xTotalSize =
+        _xVals.length > 0 ? _xVals[0].length * _stepSpace * 2 : size.width;
+
+    if(_dataWidth < _xTotalSize) {
+      _xPaintOffset = _xPosOffset % (2 * _stepSpace);
+      _drawChartFirst = _xPaintOffset <= _stepSpace;
+      _xPaintOffset =
+      _drawChartFirst ? _xPaintOffset : _xPaintOffset - _stepSpace;
+      _curXPos = _xPosOffset ~/ (2 * _stepSpace);
+    } else {
+      _xPaintOffset = 0;
+      _drawChartFirst = true;
+      _curXPos = 0;
+    }
   }
 
   @override
@@ -633,6 +641,9 @@ abstract class BarLineChartBasePainter extends ChartPainter {
   void _drawXLegend(Canvas canvas, Size size) {
     var position = _curXPos;
     var maxPos = _xVals[0].length - 1;
+    if (position > maxPos) {
+      return;
+    }
     if (position > 0) {
       _xLegendPaint.text =
           TextSpan(text: _xVals[0][position - 1], style: _xLegendTextStyle);
@@ -644,7 +655,7 @@ abstract class BarLineChartBasePainter extends ChartPainter {
     }
 
     for (int i = 0; i < _maxVisibleCount ~/ 2 + 3; i++) {
-      if (i > maxPos) {
+      if (position > maxPos) {
         break;
       }
       _xLegendPaint.text =
@@ -957,9 +968,11 @@ class BarChartPainter extends BarLineChartBasePainter {
 
 class LineChartPainter extends BarLineChartBasePainter {
   double _lineWidth = 0.8;
+  LineMode _lineMode;
 
   LineChartPainter(
       {double lineWidth = 0.8,
+      LineMode lineMode = LineMode.LINEAR,
       double xPosOffset = 0,
       double stepSpace = 15,
       double gridWidth = 0.3,
@@ -992,6 +1005,7 @@ class LineChartPainter extends BarLineChartBasePainter {
       Color valueColor = const Color.fromARGB(255, 186, 89, 248),
       double valueFontSize = 9})
       : _lineWidth = lineWidth,
+        _lineMode = lineMode,
         super(
             xPosOffset: xPosOffset,
             stepSpace: stepSpace,
@@ -1030,6 +1044,9 @@ class LineChartPainter extends BarLineChartBasePainter {
     for (int j = 0; j < _yVals.length; j++) {
       var position = _curXPos;
       var maxPos = _yVals[j].length - 1;
+      if (position > maxPos) {
+        break;
+      }
       if (position > 0) {
         double y = _yVals[j][position - 1] * _dataHeight / _deltaY;
         double pos = -_xPaintOffset + _dataLeft + (-1) * _stepSpace * 2;
@@ -1066,6 +1083,89 @@ class LineChartPainter extends BarLineChartBasePainter {
 
   @override
   void drawData(Canvas canvas, Size size) {
+    switch (_lineMode) {
+      case LineMode.CUBIC_BEZIER:
+        _drawCubic(canvas, size);
+        break;
+      default:
+        _drawLinear(canvas, size);
+    }
+  }
+
+  void _drawCubic(Canvas canvas, Size size) {
+    var path = Path();
+    for (int j = 0; j < _yVals.length; j++) {
+      var isHeaderSet = false;
+      path.reset();
+      int position = _curXPos;
+      var maxPos = _yVals[j].length - 1;
+      if (position > maxPos) {
+        break;
+      }
+
+      double prevDx = 0;
+      double prevDy = 0;
+      double curDx = 0;
+      double curDy = 0;
+
+      final int firstIndex = _curXPos;
+
+      double prevPrevY;
+      var prevY = _yVals[j][max(firstIndex - 2, 0)];
+      var curY = _yVals[j][max(firstIndex - 1, 0)];
+      var nextY = curY;
+      int nextIndex = -1;
+
+      if (position > 0) {
+        double y = _yVals[j][position - 1] * _dataHeight / _deltaY;
+        double pos = -_xPaintOffset + _dataLeft + (-1) * _stepSpace * 2;
+        double left = _drawChartFirst ? pos : pos - _stepSpace;
+        double top = _zeroYPos - y;
+        if (!isHeaderSet) {
+          path.moveTo(left + _stepSpace / 2, top);
+          isHeaderSet = true;
+        }
+      }
+
+      for (int i = 0; i < _maxVisibleCount ~/ 2 + 3; i++) {
+        if (position > maxPos) {
+          break;
+        }
+        double y = _yVals[j][position] * _dataHeight / _deltaY;
+        double pos = -_xPaintOffset + _dataLeft + i * _stepSpace * 2;
+        double left = _drawChartFirst ? pos : pos - _stepSpace;
+
+        prevPrevY = prevY;
+        prevY = curY;
+        curY = nextIndex == position ? nextY : y;
+
+        nextIndex = position + 1 < maxPos ? position + 1 : position;
+        nextY = position + 1 > maxPos ? nextY : _yVals[j][position + 1];
+
+        prevDx = _stepSpace * 4 * 0.25;
+        prevDy = (curY - prevPrevY) * 0.25;
+        curDx = _stepSpace * 4 * 0.25;
+        curDy = (nextY - prevY) * 0.25;
+
+        if (!isHeaderSet) {
+          path.moveTo(left + _stepSpace / 2, _zeroYPos - y);
+          isHeaderSet = true;
+        } else {
+          path.cubicTo(
+              left - _stepSpace * 3 / 2 + prevDx,
+              _zeroYPos - (prevY + prevDy) * _dataHeight / _deltaY,
+              left + _stepSpace / 2 - curDx,
+              _zeroYPos - (curY - curDy) * _dataHeight / _deltaY,
+              left + _stepSpace / 2,
+              _zeroYPos - y);
+        }
+        position++;
+      }
+      canvas.drawPath(path, _drawPaints[j]);
+    }
+  }
+
+  void _drawLinear(Canvas canvas, Size size) {
     var path = Path();
     for (int j = 0; j < _yVals.length; j++) {
       var isHeaderSet = false;
@@ -1273,3 +1373,11 @@ class PieChartPainter extends ChartPainter {
     _drawDescription(canvas, size);
   }
 }
+
+class BubbleChartPainter {}
+
+class ScatterChartPainter {}
+
+class StickChart {}
+
+class RedarChart {}

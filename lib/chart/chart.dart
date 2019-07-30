@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:mp_flutter_chart/chart/chart_enums.dart';
 import 'package:mp_flutter_chart/chart/chart_paint.dart';
 
 class BarChart extends StatefulWidget {
@@ -65,12 +66,14 @@ class LineChart extends StatefulWidget {
   List<List<String>> _xVals;
   List<List<double>> _yVals;
   List<String> _legendNames;
+  LineMode _lineMode;
 
   LineChart.values(List<List<String>> xVals, List<List<double>> yVals,
-      List<String> legendNames)
+      List<String> legendNames, [LineMode lineMode = LineMode.LINEAR])
       : _xVals = xVals,
         _yVals = yVals,
-        _legendNames = legendNames;
+        _legendNames = legendNames,
+        _lineMode = lineMode;
 
   @override
   State<StatefulWidget> createState() => _lineChartState;
@@ -88,7 +91,8 @@ class LineChartState extends State<LineChart> {
         xVals: widget._xVals,
         yVals: widget._yVals,
         xPosOffset: _deltaX,
-        legendNames: widget._legendNames);
+        legendNames: widget._legendNames,
+        lineMode: widget._lineMode);
     return Container(
       child: Center(
         child: GestureDetector(

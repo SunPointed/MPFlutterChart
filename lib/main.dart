@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:mp_flutter_chart/chart/chart_enums.dart';
 
 import 'chart/chart.dart';
 
@@ -54,6 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<List<String>> _xLineVals = List();
   List<List<double>> _yLineVals = List();
+  List<List<String>> _xLineBVals = List();
+  List<List<double>> _yLineBVals = List();
   List<String> _legendNames = List();
 
   List<String> _xPieVals = List();
@@ -68,19 +71,23 @@ class _MyHomePageState extends State<MyHomePage> {
     _yLineVals.clear();
 
     List<String> xData = List();
+    List<String> xBData = List();
     for (int i = 1; i <= 50; i++) {
       var d = (i - 1).toString();
       xData.add(d);
       if(i < 8){
         _xPieVals.add(d);
+        xBData.add(d);
       }
     }
     _xBarVals.add(xData);
     _xLineVals.add(xData);
+    _xLineBVals.add(xBData);
 
     List<double> yData = List();
     List<double> yData1 = List();
     List<double> yData2 = List();
+    List<double> yBData = List();
     for (int i = 1; i <= 50; i++) {
       var data = random.nextDouble() * 100;
       var d = random.nextDouble() > 0.5 ? data : -data;
@@ -89,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
       yData2.add(random.nextDouble() * 20);
       if(i < 8){
         _yPieVals.add(data);
+        yBData.add(d);
       }
     }
     _yBarVals.add(yData);
@@ -97,6 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _yLineVals.add(yData);
     _yLineVals.add(yData1);
     _yLineVals.add(yData2);
+    _yLineBVals.add(yBData);
 
     _legendNames.add("1");
     _legendNames.add("two");
@@ -137,6 +146,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     constraints: BoxConstraints(
                         maxWidth: double.infinity, maxHeight: 300),
                     child: LineChart.values(_xLineVals, _yLineVals, _legendNames),
+                  ),
+                ),
+                Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                        maxWidth: double.infinity, maxHeight: 300),
+                    child: LineChart.values(_xLineBVals, _yLineBVals, List<String>()..add("haha"), LineMode.CUBIC_BEZIER),
+                  ),
+                ),
+                Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                        maxWidth: double.infinity, maxHeight: 300),
+                    child: LineChart.values(_xLineVals, _yLineVals, _legendNames, LineMode.CUBIC_BEZIER),
                   ),
                 ),
                 Center(
