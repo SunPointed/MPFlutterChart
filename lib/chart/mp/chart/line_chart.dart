@@ -16,20 +16,6 @@ import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
 
 class LineChart extends Chart {
-  LineChartState _state;
-
-  LineChart(LineChartState state) : super() {
-    _state = state;
-  }
-
-  @override
-  State<StatefulWidget> createState() {
-    return _state;
-  }
-}
-
-class LineChartState extends ChartState<LineChart> {
-  LineChartPainter painter;
   InitPainterCallback initialPainterCallback;
 
   ////////////////////////////////////////////
@@ -78,61 +64,52 @@ class LineChartState extends ChartState<LineChart> {
   bool _unbind = false;
 
   ViewPortHandler _viewPortHandler = ViewPortHandler();
-
   /////////////////////////////////
 
-  IDataSet _closestDataSetToTouch;
 
-  double _curX = 0.0;
-  double _curY = 0.0;
-  double _scaleX = -1.0;
-  double _scaleY = -1.0;
-  bool _isZoom = false;
-
-  LineChartState(InitPainterCallback initialPainterCallback, LineData data,
+  LineChart(InitPainterCallback initialPainterCallback, LineData data,
       {Color backgroundColor = null,
-      Color borderColor = null,
-      double borderStrokeWidth = 1.0,
-      bool keepPositionOnRotation = false,
-      bool pinchZoomEnabled = false,
-      XAxisRenderer xAxisRenderer = null,
-      YAxisRenderer rendererLeftYAxis = null,
-      YAxisRenderer rendererRightYAxis = null,
-      bool autoScaleMinMaxEnabled = false,
-      double minOffset = 30,
-      bool clipValuesToContent = false,
-      bool drawBorders = false,
-      bool drawGridBackground = false,
-      bool doubleTapToZoomEnabled = true,
-      bool scaleXEnabled = true,
-      bool scaleYEnabled = true,
-      bool dragXEnabled = true,
-      bool dragYEnabled = true,
-      bool highlightPerDragEnabled = true,
-      int maxVisibleCount = 100,
-      OnDrawListener drawListener = null,
-      double minXRange = 1.0,
-      double maxXRange = 1.0,
-      double minimumScaleX = 1.0,
-      double minimumScaleY = 1.0,
-      double maxHighlightDistance = 0.0,
-      bool highLightPerTapEnabled = true,
-      bool dragDecelerationEnabled = true,
-      double dragDecelerationFrictionCoef = 0.9,
-      double extraLeftOffset = 0.0,
-      double extraTopOffset = 0.0,
-      double extraRightOffset = 0.0,
-      double extraBottomOffset = 0.0,
-      String noDataText = "No chart data available.",
-      bool touchEnabled = true,
-      IMarker marker = null,
-      Description desc = null,
-      bool drawMarkers = true,
-      TextPainter infoPainter = null,
-      TextPainter descPainter = null,
-      IHighlighter highlighter = null,
-      bool unbind = false})
-      : this.initialPainterCallback = initialPainterCallback,
+        Color borderColor = null,
+        double borderStrokeWidth = 1.0,
+        bool keepPositionOnRotation = false,
+        bool pinchZoomEnabled = false,
+        XAxisRenderer xAxisRenderer = null,
+        YAxisRenderer rendererLeftYAxis = null,
+        YAxisRenderer rendererRightYAxis = null,
+        bool autoScaleMinMaxEnabled = false,
+        double minOffset = 30,
+        bool clipValuesToContent = false,
+        bool drawBorders = false,
+        bool drawGridBackground = false,
+        bool doubleTapToZoomEnabled = true,
+        bool scaleXEnabled = true,
+        bool scaleYEnabled = true,
+        bool dragXEnabled = true,
+        bool dragYEnabled = true,
+        bool highlightPerDragEnabled = true,
+        int maxVisibleCount = 100,
+        OnDrawListener drawListener = null,
+        double minXRange = 1.0,
+        double maxXRange = 1.0,
+        double minimumScaleX = 1.0,
+        double minimumScaleY = 1.0,
+        double maxHighlightDistance = 0.0,
+        bool highLightPerTapEnabled = true,
+        bool dragDecelerationEnabled = true,
+        double dragDecelerationFrictionCoef = 0.9,
+        double extraLeftOffset = 0.0,
+        double extraTopOffset = 0.0,
+        double extraRightOffset = 0.0,
+        double extraBottomOffset = 0.0,
+        String noDataText = "No chart data available.",
+        bool touchEnabled = true,
+        IMarker marker = null,
+        Description desc = null,
+        bool drawMarkers = true,
+        TextPainter infoPainter = null,
+        TextPainter descPainter = null,
+        IHighlighter highlighter = null,
+        bool unbind = false}) :this.initialPainterCallback = initialPainterCallback,
         _data = data,
         _backgroundColor = backgroundColor,
         _borderColor = borderColor,
@@ -175,10 +152,26 @@ class LineChartState extends ChartState<LineChart> {
         _infoPainter = infoPainter,
         _descPainter = descPainter,
         _highlighter = highlighter,
-        _unbind = unbind,
-        super() {
+        _unbind = unbind, super(){
     _marker ??= Marker();
   }
+
+  @override
+  State<StatefulWidget> createState() {
+    return LineChartState();
+  }
+}
+
+class LineChartState extends ChartState<LineChart> {
+  LineChartPainter painter;
+
+  IDataSet _closestDataSetToTouch;
+
+  double _curX = 0.0;
+  double _curY = 0.0;
+  double _scaleX = -1.0;
+  double _scaleY = -1.0;
+  bool _isZoom = false;
 
   MPPointF _getTrans(double x, double y) {
     ViewPortHandler vph = painter.mViewPortHandler;
@@ -204,52 +197,52 @@ class LineChartState extends ChartState<LineChart> {
 
   @override
   Widget build(BuildContext context) {
-    painter = LineChartPainter(_data,
-        viewPortHandler: _viewPortHandler,
-        backgroundColor: _backgroundColor,
-        borderColor: _borderColor,
-        borderStrokeWidth: _borderStrokeWidth,
-        keepPositionOnRotation: _keepPositionOnRotation,
-        pinchZoomEnabled: _pinchZoomEnabled,
-        xAxisRenderer: _xAxisRenderer,
-        rendererLeftYAxis: _rendererLeftYAxis,
-        rendererRightYAxis: _rendererRightYAxis,
-        autoScaleMinMaxEnabled: _autoScaleMinMaxEnabled,
-        minOffset: _minOffset,
-        clipValuesToContent: _clipValuesToContent,
-        drawBorders: _drawBorders,
-        drawGridBackground: _drawGridBackground,
-        doubleTapToZoomEnabled: _doubleTapToZoomEnabled,
-        scaleXEnabled: _scaleXEnabled,
-        scaleYEnabled: _scaleYEnabled,
-        dragXEnabled: _dragXEnabled,
-        dragYEnabled: _dragYEnabled,
-        highlightPerDragEnabled: _highlightPerDragEnabled,
-        maxVisibleCount: _maxVisibleCount,
-        drawListener: _drawListener,
-        minXRange: _minXRange,
-        maxXRange: _maxXRange,
-        minimumScaleX: _minimumScaleX,
-        minimumScaleY: _minimumScaleY,
-        maxHighlightDistance: _maxHighlightDistance,
-        highLightPerTapEnabled: _highLightPerTapEnabled,
-        dragDecelerationEnabled: _dragDecelerationEnabled,
-        dragDecelerationFrictionCoef: _dragDecelerationFrictionCoef,
-        extraLeftOffset: _extraLeftOffset,
-        extraTopOffset: _extraTopOffset,
-        extraRightOffset: _extraRightOffset,
-        extraBottomOffset: _extraBottomOffset,
-        noDataText: _noDataText,
-        touchEnabled: _touchEnabled,
-        marker: _marker,
-        desc: _desc,
-        drawMarkers: _drawMarkers,
-        infoPainter: _infoPainter,
-        descPainter: _descPainter,
-        highlighter: _highlighter,
-        unbind: _unbind);
+    painter = LineChartPainter(widget._data,
+        viewPortHandler: widget._viewPortHandler,
+        backgroundColor: widget._backgroundColor,
+        borderColor: widget._borderColor,
+        borderStrokeWidth: widget._borderStrokeWidth,
+        keepPositionOnRotation: widget._keepPositionOnRotation,
+        pinchZoomEnabled: widget._pinchZoomEnabled,
+        xAxisRenderer: widget._xAxisRenderer,
+        rendererLeftYAxis: widget._rendererLeftYAxis,
+        rendererRightYAxis: widget._rendererRightYAxis,
+        autoScaleMinMaxEnabled: widget._autoScaleMinMaxEnabled,
+        minOffset: widget._minOffset,
+        clipValuesToContent: widget._clipValuesToContent,
+        drawBorders: widget._drawBorders,
+        drawGridBackground: widget._drawGridBackground,
+        doubleTapToZoomEnabled: widget._doubleTapToZoomEnabled,
+        scaleXEnabled: widget._scaleXEnabled,
+        scaleYEnabled: widget._scaleYEnabled,
+        dragXEnabled: widget._dragXEnabled,
+        dragYEnabled: widget._dragYEnabled,
+        highlightPerDragEnabled: widget._highlightPerDragEnabled,
+        maxVisibleCount: widget._maxVisibleCount,
+        drawListener: widget._drawListener,
+        minXRange: widget._minXRange,
+        maxXRange: widget._maxXRange,
+        minimumScaleX: widget._minimumScaleX,
+        minimumScaleY: widget._minimumScaleY,
+        maxHighlightDistance: widget._maxHighlightDistance,
+        highLightPerTapEnabled: widget._highLightPerTapEnabled,
+        dragDecelerationEnabled: widget._dragDecelerationEnabled,
+        dragDecelerationFrictionCoef: widget._dragDecelerationFrictionCoef,
+        extraLeftOffset: widget._extraLeftOffset,
+        extraTopOffset: widget._extraTopOffset,
+        extraRightOffset: widget._extraRightOffset,
+        extraBottomOffset: widget._extraBottomOffset,
+        noDataText: widget._noDataText,
+        touchEnabled: widget._touchEnabled,
+        marker: widget._marker,
+        desc: widget._desc,
+        drawMarkers: widget._drawMarkers,
+        infoPainter: widget._infoPainter,
+        descPainter: widget._descPainter,
+        highlighter: widget._highlighter,
+        unbind: widget._unbind);
     painter.highlightValue6(_lastHighlighted, false);
-    initialPainterCallback(painter);
+    widget.initialPainterCallback(painter);
     return super.build(context);
   }
 

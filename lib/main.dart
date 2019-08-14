@@ -1,20 +1,17 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:mp_flutter_chart/chart/old/chart_enums.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
+import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/limit.dart';
 import 'package:mp_flutter_chart/chart/mp/mode.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
-
-import 'package:mp_flutter_chart/chart/old/chart.dart' as old;
-import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
+import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/demo/line_chart/basic.dart';
+import 'package:mp_flutter_chart/demo/res/styles.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'mp_flutter_chart Demo',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -36,7 +33,11 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'mp_flutter_chart example'),
+      routes: <String, WidgetBuilder>{
+        // 这里可以定义静态路由，不能传递参数
+        '/line_chart/basic': (_) => LineChartBasic(),
+      },
     );
   }
 }
@@ -60,275 +61,1213 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  LineChart _lineChart;
-  LineData _lineData;
-
-  var random = Random(1);
-  List<List<String>> _xBarVals = List();
-  List<List<double>> _yBarVals = List();
-
-  List<List<String>> _xLineVals = List();
-  List<List<double>> _yLineVals = List();
-  List<List<String>> _xLineBVals = List();
-  List<List<double>> _yLineBVals = List();
-  List<String> _legendNames = List();
-
-  List<String> _xPieVals = List();
-  List<double> _yPieVals = List();
-
-  @override
-  void initState() {
-    _initData();
-    _initLineChart();
-    super.initState();
-  }
-
-  void _initData() {
-    _xBarVals.clear();
-    _yBarVals.clear();
-
-    _xLineVals.clear();
-    _yLineVals.clear();
-
-    List<String> xData = List();
-    List<String> xBData = List();
-    for (int i = 1; i <= 50; i++) {
-      var d = (i - 1).toString();
-      xData.add(d);
-      if (i < 8) {
-        _xPieVals.add(d);
-        xBData.add(d);
-      }
-    }
-    _xBarVals.add(xData);
-    _xLineVals.add(xData);
-    _xLineBVals.add(xBData);
-
-    List<double> yData = List();
-    List<double> yData1 = List();
-    List<double> yData2 = List();
-    List<double> yBData = List();
-    for (int i = 1; i <= 50; i++) {
-      var data = random.nextDouble() * 100;
-      var d = random.nextDouble() > 0.5 ? data : -data;
-      yData.add(d);
-      yData1.add(d + 10);
-      yData2.add(random.nextDouble() * 20);
-      if (i < 8) {
-        _yPieVals.add(data);
-        yBData.add(d);
-      }
-    }
-    _yBarVals.add(yData);
-    _yBarVals.add(yData1);
-    _yBarVals.add(yData2);
-    _yLineVals.add(yData);
-    _yLineVals.add(yData1);
-    _yLineVals.add(yData2);
-    _yLineBVals.add(yBData);
-
-    _legendNames.add("1");
-    _legendNames.add("two");
-    _legendNames.add("three");
-
-    setLineData(45, 180);
-  }
-
-  void _initLineChart() {
-    var desc = Description();
-    desc.setEnabled(false);
-    var lineState = LineChartState((painter) {
-      painter.mXAxis.enableGridDashedLine(10, 10, 0);
-
-      painter.mAxisRight.setEnabled(false);
-//    _lineChart.painter.mAxisRight.enableGridDashedLine(10, 10, 0);
-//    _lineChart.painter.mAxisRight.setAxisMaximum(200);
-//    _lineChart.painter.mAxisRight.setAxisMinimum(-50);
-
-      painter.mAxisLeft.enableGridDashedLine(10, 10, 0);
-      painter.mAxisLeft.setAxisMaximum(200);
-      painter.mAxisLeft.setAxisMinimum(-50);
-
-      LimitLine llXAxis = new LimitLine(9, "Index 10");
-      llXAxis.setLineWidth(4);
-      llXAxis.enableDashedLine(10, 10, 0);
-      llXAxis.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
-      llXAxis.setTextSize(10);
-
-      LimitLine ll1 = new LimitLine(150, "Upper Limit");
-      ll1.setLineWidth(4);
-      ll1.enableDashedLine(10, 10, 0);
-      ll1.setLabelPosition(LimitLabelPosition.RIGHT_TOP);
-      ll1.setTextSize(10);
-
-      LimitLine ll2 = new LimitLine(-30, "Lower Limit");
-      ll2.setLineWidth(4);
-      ll2.enableDashedLine(10, 10, 0);
-      ll2.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
-      ll2.setTextSize(10);
-
-      // draw limit lines behind data instead of on top
-      painter.mAxisLeft.setDrawLimitLinesBehindData(true);
-      painter.mXAxis.setDrawLimitLinesBehindData(true);
-
-      // add limit lines
-      painter.mAxisLeft.addLimitLine(ll1);
-      painter.mAxisLeft.addLimitLine(ll2);
-      painter.mLegend.setForm(LegendForm.LINE);
-    }, _lineData,
-        touchEnabled: true,
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: true,
-        desc: desc);
-    _lineChart = LineChart(lineState);
-  }
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-//      body: Center(
-//          child: ConstrainedBox(
-//              constraints: BoxConstraints(
-//                  maxWidth: double.infinity, maxHeight: double.infinity),
-//              child: _lineChart)),
-
-        body: CustomScrollView(shrinkWrap: false, slivers: [
-          new SliverPadding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-            sliver: new SliverList(
-              delegate: new SliverChildListDelegate(
-                <Widget>[
-                  Center(
-                      child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                        maxWidth: double.infinity, maxHeight: 300),
-                    child: _lineChart,
-                  )),
-                  Center(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                          maxWidth: double.infinity, maxHeight: 300),
-                      child: old.BarChart.values(
-                          _xBarVals, _yBarVals, _legendNames),
-                    ),
+      body: CustomScrollView(shrinkWrap: false, slivers: [
+        new SliverPadding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+          sliver: new SliverList(
+            delegate: new SliverChildListDelegate(
+              <Widget>[
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                          padding: EdgeInsets.all(15.0),
+                          child: Center(
+                              child: Text(
+                            "Line Charts",
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorUtils.BLACK,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ))),
+                      Gaps.line
+                    ],
                   ),
-                  Center(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                          maxWidth: double.infinity, maxHeight: 300),
-                      child: old.LineChart.values(
-                          _xLineVals, _yLineVals, _legendNames),
-                    ),
+                ),
+                InkWell(
+                    onTap: () =>
+                        Navigator.of(context).pushNamed('/line_chart/basic'),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Basic",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Simple line chart.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Mutiple",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Show mutiple data sets.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Dual Axis",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Line chart with dual y-axes.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Inverted Axis",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Inverted y-axis.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Cubic",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Line chart with a cubic line shape.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Colorful",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Colorful line chart",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Performance",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Render 30.000 data points smoothly.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Filled",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Colored area between two lines.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                          padding: EdgeInsets.all(15.0),
+                          child: Center(
+                              child: Text(
+                            "Bar Charts",
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorUtils.BLACK,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ))),
+                      Gaps.line
+                    ],
                   ),
-                  Center(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                          maxWidth: double.infinity, maxHeight: 300),
-                      child: old.LineChart.values(_xLineBVals, _yLineBVals,
-                          List<String>()..add("haha"), LineMode.CUBIC_BEZIER),
-                    ),
+                ),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Basic",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Simple bar chart.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Basic 2",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Variation of the simple bar chart.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Multiple",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Show multiple data sets.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Horizontal",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Render bar chart horizontally.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Stacked",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Stacked bar chart.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Negative",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Positive and negative values with unique colors.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Stacked 2",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Stacked bar chart with negative values.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Sine",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Sine function in bar chart format.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                          padding: EdgeInsets.all(15.0),
+                          child: Center(
+                              child: Text(
+                            "Pie Charts",
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorUtils.BLACK,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ))),
+                      Gaps.line
+                    ],
                   ),
-                  Center(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                          maxWidth: double.infinity, maxHeight: 300),
-                      child: old.LineChart.values(_xLineVals, _yLineVals,
-                          _legendNames, LineMode.CUBIC_BEZIER),
-                    ),
+                ),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Basic",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Simple pie chart.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Value lines",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Stylish lines drawn outward from slices.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Half Pie",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "180° (half) pie chart.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                          padding: EdgeInsets.all(15.0),
+                          child: Center(
+                              child: Text(
+                            "Other Charts",
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorUtils.BLACK,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ))),
+                      Gaps.line
+                    ],
                   ),
-                  Center(
-                      child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                        maxWidth: double.infinity, maxHeight: 300),
-                    child: old.PieChart.values(_xPieVals, _yPieVals),
-                  )),
-                  Center(
-                      child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                        maxWidth: double.infinity, maxHeight: 300),
-                    child: old.LineChart.values(
-                        _xLineVals, _yLineVals, _legendNames),
-                  )),
-                ],
-              ),
+                ),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Combined Chart",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Bar and line chart together.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Scatter Plot",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Simple scatter plot.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Bubble Chart",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Simple Bubble chart.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Candlestick",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Simple financial chart.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Redar Chart",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Simple web chart.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                          padding: EdgeInsets.all(15.0),
+                          child: Center(
+                              child: Text(
+                            "Scrolling Charts",
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorUtils.BLACK,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ))),
+                      Gaps.line
+                    ],
+                  ),
+                ),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Mutiple",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Various types of charts.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "View Pager",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Swipe through different charts.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Tall Bar Chart",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Bars bigger than your screen.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Many Bar Charts",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "More bars than your screen can handle!.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                          padding: EdgeInsets.all(15.0),
+                          child: Center(
+                              child: Text(
+                            "Even More Line Charts",
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorUtils.BLACK,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ))),
+                      Gaps.line
+                    ],
+                  ),
+                ),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Dynamic",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Build a line chart by adding points and sets.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Realtime",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Add data points in realtime.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+                InkWell(
+                    onTap: () => {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Hourly",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Uses the current time to add a data point for each hour.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
+              ],
             ),
-          )
-        ]) // This trailing comma makes auto-formatting nicer for build methods.
-
+          ),
+        )
+      ]),
     );
-  }
-
-  void setLineData(int count, double range) {
-    List<Entry> values = List();
-
-    for (int i = 0; i < count; i++) {
-      double val = (random.nextDouble() * range) - 30;
-      values.add(Entry(x: i.toDouble(), y: val));
-    }
-
-    LineDataSet set1;
-
-    // create a dataset and give it a type
-    set1 = LineDataSet(values, "DataSet 1");
-
-    set1.setDrawIcons(false);
-
-    // draw dashed line
-//      set1.enableDashedLine(10, 5, 0);
-
-    // black lines and points
-    set1.setColor1(ColorUtils.FADE_RED_END);
-    set1.setCircleColor(ColorUtils.FADE_RED_END);
-    set1.setHighLightColor(ColorUtils.PURPLE);
-
-    // line thickness and point size
-    set1.setLineWidth(1);
-    set1.setCircleRadius(3);
-
-    // draw points as solid circles
-    set1.setDrawCircleHole(false);
-
-    // customize legend entry
-    set1.setFormLineWidth(1);
-//      set1.setFormLineDashEffect(new DashPathEffect(new double[]{10f, 5f}, 0f));
-    set1.setFormSize(15);
-
-    // text size of values
-    set1.setValueTextSize(9);
-
-    // draw selection line as dashed
-//      set1.enableDashedHighlightLine(10, 5, 0);
-
-    // set the filled area
-    set1.setDrawFilled(true);
-//    set1.setFillFormatter(A(_lineChart.painter));
-
-    // set color of filled area
-    set1.setFillColor(ColorUtils.FADE_RED_END);
-
-    set1.setDrawIcons(true);
-    set1.setMode(Mode.CUBIC_BEZIER);
-    List<ILineDataSet> dataSets = List();
-    dataSets.add(set1); // add the data sets
-
-    // create a data object with the data sets
-    _lineData = LineData.fromList(dataSets);
-    _lineData.setValueTypeface(TextStyle(fontSize: Utils.convertDpToPixel(9)));
   }
 }
 
