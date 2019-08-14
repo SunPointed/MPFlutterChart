@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:mp_flutter_chart/chart/chart_enums.dart';
-import 'package:mp_flutter_chart/chart/chart_paint.dart';
+import 'package:mp_flutter_chart/chart/old/chart_enums.dart';
+import 'package:mp_flutter_chart/chart/old/chart_paint.dart';
 
 class BarChart extends StatefulWidget {
   BarChartState _barChartState = BarChartState();

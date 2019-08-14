@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart' show NumberFormat;
-import 'package:mp_flutter_chart/chart/chart_enums.dart';
-import 'package:mp_flutter_chart/chart/color_template.dart';
-import 'package:mp_flutter_chart/chart/utils.dart';
+import 'package:mp_flutter_chart/chart/old/chart_enums.dart';
+import 'package:mp_flutter_chart/chart/old/color_template.dart';
+import 'package:mp_flutter_chart/chart/old/utils.dart';
 
 abstract class ChartPainter extends CustomPainter {
   bool _firstDraw = true;
