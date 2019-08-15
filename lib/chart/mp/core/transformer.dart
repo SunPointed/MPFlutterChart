@@ -37,10 +37,10 @@ class Transformer {
     double scaleX = ((mViewPortHandler.contentWidth()) / deltaX);
     double scaleY = ((mViewPortHandler.contentHeight()) / deltaY);
 
-    if (scaleX == double.infinity) {
+    if (scaleX.isInfinite) {
       scaleX = 0;
     }
-    if (scaleY == double.infinity) {
+    if (scaleY.isInfinite) {
       scaleY = 0;
     }
 
@@ -228,10 +228,11 @@ class Transformer {
    *
    * @param r
    */
-  void rectValueToPixel(Rect r) {
-    Matrix4Utils.mapRect(mMatrixValueToPx, r);
-    Matrix4Utils.mapRect(mViewPortHandler.getMatrixTouch(), r);
-    Matrix4Utils.mapRect(mMatrixOffset, r);
+  Rect rectValueToPixel(Rect r) {
+    r = Matrix4Utils.mapRect(mMatrixValueToPx, r);
+    r = Matrix4Utils.mapRect(mViewPortHandler.getMatrixTouch(), r);
+    r = Matrix4Utils.mapRect(mMatrixOffset, r);
+    return r;
   }
 
   /**
@@ -240,22 +241,24 @@ class Transformer {
    * @param r
    * @param phaseY
    */
-  void rectToPixelPhase(Rect r, double phaseY) {
+  Rect rectToPixelPhase(Rect r, double phaseY) {
     // multiply the height of the rect with the phase
     r = Rect.fromLTRB(r.left, r.top * phaseY, r.right, r.bottom * phaseY);
 
-    Matrix4Utils.mapRect(mMatrixValueToPx, r);
-    Matrix4Utils.mapRect(mViewPortHandler.getMatrixTouch(), r);
-    Matrix4Utils.mapRect(mMatrixOffset, r);
+    r = Matrix4Utils.mapRect(mMatrixValueToPx, r);
+    r = Matrix4Utils.mapRect(mViewPortHandler.getMatrixTouch(), r);
+    r = Matrix4Utils.mapRect(mMatrixOffset, r);
+    return r;
   }
 
-  void rectToPixelPhaseHorizontal(Rect r, double phaseY) {
+  Rect rectToPixelPhaseHorizontal(Rect r, double phaseY) {
     // multiply the height of the rect with the phase
     r = Rect.fromLTRB(r.left * phaseY, r.top, r.right * phaseY, r.bottom);
 
-    Matrix4Utils.mapRect(mMatrixValueToPx, r);
-    Matrix4Utils.mapRect(mViewPortHandler.getMatrixTouch(), r);
-    Matrix4Utils.mapRect(mMatrixOffset, r);
+    r = Matrix4Utils.mapRect(mMatrixValueToPx, r);
+    r = Matrix4Utils.mapRect(mViewPortHandler.getMatrixTouch(), r);
+    r = Matrix4Utils.mapRect(mMatrixOffset, r);
+    return r;
   }
 
   /**
@@ -263,10 +266,11 @@ class Transformer {
    *
    * @param r
    */
-  void rectValueToPixelHorizontal1(Rect r) {
-    Matrix4Utils.mapRect(mMatrixValueToPx, r);
-    Matrix4Utils.mapRect(mViewPortHandler.getMatrixTouch(), r);
-    Matrix4Utils.mapRect(mMatrixOffset, r);
+  Rect rectValueToPixelHorizontal1(Rect r) {
+    r = Matrix4Utils.mapRect(mMatrixValueToPx, r);
+    r = Matrix4Utils.mapRect(mViewPortHandler.getMatrixTouch(), r);
+    r = Matrix4Utils.mapRect(mMatrixOffset, r);
+    return r;
   }
 
   /**
@@ -275,13 +279,14 @@ class Transformer {
    * @param r
    * @param phaseY
    */
-  void rectValueToPixelHorizontal2(Rect r, double phaseY) {
+  Rect rectValueToPixelHorizontal2(Rect r, double phaseY) {
     // multiply the height of the rect with the phase
     r = Rect.fromLTRB(r.left * phaseY, r.top, r.right * phaseY, r.bottom);
 
-    Matrix4Utils.mapRect(mMatrixValueToPx, r);
-    Matrix4Utils.mapRect(mViewPortHandler.getMatrixTouch(), r);
-    Matrix4Utils.mapRect(mMatrixOffset, r);
+    r = Matrix4Utils.mapRect(mMatrixValueToPx, r);
+    r = Matrix4Utils.mapRect(mViewPortHandler.getMatrixTouch(), r);
+    r = Matrix4Utils.mapRect(mMatrixOffset, r);
+    return r;
   }
 
   /**
@@ -292,7 +297,7 @@ class Transformer {
   void rectValuesToPixel(List<Rect> rects) {
     Matrix4 m = getValueToPixelMatrix();
 
-    for (int i = 0; i < rects.length; i++) Matrix4Utils.mapRect(m, rects[i]);
+    for (int i = 0; i < rects.length; i++) rects[i] = Matrix4Utils.mapRect(m, rects[i]);
   }
 
   Matrix4 mPixelToValueMatrixBuffer = Matrix4.identity();

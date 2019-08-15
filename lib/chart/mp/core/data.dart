@@ -1,13 +1,14 @@
 import 'dart:core';
-import 'dart:ui';
+import 'dart:ui' as ui;
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/painting.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
 import 'package:mp_flutter_chart/chart/mp/color.dart';
 import 'package:mp_flutter_chart/chart/mp/core/format.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
+import 'package:mp_flutter_chart/chart/mp/core/range.dart';
 import 'package:mp_flutter_chart/chart/mp/mode.dart';
 import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/adapter_android_mp.dart';
@@ -21,9 +22,9 @@ abstract class BaseEntry {
   Object mData = null;
 
   /** optional icon image */
-  Image mIcon = null;
+  ui.Image mIcon = null;
 
-  BaseEntry({double y, Image icon, Object data}) {
+  BaseEntry({double y, ui.Image icon, Object data}) {
     this.y = y;
     this.mIcon = icon;
     this.mData = data;
@@ -33,9 +34,176 @@ abstract class BaseEntry {
 class Entry extends BaseEntry {
   double x = 0;
 
-  Entry({double x, double y, Image icon, Object data})
+  Entry({double x, double y, ui.Image icon, Object data})
       : this.x = x,
         super(y: y, icon: icon, data: data);
+}
+
+class BarEntry extends Entry {
+  /**
+   * the values the stacked barchart holds
+   */
+  List<double> mYVals;
+
+  /**
+   * the ranges for the individual stack values - automatically calculated
+   */
+  List<Range> mRanges;
+
+  /**
+   * the sum of all negative values this entry (if stacked) contains
+   */
+  double mNegativeSum;
+
+  /**
+   * the sum of all positive values this entry (if stacked) contains
+   */
+  double mPositiveSum;
+
+  BarEntry({double x, double y, ui.Image icon, Object data})
+      : super(x: x, y: y, icon: icon, data: data);
+
+  BarEntry.fromListYVals(
+      {double x, List<double> vals, ui.Image icon, Object data})
+      : super(x: x, y: calcSum(vals), icon: icon, data: data) {
+    this.mYVals = vals;
+    calcPosNegSum();
+    calcRanges();
+  }
+
+  BarEntry copy() {
+    BarEntry copied = new BarEntry(x: x, y: y, data: mData);
+    copied.setVals(mYVals);
+    return copied;
+  }
+
+  /**
+   * Returns the stacked values this BarEntry represents, or null, if only a single value is represented (then, use
+   * getY()).
+   *
+   * @return
+   */
+  List<double> getYVals() {
+    return mYVals;
+  }
+
+  /**
+   * Set the array of values this BarEntry should represent.
+   *
+   * @param vals
+   */
+  void setVals(List<double> vals) {
+    y = calcSum(vals);
+    mYVals = vals;
+    calcPosNegSum();
+    calcRanges();
+  }
+
+  /**
+   * Returns the ranges of the individual stack-entries. Will return null if this entry is not stacked.
+   *
+   * @return
+   */
+  List<Range> getRanges() {
+    return mRanges;
+  }
+
+  /**
+   * Returns true if this BarEntry is stacked (has a values array), false if not.
+   *
+   * @return
+   */
+  bool isStacked() {
+    return mYVals != null;
+  }
+
+  double getSumBelow(int stackIndex) {
+    if (mYVals == null) return 0;
+
+    double remainder = 0.0;
+    int index = mYVals.length - 1;
+    while (index > stackIndex && index >= 0) {
+      remainder += mYVals[index];
+      index--;
+    }
+
+    return remainder;
+  }
+
+  /**
+   * Reuturns the sum of all positive values this entry (if stacked) contains.
+   *
+   * @return
+   */
+  double getPositiveSum() {
+    return mPositiveSum;
+  }
+
+  /**
+   * Returns the sum of all negative values this entry (if stacked) contains. (this is a positive number)
+   *
+   * @return
+   */
+  double getNegativeSum() {
+    return mNegativeSum;
+  }
+
+  void calcPosNegSum() {
+    if (mYVals == null) {
+      mNegativeSum = 0;
+      mPositiveSum = 0;
+      return;
+    }
+
+    double sumNeg = 0.0;
+    double sumPos = 0.0;
+
+    for (double f in mYVals) {
+      if (f <= 0.0)
+        sumNeg += f.abs();
+      else
+        sumPos += f;
+    }
+
+    mNegativeSum = sumNeg;
+    mPositiveSum = sumPos;
+  }
+
+  /**
+   * Calculates the sum across all values of the given stack.
+   *
+   * @param vals
+   * @return
+   */
+  static double calcSum(List<double> vals) {
+    if (vals == null) return 0.0;
+    double sum = 0.0;
+    for (double f in vals) sum += f;
+    return sum;
+  }
+
+  void calcRanges() {
+    List<double> values = getYVals();
+
+    if (values == null || values.length == 0) return;
+
+    mRanges = List(values.length);
+
+    double negRemain = -getNegativeSum();
+    double posRemain = 0.0;
+
+    for (int i = 0; i < mRanges.length; i++) {
+      double value = values[i];
+
+      if (value < 0) {
+        mRanges[i] = Range(negRemain, negRemain - value);
+        negRemain -= value;
+      } else {
+        mRanges[i] = Range(posRemain, posRemain + value);
+        posRemain += value;
+      }
+    }
+  }
 }
 
 class BubbleEntry extends Entry {
@@ -49,7 +217,7 @@ class BubbleEntry extends Entry {
    * @param y The value on the y-axis.
    * @param size The size of the bubble.
    */
-  BubbleEntry({double x, double y, double size, Object data, Image icon})
+  BubbleEntry({double x, double y, double size, Object data, ui.Image icon})
       : super(x: x, y: y, data: data, icon: icon) {
     this.mSize = size;
   }
@@ -92,7 +260,7 @@ class CandleEntry extends Entry {
       double shadowL,
       double open,
       double close,
-      Image icon,
+      ui.Image icon,
       Object data})
       : super(x: x, y: (shadowH + shadowL) / 2, icon: icon, data: data) {
     this.mShadowHigh = shadowH;
@@ -245,9 +413,9 @@ abstract class IDataSet<T extends Entry> {
 
   void setAxisDependency(AxisDependency dependency);
 
-  List<Color> getColors();
+  List<ui.Color> getColors();
 
-  Color getColor1();
+  ui.Color getColor1();
 
   GradientColor getGradientColor1();
 
@@ -255,7 +423,7 @@ abstract class IDataSet<T extends Entry> {
 
   GradientColor getGradientColor2(int index);
 
-  Color getColor2(int index);
+  ui.Color getColor2(int index);
 
   bool isHighlightEnabled();
 
@@ -267,17 +435,17 @@ abstract class IDataSet<T extends Entry> {
 
   bool needsFormatter();
 
-  void setValueTextColor(Color color);
+  void setValueTextColor(ui.Color color);
 
-  void setValueTextColors(List<Color> colors);
+  void setValueTextColors(List<ui.Color> colors);
 
   void setValueTypeface(TextStyle ts);
 
   void setValueTextSize(double size);
 
-  Color getValueTextColor1();
+  ui.Color getValueTextColor1();
 
-  Color getValueTextColor2(int index);
+  ui.Color getValueTextColor2(int index);
 
   TextStyle getValueTypeface();
 
@@ -312,7 +480,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   /**
    * List representing all colors that are used for this DataSet
    */
-  List<Color> mColors = null;
+  List<ui.Color> mColors = null;
 
   GradientColor mGradientColor = null;
 
@@ -321,7 +489,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   /**
    * List representing all colors that are used for drawing the actual values for this DataSet
    */
-  List<Color> mValueColors = null;
+  List<ui.Color> mValueColors = null;
 
   /**
    * label that describes the DataSet or the data the DataSet represents
@@ -386,7 +554,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     mValueColors = List();
 
     // default color
-    mColors.add(Color.fromARGB(255, 140, 234, 255));
+    mColors.add(ui.Color.fromARGB(255, 140, 234, 255));
     mValueColors.add(ColorUtils.BLACK);
   }
 
@@ -400,7 +568,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     mValueColors = List();
 
     // default color
-    mColors.add(Color.fromARGB(255, 140, 234, 255));
+    mColors.add(ui.Color.fromARGB(255, 140, 234, 255));
     mValueColors.add(ColorUtils.BLACK);
     this.mLabel = label;
   }
@@ -417,21 +585,21 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
    */
 
   @override
-  List<Color> getColors() {
+  List<ui.Color> getColors() {
     return mColors;
   }
 
-  List<Color> getValueColors() {
+  List<ui.Color> getValueColors() {
     return mValueColors;
   }
 
   @override
-  Color getColor1() {
+  ui.Color getColor1() {
     return mColors[0];
   }
 
   @override
-  Color getColor2(int index) {
+  ui.Color getColor2(int index) {
     return mColors[index % mColors.length];
   }
 
@@ -463,7 +631,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
    *
    * @param colors
    */
-  void setColors1(List<Color> colors) {
+  void setColors1(List<ui.Color> colors) {
     this.mColors = colors;
   }
 
@@ -472,7 +640,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
    *
    * @param color
    */
-  void addColor(Color color) {
+  void addColor(ui.Color color) {
     if (mColors == null) mColors = List();
     mColors.add(color);
   }
@@ -483,7 +651,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
    *
    * @param color
    */
-  void setColor1(Color color) {
+  void setColor1(ui.Color color) {
     resetColors();
     mColors.add(color);
   }
@@ -494,7 +662,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
    * @param startColor
    * @param endColor
    */
-  void setGradientColor(Color startColor, Color endColor) {
+  void setGradientColor(ui.Color startColor, ui.Color endColor) {
     mGradientColor = GradientColor(startColor, endColor);
   }
 
@@ -513,8 +681,8 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
    * @param color
    * @param alpha from 0-255
    */
-  void setColor2(Color color, int alpha) {
-    setColor1(Color.fromARGB(alpha, color.red, color.green, color.blue));
+  void setColor2(ui.Color color, int alpha) {
+    setColor1(ui.Color.fromARGB(alpha, color.red, color.green, color.blue));
   }
 
   /**
@@ -523,10 +691,10 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
    * @param colors
    * @param alpha
    */
-  void setColors2(List<Color> colors, int alpha) {
+  void setColors2(List<ui.Color> colors, int alpha) {
     resetColors();
-    for (Color color in colors) {
-      addColor(Color.fromARGB(alpha, color.red, color.green, color.blue));
+    for (ui.Color color in colors) {
+      addColor(ui.Color.fromARGB(alpha, color.red, color.green, color.blue));
     }
   }
 
@@ -584,13 +752,13 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   }
 
   @override
-  void setValueTextColor(Color color) {
+  void setValueTextColor(ui.Color color) {
     mValueColors.clear();
     mValueColors.add(color);
   }
 
   @override
-  void setValueTextColors(List<Color> colors) {
+  void setValueTextColors(List<ui.Color> colors) {
     mValueColors = colors;
   }
 
@@ -605,12 +773,12 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   }
 
   @override
-  Color getValueTextColor1() {
+  ui.Color getValueTextColor1() {
     return mValueColors[0];
   }
 
   @override
-  Color getValueTextColor2(int index) {
+  ui.Color getValueTextColor2(int index) {
     return mValueColors[index % mValueColors.length];
   }
 
@@ -1096,7 +1264,7 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
       }
 
       // Search by closest to y-value
-      if (!(closestToY == double.nan)) {
+      if (!(closestToY.isNaN)) {
         while (closest > 0 && mValues[closest - 1].x == closestXValue)
           closest -= 1;
 
@@ -1327,12 +1495,12 @@ class ChartData<T extends IDataSet<Entry>> {
    */
   double getYMin2(AxisDependency axis) {
     if (axis == AxisDependency.LEFT) {
-      if (mLeftAxisMin == double.infinity) {
+      if (mLeftAxisMin.isInfinite) {
         return mRightAxisMin;
       } else
         return mLeftAxisMin;
     } else {
-      if (mRightAxisMin == double.infinity) {
+      if (mRightAxisMin.isInfinite) {
         return mLeftAxisMin;
       } else
         return mRightAxisMin;
@@ -1650,7 +1818,7 @@ class ChartData<T extends IDataSet<Entry>> {
    *
    * @return
    */
-  List<Color> getColors() {
+  List<ui.Color> getColors() {
     if (mDataSets == null) return null;
 
     int clrcnt = 0;
@@ -1659,13 +1827,13 @@ class ChartData<T extends IDataSet<Entry>> {
       clrcnt += mDataSets[i].getColors().length;
     }
 
-    List<Color> colors = List(clrcnt);
+    List<ui.Color> colors = List(clrcnt);
     int cnt = 0;
 
     for (int i = 0; i < mDataSets.length; i++) {
-      List<Color> clrs = mDataSets[i].getColors();
+      List<ui.Color> clrs = mDataSets[i].getColors();
 
-      for (Color clr in clrs) {
+      for (ui.Color clr in clrs) {
         colors[cnt] = clr;
         cnt++;
       }
@@ -1731,7 +1899,7 @@ class ChartData<T extends IDataSet<Entry>> {
    *
    * @param color
    */
-  void setValueTextColor(Color color) {
+  void setValueTextColor(ui.Color color) {
     for (IDataSet set in mDataSets) {
       set.setValueTextColor(color);
     }
@@ -1743,7 +1911,7 @@ class ChartData<T extends IDataSet<Entry>> {
    *
    * @param colors
    */
-  void setValueTextColors(List<Color> colors) {
+  void setValueTextColors(List<ui.Color> colors) {
     for (IDataSet set in mDataSets) {
       set.setValueTextColors(colors);
     }
@@ -1875,9 +2043,104 @@ class LineData extends BarLineScatterCandleBubbleData<ILineDataSet> {
   LineData.fromList(List<ILineDataSet> sets) : super.fromList(sets);
 }
 
+class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
+  /**
+   * the width of the bars on the x-axis, in values (not pixels)
+   */
+  double mBarWidth = 0.85;
+
+  BarData(List<IBarDataSet> dataSets) : super.fromList(dataSets);
+
+  /**
+   * Sets the width each bar should have on the x-axis (in values, not pixels).
+   * Default 0.85f
+   *
+   * @param mBarWidth
+   */
+  void setBarWidth(double mBarWidth) {
+    this.mBarWidth = mBarWidth;
+  }
+
+  double getBarWidth() {
+    return mBarWidth;
+  }
+
+  /**
+   * Groups all BarDataSet objects this data object holds together by modifying the x-value of their entries.
+   * Previously set x-values of entries will be overwritten. Leaves space between bars and groups as specified
+   * by the parameters.
+   * Do not forget to call notifyDataSetChanged() on your BarChart object after calling this method.
+   *
+   * @param fromX      the starting point on the x-axis where the grouping should begin
+   * @param groupSpace the space between groups of bars in values (not pixels) e.g. 0.8f for bar width 1f
+   * @param barSpace   the space between individual bars in values (not pixels) e.g. 0.1f for bar width 1f
+   */
+  void groupBars(double fromX, double groupSpace, double barSpace) {
+    int setCount = mDataSets.length;
+    if (setCount <= 1) {
+      throw Exception(
+          "BarData needs to hold at least 2 BarDataSets to allow grouping.");
+    }
+
+    IBarDataSet max = getMaxEntryCountSet();
+    int maxEntryCount = max.getEntryCount();
+
+    double groupSpaceWidthHalf = groupSpace / 2.0;
+    double barSpaceHalf = barSpace / 2.0;
+    double barWidthHalf = mBarWidth / 2.0;
+
+    double interval = getGroupWidth(groupSpace, barSpace);
+
+    for (int i = 0; i < maxEntryCount; i++) {
+      double start = fromX;
+      fromX += groupSpaceWidthHalf;
+
+      for (IBarDataSet set in mDataSets) {
+        fromX += barSpaceHalf;
+        fromX += barWidthHalf;
+
+        if (i < set.getEntryCount()) {
+          BarEntry entry = set.getEntryForIndex(i);
+
+          if (entry != null) {
+            entry.x = fromX;
+          }
+        }
+
+        fromX += barWidthHalf;
+        fromX += barSpaceHalf;
+      }
+
+      fromX += groupSpaceWidthHalf;
+      double end = fromX;
+      double innerInterval = end - start;
+      double diff = interval - innerInterval;
+
+      // correct rounding errors
+      if (diff > 0 || diff < 0) {
+        fromX += diff;
+      }
+    }
+
+    // maybe todo
+    notifyDataChanged();
+  }
+
+  /**
+   * In case of grouped bars, this method returns the space an individual group of bar needs on the x-axis.
+   *
+   * @param groupSpace
+   * @param barSpace
+   * @return
+   */
+  double getGroupWidth(double groupSpace, double barSpace) {
+    return mDataSets.length * (mBarWidth + barSpace) + groupSpace;
+  }
+}
+
 abstract class BarLineScatterCandleBubbleDataSet<T extends Entry>
     extends DataSet<T> implements IBarLineScatterCandleBubbleDataSet<T> {
-  Color mHighLightColor = Color.fromARGB(255, 255, 187, 115);
+  ui.Color mHighLightColor = ui.Color.fromARGB(255, 255, 187, 115);
 
   BarLineScatterCandleBubbleDataSet(List<T> yVals, String label)
       : super(yVals, label);
@@ -1889,12 +2152,12 @@ abstract class BarLineScatterCandleBubbleDataSet<T extends Entry>
    *
    * @param color
    */
-  void setHighLightColor(Color color) {
+  void setHighLightColor(ui.Color color) {
     mHighLightColor = color;
   }
 
   @override
-  Color getHighLightColor() {
+  ui.Color getHighLightColor() {
     return mHighLightColor;
   }
 
@@ -2029,7 +2292,7 @@ abstract class LineRadarDataSet<T extends Entry>
   /**
    * the color that is used for filling the line surface
    */
-  Color mFillColor = Color.fromARGB(255, 140, 234, 255);
+  ui.Color mFillColor = ui.Color.fromARGB(255, 140, 234, 255);
 
   /**
    * the drawable to be used for filling the line surface
@@ -2054,7 +2317,7 @@ abstract class LineRadarDataSet<T extends Entry>
   LineRadarDataSet(List<T> yVals, String label) : super(yVals, label);
 
   @override
-  Color getFillColor() {
+  ui.Color getFillColor() {
     return mFillColor;
   }
 
@@ -2064,7 +2327,7 @@ abstract class LineRadarDataSet<T extends Entry>
    *
    * @param color
    */
-  void setFillColor(Color color) {
+  void setFillColor(ui.Color color) {
     mFillColor = color;
 //    mFillDrawable = null;
   }
@@ -2149,12 +2412,12 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   /**
    * List representing all colors that are used for the circles
    */
-  List<Color> mCircleColors = null;
+  List<ui.Color> mCircleColors = null;
 
   /**
    * the color of the inner circles
    */
-  Color mCircleHoleColor = ColorUtils.WHITE;
+  ui.Color mCircleHoleColor = ColorUtils.WHITE;
 
   /**
    * the radius of the circle-shaped value indicators
@@ -2200,7 +2463,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
     // default colors
     // mColors.add(Color.rgb(192, 255, 140));
     // mColors.add(Color.rgb(255, 247, 140));
-    mCircleColors.add(Color.fromARGB(255, 140, 234, 255));
+    mCircleColors.add(ui.Color.fromARGB(255, 140, 234, 255));
   }
 
   @override
@@ -2396,12 +2659,12 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
    *
    * @return
    */
-  List<Color> getCircleColors() {
+  List<ui.Color> getCircleColors() {
     return mCircleColors;
   }
 
   @override
-  Color getCircleColor(int index) {
+  ui.Color getCircleColor(int index) {
     return mCircleColors[index];
   }
 
@@ -2419,7 +2682,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
    *
    * @param colors
    */
-  void setCircleColors(List<Color> colors) {
+  void setCircleColors(List<ui.Color> colors) {
     mCircleColors = colors;
   }
 
@@ -2429,7 +2692,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
    *
    * @param color
    */
-  void setCircleColor(Color color) {
+  void setCircleColor(ui.Color color) {
     resetCircleColors();
     mCircleColors.add(color);
   }
@@ -2449,12 +2712,12 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
    *
    * @param color
    */
-  void setCircleHoleColor(Color color) {
+  void setCircleHoleColor(ui.Color color) {
     mCircleHoleColor = color;
   }
 
   @override
-  Color getCircleHoleColor() {
+  ui.Color getCircleHoleColor() {
     return mCircleHoleColor;
   }
 

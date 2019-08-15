@@ -168,14 +168,13 @@ abstract class Utils {
   static int getDecimals(double number) {
     double i = roundToNextSignificant(number);
 
-    if (i == double.infinity) return 0;
+    if (i.isInfinite) return 0;
 
     return (-log(i) / ln10).ceil().toInt() + 2;
   }
 
   static double roundToNextSignificant(double number) {
-    if (number == double.infinity || number == double.nan || number == 0.0)
-      return 0;
+    if (number.isInfinite || number.isNaN || number == 0.0) return 0;
 
     final double d =
         (log(number < 0 ? -number : number) / ln10).ceil().toDouble();
@@ -193,6 +192,13 @@ abstract class ColorUtils {
   static final Color PURPLE = Color(0xFF512DA8);
   static final Color FADE_RED_START = Color(0x00FF0000);
   static final Color FADE_RED_END = Color(0xFFFF0000);
+
+  static final List<Color> VORDIPLOM_COLORS = List()
+    ..add(Color.fromARGB(255, 192, 255, 140))
+    ..add(Color.fromARGB(255, 255, 247, 140))
+    ..add(Color.fromARGB(255, 255, 208, 140))
+    ..add(Color.fromARGB(255, 140, 234, 255))
+    ..add(Color.fromARGB(255, 255, 140, 157));
 }
 
 abstract class Matrix4Utils {
@@ -321,8 +327,8 @@ abstract class Matrix4Utils {
     return res;
   }
 
-  static void mapRect(Matrix4 m, Rect r) {
-    r = MatrixUtils.transformRect(m, r);
+  static Rect mapRect(Matrix4 m, Rect r) {
+    return MatrixUtils.transformRect(m, r);
   }
 
   static void moveTo(Path p, Matrix4 m, Offset o) {

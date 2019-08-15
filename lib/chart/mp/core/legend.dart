@@ -621,7 +621,7 @@ class Legend extends ComponentBase {
           for (int i = 0; i < entryCount; i++) {
             LegendEntry e = entries[i];
             bool drawingForm = e.form != LegendForm.NONE;
-            double formSize = e.formSize == double.nan
+            double formSize = e.formSize.isNaN
                 ? defaultFormSize
                 : Utils.convertDpToPixel(e.formSize);
             String label = e.label;
@@ -684,7 +684,7 @@ class Legend extends ComponentBase {
           for (int i = 0; i < entryCount; i++) {
             LegendEntry e = entries[i];
             bool drawingForm = e.form != LegendForm.NONE;
-            double formSize = e.formSize == double.nan
+            double formSize = e.formSize.isNaN
                 ? defaultFormSize
                 : Utils.convertDpToPixel(e.formSize);
             String label = e.label;

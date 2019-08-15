@@ -8,6 +8,7 @@ import 'package:mp_flutter_chart/chart/mp/core/format.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
+import 'package:mp_flutter_chart/chart/mp/listener.dart';
 import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
@@ -491,17 +492,30 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
 
 //    setLastHighlighted(mIndicesToHighlight);
 
-//    if (callListener && mSelectionListener != null) {
-//      if (!valuesToHighlight())
-//        mSelectionListener.onNothingSelected();
-//      else {
-//        // notify the listener
-//        mSelectionListener.onValueSelected(e, high);
-//      }
-//    }
-//
-//    // redraw the chart
-//    invalidate();
+    if (callListener && _selectionListener != null) {
+      if (!valuesToHighlight())
+        _selectionListener.onNothingSelected();
+      else {
+        // notify the listener
+        _selectionListener.onValueSelected(e, high);
+      }
+    }
+  }
+
+  OnChartValueSelectedListener _selectionListener;
+
+  void setOnChartValueSelectedListener(OnChartValueSelectedListener l) {
+    this._selectionListener = l;
+  }
+
+  OnChartGestureListener _gestureListener;
+
+  void setOnChartGestureListener(OnChartGestureListener l) {
+    this._gestureListener = l;
+  }
+
+  OnChartGestureListener getOnChartGestureListener() {
+    return _gestureListener;
   }
 
   /**

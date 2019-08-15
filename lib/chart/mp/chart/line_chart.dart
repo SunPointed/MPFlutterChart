@@ -8,6 +8,7 @@ import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker.dart';
+import 'package:mp_flutter_chart/chart/mp/listener.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
@@ -64,52 +65,53 @@ class LineChart extends Chart {
   bool _unbind = false;
 
   ViewPortHandler _viewPortHandler = ViewPortHandler();
-  /////////////////////////////////
 
+  /////////////////////////////////
 
   LineChart(InitPainterCallback initialPainterCallback, LineData data,
       {Color backgroundColor = null,
-        Color borderColor = null,
-        double borderStrokeWidth = 1.0,
-        bool keepPositionOnRotation = false,
-        bool pinchZoomEnabled = false,
-        XAxisRenderer xAxisRenderer = null,
-        YAxisRenderer rendererLeftYAxis = null,
-        YAxisRenderer rendererRightYAxis = null,
-        bool autoScaleMinMaxEnabled = false,
-        double minOffset = 30,
-        bool clipValuesToContent = false,
-        bool drawBorders = false,
-        bool drawGridBackground = false,
-        bool doubleTapToZoomEnabled = true,
-        bool scaleXEnabled = true,
-        bool scaleYEnabled = true,
-        bool dragXEnabled = true,
-        bool dragYEnabled = true,
-        bool highlightPerDragEnabled = true,
-        int maxVisibleCount = 100,
-        OnDrawListener drawListener = null,
-        double minXRange = 1.0,
-        double maxXRange = 1.0,
-        double minimumScaleX = 1.0,
-        double minimumScaleY = 1.0,
-        double maxHighlightDistance = 0.0,
-        bool highLightPerTapEnabled = true,
-        bool dragDecelerationEnabled = true,
-        double dragDecelerationFrictionCoef = 0.9,
-        double extraLeftOffset = 0.0,
-        double extraTopOffset = 0.0,
-        double extraRightOffset = 0.0,
-        double extraBottomOffset = 0.0,
-        String noDataText = "No chart data available.",
-        bool touchEnabled = true,
-        IMarker marker = null,
-        Description desc = null,
-        bool drawMarkers = true,
-        TextPainter infoPainter = null,
-        TextPainter descPainter = null,
-        IHighlighter highlighter = null,
-        bool unbind = false}) :this.initialPainterCallback = initialPainterCallback,
+      Color borderColor = null,
+      double borderStrokeWidth = 1.0,
+      bool keepPositionOnRotation = false,
+      bool pinchZoomEnabled = false,
+      XAxisRenderer xAxisRenderer = null,
+      YAxisRenderer rendererLeftYAxis = null,
+      YAxisRenderer rendererRightYAxis = null,
+      bool autoScaleMinMaxEnabled = false,
+      double minOffset = 30,
+      bool clipValuesToContent = false,
+      bool drawBorders = false,
+      bool drawGridBackground = false,
+      bool doubleTapToZoomEnabled = true,
+      bool scaleXEnabled = true,
+      bool scaleYEnabled = true,
+      bool dragXEnabled = true,
+      bool dragYEnabled = true,
+      bool highlightPerDragEnabled = true,
+      int maxVisibleCount = 100,
+      OnDrawListener drawListener = null,
+      double minXRange = 1.0,
+      double maxXRange = 1.0,
+      double minimumScaleX = 1.0,
+      double minimumScaleY = 1.0,
+      double maxHighlightDistance = 0.0,
+      bool highLightPerTapEnabled = true,
+      bool dragDecelerationEnabled = true,
+      double dragDecelerationFrictionCoef = 0.9,
+      double extraLeftOffset = 0.0,
+      double extraTopOffset = 0.0,
+      double extraRightOffset = 0.0,
+      double extraBottomOffset = 0.0,
+      String noDataText = "No chart data available.",
+      bool touchEnabled = true,
+      IMarker marker = null,
+      Description desc = null,
+      bool drawMarkers = true,
+      TextPainter infoPainter = null,
+      TextPainter descPainter = null,
+      IHighlighter highlighter = null,
+      bool unbind = false})
+      : this.initialPainterCallback = initialPainterCallback,
         _data = data,
         _backgroundColor = backgroundColor,
         _borderColor = borderColor,
@@ -152,7 +154,8 @@ class LineChart extends Chart {
         _infoPainter = infoPainter,
         _descPainter = descPainter,
         _highlighter = highlighter,
-        _unbind = unbind, super(){
+        _unbind = unbind,
+        super() {
     _marker ??= Marker();
   }
 
@@ -263,12 +266,10 @@ class LineChartState extends ChartState<LineChart> {
   void onDoubleTap() {
     if (painter.mDoubleTapToZoomEnabled && painter.mData.getEntryCount() > 0) {
       MPPointF trans = _getTrans(_curX, _curY);
-
       painter.zoom(painter.mScaleXEnabled ? 1.4 : 1,
           painter.mScaleYEnabled ? 1.4 : 1, trans.x, trans.y);
-
+      painter.getOnChartGestureListener()?.onChartDoubleTapped(_curX, _curY);
       setState(() {});
-
       MPPointF.recycleInstance(trans);
     }
   }
@@ -296,27 +297,29 @@ class LineChartState extends ChartState<LineChart> {
       return;
     }
 
+    OnChartGestureListener listener = painter.getOnChartGestureListener();
     if (_scaleX == detail.horizontalScale && _scaleY == detail.verticalScale) {
       if (_isZoom) {
         return;
       }
 
+      var dx = detail.localFocalPoint.dx - _curX;
+      var dy = detail.localFocalPoint.dy - _curY;
       if (painter.mDragYEnabled && painter.mDragXEnabled) {
-        var dx = detail.localFocalPoint.dx - _curX;
-        var dy = detail.localFocalPoint.dy - _curY;
-
         painter.translate(dx, dy);
-        dragHighlight(Offset(detail.localFocalPoint.dx, detail.localFocalPoint.dy));
+        _dragHighlight(
+            Offset(detail.localFocalPoint.dx, detail.localFocalPoint.dy));
+        listener?.onChartTranslate(
+            detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
         setState(() {});
       } else {
         if (painter.mDragXEnabled) {
-          var dx = detail.localFocalPoint.dx - _curX;
           painter.translate(dx, 0.0);
-          dragHighlight(Offset(detail.localFocalPoint.dx, 0.0));
+          _dragHighlight(Offset(detail.localFocalPoint.dx, 0.0));
+          listener?.onChartTranslate(
+              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
           setState(() {});
         } else if (painter.mDragYEnabled) {
-          var dy = detail.localFocalPoint.dy - _curY;
-
           if (_inverted()) {
             // if there is an inverted horizontalbarchart
 //      if (mChart instanceof HorizontalBarChart) {
@@ -326,11 +329,12 @@ class LineChartState extends ChartState<LineChart> {
 //      }
           }
           painter.translate(0.0, dy);
-          dragHighlight(Offset(0.0, detail.localFocalPoint.dy));
+          _dragHighlight(Offset(0.0, detail.localFocalPoint.dy));
+          listener?.onChartTranslate(
+              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
           setState(() {});
         }
       }
-
       _curX = detail.localFocalPoint.dx;
       _curY = detail.localFocalPoint.dy;
     } else {
@@ -345,8 +349,11 @@ class LineChartState extends ChartState<LineChart> {
 
       MPPointF trans = _getTrans(_curX, _curY);
 
-      painter.zoom(painter.mScaleXEnabled ? scaleX : 1.0,
-          painter.mScaleYEnabled ? scaleY : 1.0, trans.x, trans.y);
+      scaleX = painter.mScaleXEnabled ? scaleX : 1.0;
+      scaleY = painter.mScaleYEnabled ? scaleY : 1.0;
+      painter.zoom(scaleX, scaleY, trans.x, trans.y);
+      listener?.onChartScale(
+          detail.localFocalPoint.dx, detail.localFocalPoint.dy, scaleX, scaleY);
       setState(() {});
       MPPointF.recycleInstance(trans);
     }
@@ -356,7 +363,7 @@ class LineChartState extends ChartState<LineChart> {
     _curY = detail.localFocalPoint.dy;
   }
 
-  void dragHighlight(Offset offset) {
+  void _dragHighlight(Offset offset) {
     if (painter.mHighlightPerDragEnabled) {
       Highlight h = painter.getHighlightByTouchPoint(offset.dx, offset.dy);
       if (h != null && !h.equalTo(_lastHighlighted)) {
@@ -377,6 +384,8 @@ class LineChartState extends ChartState<LineChart> {
           detail.localPosition.dx, detail.localPosition.dy);
       _lastHighlighted =
           HighlightUtils.performHighlight(painter, h, _lastHighlighted);
+      painter.getOnChartGestureListener()?.onChartSingleTapped(
+          detail.localPosition.dx, detail.localPosition.dy);
       setState(() {});
     } else {
       _lastHighlighted = null;

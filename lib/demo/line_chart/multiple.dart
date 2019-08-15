@@ -4,25 +4,63 @@ import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
-import 'package:mp_flutter_chart/chart/mp/core/limit.dart';
+import 'package:mp_flutter_chart/chart/mp/listener.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
 
-class LineChartBasic extends StatefulWidget {
+class LineChartMultiple extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return LineChartBasicState();
+    return LineChartMultipleState();
   }
 }
 
-class LineChartBasicState extends State<LineChartBasic> {
+class LineChartMultipleState extends State<LineChartMultiple>
+    implements OnChartValueSelectedListener, OnChartGestureListener {
   LineChart _lineChart;
   LineData _lineData;
   var random = Random(1);
 
-  int _count = 45;
-  double _range = 180.0;
+  int _count = 20;
+  double _range = 100.0;
+
+  List<Color> colors = List()
+    ..add(ColorUtils.VORDIPLOM_COLORS[0])
+    ..add(ColorUtils.VORDIPLOM_COLORS[1])
+    ..add(ColorUtils.VORDIPLOM_COLORS[2]);
+
+  @override
+  void onChartDoubleTapped(double positionX, double positionY) {
+    print("Chart double-tapped.");
+  }
+
+  @override
+  void onChartScale(
+      double positionX, double positionY, double scaleX, double scaleY) {
+    print("ScaleX: $scaleX, ScaleY: $scaleY");
+  }
+
+  @override
+  void onChartSingleTapped(double positionX, double positionY) {
+    print("Chart single-tapped.");
+  }
+
+  @override
+  void onChartTranslate(
+      double positionX, double positionY, double dX, double dY) {
+    print("dX: $dX, dY: $dY");
+  }
+
+  @override
+  void onNothingSelected() {}
+
+  @override
+  void onValueSelected(Entry e, Highlight h) {
+    print(
+        "VAL SELECTED Value: ${e.y}, xIndex: ${e.x}, DataSet index: ${h.getDataSetIndex()}");
+  }
 
   @override
   void initState() {
@@ -37,7 +75,7 @@ class LineChartBasicState extends State<LineChartBasic> {
         appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
-            title: Text("Line Chart Basic")),
+            title: Text("Line Chart Multiple")),
         body: Stack(
           children: <Widget>[
             Positioned(
@@ -93,7 +131,7 @@ class LineChartBasicState extends State<LineChartBasic> {
                             child: Slider(
                                 value: _range,
                                 min: 0,
-                                max: 180,
+                                max: 150,
                                 onChanged: (value) {
                                   _range = value;
                                   _initLineData(_count, _range);
@@ -118,106 +156,68 @@ class LineChartBasicState extends State<LineChartBasic> {
             )
           ],
         ));
+    ;
   }
 
   void _initLineData(int count, double range) {
-    List<Entry> values = List();
+    List<ILineDataSet> dataSets = List();
 
-    for (int i = 0; i < count; i++) {
-      double val = (random.nextDouble() * range) - 30;
-      values.add(Entry(x: i.toDouble(), y: val));
+    for (int z = 0; z < 3; z++) {
+      List<Entry> values = List();
+
+      for (int i = 0; i < count; i++) {
+        double val = (random.nextDouble() * range) + 3;
+        values.add(new Entry(x: i.toDouble(), y: val));
+      }
+
+      LineDataSet d = new LineDataSet(values, "DataSet ${z + 1}");
+      d.setLineWidth(2.5);
+      d.setCircleRadius(4);
+      d.setCircleHoleRadius(3);
+
+      Color color = colors[z % colors.length];
+      d.setColor1(color);
+      d.setCircleColor(color);
+      dataSets.add(d);
     }
 
-    LineDataSet set1;
+    // make the first DataSet dashed
+//    (dataSets[0] as LineDataSet).enableDashedLine(10, 10, 0);
+    (dataSets[0] as LineDataSet).setColors1(ColorUtils.VORDIPLOM_COLORS);
+    (dataSets[0] as LineDataSet).setCircleColors(ColorUtils.VORDIPLOM_COLORS);
 
-    // create a dataset and give it a type
-    set1 = LineDataSet(values, "DataSet 1");
-
-    set1.setDrawIcons(false);
-
-    // draw dashed line
-//      set1.enableDashedLine(10, 5, 0);
-
-    // black lines and points
-    set1.setColor1(ColorUtils.FADE_RED_END);
-    set1.setCircleColor(ColorUtils.FADE_RED_END);
-    set1.setHighLightColor(ColorUtils.PURPLE);
-
-    // line thickness and point size
-    set1.setLineWidth(1);
-    set1.setCircleRadius(3);
-
-    // draw points as solid circles
-    set1.setDrawCircleHole(false);
-
-    // customize legend entry
-    set1.setFormLineWidth(1);
-//      set1.setFormLineDashEffect(new DashPathEffect(new double[]{10f, 5f}, 0f));
-    set1.setFormSize(15);
-
-    // text size of values
-    set1.setValueTextSize(9);
-
-    // draw selection line as dashed
-//      set1.enableDashedHighlightLine(10, 5, 0);
-
-    // set the filled area
-    set1.setDrawFilled(true);
-//    set1.setFillFormatter(A(_lineChart.painter));
-
-    // set color of filled area
-    set1.setFillColor(ColorUtils.FADE_RED_END);
-
-    set1.setDrawIcons(true);
-    List<ILineDataSet> dataSets = List();
-    dataSets.add(set1); // add the data sets
-
-    // create a data object with the data sets
     _lineData = LineData.fromList(dataSets);
-    _lineData.setValueTypeface(TextStyle(fontSize: Utils.convertDpToPixel(9)));
   }
 
   void _initLineChart() {
     var desc = Description();
-    desc.setEnabled(false);
     _lineChart = LineChart((painter) {
-      painter.mXAxis.enableGridDashedLine(10, 10, 0);
+      painter.setOnChartValueSelectedListener(this);
+      painter.setOnChartGestureListener(this);
+      painter
+        ..mDrawGridBackground = false
+        ..mDescription.setEnabled(false)
+        ..mDrawBorders = false
+        ..mTouchEnabled = true
+        ..mDragXEnabled = true
+        ..mDragYEnabled = true
+        ..mScaleYEnabled = true
+        ..mScaleXEnabled = true
+        ..mPinchZoomEnabled = false;
 
-      painter.mAxisRight.setEnabled(false);
-//    _lineChart.painter.mAxisRight.enableGridDashedLine(10, 10, 0);
-//    _lineChart.painter.mAxisRight.setAxisMaximum(200);
-//    _lineChart.painter.mAxisRight.setAxisMinimum(-50);
+      painter.mAxisLeft.setEnabled(false);
+      painter.mAxisRight
+        ..setDrawAxisLine(false)
+        ..setDrawGridLines(false);
+      painter.mXAxis
+        ..setDrawAxisLine(false)
+        ..setDrawGridLines(false);
 
-      painter.mAxisLeft.enableGridDashedLine(10, 10, 0);
-      painter.mAxisLeft.setAxisMaximum(200);
-      painter.mAxisLeft.setAxisMinimum(-50);
-
-      LimitLine llXAxis = new LimitLine(9, "Index 10");
-      llXAxis.setLineWidth(4);
-      llXAxis.enableDashedLine(10, 10, 0);
-      llXAxis.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
-      llXAxis.setTextSize(10);
-
-      LimitLine ll1 = new LimitLine(150, "Upper Limit");
-      ll1.setLineWidth(4);
-      ll1.enableDashedLine(10, 10, 0);
-      ll1.setLabelPosition(LimitLabelPosition.RIGHT_TOP);
-      ll1.setTextSize(10);
-
-      LimitLine ll2 = new LimitLine(-30, "Lower Limit");
-      ll2.setLineWidth(4);
-      ll2.enableDashedLine(10, 10, 0);
-      ll2.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
-      ll2.setTextSize(10);
-
-      // draw limit lines behind data instead of on top
-      painter.mAxisLeft.setDrawLimitLinesBehindData(true);
-      painter.mXAxis.setDrawLimitLinesBehindData(true);
-
-      // add limit lines
-      painter.mAxisLeft.addLimitLine(ll1);
-      painter.mAxisLeft.addLimitLine(ll2);
-      painter.mLegend.setForm(LegendForm.LINE);
+      painter.mLegend
+        ..setVerticalAlignment(LegendVerticalAlignment.TOP)
+        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
+        ..setOrientation(LegendOrientation.VERTICAL)
+        ..setDrawInside(false);
     }, _lineData,
         touchEnabled: true,
         drawGridBackground: false,

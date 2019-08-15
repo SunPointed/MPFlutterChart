@@ -405,7 +405,7 @@ abstract class BarLineChartBasePainter<
         mData.getYMax2(AxisDependency.RIGHT));
   }
 
-  void calculateLegendOffsets(Rect offsets) {
+  Rect calculateLegendOffsets(Rect offsets) {
     offsets = Rect.fromLTRB(0.0, 0.0, 0.0, 0.0);
     // setup offsets for legend
     if (mLegend != null &&
@@ -503,6 +503,7 @@ abstract class BarLineChartBasePainter<
           break;
       }
     }
+    return offsets;
   }
 
   Rect mOffsetsBuffer = Rect.zero;
@@ -514,7 +515,7 @@ abstract class BarLineChartBasePainter<
     if (!mCustomViewPortEnabled) {
       double offsetLeft = 0, offsetRight = 0, offsetTop = 0, offsetBottom = 0;
 
-      calculateLegendOffsets(mOffsetsBuffer);
+      mOffsetsBuffer = calculateLegendOffsets(mOffsetsBuffer);
 
       offsetLeft += mOffsetsBuffer.left;
       offsetTop += mOffsetsBuffer.top;

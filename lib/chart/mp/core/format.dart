@@ -22,13 +22,13 @@ abstract class ValueFormatter {
     return getFormattedValue1(value);
   }
 
-//  String getBarLabel(BarEntry barEntry) {
-//    return getFormattedValue(barEntry.getY());
-//  }
+  String getBarLabel(BarEntry barEntry) {
+    return getFormattedValue1(barEntry.y);
+  }
 
-//  String getBarStackedLabel(double value, BarEntry stackedEntry) {
-//    return getFormattedValue(value);
-//  }
+  String getBarStackedLabel(double value, BarEntry stackedEntry) {
+    return getFormattedValue1(value);
+  }
 
   String getPointLabel(Entry entry) {
     return getFormattedValue1(entry.y);
