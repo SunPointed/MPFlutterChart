@@ -705,3 +705,7 @@ class ViewPortHandler {
     return mScaleY < mMaxScaleY;
   }
 }
+
+class HorizontalViewPortHandler extends ViewPortHandler{
+
+}

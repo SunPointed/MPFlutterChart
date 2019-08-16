@@ -88,6 +88,82 @@ abstract class Utils {
     paint.textAlign = originalTextAlign;
   }
 
+  static void drawXAxisValueHorizontal(
+      Canvas c,
+      String text,
+      double x,
+      double y,
+      TextPainter paint,
+      MPPointF anchor,
+      double angleDegrees,
+      XAxisPosition position) {
+    double drawOffsetX = 0;
+    double drawOffsetY = 0;
+
+    var originalTextAlign = paint.textAlign;
+    paint.textAlign = TextAlign.left;
+
+    if (angleDegrees != 0) {
+      double translateX = x;
+      double translateY = y;
+
+      c.save();
+      c.translate(translateX, translateY);
+      c.rotate(angleDegrees);
+
+      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.layout();
+      switch (position) {
+        case XAxisPosition.BOTTOM:
+          paint.paint(c, Offset(drawOffsetX, drawOffsetY));
+          break;
+        case XAxisPosition.BOTTOM_INSIDE:
+          paint.paint(c, Offset(drawOffsetX, drawOffsetY));
+          break;
+        case XAxisPosition.TOP:
+          paint.paint(c, Offset(drawOffsetX, drawOffsetY));
+          break;
+        case XAxisPosition.TOP_INSIDE:
+          paint.paint(c, Offset(drawOffsetX, drawOffsetY));
+          break;
+        case XAxisPosition.BOTH_SIDED:
+          break;
+      }
+
+      c.restore();
+    } else {
+      drawOffsetX += x;
+      drawOffsetY += y;
+
+      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.layout();
+      switch (position) {
+        case XAxisPosition.BOTTOM:
+          paint.paint(
+              c,
+              Offset(
+                  drawOffsetX - paint.width, drawOffsetY - paint.height / 2));
+          break;
+        case XAxisPosition.BOTTOM_INSIDE:
+          paint.paint(c, Offset(drawOffsetX, drawOffsetY - paint.height / 2));
+          break;
+        case XAxisPosition.TOP:
+          paint.paint(c, Offset(drawOffsetX, drawOffsetY - paint.height / 2));
+          break;
+        case XAxisPosition.TOP_INSIDE:
+          paint.paint(
+              c,
+              Offset(
+                  drawOffsetX - paint.width, drawOffsetY - paint.height / 2));
+          break;
+        case XAxisPosition.BOTH_SIDED:
+          break;
+      }
+    }
+
+    paint.textAlign = originalTextAlign;
+  }
+
   static double FDEG2RAD = (pi / 180);
 
   static FSize getSizeOfRotatedRectangleByDegrees(
@@ -305,6 +381,10 @@ abstract class Matrix4Utils {
   static void postTranslate(Matrix4 m, double tx, double ty) {
     final Matrix4 result = Matrix4.identity()..setTranslationRaw(tx, ty, 0.0);
     multiply(m, result).copyInto(m);
+  }
+
+  static void setTranslate(Matrix4 m, double tx, double ty) {
+    (Matrix4.identity()..setTranslationRaw(tx, ty, 0.0)).copyInto(m);
   }
 
   static void mapPoints(Matrix4 m, List<double> valuePoints) {

@@ -3300,3 +3300,1047 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
   @override
   void drawExtras(Canvas c) {}
 }
+
+class XAxisRendererHorizontalBarChart extends XAxisRenderer {
+  XAxisRendererHorizontalBarChart(
+      ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans)
+      : super(viewPortHandler, xAxis, trans);
+
+  @override
+  void computeAxis(double min, double max, bool inverted) {
+    // calculate the starting and entry point of the y-labels (depending on
+    // zoom / contentrect bounds)
+    if (mViewPortHandler.contentWidth() > 10 &&
+        !mViewPortHandler.isFullyZoomedOutY()) {
+      MPPointD p1 = mTrans.getValuesByTouchPoint1(
+          mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom());
+      MPPointD p2 = mTrans.getValuesByTouchPoint1(
+          mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
+
+      if (inverted) {
+        min = p2.y;
+        max = p1.y;
+      } else {
+        min = p1.y;
+        max = p2.y;
+      }
+
+      MPPointD.recycleInstance2(p1);
+      MPPointD.recycleInstance2(p2);
+    }
+
+    computeAxisValues(min, max);
+  }
+
+  @override
+  void computeSize() {
+    mAxisLabelPaint = TextPainter(
+        textAlign: mAxisLabelPaint.textAlign,
+        textDirection: mAxisLabelPaint.textDirection,
+        text: TextSpan(
+            style: TextStyle(
+                fontSize: mXAxis.getTextSize(),
+                color: mXAxis.getTypeface()?.color == null
+                    ? ColorUtils.HOLO_GREEN_DARK
+                    : mXAxis.getTypeface()?.color)));
+
+    String longest = mXAxis.getLongestLabel();
+
+    final FSize labelSize = Utils.calcTextSize1(mAxisLabelPaint, longest);
+
+    final double labelWidth =
+        (labelSize.width + mXAxis.getXOffset() * 3.5).toInt().toDouble();
+    final double labelHeight = labelSize.height;
+
+    final FSize labelRotatedSize = Utils.getSizeOfRotatedRectangleByDegrees(
+        labelSize.width, labelHeight, mXAxis.getLabelRotationAngle());
+
+    mXAxis.mLabelWidth = labelWidth.round();
+    mXAxis.mLabelHeight = labelHeight.round();
+    mXAxis.mLabelRotatedWidth =
+        (labelRotatedSize.width + mXAxis.getXOffset() * 3.5).toInt();
+    mXAxis.mLabelRotatedHeight = labelRotatedSize.height.round();
+
+    FSize.recycleInstance(labelRotatedSize);
+  }
+
+  @override
+  void renderAxisLabels(Canvas c) {
+    if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled()) return;
+
+//    double xoffset = mXAxis.getXOffset();
+
+    mAxisLabelPaint = TextPainter(
+        text: TextSpan(
+            style: TextStyle(
+                color: mXAxis.getTextColor(), fontSize: mXAxis.getTextSize())),
+        textDirection: mAxisLabelPaint.textDirection,
+        textAlign: mAxisLabelPaint.textAlign);
+
+    MPPointF pointF = MPPointF.getInstance1(0, 0);
+
+    if (mXAxis.getPosition() == XAxisPosition.TOP) {
+      pointF.x = 0.0;
+      pointF.y = 0.5;
+      drawLabels(
+          c, mViewPortHandler.contentRight(), pointF, mXAxis.getPosition());
+    } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
+      pointF.x = 1.0;
+      pointF.y = 0.5;
+      drawLabels(
+          c, mViewPortHandler.contentRight(), pointF, mXAxis.getPosition());
+    } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
+      pointF.x = 1.0;
+      pointF.y = 0.5;
+      drawLabels(
+          c, mViewPortHandler.contentLeft(), pointF, mXAxis.getPosition());
+    } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE) {
+      pointF.x = 1.0;
+      pointF.y = 0.5;
+      drawLabels(
+          c, mViewPortHandler.contentLeft(), pointF, mXAxis.getPosition());
+    } else {
+      // BOTH SIDED
+      pointF.x = 0.0;
+      pointF.y = 0.5;
+      drawLabels(
+          c, mViewPortHandler.contentRight(), pointF, mXAxis.getPosition());
+      pointF.x = 1.0;
+      pointF.y = 0.5;
+      drawLabels(
+          c, mViewPortHandler.contentLeft(), pointF, mXAxis.getPosition());
+    }
+
+    MPPointF.recycleInstance(pointF);
+  }
+
+  @override
+  void drawLabels(
+      Canvas c, double pos, MPPointF anchor, XAxisPosition position) {
+    final double labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
+    bool centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
+
+    List<double> positions = List(mXAxis.mEntryCount * 2);
+
+    for (int i = 0; i < positions.length; i += 2) {
+      // only fill x values
+      if (centeringEnabled) {
+        positions[i + 1] = mXAxis.mCenteredEntries[i ~/ 2];
+      } else {
+        positions[i + 1] = mXAxis.mEntries[i ~/ 2];
+      }
+    }
+
+    mTrans.pointValuesToPixel(positions);
+
+    for (int i = 0; i < positions.length; i += 2) {
+      double y = positions[i + 1];
+
+      if (mViewPortHandler.isInBoundsY(y)) {
+        String label = mXAxis
+            .getValueFormatter()
+            .getAxisLabel(mXAxis.mEntries[i ~/ 2], mXAxis);
+        Utils.drawXAxisValueHorizontal(c, label, pos, y, mAxisLabelPaint,
+            anchor, labelRotationAngleDegrees, position);
+      }
+    }
+  }
+
+  @override
+  Rect getGridClippingRect() {
+    mGridClippingRect = Rect.fromLTRB(
+        mViewPortHandler.getContentRect().left,
+        mViewPortHandler.getContentRect().top,
+        mViewPortHandler.getContentRect().right + mAxis.getGridLineWidth(),
+        mViewPortHandler.getContentRect().bottom + mAxis.getGridLineWidth());
+    return mGridClippingRect;
+  }
+
+  @override
+  void drawGridLine(Canvas c, double x, double y, Path gridLinePath) {
+    gridLinePath.moveTo(mViewPortHandler.contentRight(), y);
+    gridLinePath.lineTo(mViewPortHandler.contentLeft(), y);
+
+    // draw a path because lines don't support dashing on lower android versions
+    c.drawPath(gridLinePath, mGridPaint);
+
+    gridLinePath.reset();
+  }
+
+  @override
+  void renderAxisLine(Canvas c) {
+    if (!mXAxis.isDrawAxisLineEnabled() || !mXAxis.isEnabled()) return;
+
+    mAxisLinePaint = Paint()
+      ..color = mXAxis.getAxisLineColor()
+      ..strokeWidth = mXAxis.getAxisLineWidth();
+
+    if (mXAxis.getPosition() == XAxisPosition.TOP ||
+        mXAxis.getPosition() == XAxisPosition.TOP_INSIDE ||
+        mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
+      c.drawLine(
+          Offset(
+              mViewPortHandler.contentRight(), mViewPortHandler.contentTop()),
+          Offset(mViewPortHandler.contentRight(),
+              mViewPortHandler.contentBottom()),
+          mAxisLinePaint);
+    }
+
+    if (mXAxis.getPosition() == XAxisPosition.BOTTOM ||
+        mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE ||
+        mXAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
+      c.drawLine(
+          Offset(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop()),
+          Offset(
+              mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom()),
+          mAxisLinePaint);
+    }
+  }
+
+  Path mRenderLimitLinesPathBuffer = new Path();
+
+  /**
+   * Draws the LimitLines associated with this axis to the screen.
+   * This is the standard YAxis renderer using the XAxis limit lines.
+   *
+   * @param c
+   */
+  @override
+  void renderLimitLines(Canvas c) {
+    List<LimitLine> limitLines = mXAxis.getLimitLines();
+
+    if (limitLines == null || limitLines.length <= 0) return;
+
+    List<double> pts = mRenderLimitLinesBuffer;
+    pts[0] = 0;
+    pts[1] = 0;
+
+    Path limitLinePath = mRenderLimitLinesPathBuffer;
+    limitLinePath.reset();
+
+    for (int i = 0; i < limitLines.length; i++) {
+      LimitLine l = limitLines[i];
+
+      if (!l.isEnabled()) continue;
+
+      c.save();
+      mLimitLineClippingRect = Rect.fromLTRB(
+          mViewPortHandler.getContentRect().left,
+          mViewPortHandler.getContentRect().top,
+          mViewPortHandler.getContentRect().right + l.getLineWidth(),
+          mViewPortHandler.getContentRect().bottom + l.getLineWidth());
+      c.clipRect(mLimitLineClippingRect);
+
+      mLimitLinePaint
+        ..style = PaintingStyle.stroke
+        ..color = l.getLineColor()
+        ..strokeWidth = l.getLineWidth();
+//      mLimitLinePaint.setPathEffect(l.getDashPathEffect());
+
+      pts[1] = l.getLimit();
+
+      mTrans.pointValuesToPixel(pts);
+
+      limitLinePath.moveTo(mViewPortHandler.contentLeft(), pts[1]);
+      limitLinePath.lineTo(mViewPortHandler.contentRight(), pts[1]);
+
+      c.drawPath(limitLinePath, mLimitLinePaint);
+      limitLinePath.reset();
+      // c.drawLines(pts, mLimitLinePaint);
+
+      String label = l.getLabel();
+
+      // if drawing the limit-value label is enabled
+      if (label != null && label.isNotEmpty) {
+        final double labelLineHeight =
+            Utils.calcTextHeight(mAxisLabelPaint, label).toDouble();
+        double xOffset = Utils.convertDpToPixel(4) + l.getXOffset();
+        double yOffset = l.getLineWidth() + labelLineHeight + l.getYOffset();
+
+        final LimitLabelPosition position = l.getLabelPosition();
+
+        if (position == LimitLabelPosition.RIGHT_TOP) {
+          mAxisLabelPaint = TextPainter(
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.ltr,
+              text: TextSpan(
+                  text: label,
+                  style: TextStyle(
+                      color: l.getTextColor(), fontSize: l.getTextSize())));
+          mAxisLabelPaint.layout();
+          mAxisLabelPaint.paint(
+              c,
+              Offset(mViewPortHandler.contentRight() - xOffset,
+                  pts[1] - yOffset + labelLineHeight));
+        } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
+          mAxisLabelPaint = TextPainter(
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.ltr,
+              text: TextSpan(
+                  text: label,
+                  style: TextStyle(
+                      color: l.getTextColor(), fontSize: l.getTextSize())));
+          mAxisLabelPaint.layout();
+          mAxisLabelPaint.paint(
+              c,
+              Offset(
+                  mViewPortHandler.contentRight() - xOffset, pts[1] + yOffset));
+        } else if (position == LimitLabelPosition.LEFT_TOP) {
+          mAxisLabelPaint = TextPainter(
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.ltr,
+              text: TextSpan(
+                  text: label,
+                  style: TextStyle(
+                      color: l.getTextColor(), fontSize: l.getTextSize())));
+          mAxisLabelPaint.layout();
+          mAxisLabelPaint.paint(
+              c,
+              Offset(mViewPortHandler.contentLeft() + xOffset,
+                  pts[1] - yOffset + labelLineHeight));
+        } else {
+          mAxisLabelPaint = TextPainter(
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.ltr,
+              text: TextSpan(
+                  text: label,
+                  style: TextStyle(
+                      color: l.getTextColor(), fontSize: l.getTextSize())));
+          mAxisLabelPaint.layout();
+          mAxisLabelPaint.paint(
+              c,
+              Offset(
+                  mViewPortHandler.offsetLeft() + xOffset, pts[1] + yOffset));
+        }
+      }
+
+      c.restore();
+    }
+  }
+}
+
+class YAxisRendererHorizontalBarChart extends YAxisRenderer {
+  YAxisRendererHorizontalBarChart(
+      ViewPortHandler viewPortHandler, YAxis yAxis, Transformer trans)
+      : super(viewPortHandler, yAxis, trans);
+
+  /**
+   * Computes the axis values.
+   *
+   * @param yMin - the minimum y-value in the data object for this axis
+   * @param yMax - the maximum y-value in the data object for this axis
+   */
+  @override
+  void computeAxis(double yMin, double yMax, bool inverted) {
+    // calculate the starting and entry point of the y-labels (depending on
+    // zoom / contentrect bounds)
+    if (mViewPortHandler.contentHeight() > 10 &&
+        !mViewPortHandler.isFullyZoomedOutX()) {
+      MPPointD p1 = mTrans.getValuesByTouchPoint1(
+          mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
+      MPPointD p2 = mTrans.getValuesByTouchPoint1(
+          mViewPortHandler.contentRight(), mViewPortHandler.contentTop());
+
+      if (!inverted) {
+        yMin = p1.x;
+        yMax = p2.x;
+      } else {
+        yMin = p2.x;
+        yMax = p1.x;
+      }
+
+      MPPointD.recycleInstance2(p1);
+      MPPointD.recycleInstance2(p2);
+    }
+
+    computeAxisValues(yMin, yMax);
+  }
+
+  /**
+   * draws the y-axis labels to the screen
+   */
+  @override
+  void renderAxisLabels(Canvas c) {
+    if (!mYAxis.isEnabled() || !mYAxis.isDrawLabelsEnabled()) return;
+
+    List<double> positions = getTransformedPositions();
+
+    mAxisLabelPaint = TextPainter(
+        textAlign: TextAlign.center,
+        textDirection: mAxisLabelPaint.textDirection,
+        text: TextSpan(
+            style: TextStyle(
+                fontSize: mYAxis.getTextSize(), color: mYAxis.getTextColor())));
+
+//    double baseYOffset = Utils.convertDpToPixel(2.5);
+//    double textHeight = Utils.calcTextHeight(mAxisLabelPaint, "Q").toDouble();
+
+    AxisDependency dependency = mYAxis.getAxisDependency();
+    YAxisLabelPosition labelPosition = mYAxis.getLabelPosition();
+
+    double yPos = 0;
+
+    if (dependency == AxisDependency.LEFT) {
+      if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
+        yPos = mViewPortHandler.contentTop();
+      } else {
+        yPos = mViewPortHandler.contentTop();
+      }
+    } else {
+      if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
+        yPos = mViewPortHandler.contentBottom();
+      } else {
+        yPos = mViewPortHandler.contentBottom();
+      }
+    }
+
+    drawYLabels(c, yPos, positions, dependency, labelPosition);
+  }
+
+  @override
+  void renderAxisLine(Canvas c) {
+    if (!mYAxis.isEnabled() || !mYAxis.isDrawAxisLineEnabled()) return;
+    mAxisLinePaint = Paint()
+      ..color = mYAxis.getAxisLineColor()
+      ..strokeWidth = mYAxis.getAxisLineWidth();
+
+    if (mYAxis.getAxisDependency() == AxisDependency.LEFT) {
+      c.drawLine(
+          Offset(mViewPortHandler.contentLeft(), mViewPortHandler.contentTop()),
+          Offset(
+              mViewPortHandler.contentRight(), mViewPortHandler.contentTop()),
+          mAxisLinePaint);
+    } else {
+      c.drawLine(
+          Offset(
+              mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom()),
+          Offset(mViewPortHandler.contentRight(),
+              mViewPortHandler.contentBottom()),
+          mAxisLinePaint);
+    }
+  }
+
+  /**
+   * draws the y-labels on the specified x-position
+   *
+   * @param fixedPosition
+   * @param positions
+   */
+  @override
+  void drawYLabels(Canvas c, double fixedPosition, List<double> positions,
+      AxisDependency axisDependency, YAxisLabelPosition position) {
+    mAxisLabelPaint = TextPainter(
+        textDirection: mAxisLabelPaint.textDirection,
+        textAlign: mAxisLabelPaint.textAlign,
+        text: TextSpan(
+            style: TextStyle(
+                fontSize: mYAxis.getTextSize(), color: mYAxis.getTextColor())));
+
+    final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
+    final int to = mYAxis.isDrawTopYLabelEntryEnabled()
+        ? mYAxis.mEntryCount
+        : (mYAxis.mEntryCount - 1);
+
+    for (int i = from; i < to; i++) {
+      String text = mYAxis.getFormattedLabel(i);
+      mAxisLabelPaint.text =
+          TextSpan(text: text, style: mAxisLabelPaint.text.style);
+      mAxisLabelPaint.layout();
+
+      if (axisDependency == AxisDependency.LEFT) {
+        if (position == YAxisLabelPosition.OUTSIDE_CHART) {
+          mAxisLabelPaint.paint(
+              c,
+              Offset(positions[i * 2] - mAxisLabelPaint.width / 2,
+                  fixedPosition - mAxisLabelPaint.height));
+        } else {
+          mAxisLabelPaint.paint(
+              c,
+              Offset(
+                  positions[i * 2] - mAxisLabelPaint.width / 2, fixedPosition));
+        }
+      } else {
+        if (position == YAxisLabelPosition.OUTSIDE_CHART) {
+          mAxisLabelPaint.paint(
+              c,
+              Offset(
+                  positions[i * 2] - mAxisLabelPaint.width / 2, fixedPosition));
+        } else {
+          mAxisLabelPaint.paint(
+              c,
+              Offset(positions[i * 2] - mAxisLabelPaint.width / 2,
+                  fixedPosition - mAxisLabelPaint.height));
+        }
+      }
+    }
+  }
+
+  @override
+  List<double> getTransformedPositions() {
+    if (mGetTransformedPositionsBuffer.length != mYAxis.mEntryCount * 2) {
+      mGetTransformedPositionsBuffer = List(mYAxis.mEntryCount * 2);
+    }
+    List<double> positions = mGetTransformedPositionsBuffer;
+
+    for (int i = 0; i < positions.length; i += 2) {
+      // only fill x values, y values are not needed for x-labels
+      positions[i] = mYAxis.mEntries[i ~/ 2];
+    }
+
+    mTrans.pointValuesToPixel(positions);
+    return positions;
+  }
+
+  @override
+  Rect getGridClippingRect() {
+    mGridClippingRect = Rect.fromLTRB(
+        mViewPortHandler.getContentRect().left - mAxis.getGridLineWidth(),
+        mViewPortHandler.getContentRect().top - mAxis.getGridLineWidth(),
+        mViewPortHandler.getContentRect().right,
+        mViewPortHandler.getContentRect().bottom);
+    return mGridClippingRect;
+  }
+
+  @override
+  Path linePath(Path p, int i, List<double> positions) {
+    p.moveTo(positions[i], mViewPortHandler.contentTop());
+    p.lineTo(positions[i], mViewPortHandler.contentBottom());
+    return p;
+  }
+
+  Path mDrawZeroLinePathBuffer = Path();
+
+  @override
+  void drawZeroLine(Canvas c) {
+    c.save();
+    mZeroLineClippingRect = Rect.fromLTRB(
+        mViewPortHandler.getContentRect().left - mYAxis.getZeroLineWidth(),
+        mViewPortHandler.getContentRect().top - mYAxis.getZeroLineWidth(),
+        mViewPortHandler.getContentRect().right,
+        mViewPortHandler.getContentRect().bottom);
+    c.clipRect(mLimitLineClippingRect);
+
+    // draw zero line
+    MPPointD pos = mTrans.getPixelForValues(0, 0);
+
+    mZeroLinePaint
+      ..color = mYAxis.getZeroLineColor()
+      ..strokeWidth = mYAxis.getZeroLineWidth();
+
+    Path zeroLinePath = mDrawZeroLinePathBuffer;
+    zeroLinePath.reset();
+
+    zeroLinePath.moveTo(pos.x - 1, mViewPortHandler.contentTop());
+    zeroLinePath.lineTo(pos.x - 1, mViewPortHandler.contentBottom());
+
+    // draw a path because lines don't support dashing on lower android versions
+    c.drawPath(zeroLinePath, mZeroLinePaint);
+
+    c.restore();
+  }
+
+  Path mRenderLimitLinesPathBuffer = Path();
+  List<double> mRenderLimitLinesBuffer = List(4);
+
+  /**
+   * Draws the LimitLines associated with this axis to the screen.
+   * This is the standard XAxis renderer using the YAxis limit lines.
+   *
+   * @param c
+   */
+  @override
+  void renderLimitLines(Canvas c) {
+    List<LimitLine> limitLines = mYAxis.getLimitLines();
+
+    if (limitLines == null || limitLines.length <= 0) return;
+
+    List<double> pts = mRenderLimitLinesBuffer;
+    pts[0] = 0;
+    pts[1] = 0;
+    pts[2] = 0;
+    pts[3] = 0;
+    Path limitLinePath = mRenderLimitLinesPathBuffer;
+    limitLinePath.reset();
+
+    for (int i = 0; i < limitLines.length; i++) {
+      LimitLine l = limitLines[i];
+
+      if (!l.isEnabled()) continue;
+
+      c.save();
+      mLimitLineClippingRect = Rect.fromLTRB(
+          mViewPortHandler.getContentRect().left - l.getLineWidth(),
+          mViewPortHandler.getContentRect().top - l.getLineWidth(),
+          mViewPortHandler.getContentRect().right,
+          mViewPortHandler.getContentRect().bottom);
+      c.clipRect(mLimitLineClippingRect);
+
+      pts[0] = l.getLimit();
+      pts[2] = l.getLimit();
+
+      mTrans.pointValuesToPixel(pts);
+
+      pts[1] = mViewPortHandler.contentTop();
+      pts[3] = mViewPortHandler.contentBottom();
+
+      limitLinePath.moveTo(pts[0], pts[1]);
+      limitLinePath.lineTo(pts[2], pts[3]);
+
+      mLimitLinePaint
+        ..style = PaintingStyle.stroke
+        ..color = l.getLineColor()
+        ..strokeWidth = l.getLineWidth();
+//      mLimitLinePaint.setPathEffect(l.getDashPathEffect());
+
+      c.drawPath(limitLinePath, mLimitLinePaint);
+      limitLinePath.reset();
+
+      String label = l.getLabel();
+
+      // if drawing the limit-value label is enabled
+      if (label != null && label.isNotEmpty) {
+        mAxisLabelPaint = TextPainter(
+            textAlign: TextAlign.center,
+            textDirection: mAxisLabelPaint.textDirection,
+            text: TextSpan(
+                text: label,
+                style: TextStyle(
+                    color: l.getTextColor(), fontSize: l.getTextSize())));
+        mAxisLabelPaint.layout();
+//        mLimitLinePaint.setPathEffect(null);
+//        mLimitLinePaint.setStrokeWidth(0.5f);
+
+        double xOffset = l.getLineWidth() + l.getXOffset();
+        double yOffset = Utils.convertDpToPixel(2) + l.getYOffset();
+
+        final LimitLabelPosition position = l.getLabelPosition();
+
+        if (position == LimitLabelPosition.RIGHT_TOP) {
+          final double labelLineHeight =
+              Utils.calcTextHeight(mAxisLabelPaint, label).toDouble();
+          mAxisLabelPaint.paint(c,
+              Offset(pts[0], mViewPortHandler.contentTop() + labelLineHeight));
+        } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
+          mAxisLabelPaint.paint(
+              c, Offset(pts[0], mViewPortHandler.contentBottom()));
+        } else if (position == LimitLabelPosition.LEFT_TOP) {
+          final double labelLineHeight =
+              Utils.calcTextHeight(mAxisLabelPaint, label).toDouble();
+          mAxisLabelPaint.paint(c,
+              Offset(pts[0], mViewPortHandler.contentTop() + labelLineHeight));
+        } else {
+          mAxisLabelPaint.paint(
+              c, Offset(pts[0], mViewPortHandler.contentBottom()));
+        }
+      }
+
+      c.restore();
+    }
+  }
+}
+
+class HorizontalBarChartRenderer extends BarChartRenderer {
+  HorizontalBarChartRenderer(BarDataProvider chart, ChartAnimator animator,
+      ViewPortHandler viewPortHandler)
+      : super(chart, animator, viewPortHandler);
+
+  @override
+  void initBuffers() {
+    BarData barData = mChart.getBarData();
+    mBarBuffers = List(barData.getDataSetCount());
+
+    for (int i = 0; i < mBarBuffers.length; i++) {
+      IBarDataSet set = barData.getDataSetByIndex(i);
+      mBarBuffers[i] = HorizontalBarBuffer(
+          set.getEntryCount() * 4 * (set.isStacked() ? set.getStackSize() : 1),
+          barData.getDataSetCount(),
+          set.isStacked());
+    }
+  }
+
+  Rect mBarShadowRectBuffer = Rect.zero;
+
+  @override
+  void drawDataSet(Canvas c, IBarDataSet dataSet, int index) {
+    Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+
+    mBarBorderPaint
+      ..color = dataSet.getBarBorderColor()
+      ..strokeWidth = Utils.convertDpToPixel(dataSet.getBarBorderWidth());
+
+    final bool drawBorder = dataSet.getBarBorderWidth() > 0.0;
+
+    double phaseX = mAnimator.getPhaseX();
+    double phaseY = mAnimator.getPhaseY();
+
+    // draw the bar shadow before the values
+    if (mChart.isDrawBarShadowEnabled()) {
+      mShadowPaint..color = dataSet.getBarShadowColor();
+
+      BarData barData = mChart.getBarData();
+
+      final double barWidth = barData.getBarWidth();
+      final double barWidthHalf = barWidth / 2.0;
+      double x;
+
+      for (int i = 0,
+              count = min(((dataSet.getEntryCount()) * phaseX).ceil(),
+                  dataSet.getEntryCount());
+          i < count;
+          i++) {
+        BarEntry e = dataSet.getEntryForIndex(i);
+
+        x = e.x;
+
+        mBarShadowRectBuffer = Rect.fromLTRB(mBarShadowRectBuffer.left,
+            x - barWidthHalf, mBarShadowRectBuffer.right, x + barWidthHalf);
+
+        trans.rectValueToPixel(mBarShadowRectBuffer);
+
+        if (!mViewPortHandler.isInBoundsTop(mBarShadowRectBuffer.bottom))
+          continue;
+
+        if (!mViewPortHandler.isInBoundsBottom(mBarShadowRectBuffer.top)) break;
+
+        mBarShadowRectBuffer = Rect.fromLTRB(
+            mViewPortHandler.contentLeft(),
+            mBarShadowRectBuffer.top,
+            mViewPortHandler.contentRight(),
+            mBarShadowRectBuffer.bottom);
+
+        c.drawRect(mBarShadowRectBuffer, mShadowPaint);
+      }
+    }
+
+    // initialize the buffer
+    BarBuffer buffer = mBarBuffers[index];
+    buffer.setPhases(phaseX, phaseY);
+    buffer.setDataSet(index);
+    buffer.setInverted(mChart.isInverted(dataSet.getAxisDependency()));
+    buffer.setBarWidth(mChart.getBarData().getBarWidth());
+
+    buffer.feed(dataSet);
+
+    trans.pointValuesToPixel(buffer.buffer);
+
+    final bool isSingleColor = dataSet.getColors().length == 1;
+
+    if (isSingleColor) {
+      mRenderPaint..color = dataSet.getColor1();
+    }
+
+    for (int j = 0; j < buffer.size(); j += 4) {
+      if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 3])) break;
+
+      if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1])) continue;
+
+      if (!isSingleColor) {
+        // Set the color for the currently drawn value. If the index
+        // is out of bounds, reuse colors.
+        mRenderPaint..color = (dataSet.getColor2(j ~/ 4));
+      }
+
+      c.drawRect(
+          Rect.fromLTRB(buffer.buffer[j], buffer.buffer[j + 1],
+              buffer.buffer[j + 2], buffer.buffer[j + 3]),
+          mRenderPaint);
+
+      if (drawBorder) {
+        c.drawRect(
+            Rect.fromLTRB(buffer.buffer[j], buffer.buffer[j + 1],
+                buffer.buffer[j + 2], buffer.buffer[j + 3]),
+            mBarBorderPaint);
+      }
+    }
+  }
+
+  @override
+  void drawValues(Canvas c) {
+    // if values are drawn
+    if (!isDrawingValuesAllowed(mChart)) return;
+
+    List<IBarDataSet> dataSets = mChart.getBarData().getDataSets();
+
+    final double valueOffsetPlus = Utils.convertDpToPixel(5);
+    double posOffset = 0;
+    double negOffset = 0;
+    final bool drawValueAboveBar = mChart.isDrawValueAboveBarEnabled();
+
+    for (int i = 0; i < mChart.getBarData().getDataSetCount(); i++) {
+      IBarDataSet dataSet = dataSets[i];
+
+      if (!shouldDrawValues(dataSet)) continue;
+
+      bool isInverted = mChart.isInverted(dataSet.getAxisDependency());
+
+      // apply the text-styling defined by the DataSet
+      applyValueTextStyle(dataSet);
+
+      ValueFormatter formatter = dataSet.getValueFormatter();
+
+      // get the buffer
+      BarBuffer buffer = mBarBuffers[i];
+
+      final double phaseY = mAnimator.getPhaseY();
+
+      MPPointF iconsOffset = MPPointF.getInstance3(dataSet.getIconsOffset());
+      iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
+      iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+
+      // if only single values are drawn (sum)
+      if (!dataSet.isStacked()) {
+        for (int j = 0;
+            j < buffer.buffer.length * mAnimator.getPhaseX();
+            j += 4) {
+          double y = (buffer.buffer[j + 1] + buffer.buffer[j + 3]) / 2;
+
+          if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 1])) break;
+
+          if (!mViewPortHandler.isInBoundsX(buffer.buffer[j])) continue;
+
+          if (!mViewPortHandler.isInBoundsBottom(buffer.buffer[j + 1]))
+            continue;
+
+          BarEntry entry = dataSet.getEntryForIndex(j ~/ 4);
+          double val = entry.y;
+          String formattedValue = formatter.getBarLabel(entry);
+
+          // calculate the correct offset depending on the draw position of the value
+          double valueTextWidth =
+              Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
+          posOffset = (drawValueAboveBar
+              ? valueOffsetPlus
+              : -(valueTextWidth + valueOffsetPlus));
+          negOffset = (drawValueAboveBar
+              ? -(valueTextWidth + valueOffsetPlus)
+              : valueOffsetPlus);
+
+          if (isInverted) {
+            posOffset = -posOffset - valueTextWidth;
+            negOffset = -negOffset - valueTextWidth;
+          }
+
+          if (dataSet.isDrawValuesEnabled()) {
+            drawValue(
+                c,
+                formattedValue,
+                buffer.buffer[j + 2] + (val >= 0 ? posOffset : negOffset),
+                y,
+                dataSet.getValueTextColor2(j ~/ 2));
+          }
+//todo
+//            if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
+//              Drawable icon = entry.getIcon();
+//
+//              double px = buffer.buffer[j + 2] +
+//                  (val >= 0 ? posOffset : negOffset);
+//              double py = y;
+//
+//              px += iconsOffset.x;
+//              py += iconsOffset.y;
+//
+//              Utils.drawImage(
+//                  c,
+//                  icon,
+//                  (int)px,
+//                  (int)py,
+//                  icon.getIntrinsicWidth(),
+//                  icon.getIntrinsicHeight());
+//            }
+        }
+
+        // if each value of a potential stack should be drawn
+      } else {
+        Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+
+        int bufferIndex = 0;
+        int index = 0;
+
+        while (index < dataSet.getEntryCount() * mAnimator.getPhaseX()) {
+          BarEntry entry = dataSet.getEntryForIndex(index);
+
+          Color color = dataSet.getValueTextColor2(index);
+          List<double> vals = entry.getYVals();
+
+          // we still draw stacked bars, but there is one
+          // non-stacked
+          // in between
+          if (vals == null) {
+            if (!mViewPortHandler.isInBoundsTop(buffer.buffer[bufferIndex + 1]))
+              break;
+
+            if (!mViewPortHandler.isInBoundsX(buffer.buffer[bufferIndex]))
+              continue;
+
+            if (!mViewPortHandler
+                .isInBoundsBottom(buffer.buffer[bufferIndex + 1])) continue;
+
+            String formattedValue = formatter.getBarLabel(entry);
+
+            // calculate the correct offset depending on the draw position of the value
+            double valueTextWidth =
+                Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
+            posOffset = (drawValueAboveBar
+                ? valueOffsetPlus
+                : -(valueTextWidth + valueOffsetPlus));
+            negOffset = (drawValueAboveBar
+                ? -(valueTextWidth + valueOffsetPlus)
+                : valueOffsetPlus);
+
+            if (isInverted) {
+              posOffset = -posOffset - valueTextWidth;
+              negOffset = -negOffset - valueTextWidth;
+            }
+
+            if (dataSet.isDrawValuesEnabled()) {
+              drawValue(
+                  c,
+                  formattedValue,
+                  buffer.buffer[bufferIndex + 2] +
+                      (entry.y >= 0 ? posOffset : negOffset),
+                  buffer.buffer[bufferIndex + 1],
+                  color);
+            }
+//todo
+//              if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
+//                Drawable icon = entry.getIcon();
+//
+//                double px = buffer.buffer[bufferIndex + 2]
+//                    + (entry.getY() >= 0 ? posOffset : negOffset);
+//                double py = buffer.buffer[bufferIndex + 1];
+//
+//                px += iconsOffset.x;
+//                py += iconsOffset.y;
+//
+//                Utils.drawImage(
+//                    c,
+//                    icon,
+//                    (int)px,
+//                    (int)py,
+//                    icon.getIntrinsicWidth(),
+//                    icon.getIntrinsicHeight());
+//              }
+          } else {
+            List<double> transformed = List(vals.length * 2);
+
+            double posY = 0;
+            double negY = -entry.getNegativeSum();
+
+            for (int k = 0, idx = 0; k < transformed.length; k += 2, idx++) {
+              double value = vals[idx];
+              double y;
+
+              if (value == 0.0 && (posY == 0.0 || negY == 0.0)) {
+                // Take care of the situation of a 0.0 value, which overlaps a non-zero bar
+                y = value;
+              } else if (value >= 0.0) {
+                posY += value;
+                y = posY;
+              } else {
+                y = negY;
+                negY -= value;
+              }
+
+              transformed[k] = y * phaseY;
+            }
+
+            trans.pointValuesToPixel(transformed);
+
+            for (int k = 0; k < transformed.length; k += 2) {
+              final double val = vals[k ~/ 2];
+              String formattedValue = formatter.getBarStackedLabel(val, entry);
+
+              // calculate the correct offset depending on the draw position of the value
+              double valueTextWidth =
+                  Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
+              posOffset = (drawValueAboveBar
+                  ? valueOffsetPlus
+                  : -(valueTextWidth + valueOffsetPlus));
+              negOffset = (drawValueAboveBar
+                  ? -(valueTextWidth + valueOffsetPlus)
+                  : valueOffsetPlus);
+
+              if (isInverted) {
+                posOffset = -posOffset - valueTextWidth;
+                negOffset = -negOffset - valueTextWidth;
+              }
+
+              final bool drawBelow =
+                  (val == 0.0 && negY == 0.0 && posY > 0.0) || val < 0.0;
+
+              double x = transformed[k] + (drawBelow ? negOffset : posOffset);
+              double y = (buffer.buffer[bufferIndex + 1] +
+                      buffer.buffer[bufferIndex + 3]) /
+                  2;
+
+              if (!mViewPortHandler.isInBoundsTop(y)) break;
+
+              if (!mViewPortHandler.isInBoundsX(x)) continue;
+
+              if (!mViewPortHandler.isInBoundsBottom(y)) continue;
+
+              if (dataSet.isDrawValuesEnabled()) {
+                drawValue(c, formattedValue, x, y, color);
+              }
+//todo
+//                if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
+//                  Drawable icon = entry.getIcon();
+//
+//                  Utils.drawImage(
+//                      c,
+//                      icon,
+//                      (int)(x + iconsOffset.x),
+//                      (int)(y + iconsOffset.y),
+//                      icon.getIntrinsicWidth(),
+//                      icon.getIntrinsicHeight());
+//                }
+            }
+          }
+
+          bufferIndex =
+              vals == null ? bufferIndex + 4 : bufferIndex + 4 * vals.length;
+          index++;
+        }
+      }
+
+      MPPointF.recycleInstance(iconsOffset);
+    }
+  }
+
+  @override
+  void drawValue(Canvas c, String valueText, double x, double y, Color color) {
+    mValuePaint = TextPainter(
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+        text: TextSpan(
+            text: valueText,
+            style: TextStyle(
+                color: color, fontSize: mValuePaint.text.style.fontSize)));
+    mValuePaint.layout();
+    mValuePaint.paint(c, Offset(x, y - mValuePaint.height / 2));
+  }
+
+  @override
+  void prepareBarHighlight(
+      double x, double y1, double y2, double barWidthHalf, Transformer trans) {
+    double top = x - barWidthHalf;
+    double bottom = x + barWidthHalf;
+    double left = y1;
+    double right = y2;
+
+    mBarRect = Rect.fromLTRB(left, top, right, bottom);
+
+    trans.rectToPixelPhaseHorizontal(mBarRect, mAnimator.getPhaseY());
+  }
+
+  @override
+  void setHighlightDrawPos(Highlight high, Rect bar) {
+    high.setDraw(bar.center.dy, bar.right);
+  }
+
+  @override
+  bool isDrawingValuesAllowed(ChartInterface chart) {
+    return chart.getData().getEntryCount() <
+        chart.getMaxVisibleCount() * mViewPortHandler.getScaleY();
+  }
+}
