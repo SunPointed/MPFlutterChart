@@ -152,7 +152,7 @@ class Transformer {
    */
   List<double> generateTransformedValuesLine(
       ILineDataSet data, double phaseX, double phaseY, int min, int max) {
-    final int count = ((((max - min) * phaseX) + 1) * 2).toInt();
+    final int count = ((((max - min) * phaseX) + 1).toInt() * 2);
 
     if (valuePointsForGenerateTransformedValuesLine.length != count) {
       valuePointsForGenerateTransformedValuesLine = List(count);

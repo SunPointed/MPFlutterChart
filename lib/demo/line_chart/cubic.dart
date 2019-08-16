@@ -2,65 +2,28 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
-import 'package:mp_flutter_chart/chart/mp/listener.dart';
+import 'package:mp_flutter_chart/chart/mp/mode.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
 
-class LineChartMultiple extends StatefulWidget {
+class LineChartCubic extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return LineChartMultipleState();
+    return LineChartCubicState();
   }
 }
 
-class LineChartMultipleState extends State<LineChartMultiple>
-    implements OnChartValueSelectedListener, OnChartGestureListener {
+class LineChartCubicState extends State<LineChartCubic> {
   LineChart _lineChart;
   LineData _lineData;
   var random = Random(1);
 
-  int _count = 20;
+  int _count = 45;
   double _range = 100.0;
-
-  List<Color> colors = List()
-    ..add(ColorUtils.VORDIPLOM_COLORS[0])
-    ..add(ColorUtils.VORDIPLOM_COLORS[1])
-    ..add(ColorUtils.VORDIPLOM_COLORS[2]);
-
-  @override
-  void onChartDoubleTapped(double positionX, double positionY) {
-    print("Chart double-tapped.");
-  }
-
-  @override
-  void onChartScale(
-      double positionX, double positionY, double scaleX, double scaleY) {
-    print("ScaleX: $scaleX, ScaleY: $scaleY");
-  }
-
-  @override
-  void onChartSingleTapped(double positionX, double positionY) {
-    print("Chart single-tapped.");
-  }
-
-  @override
-  void onChartTranslate(
-      double positionX, double positionY, double dX, double dY) {
-    print("dX: $dX, dY: $dY");
-  }
-
-  @override
-  void onNothingSelected() {}
-
-  @override
-  void onValueSelected(Entry e, Highlight h) {
-    print(
-        "VAL SELECTED Value: ${e.y}, xIndex: ${e.x}, DataSet index: ${h.getDataSetIndex()}");
-  }
 
   @override
   void initState() {
@@ -102,7 +65,7 @@ class LineChartMultipleState extends State<LineChartMultiple>
                             child: Slider(
                                 value: _count.toDouble(),
                                 min: 0,
-                                max: 500,
+                                max: 700,
                                 onChanged: (value) {
                                   _count = value.toInt();
                                   _initLineData(_count, _range);
@@ -159,72 +122,88 @@ class LineChartMultipleState extends State<LineChartMultiple>
   }
 
   void _initLineData(int count, double range) {
-    List<ILineDataSet> dataSets = List();
+    List<Entry> values = List();
 
-    for (int z = 0; z < 3; z++) {
-      List<Entry> values = List();
-
-      for (int i = 0; i < count; i++) {
-        double val = (random.nextDouble() * range) + 3;
-        values.add(new Entry(x: i.toDouble(), y: val));
-      }
-
-      LineDataSet d = new LineDataSet(values, "DataSet ${z + 1}");
-      d.setLineWidth(2.5);
-      d.setCircleRadius(4);
-      d.setCircleHoleRadius(3);
-
-      Color color = colors[z % colors.length];
-      d.setColor1(color);
-      d.setCircleColor(color);
-      dataSets.add(d);
+    for (int i = 0; i < count; i++) {
+      double val = (random.nextDouble() * (range + 1)) + 20;
+      values.add(Entry(x: i.toDouble(), y: val));
     }
 
-    // make the first DataSet dashed
-//    (dataSets[0] as LineDataSet).enableDashedLine(10, 10, 0);
-    (dataSets[0] as LineDataSet).setColors1(ColorUtils.VORDIPLOM_COLORS);
-    (dataSets[0] as LineDataSet).setCircleColors(ColorUtils.VORDIPLOM_COLORS);
+    LineDataSet set1;
+    // create a dataset and give it a type
+    set1 = LineDataSet(values, "DataSet 1");
 
-    _lineData = LineData.fromList(dataSets);
+    set1.setMode(Mode.CUBIC_BEZIER);
+    set1.setCubicIntensity(0.2);
+    set1.setDrawFilled(true);
+    set1.setDrawCircles(false);
+    set1.setLineWidth(1.8);
+    set1.setCircleRadius(4);
+    set1.setCircleColor(ColorUtils.WHITE);
+    set1.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
+    set1.setColor1(ColorUtils.WHITE);
+    set1.setFillColor(ColorUtils.WHITE);
+    set1.setFillAlpha(100);
+    set1.setDrawHorizontalHighlightIndicator(false);
+    set1.setFillFormatter(A());
+
+    // create a data object with the data sets
+    _lineData = LineData.fromList(List()..add(set1))
+//    ..setValueTypeface(tfLight)
+      ..setValueTextSize(9)
+      ..setDrawValues(false);
   }
 
   void _initLineChart() {
     var desc = Description();
+    desc.setEnabled(false);
     _lineChart = LineChart(_lineData, (painter) {
-      painter.setOnChartValueSelectedListener(this);
-      painter.setOnChartGestureListener(this);
       painter
-        ..mDrawGridBackground = false
-        ..mDescription.setEnabled(false)
-        ..mDrawBorders = false
-        ..mTouchEnabled = true
-        ..mDragXEnabled = true
-        ..mDragYEnabled = true
-        ..mScaleYEnabled = true
-        ..mScaleXEnabled = true
-        ..mPinchZoomEnabled = false;
+        ..setViewPortOffsets(0, 0, 0, 0)
+        ..setGridBackgroundColor(Color.fromARGB(255, 104, 241, 175));
 
-      painter.mAxisLeft.setEnabled(false);
-      painter.mAxisRight
-        ..setDrawAxisLine(false)
-        ..setDrawGridLines(false);
-      painter.mXAxis
-        ..setDrawAxisLine(false)
-        ..setDrawGridLines(false);
+      painter.mXAxis.setEnabled(false);
 
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.TOP)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
-        ..setOrientation(LegendOrientation.VERTICAL)
-        ..setDrawInside(false);
+      painter.mAxisLeft
+//      ..setTypeface(tf)
+        ..setLabelCount2(6, false)
+        ..setTextColor(ColorUtils.WHITE)
+        ..setPosition(YAxisLabelPosition.INSIDE_CHART)
+        ..setDrawGridLines(false)
+        ..setAxisLineColor(ColorUtils.WHITE);
+
+      painter.mAxisRight.setEnabled(false);
+
+      painter.mLegend.setEnabled(false);
+
+      var formatter = painter.mData.getDataSetByIndex(0).getFillFormatter();
+      if (formatter is A) {
+        (formatter as A).setPainter(painter);
+      }
+
+      painter.mAnimator.animateXY1(2000, 2000);
     },
         touchEnabled: true,
-        drawGridBackground: false,
+        drawGridBackground: true,
         dragXEnabled: true,
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        pinchZoomEnabled: true,
+        pinchZoomEnabled: false,
         desc: desc);
+  }
+}
+
+class A implements IFillFormatter {
+  LineChartPainter _painter;
+
+  void setPainter(LineChartPainter painter) {
+    _painter = painter;
+  }
+
+  @override
+  double getFillLinePosition(
+      ILineDataSet dataSet, LineDataProvider dataProvider) {
+    return _painter?.mAxisLeft?.getAxisMinimum();
   }
 }

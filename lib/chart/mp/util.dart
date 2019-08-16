@@ -187,7 +187,11 @@ abstract class Utils {
 
 abstract class ColorUtils {
   static final Color GRAY = Color(0xFF999999);
+  static final Color YELLOW = Color(0xFFFFFF00);
   static final Color BLACK = Color(0xFF000000);
+  static final Color LTGRAY = Color(0xFFCCCCCC);
+  static final Color RED = FADE_RED_END;
+  static final Color HOLO_BLUE = Color.fromARGB(255, 51, 181, 229);
   static final Color WHITE = Color(0xFFFFFFFF);
   static final Color PURPLE = Color(0xFF512DA8);
   static final Color FADE_RED_START = Color(0x00FF0000);

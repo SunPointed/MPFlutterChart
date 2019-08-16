@@ -2,65 +2,28 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
-import 'package:mp_flutter_chart/chart/mp/listener.dart';
+import 'package:mp_flutter_chart/chart/mp/mode.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
 
-class LineChartMultiple extends StatefulWidget {
+class LineChartFilled extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return LineChartMultipleState();
+    return LineChartFilledState();
   }
 }
 
-class LineChartMultipleState extends State<LineChartMultiple>
-    implements OnChartValueSelectedListener, OnChartGestureListener {
+class LineChartFilledState extends State<LineChartFilled> {
   LineChart _lineChart;
   LineData _lineData;
   var random = Random(1);
 
-  int _count = 20;
+  int _count = 45;
   double _range = 100.0;
-
-  List<Color> colors = List()
-    ..add(ColorUtils.VORDIPLOM_COLORS[0])
-    ..add(ColorUtils.VORDIPLOM_COLORS[1])
-    ..add(ColorUtils.VORDIPLOM_COLORS[2]);
-
-  @override
-  void onChartDoubleTapped(double positionX, double positionY) {
-    print("Chart double-tapped.");
-  }
-
-  @override
-  void onChartScale(
-      double positionX, double positionY, double scaleX, double scaleY) {
-    print("ScaleX: $scaleX, ScaleY: $scaleY");
-  }
-
-  @override
-  void onChartSingleTapped(double positionX, double positionY) {
-    print("Chart single-tapped.");
-  }
-
-  @override
-  void onChartTranslate(
-      double positionX, double positionY, double dX, double dY) {
-    print("dX: $dX, dY: $dY");
-  }
-
-  @override
-  void onNothingSelected() {}
-
-  @override
-  void onValueSelected(Entry e, Highlight h) {
-    print(
-        "VAL SELECTED Value: ${e.y}, xIndex: ${e.x}, DataSet index: ${h.getDataSetIndex()}");
-  }
 
   @override
   void initState() {
@@ -73,9 +36,9 @@ class LineChartMultipleState extends State<LineChartMultiple>
     _initLineChart();
     return Scaffold(
         appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Line Chart Multiple")),
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+            title: Text("Line Chart Filled")),
         body: Stack(
           children: <Widget>[
             Positioned(
@@ -102,7 +65,7 @@ class LineChartMultipleState extends State<LineChartMultiple>
                             child: Slider(
                                 value: _count.toDouble(),
                                 min: 0,
-                                max: 500,
+                                max: 700,
                                 onChanged: (value) {
                                   _count = value.toInt();
                                   _initLineData(_count, _range);
@@ -159,72 +122,119 @@ class LineChartMultipleState extends State<LineChartMultiple>
   }
 
   void _initLineData(int count, double range) {
-    List<ILineDataSet> dataSets = List();
+    List<Entry> values1 = new List();
 
-    for (int z = 0; z < 3; z++) {
-      List<Entry> values = List();
-
-      for (int i = 0; i < count; i++) {
-        double val = (random.nextDouble() * range) + 3;
-        values.add(new Entry(x: i.toDouble(), y: val));
-      }
-
-      LineDataSet d = new LineDataSet(values, "DataSet ${z + 1}");
-      d.setLineWidth(2.5);
-      d.setCircleRadius(4);
-      d.setCircleHoleRadius(3);
-
-      Color color = colors[z % colors.length];
-      d.setColor1(color);
-      d.setCircleColor(color);
-      dataSets.add(d);
+    for (int i = 0; i < count; i++) {
+      double val = (random.nextDouble() * range) + 50;
+      values1.add(new Entry(x: i.toDouble(), y: val));
     }
 
-    // make the first DataSet dashed
-//    (dataSets[0] as LineDataSet).enableDashedLine(10, 10, 0);
-    (dataSets[0] as LineDataSet).setColors1(ColorUtils.VORDIPLOM_COLORS);
-    (dataSets[0] as LineDataSet).setCircleColors(ColorUtils.VORDIPLOM_COLORS);
+    List<Entry> values2 = new List();
 
-    _lineData = LineData.fromList(dataSets);
+    for (int i = 0; i < count; i++) {
+      double val = (random.nextDouble() * range) + 450;
+      values2.add(new Entry(x: i.toDouble(), y: val));
+    }
+
+    LineDataSet set1, set2;
+
+    // create a dataset and give it a type
+    set1 = new LineDataSet(values1, "DataSet 1");
+
+    set1.setAxisDependency(AxisDependency.LEFT);
+    set1.setColor1(Color.fromARGB(255, 255, 241, 46));
+    set1.setDrawCircles(false);
+    set1.setLineWidth(2);
+    set1.setCircleRadius(3);
+    set1.setFillAlpha(255);
+    set1.setDrawFilled(true);
+    set1.setFillColor(ColorUtils.WHITE);
+    set1.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
+    set1.setDrawCircleHole(false);
+    set1.setFillFormatter(A());
+
+    // create a dataset and give it a type
+    set2 = new LineDataSet(values2, "DataSet 2");
+    set2.setAxisDependency(AxisDependency.LEFT);
+    set2.setColor1(Color.fromARGB(255, 255, 241, 46));
+    set2.setDrawCircles(false);
+    set2.setLineWidth(2);
+    set2.setCircleRadius(3);
+    set2.setFillAlpha(255);
+    set2.setDrawFilled(true);
+    set2.setFillColor(ColorUtils.WHITE);
+    set2.setDrawCircleHole(false);
+    set2.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
+    set2.setFillFormatter(B());
+
+    // create a data object with the data sets
+    _lineData = LineData.fromList(List()..add(set1)..add(set2));
+    _lineData.setDrawValues(false);
   }
+
+  Color _fillColor = Color.fromARGB(150, 51, 181, 229);
 
   void _initLineChart() {
     var desc = Description();
+    desc.setEnabled(false);
     _lineChart = LineChart(_lineData, (painter) {
-      painter.setOnChartValueSelectedListener(this);
-      painter.setOnChartGestureListener(this);
-      painter
-        ..mDrawGridBackground = false
-        ..mDescription.setEnabled(false)
-        ..mDrawBorders = false
-        ..mTouchEnabled = true
-        ..mDragXEnabled = true
-        ..mDragYEnabled = true
-        ..mScaleYEnabled = true
-        ..mScaleXEnabled = true
-        ..mPinchZoomEnabled = false;
-
-      painter.mAxisLeft.setEnabled(false);
-      painter.mAxisRight
+      painter.setGridBackgroundColor(_fillColor);
+      painter.mLegend.setEnabled(false);
+      painter.mXAxis.setEnabled(false);
+      painter.mAxisLeft
+        ..setAxisMaximum(900)
+        ..setAxisMinimum(-250)
         ..setDrawAxisLine(false)
+        ..setDrawZeroLine(false)
         ..setDrawGridLines(false);
-      painter.mXAxis
-        ..setDrawAxisLine(false)
-        ..setDrawGridLines(false);
+      painter.mAxisRight.setEnabled(false);
 
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.TOP)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
-        ..setOrientation(LegendOrientation.VERTICAL)
-        ..setDrawInside(false);
+      var formatter1 = painter.mData.getDataSetByIndex(0).getFillFormatter();
+      if (formatter1 is A) {
+        (formatter1 as A).setPainter(painter);
+      }
+
+      var formatter2 = painter.mData.getDataSetByIndex(1).getFillFormatter();
+      if (formatter2 is B) {
+        (formatter2 as B).setPainter(painter);
+      }
     },
+        drawBorders: true,
         touchEnabled: true,
-        drawGridBackground: false,
+        drawGridBackground: true,
         dragXEnabled: true,
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        pinchZoomEnabled: true,
+        pinchZoomEnabled: false,
         desc: desc);
+  }
+}
+
+class A implements IFillFormatter {
+  LineChartPainter _painter;
+
+  void setPainter(LineChartPainter painter) {
+    _painter = painter;
+  }
+
+  @override
+  double getFillLinePosition(
+      ILineDataSet dataSet, LineDataProvider dataProvider) {
+    return _painter?.mAxisLeft?.getAxisMinimum();
+  }
+}
+
+class B implements IFillFormatter {
+  LineChartPainter _painter;
+
+  void setPainter(LineChartPainter painter) {
+    _painter = painter;
+  }
+
+  @override
+  double getFillLinePosition(
+      ILineDataSet dataSet, LineDataProvider dataProvider) {
+    return _painter?.mAxisLeft?.getAxisMaximum();
   }
 }

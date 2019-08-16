@@ -7,6 +7,7 @@ import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/limit.dart';
+import 'package:mp_flutter_chart/chart/mp/listener.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
 
 class LineChartBasic extends StatefulWidget {
@@ -19,6 +20,7 @@ class LineChartBasic extends StatefulWidget {
 class LineChartBasicState extends State<LineChartBasic> {
   LineChart _lineChart;
   LineData _lineData;
+
   var random = Random(1);
 
   int _count = 45;
@@ -180,7 +182,7 @@ class LineChartBasicState extends State<LineChartBasic> {
   void _initLineChart() {
     var desc = Description();
     desc.setEnabled(false);
-    _lineChart = LineChart((painter) {
+    _lineChart = LineChart(_lineData, (painter) {
       painter.mXAxis.enableGridDashedLine(10, 10, 0);
 
       painter.mAxisRight.setEnabled(false);
@@ -218,7 +220,9 @@ class LineChartBasicState extends State<LineChartBasic> {
       painter.mAxisLeft.addLimitLine(ll1);
       painter.mAxisLeft.addLimitLine(ll2);
       painter.mLegend.setForm(LegendForm.LINE);
-    }, _lineData,
+
+      painter.mAnimator.animateX1(1500);
+    },
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,

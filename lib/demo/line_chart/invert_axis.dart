@@ -5,62 +5,25 @@ import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/listener.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
 
-class LineChartMultiple extends StatefulWidget {
+class LineChartInvertAxis extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return LineChartMultipleState();
+    return LineChartInvertAxisState();
   }
 }
 
-class LineChartMultipleState extends State<LineChartMultiple>
-    implements OnChartValueSelectedListener, OnChartGestureListener {
+class LineChartInvertAxisState extends State<LineChartInvertAxis>
+    implements OnChartValueSelectedListener {
   LineChart _lineChart;
   LineData _lineData;
   var random = Random(1);
 
-  int _count = 20;
-  double _range = 100.0;
-
-  List<Color> colors = List()
-    ..add(ColorUtils.VORDIPLOM_COLORS[0])
-    ..add(ColorUtils.VORDIPLOM_COLORS[1])
-    ..add(ColorUtils.VORDIPLOM_COLORS[2]);
-
-  @override
-  void onChartDoubleTapped(double positionX, double positionY) {
-    print("Chart double-tapped.");
-  }
-
-  @override
-  void onChartScale(
-      double positionX, double positionY, double scaleX, double scaleY) {
-    print("ScaleX: $scaleX, ScaleY: $scaleY");
-  }
-
-  @override
-  void onChartSingleTapped(double positionX, double positionY) {
-    print("Chart single-tapped.");
-  }
-
-  @override
-  void onChartTranslate(
-      double positionX, double positionY, double dX, double dY) {
-    print("dX: $dX, dY: $dY");
-  }
-
-  @override
-  void onNothingSelected() {}
-
-  @override
-  void onValueSelected(Entry e, Highlight h) {
-    print(
-        "VAL SELECTED Value: ${e.y}, xIndex: ${e.x}, DataSet index: ${h.getDataSetIndex()}");
-  }
+  int _count = 25;
+  double _range = 50.0;
 
   @override
   void initState() {
@@ -75,7 +38,7 @@ class LineChartMultipleState extends State<LineChartMultiple>
         appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
-            title: Text("Line Chart Multiple")),
+            title: Text("Line Chart Invert Axis")),
         body: Stack(
           children: <Widget>[
             Positioned(
@@ -158,68 +121,64 @@ class LineChartMultipleState extends State<LineChartMultiple>
         ));
   }
 
+  @override
+  void onNothingSelected() {}
+
+  @override
+  void onValueSelected(Entry e, Highlight h) {}
+
   void _initLineData(int count, double range) {
-    List<ILineDataSet> dataSets = List();
+    List<Entry> entries = List();
 
-    for (int z = 0; z < 3; z++) {
-      List<Entry> values = List();
-
-      for (int i = 0; i < count; i++) {
-        double val = (random.nextDouble() * range) + 3;
-        values.add(new Entry(x: i.toDouble(), y: val));
-      }
-
-      LineDataSet d = new LineDataSet(values, "DataSet ${z + 1}");
-      d.setLineWidth(2.5);
-      d.setCircleRadius(4);
-      d.setCircleHoleRadius(3);
-
-      Color color = colors[z % colors.length];
-      d.setColor1(color);
-      d.setCircleColor(color);
-      dataSets.add(d);
+    for (int i = 0; i < count; i++) {
+      double xVal = (random.nextDouble() * range);
+      double yVal = (random.nextDouble() * range);
+      entries.add(Entry(x: xVal.toDouble(), y: yVal));
     }
 
-    // make the first DataSet dashed
-//    (dataSets[0] as LineDataSet).enableDashedLine(10, 10, 0);
-    (dataSets[0] as LineDataSet).setColors1(ColorUtils.VORDIPLOM_COLORS);
-    (dataSets[0] as LineDataSet).setCircleColors(ColorUtils.VORDIPLOM_COLORS);
+    // sort by x-value
+    entries.sort((entry1, entry2) {
+      double diff = entry1.x - entry2.x;
 
-    _lineData = LineData.fromList(dataSets);
+      if (diff == 0)
+        return 0;
+      else {
+        if (diff > 0)
+          return 1;
+        else
+          return -1;
+      }
+    });
+
+    // create a dataset and give it a type
+    LineDataSet set1 = new LineDataSet(entries, "DataSet 1");
+    set1.setLineWidth(1.5);
+    set1.setCircleRadius(4);
+
+    // create a data object with the data sets
+    _lineData = LineData.fromList(List()..add(set1));
   }
 
   void _initLineChart() {
     var desc = Description();
+    desc.setEnabled(false);
     _lineChart = LineChart(_lineData, (painter) {
-      painter.setOnChartValueSelectedListener(this);
-      painter.setOnChartGestureListener(this);
-      painter
-        ..mDrawGridBackground = false
-        ..mDescription.setEnabled(false)
-        ..mDrawBorders = false
-        ..mTouchEnabled = true
-        ..mDragXEnabled = true
-        ..mDragYEnabled = true
-        ..mScaleYEnabled = true
-        ..mScaleXEnabled = true
-        ..mPinchZoomEnabled = false;
+      painter..setOnChartValueSelectedListener(this);
 
-      painter.mAxisLeft.setEnabled(false);
-      painter.mAxisRight
-        ..setDrawAxisLine(false)
-        ..setDrawGridLines(false);
       painter.mXAxis
-        ..setDrawAxisLine(false)
-        ..setDrawGridLines(false);
+        ..setAvoidFirstLastClipping(true)
+        ..setAxisMinimum(0);
 
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.TOP)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
-        ..setOrientation(LegendOrientation.VERTICAL)
-        ..setDrawInside(false);
+      painter.mAxisLeft
+        ..setAxisMinimum(0)
+        ..setInverted(true);
+
+      painter.mAxisRight.setEnabled(false);
+
+      painter.mLegend.setForm(LegendForm.LINE);
     },
         touchEnabled: true,
-        drawGridBackground: false,
+        drawGridBackground: true,
         dragXEnabled: true,
         dragYEnabled: true,
         scaleXEnabled: true,

@@ -97,3 +97,7 @@ mixin OnChartValueSelectedListener {
    */
   void onNothingSelected();
 }
+
+mixin AnimatorUpdateListener{
+  void onAnimationUpdate(double x, double y);
+}

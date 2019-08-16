@@ -1,6 +1,7 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/rendering/custom_paint.dart';
+import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
@@ -10,11 +11,11 @@ import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 
 import 'package:mp_flutter_chart/chart/mp/painter/bar_line_chart_painter.dart';
 
-
 class LineChartPainter extends BarLineChartBasePainter<LineData>
     implements LineDataProvider {
   LineChartPainter(LineData data,
       {ViewPortHandler viewPortHandler = null,
+      ChartAnimator animator = null,
       Transformer leftAxisTransformer = null,
       Transformer rightAxisTransformer = null,
       Matrix4 zoomMatrixBuffer = null,
@@ -62,6 +63,7 @@ class LineChartPainter extends BarLineChartBasePainter<LineData>
       bool unbind = false})
       : super(data,
             viewPortHandler: viewPortHandler,
+            animator: animator,
             leftAxisTransformer: leftAxisTransformer,
             rightAxisTransformer: rightAxisTransformer,
             zoomMatrixBuffer: zoomMatrixBuffer,
@@ -111,7 +113,7 @@ class LineChartPainter extends BarLineChartBasePainter<LineData>
   @override
   void init() {
     super.init();
-    mRenderer = LineChartRenderer(this, mViewPortHandler);
+    mRenderer = LineChartRenderer(this, mAnimator, mViewPortHandler);
   }
 
   @override

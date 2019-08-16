@@ -1,6 +1,7 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/rendering/custom_paint.dart';
+import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
@@ -36,6 +37,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
       bool drawBarShadow = false,
       bool fitBars = false,
       ViewPortHandler viewPortHandler = null,
+      ChartAnimator animator = null,
       Transformer leftAxisTransformer = null,
       Transformer rightAxisTransformer = null,
       Matrix4 zoomMatrixBuffer = null,
@@ -87,6 +89,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
         mFitBars = fitBars,
         super(data,
             viewPortHandler: viewPortHandler,
+            animator: animator,
             leftAxisTransformer: leftAxisTransformer,
             rightAxisTransformer: rightAxisTransformer,
             zoomMatrixBuffer: zoomMatrixBuffer,
@@ -136,7 +139,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
   @override
   void init() {
     super.init();
-    mRenderer = BarChartRenderer(this, mViewPortHandler);
+    mRenderer = BarChartRenderer(this, mAnimator, mViewPortHandler);
 
     mHighlighter ??= BarHighlighter(this);
 

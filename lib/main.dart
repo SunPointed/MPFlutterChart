@@ -3,7 +3,13 @@ import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
 import 'package:mp_flutter_chart/demo/line_chart/basic.dart';
+import 'package:mp_flutter_chart/demo/line_chart/colorful.dart';
+import 'package:mp_flutter_chart/demo/line_chart/cubic.dart';
+import 'package:mp_flutter_chart/demo/line_chart/dual_axis.dart';
+import 'package:mp_flutter_chart/demo/line_chart/filled.dart';
+import 'package:mp_flutter_chart/demo/line_chart/invert_axis.dart';
 import 'package:mp_flutter_chart/demo/line_chart/multiple.dart';
+import 'package:mp_flutter_chart/demo/line_chart/performance.dart';
 import 'package:mp_flutter_chart/demo/res/styles.dart';
 
 void main() => runApp(MyApp());
@@ -31,6 +37,12 @@ class MyApp extends StatelessWidget {
         // 这里可以定义静态路由，不能传递参数
         '/line_chart/basic': (_) => LineChartBasic(),
         '/line_chart/multiple': (_) => LineChartMultiple(),
+        '/line_chart/dual_axis': (_) => LineChartDualAxis(),
+        '/line_chart/invert_axis': (_) => LineChartInvertAxis(),
+        '/line_chart/cubic': (_) => LineChartCubic(),
+        '/line_chart/colorful': (_) => LineChartColorful(),
+        '/line_chart/performance': (_) => LineChartPerformance(),
+        '/line_chart/filled': (_) => LineChartFilled(),
       },
     );
   }
@@ -162,7 +174,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/line_chart/dual_axis'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -196,7 +209,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/line_chart/invert_axis'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -230,7 +244,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () =>
+                        Navigator.of(context).pushNamed('/line_chart/cubic'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -264,7 +279,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () =>
+                        Navigator.of(context).pushNamed('/line_chart/colorful'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -298,7 +314,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/line_chart/performance'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -332,7 +349,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/line_chart/filled'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(

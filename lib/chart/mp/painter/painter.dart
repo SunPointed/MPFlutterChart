@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
+import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
@@ -15,7 +16,7 @@ import 'package:mp_flutter_chart/chart/mp/util.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 
 abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
-    extends CustomPainter implements ChartInterface {
+    extends CustomPainter implements ChartInterface, AnimatorUpdateListener {
   /**
    * object that holds all data that was originally set for the chart, before
    * it was modified or any filtering algorithms had been applied
@@ -106,7 +107,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   /**
    * object responsible for animations
    */
-  //todo ChartAnimator mAnimator;
+  ChartAnimator mAnimator;
 
   double mExtraTopOffset = 0,
       mExtraRightOffset = 0,
@@ -120,6 +121,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
 
   ChartPainter(T data,
       {ViewPortHandler viewPortHandler = null,
+      ChartAnimator animator = null,
       double maxHighlightDistance = 0.0,
       bool highLightPerTapEnabled = true,
       bool dragDecelerationEnabled = true,
@@ -139,6 +141,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
       bool unbind = false})
       : mData = data,
         mViewPortHandler = viewPortHandler,
+        mAnimator = animator,
         mMaxHighlightDistance = maxHighlightDistance,
         mHighLightPerTapEnabled = highLightPerTapEnabled,
         mDragDecelerationEnabled = dragDecelerationEnabled,
@@ -180,17 +183,21 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   }
 
   void init() {
+    mAnimator ??= ChartAnimator(this);
     mViewPortHandler ??= ViewPortHandler();
     mMaxHighlightDistance = Utils.convertDpToPixel(500);
     mDescription ??= Description();
     mLegend = Legend();
     mLegendRenderer = LegendRenderer(mViewPortHandler, mLegend);
-    mXAxis = XAxis();
+    mXAxis ??= XAxis();
     mDescPaint ??= TextPainter(
         textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
         text: TextSpan(style: TextStyle(color: ColorUtils.BLACK)));
   }
+
+  @override
+  void onAnimationUpdate(double x, double y) {}
 
   /**
    * Clears the chart from all data (sets it to null) and refreshes it (by
@@ -579,11 +586,10 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
       IDataSet set = mData.getDataSetByIndex(highlight.getDataSetIndex());
 
       Entry e = mData.getEntryForHighlight(mIndicesToHighlight[i]);
-//      int entryIndex = set.getEntryIndex2(e);
+      int entryIndex = set.getEntryIndex2(e);
       // make sure entry not null
-//      if (e == null || entryIndex > set.getEntryCount() * mAnimator.getPhaseX())
-//        continue;
-      if (e == null) continue;
+      if (e == null || entryIndex > set.getEntryCount() * mAnimator.getPhaseX())
+        continue;
 
       List<double> pos = getMarkerPosition(highlight);
 

@@ -1,3 +1,6 @@
+import 'dart:math' as math;
+
+import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 
@@ -17,6 +20,10 @@ class XBounds {
    */
   int range;
 
+  ChartAnimator animator;
+
+  XBounds(this.animator);
+
   /**
    * Calculates the minimum and maximum x values as well as the range between them.
    *
@@ -25,7 +32,7 @@ class XBounds {
    */
   void set(BarLineScatterCandleBubbleDataProvider chart,
       IBarLineScatterCandleBubbleDataSet dataSet) {
-    double phaseX = 1;
+    double phaseX = math.max(0.0, math.min(1.0, animator.getPhaseX()));;
 
     double low = chart.getLowestVisibleX();
     double high = chart.getHighestVisibleX();

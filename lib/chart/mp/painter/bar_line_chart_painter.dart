@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
@@ -114,6 +115,7 @@ abstract class BarLineChartBasePainter<
 
   BarLineChartBasePainter(T data,
       {ViewPortHandler viewPortHandler = null,
+      ChartAnimator animator = null,
       Transformer leftAxisTransformer = null,
       Transformer rightAxisTransformer = null,
       Matrix4 zoomMatrixBuffer = null,
@@ -182,6 +184,7 @@ abstract class BarLineChartBasePainter<
         mDrawListener = drawListener,
         super(data,
             viewPortHandler: viewPortHandler,
+            animator: animator,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
             dragDecelerationEnabled: dragDecelerationEnabled,
@@ -222,7 +225,6 @@ abstract class BarLineChartBasePainter<
   @override
   void init() {
     super.init();
-
     mAxisLeft = YAxis(position: AxisDependency.LEFT);
     mAxisRight = YAxis(position: AxisDependency.RIGHT);
 
