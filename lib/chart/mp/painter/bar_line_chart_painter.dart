@@ -513,6 +513,7 @@ abstract class BarLineChartBasePainter<
   @override
   void calculateOffsets() {
     if (mLegend != null) mLegendRenderer.computeLegend(mData);
+    mRenderer?.initBuffers();
     calcMinMax();
     if (!mCustomViewPortEnabled) {
       double offsetLeft = 0, offsetRight = 0, offsetTop = 0, offsetBottom = 0;

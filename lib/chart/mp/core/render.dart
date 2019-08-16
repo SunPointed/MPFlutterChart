@@ -640,7 +640,12 @@ abstract class DataRenderer extends Renderer {
    */
   void applyValueTextStyle(IDataSet set) {
     mValuePaint = TextPainter(
-        text: TextSpan(style: set.getValueTypeface()),
+        text: TextSpan(
+            style: set.getValueTypeface() == null
+                ? TextStyle(
+                    color: Color.fromARGB(255, 63, 63, 63),
+                    fontSize: Utils.convertDpToPixel(9))
+                : set.getValueTypeface()),
         textDirection: TextDirection.ltr,
         textAlign: TextAlign.center);
   }
@@ -1466,34 +1471,35 @@ class XAxisRenderer extends AxisRenderer {
     if (mXAxis.getPosition() == XAxisPosition.TOP) {
       pointF.x = 0.5;
       pointF.y = 1.0;
-      drawLabels(c, mViewPortHandler.contentTop(), pointF);
+      drawLabels(
+          c, mViewPortHandler.contentTop(), pointF, mXAxis.getPosition());
     } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
       pointF.x = 0.5;
       pointF.y = 1.0;
-      drawLabels(
-          c,
-          mViewPortHandler.contentTop() + mXAxis.mLabelRotatedHeight,
-          pointF);
+      drawLabels(c, mViewPortHandler.contentTop() + mXAxis.mLabelRotatedHeight,
+          pointF, mXAxis.getPosition());
     } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
       pointF.x = 0.5;
       pointF.y = 0.0;
-      drawLabels(c, mViewPortHandler.contentBottom(), pointF);
+      drawLabels(
+          c, mViewPortHandler.contentBottom(), pointF, mXAxis.getPosition());
     } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE) {
       pointF.x = 0.5;
       pointF.y = 0.0;
       drawLabels(
           c,
-          mViewPortHandler.contentBottom() -
-              mXAxis.mLabelRotatedHeight,
-          pointF);
+          mViewPortHandler.contentBottom() - mXAxis.mLabelRotatedHeight,
+          pointF,
+          mXAxis.getPosition());
     } else {
       // BOTH SIDED
       pointF.x = 0.5;
       pointF.y = 1.0;
-      drawLabels(c, mViewPortHandler.contentTop(), pointF);
+      drawLabels(c, mViewPortHandler.contentTop(), pointF, XAxisPosition.TOP);
       pointF.x = 0.5;
       pointF.y = 0.0;
-      drawLabels(c, mViewPortHandler.contentBottom(), pointF);
+      drawLabels(
+          c, mViewPortHandler.contentBottom(), pointF, XAxisPosition.BOTTOM);
     }
     MPPointF.recycleInstance(pointF);
   }
@@ -1533,7 +1539,8 @@ class XAxisRenderer extends AxisRenderer {
    *
    * @param pos
    */
-  void drawLabels(Canvas c, double pos, MPPointF anchor) {
+  void drawLabels(
+      Canvas c, double pos, MPPointF anchor, XAxisPosition position) {
     final double labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
     bool centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
 
@@ -1576,15 +1583,16 @@ class XAxisRenderer extends AxisRenderer {
           }
         }
 
-        drawLabel(c, label, x, pos, anchor, labelRotationAngleDegrees);
+        drawLabel(
+            c, label, x, pos, anchor, labelRotationAngleDegrees, position);
       }
     }
   }
 
   void drawLabel(Canvas c, String formattedLabel, double x, double y,
-      MPPointF anchor, double angleDegrees) {
-    Utils.drawXAxisValue(
-        c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
+      MPPointF anchor, double angleDegrees, XAxisPosition position) {
+    Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor,
+        angleDegrees, position);
   }
 
   Path mRenderGridLinesPath = Path();
@@ -2941,27 +2949,32 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
       if (dataSet.getGradientColor1() != null) {
         GradientColor gradientColor = dataSet.getGradientColor1();
-//        todo
-//        mRenderPaint.setShader( LinearGradient(
-//            buffer.buffer[j],
-//            buffer.buffer[j + 3],
-//            buffer.buffer[j],
-//            buffer.buffer[j + 1],
-//            gradientColor.getStartColor(),
-//            gradientColor.getEndColor(),
-//            android.graphics.Shader.TileMode.MIRROR));
+
+        mRenderPaint
+          ..shader = (LinearGradient(
+                  colors: List()
+                    ..add(gradientColor.startColor)
+                    ..add(gradientColor.endColor),
+                  tileMode: TileMode.mirror))
+              .createShader(Rect.fromLTRB(
+                  buffer.buffer[j],
+                  buffer.buffer[j + 3],
+                  buffer.buffer[j],
+                  buffer.buffer[j + 1]));
       }
 
       if (dataSet.getGradientColors() != null) {
-//        todo
-//        mRenderPaint.setShader( LinearGradient(
-//            buffer.buffer[j],
-//            buffer.buffer[j + 3],
-//            buffer.buffer[j],
-//            buffer.buffer[j + 1],
-//            dataSet.getGradientColor(j / 4).getStartColor(),
-//            dataSet.getGradientColor(j / 4).getEndColor(),
-//            android.graphics.Shader.TileMode.MIRROR));
+        mRenderPaint
+          ..shader = (LinearGradient(
+                  colors: List()
+                    ..add(dataSet.getGradientColor2(j ~/ 4).startColor)
+                    ..add(dataSet.getGradientColor2(j ~/ 4).endColor),
+                  tileMode: TileMode.mirror))
+              .createShader(Rect.fromLTRB(
+                  buffer.buffer[j],
+                  buffer.buffer[j + 3],
+                  buffer.buffer[j],
+                  buffer.buffer[j + 1]));
       }
 
       c.drawRect(

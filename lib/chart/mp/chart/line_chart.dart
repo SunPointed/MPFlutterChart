@@ -198,11 +198,6 @@ class LineChartState extends ChartState<LineChartPainter, LineChart> {
   }
 
   @override
-  ChartPainter getPainter() {
-    return painter;
-  }
-
-  @override
   void onTapDown(TapDownDetails detail) {
     _curX = detail.localPosition.dx;
     _curY = detail.localPosition.dy;

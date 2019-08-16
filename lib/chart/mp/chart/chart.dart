@@ -152,8 +152,8 @@ abstract class Chart extends StatefulWidget {
   }
 }
 
-abstract class ChartState<P extends ChartPainter,T extends Chart> extends State<T>
-    implements AnimatorUpdateListener {
+abstract class ChartState<P extends ChartPainter, T extends Chart>
+    extends State<T> implements AnimatorUpdateListener {
   P painter;
   bool _singleTap = false;
   ChartAnimator animator = null;
@@ -207,7 +207,7 @@ abstract class ChartState<P extends ChartPainter,T extends Chart> extends State<
                   onScaleEnd: (detail) {
                     onScaleEnd(detail);
                   },
-                  child: CustomPaint(painter: getPainter()))),
+                  child: CustomPaint(painter: painter))),
         ]);
   }
 
@@ -215,10 +215,8 @@ abstract class ChartState<P extends ChartPainter,T extends Chart> extends State<
   void reassemble() {
     super.reassemble();
     animator.reset();
-    getPainter().reassemble();
+    painter?.reassemble();
   }
-
-  ChartPainter getPainter();
 
   void onDoubleTap();
 

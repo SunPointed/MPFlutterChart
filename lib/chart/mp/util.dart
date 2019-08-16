@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/format.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
@@ -11,8 +12,15 @@ import 'package:vector_math/vector_math_64.dart';
 import 'package:mp_flutter_chart/chart/mp/poolable/size.dart';
 
 abstract class Utils {
-  static void drawXAxisValue(Canvas c, String text, double x, double y,
-      TextPainter paint, MPPointF anchor, double angleDegrees) {
+  static void drawXAxisValue(
+      Canvas c,
+      String text,
+      double x,
+      double y,
+      TextPainter paint,
+      MPPointF anchor,
+      double angleDegrees,
+      XAxisPosition position) {
     double drawOffsetX = 0;
     double drawOffsetY = 0;
 
@@ -29,8 +37,22 @@ abstract class Utils {
 
       paint.text = TextSpan(text: text, style: paint.text.style);
       paint.layout();
-      paint.paint(
-          c, Offset(drawOffsetX - paint.width, drawOffsetY - paint.height));
+      switch (position) {
+        case XAxisPosition.BOTTOM:
+          paint.paint(c, Offset(drawOffsetX, drawOffsetY));
+          break;
+        case XAxisPosition.BOTTOM_INSIDE:
+          paint.paint(c, Offset(drawOffsetX, drawOffsetY));
+          break;
+        case XAxisPosition.TOP:
+          paint.paint(c, Offset(drawOffsetX, drawOffsetY));
+          break;
+        case XAxisPosition.TOP_INSIDE:
+          paint.paint(c, Offset(drawOffsetX, drawOffsetY));
+          break;
+        case XAxisPosition.BOTH_SIDED:
+          break;
+      }
 
       c.restore();
     } else {
@@ -39,8 +61,28 @@ abstract class Utils {
 
       paint.text = TextSpan(text: text, style: paint.text.style);
       paint.layout();
-      paint.paint(
-          c, Offset(drawOffsetX - paint.width / 2, drawOffsetY - paint.height));
+      switch (position) {
+        case XAxisPosition.BOTTOM:
+          paint.paint(c, Offset(drawOffsetX - paint.width / 2, drawOffsetY));
+          break;
+        case XAxisPosition.BOTTOM_INSIDE:
+          paint.paint(
+              c,
+              Offset(
+                  drawOffsetX - paint.width / 2, drawOffsetY - paint.height));
+          break;
+        case XAxisPosition.TOP:
+          paint.paint(
+              c,
+              Offset(
+                  drawOffsetX - paint.width / 2, drawOffsetY - paint.height));
+          break;
+        case XAxisPosition.TOP_INSIDE:
+          paint.paint(c, Offset(drawOffsetX - paint.width / 2, drawOffsetY));
+          break;
+        case XAxisPosition.BOTH_SIDED:
+          break;
+      }
     }
 
     paint.textAlign = originalTextAlign;
@@ -196,6 +238,16 @@ abstract class ColorUtils {
   static final Color PURPLE = Color(0xFF512DA8);
   static final Color FADE_RED_START = Color(0x00FF0000);
   static final Color FADE_RED_END = Color(0xFFFF0000);
+
+  static final Color HOLO_ORANGE_LIGHT = Color(0xffffbb33);
+  static final Color HOLO_BLUE_LIGHT = Color(0xff33b5e5);
+  static final Color HOLO_GREEN_LIGHT = Color(0xff99cc00);
+  static final Color HOLO_RED_LIGHT = Color(0xffff4444);
+  static final Color HOLO_BLUE_DARK = Color(0xff0099cc);
+  static final Color HOLO_PURPLE = Color(0xffaa66cc);
+  static final Color HOLO_GREEN_DARK = Color(0xff669900);
+  static final Color HOLO_RED_DARK = Color(0xffcc0000);
+  static final Color HOLO_ORANGE_DARK = Color(0xffff8800);
 
   static final List<Color> VORDIPLOM_COLORS = List()
     ..add(Color.fromARGB(255, 192, 255, 140))

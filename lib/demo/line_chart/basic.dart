@@ -7,7 +7,6 @@ import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/limit.dart';
-import 'package:mp_flutter_chart/chart/mp/listener.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
 
 class LineChartBasic extends StatefulWidget {

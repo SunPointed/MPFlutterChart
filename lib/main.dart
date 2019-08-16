@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/demo/bar_chart/basic.dart';
+import 'package:mp_flutter_chart/demo/bar_chart/basic2.dart';
 import 'package:mp_flutter_chart/demo/line_chart/basic.dart';
 import 'package:mp_flutter_chart/demo/line_chart/colorful.dart';
 import 'package:mp_flutter_chart/demo/line_chart/cubic.dart';
@@ -34,7 +36,6 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'mp_flutter_chart example'),
       routes: <String, WidgetBuilder>{
-        // 这里可以定义静态路由，不能传递参数
         '/line_chart/basic': (_) => LineChartBasic(),
         '/line_chart/multiple': (_) => LineChartMultiple(),
         '/line_chart/dual_axis': (_) => LineChartDualAxis(),
@@ -43,6 +44,29 @@ class MyApp extends StatelessWidget {
         '/line_chart/colorful': (_) => LineChartColorful(),
         '/line_chart/performance': (_) => LineChartPerformance(),
         '/line_chart/filled': (_) => LineChartFilled(),
+        '/bar_chart/basic': (_) => BarChartBasic(),
+        '/bar_chart/basic2': (_) => BarChartBasic2(),
+        '/bar_chart/multiple': (_) => BarChartBasic2(),
+        '/bar_chart/horizontal': (_) => BarChartBasic2(),
+        '/bar_chart/stacked': (_) => BarChartBasic2(),
+        '/bar_chart/negative': (_) => BarChartBasic2(),
+        '/bar_chart/stacked2': (_) => BarChartBasic2(),
+        '/bar_chart/sine': (_) => BarChartBasic2(),
+        '/pie_chart/basic': (_) => BarChartBasic2(),
+        '/pie_chart/value_lines': (_) => BarChartBasic2(),
+        '/pie_chart/half_pie': (_) => BarChartBasic2(),
+        '/other_chart/combined_chart': (_) => BarChartBasic2(),
+        '/other_chart/scatter_plot': (_) => BarChartBasic2(),
+        '/other_chart/bubble_chart': (_) => BarChartBasic2(),
+        '/other_chart/candlestick': (_) => BarChartBasic2(),
+        '/other_chart/redar_chart': (_) => BarChartBasic2(),
+        '/scrolling_chart/multiple': (_) => BarChartBasic2(),
+        '/scrolling_chart/view_pager': (_) => BarChartBasic2(),
+        '/scrolling_chart/tall_bar_chart': (_) => BarChartBasic2(),
+        '/scrolling_chart/many_bar_charts': (_) => BarChartBasic2(),
+        '/even_more_line_chart/dynamic': (_) => BarChartBasic2(),
+        '/even_more_line_chart/realtime': (_) => BarChartBasic2(),
+        '/even_more_line_chart/hourly': (_) => BarChartBasic2(),
       },
     );
   }
@@ -349,8 +373,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => Navigator.of(context)
-                        .pushNamed('/line_chart/filled'),
+                    onTap: () =>
+                        Navigator.of(context).pushNamed('/line_chart/filled'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -406,7 +430,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () =>
+                        Navigator.of(context).pushNamed('/bar_chart/basic'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -440,7 +465,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () =>
+                        Navigator.of(context).pushNamed('/bar_chart/basic2'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -474,7 +500,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () =>
+                        Navigator.of(context).pushNamed('/bar_chart/multiple'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -508,7 +535,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/bar_chart/horizontal'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -542,7 +570,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () =>
+                        Navigator.of(context).pushNamed('/bar_chart/stacked'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -576,7 +605,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () =>
+                        Navigator.of(context).pushNamed('/bar_chart/negative'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -610,7 +640,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () =>
+                        Navigator.of(context).pushNamed('/bar_chart/stacked2'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -644,7 +675,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () =>
+                        Navigator.of(context).pushNamed('/bar_chart/sine'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -700,7 +732,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () =>
+                        Navigator.of(context).pushNamed('/pie_chart/basic'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -734,7 +767,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/pie_chart/value_lines'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -768,7 +802,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () =>
+                        Navigator.of(context).pushNamed('/pie_chart/half_pie'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -824,7 +859,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/other_chart/combined_chart'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -858,7 +894,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/other_chart/scatter_chart'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -892,7 +929,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/other_chart/bubble_chart'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -926,7 +964,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/other_chart/candlestick'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -960,7 +999,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/other_chart/redar_chart'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -1016,7 +1056,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/scrolling_chart/mutiple'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -1050,7 +1091,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/scrolling_chart/view_pager'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -1084,7 +1126,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/scrolling_chart/tall_bar_chart'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -1118,7 +1161,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/scrolling_chart/many_bar_charts'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -1174,7 +1218,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/even_more_line_chart/dynamic'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -1208,7 +1253,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/even_more_line_chart/realtime'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
@@ -1242,7 +1288,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )),
                 InkWell(
-                    onTap: () => {},
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/even_more_line_chart/hourly'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
