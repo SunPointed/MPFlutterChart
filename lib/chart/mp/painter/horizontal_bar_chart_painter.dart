@@ -124,7 +124,10 @@ class HorizontalBarChartPainter extends BarChartPainter {
 
   @override
   void init() {
-    mViewPortHandler = HorizontalViewPortHandler();
+    if (mViewPortHandler == null ||
+        !(mViewPortHandler is HorizontalViewPortHandler)) {
+      mViewPortHandler = HorizontalViewPortHandler();
+    }
     super.init();
     mLeftAxisTransformer = TransformerHorizontalBarChart(mViewPortHandler);
     mRightAxisTransformer = TransformerHorizontalBarChart(mViewPortHandler);

@@ -110,7 +110,9 @@ class HorizontalBarChart extends Chart {
           descPainter: descPainter,
           highlighter: highlighter,
           unbind: unbind,
-        );
+        ){
+    viewPortHandler = HorizontalViewPortHandler();
+  }
 
   @override
   State<StatefulWidget> createState() {
