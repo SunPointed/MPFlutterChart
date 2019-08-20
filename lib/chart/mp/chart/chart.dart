@@ -3,7 +3,6 @@ import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/listener.dart';
@@ -147,9 +146,7 @@ abstract class Chart extends StatefulWidget {
         infoPainter = infoPainter,
         descPainter = descPainter,
         highlighter = highlighter,
-        unbind = unbind {
-    marker ??= Marker();
-  }
+        unbind = unbind;
 }
 
 abstract class ChartState<P extends ChartPainter, T extends Chart>

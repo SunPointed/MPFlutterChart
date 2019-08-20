@@ -5,6 +5,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
+import 'package:mp_flutter_chart/chart/mp/core/marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/listener.dart';
@@ -112,6 +113,7 @@ class HorizontalBarChart extends Chart {
           unbind: unbind,
         ){
     viewPortHandler = HorizontalViewPortHandler();
+    this.marker = HorizontalBarChartMarker();
   }
 
   @override

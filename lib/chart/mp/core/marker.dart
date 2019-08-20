@@ -2,34 +2,34 @@ import 'dart:ui';
 
 import 'package:flutter/rendering.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
 
 import 'format.dart';
 
-class Marker extends IMarker {
-  Entry _entry;
-  Highlight _highlight;
-  double _dx = 0.0;
-  double _dy = 0.0;
+class LineChartMarker extends IMarker {
+  Entry entry;
+  Highlight highlight;
+  double dx = 0.0;
+  double dy = 0.0;
 
-  DefaultValueFormatter _formatter;
-  Color _textColor;
-  Color _backColor;
-  double _fontSize;
+  DefaultValueFormatter formatter;
+  Color textColor;
+  Color backColor;
+  double fontSize;
 
-  Marker({Color textColor, Color backColor, double fontSize})
-      : _textColor = textColor,
-        _backColor = backColor,
-        _fontSize = fontSize {
-    _formatter = DefaultValueFormatter(0);
-    _textColor ??= ColorUtils.PURPLE;
+  LineChartMarker({Color textColor, Color backColor, double fontSize})
+      : textColor = textColor,
+        backColor = backColor,
+        fontSize = fontSize {
+    formatter = DefaultValueFormatter(0);
+    this.textColor ??= ColorUtils.PURPLE;
 //    _backColor ??= Color.fromARGB((_textColor.alpha * 0.5).toInt(),
 //        _textColor.red, _textColor.green, _textColor.blue);
-    _backColor ??= ColorUtils.WHITE;
-    _fontSize ??= 10;
+    this.backColor ??= ColorUtils.WHITE;
+    this.fontSize ??= 10;
   }
 
   @override
@@ -37,12 +37,12 @@ class Marker extends IMarker {
     TextPainter painter = TextPainter(
         text: TextSpan(
             text:
-                "${_formatter.getFormattedValue1(_entry.x)},${_formatter.getFormattedValue1(_entry.y)}",
-            style: TextStyle(color: _textColor, fontSize: _fontSize)),
+                "${formatter.getFormattedValue1(entry.x)},${formatter.getFormattedValue1(entry.y)}",
+            style: TextStyle(color: textColor, fontSize: fontSize)),
         textDirection: TextDirection.ltr,
         textAlign: TextAlign.center);
     Paint paint = Paint()
-      ..color = _backColor
+      ..color = backColor
       ..strokeWidth = 2
       ..isAntiAlias = true
       ..style = PaintingStyle.fill;
@@ -53,19 +53,23 @@ class Marker extends IMarker {
     // translate to the correct position and draw
 //    canvas.translate(posX + offset.x, posY + offset.y);
     painter.layout();
-    var left = posX + offset.x - painter.width / 2;
-    var top = posY + offset.y - painter.height / 2;
+    Offset pos = calculatePos(
+        posX + offset.x, posY + offset.y, painter.width, painter.height);
     canvas.drawRRect(
-        RRect.fromLTRBR(left - 5, top - 5, left + painter.width + 5,
-            top + painter.height + 5, Radius.circular(5)),
+        RRect.fromLTRBR(pos.dx - 5, pos.dy - 5, pos.dx + painter.width + 5,
+            pos.dy + painter.height + 5, Radius.circular(5)),
         paint);
-    painter.paint(canvas, Offset(left, top));
+    painter.paint(canvas, pos);
     canvas.restore();
+  }
+
+  Offset calculatePos(double posX, double posY, double textW, double textH) {
+    return Offset(posX - textW / 2, posY - textH / 2);
   }
 
   @override
   MPPointF getOffset() {
-    return MPPointF.getInstance1(_dx, _dy);
+    return MPPointF.getInstance1(dx, dy);
   }
 
   @override
@@ -75,7 +79,22 @@ class Marker extends IMarker {
 
   @override
   void refreshContent(Entry e, Highlight highlight) {
-    _entry = e;
-    _highlight = highlight;
+    entry = e;
+    highlight = highlight;
   }
+}
+
+class BarChartMarker extends LineChartMarker {
+  BarChartMarker({Color textColor, Color backColor, double fontSize})
+      : super(textColor: textColor, backColor: backColor, fontSize: fontSize);
+
+  @override
+  Offset calculatePos(double posX, double posY, double textW, double textH) {
+    return Offset(posX - textW / 2, posY - textH * 2);
+  }
+}
+
+class HorizontalBarChartMarker extends LineChartMarker {
+  HorizontalBarChartMarker({Color textColor, Color backColor, double fontSize})
+      : super(textColor: textColor, backColor: backColor, fontSize: fontSize);
 }

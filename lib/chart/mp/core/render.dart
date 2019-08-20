@@ -3000,8 +3000,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
     double top = y1;
     double bottom = y2;
 
-    mBarRect = Rect.fromLTRB(left, top, right, bottom);
-    trans.rectToPixelPhase(mBarRect, mAnimator.getPhaseY());
+    mBarRect = trans.rectToPixelPhase(Rect.fromLTRB(left, top, right, bottom), mAnimator.getPhaseY());
   }
 
   @override
@@ -3284,7 +3283,6 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
       prepareBarHighlight(e.x, y1, y2, barData.getBarWidth() / 2.0, trans);
 
       setHighlightDrawPos(high, mBarRect);
-
       c.drawRect(mBarRect, mHighlightPaint);
     }
   }
@@ -4328,9 +4326,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
     double left = y1;
     double right = y2;
 
-    mBarRect = Rect.fromLTRB(left, top, right, bottom);
-
-    trans.rectToPixelPhaseHorizontal(mBarRect, mAnimator.getPhaseY());
+    mBarRect = trans.rectToPixelPhaseHorizontal(Rect.fromLTRB(left, top, right, bottom), mAnimator.getPhaseY());
   }
 
   @override
