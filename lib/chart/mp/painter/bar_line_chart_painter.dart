@@ -239,7 +239,7 @@ abstract class BarLineChartBasePainter<
     mXAxisRenderer ??=
         XAxisRenderer(mViewPortHandler, mXAxis, mLeftAxisTransformer);
 
-    mHighlighter ??= ChartHighlighter(this);
+    mHighlighter = ChartHighlighter(this);
   }
 
   @override

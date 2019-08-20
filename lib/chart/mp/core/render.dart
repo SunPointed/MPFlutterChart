@@ -100,31 +100,30 @@ class LegendRenderer extends Renderer {
         List<Color> clrs = dataSet.getColors();
         int entryCount = dataSet.getEntryCount();
 
-        //todo  if we have a barchart with stacked bars
-//        if (dataSet is IBarDataSet && (dataSet as IBarDataSet).isStacked()) {
-//          IBarDataSet bds = dataSet as IBarDataSet;
-//          List<String> sLabels = bds.getStackLabels();
-//
-//          for (int j = 0; j < clrs.length && j < bds.getStackSize(); j++) {
-//            computedEntries.add(LegendEntry(
-//                sLabels[j % sLabels.length],
-//                dataSet.getForm(),
-//                dataSet.getFormSize(),
-//                dataSet.getFormLineWidth(),
-////  dataSet.getFormLineDashEffect(),
-//                clrs[j]));
-//          }
-//
-//          if (bds.getLabel() != null) {
-//            // add the legend description label
-//            computedEntries.add(LegendEntry(
-//                dataSet.getLabel(),
-//                LegendForm.NONE,
-//                double.nan,
-//                double.nan,
-////  null,
-//                ColorTemplate.COLOR_NONE));
-//          }
+        if (dataSet is IBarDataSet && (dataSet as IBarDataSet).isStacked()) {
+          IBarDataSet bds = dataSet as IBarDataSet;
+          List<String> sLabels = bds.getStackLabels();
+
+          for (int j = 0; j < clrs.length && j < bds.getStackSize(); j++) {
+            computedEntries.add(LegendEntry(
+                sLabels[j % sLabels.length],
+                dataSet.getForm(),
+                dataSet.getFormSize(),
+                dataSet.getFormLineWidth(),
+//  dataSet.getFormLineDashEffect(),
+                clrs[j]));
+          }
+
+          if (bds.getLabel() != null) {
+            // add the legend description label
+            computedEntries.add(LegendEntry(
+                dataSet.getLabel(),
+                LegendForm.NONE,
+                double.nan,
+                double.nan,
+//  null,
+                ColorTemplate.COLOR_NONE));
+          }
 //        } else if (dataSet is IPieDataSet) {
 //          IPieDataSet pds = dataSet as IPieDataSet;
 //
@@ -171,28 +170,28 @@ class LegendRenderer extends Renderer {
 //              dataSet.getFormLineWidth(),
 ////  dataSet.getFormLineDashEffect(),
 //              increasingColor));
-//        } else {
-        // all others
+        } else {
+          // all others
 
-        for (int j = 0; j < clrs.length && j < entryCount; j++) {
-          String label;
+          for (int j = 0; j < clrs.length && j < entryCount; j++) {
+            String label;
 
-          // if multiple colors are set for a DataSet, group them
-          if (j < clrs.length - 1 && j < entryCount - 1) {
-            label = null;
-          } else {
-            // add label to the last entry
-            label = data.getDataSetByIndex(i).getLabel();
-          }
+            // if multiple colors are set for a DataSet, group them
+            if (j < clrs.length - 1 && j < entryCount - 1) {
+              label = null;
+            } else {
+              // add label to the last entry
+              label = data.getDataSetByIndex(i).getLabel();
+            }
 
-          computedEntries.add(LegendEntry(
-              label,
-              dataSet.getForm(),
-              dataSet.getFormSize(),
-              dataSet.getFormLineWidth(),
+            computedEntries.add(LegendEntry(
+                label,
+                dataSet.getForm(),
+                dataSet.getFormSize(),
+                dataSet.getFormLineWidth(),
 //  dataSet.getFormLineDashEffect(),
-              clrs[j]));
-//          }
+                clrs[j]));
+          }
         }
       }
 
@@ -3000,7 +2999,8 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
     double top = y1;
     double bottom = y2;
 
-    mBarRect = trans.rectToPixelPhase(Rect.fromLTRB(left, top, right, bottom), mAnimator.getPhaseY());
+    mBarRect = trans.rectToPixelPhase(
+        Rect.fromLTRB(left, top, right, bottom), mAnimator.getPhaseY());
   }
 
   @override
@@ -4326,7 +4326,8 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
     double left = y1;
     double right = y2;
 
-    mBarRect = trans.rectToPixelPhaseHorizontal(Rect.fromLTRB(left, top, right, bottom), mAnimator.getPhaseY());
+    mBarRect = trans.rectToPixelPhaseHorizontal(
+        Rect.fromLTRB(left, top, right, bottom), mAnimator.getPhaseY());
   }
 
   @override

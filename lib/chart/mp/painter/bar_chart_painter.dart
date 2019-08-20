@@ -141,7 +141,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
     super.init();
     mRenderer = BarChartRenderer(this, mAnimator, mViewPortHandler);
 
-    mHighlighter ??= BarHighlighter(this);
+    mHighlighter = BarHighlighter(this);
 
     mXAxis.setSpaceMin(0.5);
     mXAxis.setSpaceMax(0.5);

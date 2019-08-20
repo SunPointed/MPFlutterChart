@@ -6,6 +6,7 @@ import 'package:mp_flutter_chart/demo/bar_chart/basic.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/basic2.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/horizontal.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/multiple.dart';
+import 'package:mp_flutter_chart/demo/bar_chart/stacked.dart';
 import 'package:mp_flutter_chart/demo/line_chart/basic.dart';
 import 'package:mp_flutter_chart/demo/line_chart/colorful.dart';
 import 'package:mp_flutter_chart/demo/line_chart/cubic.dart';
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
         '/bar_chart/basic2': (_) => BarChartBasic2(),
         '/bar_chart/multiple': (_) => BarChartMultiple(),
         '/bar_chart/horizontal': (_) => BarChartHorizontal(),
-        '/bar_chart/stacked': (_) => BarChartBasic2(),
+        '/bar_chart/stacked': (_) => BarChartStacked(),
         '/bar_chart/negative': (_) => BarChartBasic2(),
         '/bar_chart/stacked2': (_) => BarChartBasic2(),
         '/bar_chart/sine': (_) => BarChartBasic2(),

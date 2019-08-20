@@ -331,6 +331,12 @@ abstract class ColorUtils {
     ..add(Color.fromARGB(255, 255, 208, 140))
     ..add(Color.fromARGB(255, 140, 234, 255))
     ..add(Color.fromARGB(255, 255, 140, 157));
+
+  static final List<Color> MATERIAL_COLORS = List()
+    ..add(Color(0xFF2ecc71))
+    ..add(Color(0xFFf1c40f))
+    ..add(Color(0xFFe74c3c))
+    ..add(Color(0xFF3498db));
 }
 
 abstract class Matrix4Utils {
