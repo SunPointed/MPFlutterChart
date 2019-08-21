@@ -10,6 +10,7 @@ import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/range.dart';
 import 'package:mp_flutter_chart/chart/mp/mode.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/pie_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
@@ -352,6 +353,24 @@ class CandleEntry extends Entry {
   }
 }
 
+class PieEntry extends Entry {
+  String label;
+
+  PieEntry({double value, String label, ui.Image icon, Object data})
+      : super(x: 0, y: value, icon: icon, data: data) {
+    this.label = label;
+  }
+
+  double getValue() {
+    return y;
+  }
+
+  PieEntry copy() {
+    PieEntry e = new PieEntry(value: getValue(), label: label, data: mData);
+    return e;
+  }
+}
+
 enum Rounding {
   UP,
   DOWN,
@@ -474,6 +493,71 @@ abstract class IDataSet<T extends Entry> {
   void setVisible(bool visible);
 
   bool isVisible();
+}
+
+mixin IPieDataSet on IDataSet<PieEntry> {
+  /**
+   * Returns the space that is set to be between the piechart-slices of this
+   * DataSet, in pixels.
+   *
+   * @return
+   */
+  double getSliceSpace();
+
+  /**
+   * When enabled, slice spacing will be 0.0 when the smallest value is going to be
+   *   smaller than the slice spacing itself.
+   *
+   * @return
+   */
+  bool isAutomaticallyDisableSliceSpacingEnabled();
+
+  /**
+   * Returns the distance a highlighted piechart slice is "shifted" away from
+   * the chart-center in dp.
+   *
+   * @return
+   */
+  double getSelectionShift();
+
+  ValuePosition getXValuePosition();
+
+  ValuePosition getYValuePosition();
+
+  /**
+   * When valuePosition is OutsideSlice, use slice colors as line color if true
+   * */
+  bool isUsingSliceColorAsValueLineColor();
+
+  /**
+   * When valuePosition is OutsideSlice, indicates line color
+   * */
+  Color getValueLineColor();
+
+  /**
+   *  When valuePosition is OutsideSlice, indicates line width
+   *  */
+  double getValueLineWidth();
+
+  /**
+   * When valuePosition is OutsideSlice, indicates offset as percentage out of the slice size
+   * */
+  double getValueLinePart1OffsetPercentage();
+
+  /**
+   * When valuePosition is OutsideSlice, indicates length of first half of the line
+   * */
+  double getValueLinePart1Length();
+
+  /**
+   * When valuePosition is OutsideSlice, indicates length of second half of the line
+   * */
+  double getValueLinePart2Length();
+
+  /**
+   * When valuePosition is OutsideSlice, this allows variable line length
+   * */
+  bool isValueLineVariableLength();
 }
 
 abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
@@ -2386,6 +2470,210 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
   }
 }
 
+class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
+  /**
+   * the space in pixels between the chart-slices, default 0f
+   */
+  double mSliceSpace = 0;
+  bool mAutomaticallyDisableSliceSpacing = false;
+
+  /**
+   * indicates the selection distance of a pie slice
+   */
+  double mShift = 18;
+
+  ValuePosition mXValuePosition = ValuePosition.INSIDE_SLICE;
+  ValuePosition mYValuePosition = ValuePosition.INSIDE_SLICE;
+  bool mUsingSliceColorAsValueLineColor = false;
+  Color mValueLineColor = Color(0xff000000);
+  double mValueLineWidth = 1.0;
+  double mValueLinePart1OffsetPercentage = 75.0;
+  double mValueLinePart1Length = 0.3;
+  double mValueLinePart2Length = 0.4;
+  bool mValueLineVariableLength = true;
+
+  PieDataSet(List<PieEntry> yVals, String label) : super(yVals, label);
+
+  @override
+  DataSet<PieEntry> copy1() {
+    List<PieEntry> entries = List();
+    for (int i = 0; i < mValues.length; i++) {
+      entries.add(mValues[i].copy());
+    }
+    PieDataSet copied = new PieDataSet(entries, getLabel());
+    copy(copied);
+    return copied;
+  }
+
+  void copy(BaseDataSet baseDataSet) {
+    super.copy(baseDataSet);
+  }
+
+  @override
+  void calcMinMax1(PieEntry e) {
+    if (e == null) return;
+    calcMinMaxY1(e);
+  }
+
+  /**
+   * Sets the space that is left out between the piechart-slices in dp.
+   * Default: 0 --> no space, maximum 20f
+   *
+   * @param spaceDp
+   */
+  void setSliceSpace(double spaceDp) {
+    if (spaceDp > 20) spaceDp = 20;
+    if (spaceDp < 0) spaceDp = 0;
+
+    mSliceSpace = Utils.convertDpToPixel(spaceDp);
+  }
+
+  @override
+  double getSliceSpace() {
+    return mSliceSpace;
+  }
+
+  /**
+   * When enabled, slice spacing will be 0.0 when the smallest value is going to be
+   * smaller than the slice spacing itself.
+   *
+   * @param autoDisable
+   */
+  void setAutomaticallyDisableSliceSpacing(bool autoDisable) {
+    mAutomaticallyDisableSliceSpacing = autoDisable;
+  }
+
+  /**
+   * When enabled, slice spacing will be 0.0 when the smallest value is going to be
+   * smaller than the slice spacing itself.
+   *
+   * @return
+   */
+  @override
+  bool isAutomaticallyDisableSliceSpacingEnabled() {
+    return mAutomaticallyDisableSliceSpacing;
+  }
+
+  /**
+   * sets the distance the highlighted piechart-slice of this DataSet is
+   * "shifted" away from the center of the chart, default 12f
+   *
+   * @param shift
+   */
+  void setSelectionShift(double shift) {
+    mShift = Utils.convertDpToPixel(shift);
+  }
+
+  @override
+  double getSelectionShift() {
+    return mShift;
+  }
+
+  @override
+  ValuePosition getXValuePosition() {
+    return mXValuePosition;
+  }
+
+  void setXValuePosition(ValuePosition xValuePosition) {
+    this.mXValuePosition = xValuePosition;
+  }
+
+  @override
+  ValuePosition getYValuePosition() {
+    return mYValuePosition;
+  }
+
+  void setYValuePosition(ValuePosition yValuePosition) {
+    this.mYValuePosition = yValuePosition;
+  }
+
+  /**
+   * When valuePosition is OutsideSlice, use slice colors as line color if true
+   */
+  @override
+  bool isUsingSliceColorAsValueLineColor() {
+    return mUsingSliceColorAsValueLineColor;
+  }
+
+  void setUsingSliceColorAsValueLineColor(
+      bool usingSliceColorAsValueLineColor) {
+    this.mUsingSliceColorAsValueLineColor = usingSliceColorAsValueLineColor;
+  }
+
+  /**
+   * When valuePosition is OutsideSlice, indicates line color
+   */
+  @override
+  Color getValueLineColor() {
+    return mValueLineColor;
+  }
+
+  void setValueLineColor(Color valueLineColor) {
+    this.mValueLineColor = valueLineColor;
+  }
+
+  /**
+   * When valuePosition is OutsideSlice, indicates line width
+   */
+  @override
+  double getValueLineWidth() {
+    return mValueLineWidth;
+  }
+
+  void setValueLineWidth(double valueLineWidth) {
+    this.mValueLineWidth = valueLineWidth;
+  }
+
+  /**
+   * When valuePosition is OutsideSlice, indicates offset as percentage out of the slice size
+   */
+  @override
+  double getValueLinePart1OffsetPercentage() {
+    return mValueLinePart1OffsetPercentage;
+  }
+
+  void setValueLinePart1OffsetPercentage(
+      double valueLinePart1OffsetPercentage) {
+    this.mValueLinePart1OffsetPercentage = valueLinePart1OffsetPercentage;
+  }
+
+  /**
+   * When valuePosition is OutsideSlice, indicates length of first half of the line
+   */
+  @override
+  double getValueLinePart1Length() {
+    return mValueLinePart1Length;
+  }
+
+  void setValueLinePart1Length(double valueLinePart1Length) {
+    this.mValueLinePart1Length = valueLinePart1Length;
+  }
+
+  /**
+   * When valuePosition is OutsideSlice, indicates length of second half of the line
+   */
+  @override
+  double getValueLinePart2Length() {
+    return mValueLinePart2Length;
+  }
+
+  void setValueLinePart2Length(double valueLinePart2Length) {
+    this.mValueLinePart2Length = valueLinePart2Length;
+  }
+
+  /**
+   * When valuePosition is OutsideSlice, this allows variable line length
+   */
+  @override
+  bool isValueLineVariableLength() {
+    return mValueLineVariableLength;
+  }
+
+  void setValueLineVariableLength(bool valueLineVariableLength) {
+    this.mValueLineVariableLength = valueLineVariableLength;
+  }
+}
+
 abstract class LineScatterCandleRadarDataSet<T extends Entry>
     extends BarLineScatterCandleBubbleDataSet<T>
     implements ILineScatterCandleRadarDataSet<T> {
@@ -2965,5 +3253,67 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   @override
   IFillFormatter getFillFormatter() {
     return mFillFormatter;
+  }
+}
+
+class PieData extends ChartData<IPieDataSet> {
+  PieData(IPieDataSet dataSet) : super.fromList(List()..add(dataSet));
+
+  /**
+   * Sets the PieDataSet this data object should represent.
+   *
+   * @param dataSet
+   */
+  void setDataSet(IPieDataSet dataSet) {
+    mDataSets.clear();
+    mDataSets.add(dataSet);
+    notifyDataChanged();
+  }
+
+  /**
+   * Returns the DataSet this PieData object represents. A PieData object can
+   * only contain one DataSet.
+   *
+   * @return
+   */
+  IPieDataSet getDataSet() {
+    return mDataSets[0];
+  }
+
+  /**
+   * The PieData object can only have one DataSet. Use getDataSet() method instead.
+   *
+   * @param index
+   * @return
+   */
+  @override
+  IPieDataSet getDataSetByIndex(int index) {
+    return index == 0 ? getDataSet() : null;
+  }
+
+  @override
+  IPieDataSet getDataSetByLabel(String label, bool ignorecase) {
+    return ignorecase
+        ? DartAdapterUtils.equalsIgnoreCase(label, mDataSets[0].getLabel())
+            ? mDataSets[0]
+            : null
+        : (label == mDataSets[0].getLabel()) ? mDataSets[0] : null;
+  }
+
+  @override
+  Entry getEntryForHighlight(Highlight highlight) {
+    return getDataSet().getEntryForIndex(highlight.getX().toInt());
+  }
+
+  /**
+   * Returns the sum of all values in this PieData object.
+   *
+   * @return
+   */
+  double getYValueSum() {
+    double sum = 0;
+    for (int i = 0; i < getDataSet().getEntryCount(); i++)
+      sum += getDataSet().getEntryForIndex(i).getValue();
+    return sum;
   }
 }

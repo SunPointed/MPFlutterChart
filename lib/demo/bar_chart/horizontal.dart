@@ -30,18 +30,18 @@ class BarChartHorizontalState extends State<BarChartHorizontal>
 
   @override
   void initState() {
-    _initLineData(_count, _range);
+    _initBarData(_count, _range);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _initLineChart();
+    _initBarChart();
     return Scaffold(
         appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
-            title: Text("Bar Chart Basic")),
+            title: Text("Bar Chart Horizontal")),
         body: Stack(
           children: <Widget>[
             Positioned(
@@ -71,7 +71,7 @@ class BarChartHorizontalState extends State<BarChartHorizontal>
                                 max: 500,
                                 onChanged: (value) {
                                   _count = value.toInt();
-                                  _initLineData(_count, _range);
+                                  _initBarData(_count, _range);
                                   setState(() {});
                                 })),
                       ),
@@ -100,7 +100,7 @@ class BarChartHorizontalState extends State<BarChartHorizontal>
                                 max: 200,
                                 onChanged: (value) {
                                   _range = value;
-                                  _initLineData(_count, _range);
+                                  _initBarData(_count, _range);
                                   setState(() {});
                                 })),
                       ),
@@ -124,7 +124,7 @@ class BarChartHorizontalState extends State<BarChartHorizontal>
         ));
   }
 
-  void _initLineData(int count, double range) {
+  void _initBarData(int count, double range) {
     double barWidth = 9;
     double spaceForBar = 10;
     List<BarEntry> values = List();
@@ -149,7 +149,7 @@ class BarChartHorizontalState extends State<BarChartHorizontal>
     _barData.setBarWidth(barWidth);
   }
 
-  void _initLineChart() {
+  void _initBarChart() {
     var desc = Description();
     desc.setEnabled(false);
     _barChart = HorizontalBarChart(_barData, (painter) {

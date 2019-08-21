@@ -30,12 +30,12 @@ abstract class AxisBase extends ComponentBase {
   /**
    * the number of entries the legend contains
    */
-  int mEntryCount;
+  int mEntryCount = 0;
 
   /**
    * the number of decimal digits to use
    */
-  int mDecimals;
+  int mDecimals = 0;
 
   /**
    * the number of label entries the axis should have, default 6

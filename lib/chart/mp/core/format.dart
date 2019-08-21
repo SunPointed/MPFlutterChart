@@ -6,6 +6,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/bar_line_chart_painter.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/pie_chart_painter.dart';
 
 abstract class ValueFormatter {
   String getFormattedValue2(double value, AxisBase axis) {
@@ -37,9 +38,9 @@ abstract class ValueFormatter {
     return getFormattedValue1(entry.y);
   }
 
-//  String getPieLabel(double value, PieEntry pieEntry) {
-//    return getFormattedValue(value);
-//  }
+  String getPieLabel(double value, PieEntry pieEntry) {
+    return getFormattedValue1(value);
+  }
 //
 //  String getRadarLabel(RadarEntry radarEntry) {
 //    return getFormattedValue(radarEntry.getY());
@@ -480,5 +481,36 @@ class StackedValueFormatter extends ValueFormatter {
     }
     // return the "proposed" value
     return mFormat.format(value) + mSuffix;
+  }
+}
+
+class PercentFormatter extends ValueFormatter {
+  NumberFormat mFormat;
+  PieChartPainter pieChart;
+  bool percentSignSeparated;
+
+  PercentFormatter() {
+    mFormat = NumberFormat("###,###,##0.0");
+    percentSignSeparated = true;
+  }
+
+  setPieChartPainter(PieChartPainter painter) {
+    pieChart = painter;
+  }
+
+  @override
+  String getFormattedValue1(double value) {
+    return mFormat.format(value) + (percentSignSeparated ? " %" : "%");
+  }
+
+  @override
+  String getPieLabel(double value, PieEntry pieEntry) {
+    if (pieChart != null && pieChart.isUsePercentValuesEnabled()) {
+      // Converted to percent
+      return getFormattedValue1(value);
+    } else {
+      // raw value, skip percent sign
+      return mFormat.format(value);
+    }
   }
 }

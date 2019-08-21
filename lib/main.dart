@@ -6,7 +6,10 @@ import 'package:mp_flutter_chart/demo/bar_chart/basic.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/basic2.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/horizontal.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/multiple.dart';
+import 'package:mp_flutter_chart/demo/bar_chart/negative.dart';
+import 'package:mp_flutter_chart/demo/bar_chart/sine.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/stacked.dart';
+import 'package:mp_flutter_chart/demo/bar_chart/stacked2.dart';
 import 'package:mp_flutter_chart/demo/line_chart/basic.dart';
 import 'package:mp_flutter_chart/demo/line_chart/colorful.dart';
 import 'package:mp_flutter_chart/demo/line_chart/cubic.dart';
@@ -15,6 +18,7 @@ import 'package:mp_flutter_chart/demo/line_chart/filled.dart';
 import 'package:mp_flutter_chart/demo/line_chart/invert_axis.dart';
 import 'package:mp_flutter_chart/demo/line_chart/multiple.dart';
 import 'package:mp_flutter_chart/demo/line_chart/performance.dart';
+import 'package:mp_flutter_chart/demo/pie_chart/basic.dart';
 import 'package:mp_flutter_chart/demo/res/styles.dart';
 
 void main() => runApp(MyApp());
@@ -52,10 +56,10 @@ class MyApp extends StatelessWidget {
         '/bar_chart/multiple': (_) => BarChartMultiple(),
         '/bar_chart/horizontal': (_) => BarChartHorizontal(),
         '/bar_chart/stacked': (_) => BarChartStacked(),
-        '/bar_chart/negative': (_) => BarChartBasic2(),
-        '/bar_chart/stacked2': (_) => BarChartBasic2(),
-        '/bar_chart/sine': (_) => BarChartBasic2(),
-        '/pie_chart/basic': (_) => BarChartBasic2(),
+        '/bar_chart/negative': (_) => BarChartNegative(),
+        '/bar_chart/stacked2': (_) => BarChartStacked2(),
+        '/bar_chart/sine': (_) => BarChartSine(),
+        '/pie_chart/basic': (_) => PieChartBasic(),
         '/pie_chart/value_lines': (_) => BarChartBasic2(),
         '/pie_chart/half_pie': (_) => BarChartBasic2(),
         '/other_chart/combined_chart': (_) => BarChartBasic2(),

@@ -17,6 +17,31 @@ import 'package:mp_flutter_chart/chart/mp/util.dart';
 import 'chart.dart';
 
 class HorizontalBarChart extends Chart {
+  Color backgroundColor = null;
+  Color borderColor = null;
+  double borderStrokeWidth = 1.0;
+  bool keepPositionOnRotation = false;
+  bool pinchZoomEnabled = false;
+  XAxisRenderer xAxisRenderer = null;
+  YAxisRenderer rendererLeftYAxis = null;
+  YAxisRenderer rendererRightYAxis = null;
+  bool autoScaleMinMaxEnabled = false;
+  bool clipValuesToContent = false;
+  bool drawBorders = false;
+  bool drawGridBackground = false;
+  bool doubleTapToZoomEnabled = true;
+  bool scaleXEnabled = true;
+  bool scaleYEnabled = true;
+  bool dragXEnabled = true;
+  bool dragYEnabled = true;
+  bool highlightPerDragEnabled = true;
+  int maxVisibleCount = 100;
+  OnDrawListener drawListener = null;
+  double minXRange = 1.0;
+  double maxXRange = 1.0;
+  double minimumScaleX = 1.0;
+  double minimumScaleY = 1.0;
+
   HorizontalBarChart(
       BarData data,
       InitHorizontalBarChartPainterCallback
@@ -63,7 +88,31 @@ class HorizontalBarChart extends Chart {
       TextPainter descPainter = null,
       IHighlighter highlighter = null,
       bool unbind = false})
-      : super(
+      : backgroundColor = backgroundColor,
+        borderColor = borderColor,
+        borderStrokeWidth = borderStrokeWidth,
+        keepPositionOnRotation = keepPositionOnRotation,
+        pinchZoomEnabled = pinchZoomEnabled,
+        xAxisRenderer = xAxisRenderer,
+        rendererLeftYAxis = rendererLeftYAxis,
+        rendererRightYAxis = rendererRightYAxis,
+        autoScaleMinMaxEnabled = autoScaleMinMaxEnabled,
+        clipValuesToContent = clipValuesToContent,
+        drawBorders = drawBorders,
+        drawGridBackground = drawGridBackground,
+        doubleTapToZoomEnabled = doubleTapToZoomEnabled,
+        scaleXEnabled = scaleXEnabled,
+        scaleYEnabled = scaleYEnabled,
+        dragXEnabled = dragXEnabled,
+        dragYEnabled = dragYEnabled,
+        highlightPerDragEnabled = highlightPerDragEnabled,
+        maxVisibleCount = maxVisibleCount,
+        drawListener = drawListener,
+        minXRange = minXRange,
+        maxXRange = maxXRange,
+        minimumScaleX = minimumScaleX,
+        minimumScaleY = minimumScaleY,
+        super(
           data,
           (painter) {
             if (painter is HorizontalBarChartPainter) {
@@ -111,7 +160,7 @@ class HorizontalBarChart extends Chart {
           descPainter: descPainter,
           highlighter: highlighter,
           unbind: unbind,
-        ){
+        ) {
     viewPortHandler = HorizontalViewPortHandler();
     this.marker = HorizontalBarChartMarker();
   }

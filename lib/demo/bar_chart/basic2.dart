@@ -27,13 +27,13 @@ class BarChartBasic2State extends State<BarChartBasic2> {
 
   @override
   void initState() {
-    _initLineData(_count, _range);
+    _initBarData(_count, _range);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _initLineChart();
+    _initBarChart();
     return Scaffold(
         appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
@@ -68,7 +68,7 @@ class BarChartBasic2State extends State<BarChartBasic2> {
                                 max: 1500,
                                 onChanged: (value) {
                                   _count = value.toInt();
-                                  _initLineData(_count, _range);
+                                  _initBarData(_count, _range);
                                   setState(() {});
                                 })),
                       ),
@@ -97,7 +97,7 @@ class BarChartBasic2State extends State<BarChartBasic2> {
                                 max: 200,
                                 onChanged: (value) {
                                   _range = value;
-                                  _initLineData(_count, _range);
+                                  _initBarData(_count, _range);
                                   setState(() {});
                                 })),
                       ),
@@ -121,7 +121,7 @@ class BarChartBasic2State extends State<BarChartBasic2> {
         ));
   }
 
-  void _initLineData(int count, double range) {
+  void _initBarData(int count, double range) {
     List<BarEntry> values = List();
 
     for (int i = 0; i < count; i++) {
@@ -144,7 +144,7 @@ class BarChartBasic2State extends State<BarChartBasic2> {
     _barData.setBarWidth(0.9);
   }
 
-  void _initLineChart() {
+  void _initBarChart() {
     var desc = Description();
     desc.setEnabled(false);
     _barChart = BarChart(_barData, (painter) {

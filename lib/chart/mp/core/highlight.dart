@@ -4,6 +4,8 @@ import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/range.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/pie_chart_painter.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/pie_redar_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
 
 class Highlight {
@@ -598,5 +600,75 @@ class HorizontalBarHighlighter extends BarHighlighter {
   @override
   double getDistance(double x1, double y1, double x2, double y2) {
     return (y1 - y2).abs();
+  }
+}
+
+abstract class PieRadarHighlighter<T extends PieRadarChartPainter>
+    implements IHighlighter {
+  T mChart;
+
+  /**
+   * buffer for storing previously highlighted values
+   */
+  List<Highlight> mHighlightBuffer = List();
+
+  PieRadarHighlighter(T chart) {
+    this.mChart = chart;
+  }
+
+  @override
+  Highlight getHighlight(double x, double y) {
+    double touchDistanceToCenter = mChart.distanceToCenter(x, y);
+
+    // check if a slice was touched
+    if (touchDistanceToCenter > mChart.getRadius()) {
+      // if no slice was touched, highlight nothing
+      return null;
+    } else {
+      double angle = mChart.getAngleForPoint(x, y);
+
+      if (mChart is PieChartPainter) {
+        angle /= mChart.mAnimator.getPhaseY();
+      }
+
+      int index = mChart.getIndexForAngle(angle);
+
+      // check if the index could be found
+      if (index < 0 ||
+          index >= mChart.getData().getMaxEntryCountSet().getEntryCount()) {
+        return null;
+      } else {
+        return getClosestHighlight(index, x, y);
+      }
+    }
+  }
+
+  /**
+   * Returns the closest Highlight object of the given objects based on the touch position inside the chart.
+   *
+   * @param index
+   * @param x
+   * @param y
+   * @return
+   */
+  Highlight getClosestHighlight(int index, double x, double y);
+}
+
+class PieHighlighter extends PieRadarHighlighter<PieChartPainter> {
+  PieHighlighter(PieChartPainter chart) : super(chart);
+
+  @override
+  Highlight getClosestHighlight(int index, double x, double y) {
+    IPieDataSet set = mChart.getData().getDataSet();
+
+    final Entry entry = set.getEntryForIndex(index);
+
+    return new Highlight(
+        x: index.toDouble(),
+        y: entry.y,
+        xPx: x,
+        yPx: y,
+        dataSetIndex: 0,
+        axis: set.getAxisDependency());
   }
 }

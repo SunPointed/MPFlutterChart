@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/bar_chart.dart';
+import 'package:mp_flutter_chart/chart/mp/color.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
@@ -11,27 +12,41 @@ import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/listener.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
-class BarChartStacked extends StatefulWidget {
+class BarChartSine extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return BarChartStackedState();
+    return BarChartSineState();
   }
 }
 
-class BarChartStackedState extends State<BarChartStacked>
-    implements OnChartValueSelectedListener {
+class BarChartSineState extends State<BarChartSine> {
   BarChart _barChart;
   BarData _barData;
 
+  List<BarEntry> _data;
+
   var random = Random(1);
 
-  int _count = 12;
-  double _range = 100.0;
+  int _count = 150;
 
   @override
   void initState() {
-    _initBarData(_count, _range);
+    Util.loadAsset("othersine.txt").then((value) {
+      _data = List();
+      List<String> lines = value.split("\n");
+      for (int i = 0; i < lines.length; i++) {
+        var datas = lines[i].split("#");
+        var x = double.parse(datas[1]);
+        var y = double.parse(datas[0]);
+        _data.add(BarEntry(x: x, y: y));
+      }
+      _initBarData(_count);
+      setState(() {});
+    });
+
+    _initBarData(_count);
     super.initState();
   }
 
@@ -42,7 +57,7 @@ class BarChartStackedState extends State<BarChartStacked>
         appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
-            title: Text("Bar Chart Stacked")),
+            title: Text("Bar Chart Basic")),
         body: Stack(
           children: <Widget>[
             Positioned(
@@ -50,7 +65,9 @@ class BarChartStackedState extends State<BarChartStacked>
               left: 0,
               top: 0,
               bottom: 100,
-              child: _barChart,
+              child: _barChart == null
+                  ? Center(child: Text("no data"))
+                  : _barChart,
             ),
             Positioned(
               left: 0,
@@ -72,7 +89,7 @@ class BarChartStackedState extends State<BarChartStacked>
                                 max: 1500,
                                 onChanged: (value) {
                                   _count = value.toInt();
-                                  _initBarData(_count, _range);
+                                  _initBarData(_count);
                                   setState(() {});
                                 })),
                       ),
@@ -89,35 +106,6 @@ class BarChartStackedState extends State<BarChartStacked>
                           )),
                     ],
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _range,
-                                min: 0,
-                                max: 200,
-                                onChanged: (value) {
-                                  _range = value;
-                                  _initBarData(_count, _range);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "${_range.toInt()}",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
-                  )
                 ],
               ),
             )
@@ -125,73 +113,63 @@ class BarChartStackedState extends State<BarChartStacked>
         ));
   }
 
-  void _initBarData(int count, double range) {
-    List<BarEntry> values = List();
+  void _initBarData(int count) {
+    if (_data == null) return;
 
+    List<BarEntry> entries = List();
     for (int i = 0; i < count; i++) {
-      double mul = (range + 1);
-      double val1 = (random.nextDouble() * mul) + mul / 3;
-      double val2 = (random.nextDouble() * mul) + mul / 3;
-      double val3 = (random.nextDouble() * mul) + mul / 3;
-
-      values.add(BarEntry.fromListYVals(
-          x: i.toDouble(), vals: List()..add(val1)..add(val2)..add(val3)));
+      entries.add(_data[i]);
     }
 
-    BarDataSet set1;
+    BarDataSet set = BarDataSet(entries, "Sinus Function");
+    set.setColor1(Color.fromARGB(255, 240, 120, 124));
 
-    set1 = BarDataSet(values, "Statistics Vienna 2014");
-    set1.setDrawIcons(false);
-    set1.setColors1(_getColors());
-    set1.setStackLabels(
-        List()..add("Births")..add("Divorces")..add("Marriages"));
-
-    List<IBarDataSet> dataSets = List();
-    dataSets.add(set1);
-
-    _barData = BarData(dataSets);
-    _barData.setValueFormatter(StackedValueFormatter(false, "", 1));
-    _barData.setValueTextColor(ColorUtils.WHITE);
-  }
-
-  List<Color> _getColors() {
-    return List()
-      ..add(ColorUtils.MATERIAL_COLORS[0])
-      ..add(ColorUtils.MATERIAL_COLORS[1])
-      ..add(ColorUtils.MATERIAL_COLORS[2]);
+    _barData = BarData(List()..add(set));
+    _barData.setValueTextSize(10);
+//    _barData.setValueTypeface(tfLight);
+    _barData.setDrawValues(false);
+    _barData.setBarWidth(0.8);
   }
 
   void _initBarChart() {
+    if (_barData == null) return;
+
     var desc = Description();
     desc.setEnabled(false);
     _barChart = BarChart(_barData, (painter) {
       painter
-        ..mMarker = null
-        ..setFitBars(true)
-        ..setOnChartValueSelectedListener(this)
-        ..mMaxVisibleCount = 60
         ..setDrawBarShadow(false)
-        ..setHighlightFullBarEnabled(false)
-        ..setDrawValueAboveBar(false);
+        ..setDrawValueAboveBar(true);
 
-      painter.mXAxis.setPosition(XAxisPosition.TOP);
+      painter.mXAxis.setEnabled(false);
 
-      ValueFormatter custom = MyValueFormatter("K");
       painter.mAxisLeft
-        ..setValueFormatter(custom)
-        ..setAxisMinimum(0);
+        ..setLabelCount2(6, false)
+//        ..setTypeface(tf)
+        ..setAxisMaximum(2.5)
+        ..setAxisMinimum(-2.5)
+        ..setGranularityEnabled(true)
+        ..setGranularity(0.1);
 
-      painter.mAxisRight.setEnabled(false);
+      painter.mAxisRight
+        ..setDrawGridLines(false)
+//      ..setTypeface(tf)
+        ..setLabelCount2(6, false)
+        ..setAxisMinimum(-2.5)
+        ..setAxisMaximum(2.5)
+        ..setGranularity(0.1);
 
       painter.mLegend
         ..setVerticalAlignment(LegendVerticalAlignment.BOTTOM)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
+        ..setHorizontalAlignment(LegendHorizontalAlignment.LEFT)
         ..setOrientation(LegendOrientation.HORIZONTAL)
         ..setDrawInside(false)
         ..setForm(LegendForm.SQUARE)
-        ..setFormSize(8)
-        ..setFormToTextSpace(4)
-        ..setXEntrySpace(6);
+        ..setFormSize(9)
+        ..setTextSize(11)
+        ..setXEntrySpace(4);
+
+      painter.mAnimator.animateXY1(1500, 1500);
     },
         touchEnabled: true,
         drawGridBackground: false,
@@ -203,10 +181,4 @@ class BarChartStackedState extends State<BarChartStacked>
         maxVisibleCount: 60,
         desc: desc);
   }
-
-  @override
-  void onNothingSelected() {}
-
-  @override
-  void onValueSelected(Entry e, Highlight h) {}
 }

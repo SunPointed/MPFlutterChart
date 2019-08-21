@@ -373,11 +373,12 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
    * @return
    */
   bool valuesToHighlight() {
-    return mIndicesToHighlight == null ||
+    var res = mIndicesToHighlight == null ||
             mIndicesToHighlight.length <= 0 ||
             mIndicesToHighlight[0] == null
         ? false
         : true;
+    return res;
   }
 
   /**
@@ -484,9 +485,9 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   void highlightValue6(Highlight high, bool callListener) {
     Entry e = null;
 
-    if (high == null)
+    if (high == null) {
       mIndicesToHighlight = null;
-    else {
+    } else {
       e = mData.getEntryForHighlight(high);
       if (e == null) {
         mIndicesToHighlight = null;

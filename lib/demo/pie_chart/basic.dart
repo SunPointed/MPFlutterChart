@@ -1,46 +1,49 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:mp_flutter_chart/chart/mp/chart/bar_chart.dart';
+import 'package:mp_flutter_chart/chart/mp/chart/pie_chart.dart';
+import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/format.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/listener.dart';
+import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
 
-class BarChartMultiple extends StatefulWidget {
+class PieChartBasic extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return BarChartMultipleState();
+    return PieChartBasicState();
   }
 }
 
-class BarChartMultipleState extends State<BarChartMultiple>
+class PieChartBasicState extends State<PieChartBasic>
     implements OnChartValueSelectedListener {
-  BarChart _barChart;
-  BarData _barData;
+  PieChart _pieChart;
+  PieData _pieData;
+  PercentFormatter _formatter = PercentFormatter();
 
   var random = Random(1);
 
-  int _count = 10;
-  double _range = 100.0;
+  int _count = 4;
+  double _range = 10.0;
 
   @override
   void initState() {
-    _initBarData(_count, _range);
+    _initPieData(_count, _range);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _initBarChart();
+    _initPieChart();
     return Scaffold(
         appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
-            title: Text("Bar Chart Multiple")),
+            title: Text("Pie Chart Basic")),
         body: Stack(
           children: <Widget>[
             Positioned(
@@ -48,7 +51,7 @@ class BarChartMultipleState extends State<BarChartMultiple>
               left: 0,
               top: 0,
               bottom: 100,
-              child: _barChart,
+              child: _pieChart,
             ),
             Positioned(
               left: 0,
@@ -67,10 +70,10 @@ class BarChartMultipleState extends State<BarChartMultiple>
                             child: Slider(
                                 value: _count.toDouble(),
                                 min: 0,
-                                max: 1500,
+                                max: 25,
                                 onChanged: (value) {
                                   _count = value.toInt();
-                                  _initBarData(_count, _range);
+                                  _initPieData(_count, _range);
                                   setState(() {});
                                 })),
                       ),
@@ -99,7 +102,7 @@ class BarChartMultipleState extends State<BarChartMultiple>
                                 max: 200,
                                 onChanged: (value) {
                                   _range = value;
-                                  _initBarData(_count, _range);
+                                  _initPieData(_count, _range);
                                   setState(() {});
                                 })),
                       ),
@@ -123,106 +126,124 @@ class BarChartMultipleState extends State<BarChartMultiple>
         ));
   }
 
-  int groupCount;
-  int startYear;
-  int endYear;
+  final List<String> PARTIES = List()
+    ..add("Party A")
+    ..add("Party B")
+    ..add("Party C")
+    ..add("Party D")
+    ..add("Party E")
+    ..add("Party F")
+    ..add("Party G")
+    ..add("Party H")
+    ..add("Party I")
+    ..add("Party J")
+    ..add("Party K")
+    ..add("Party L")
+    ..add("Party M")
+    ..add("Party N")
+    ..add("Party O")
+    ..add("Party P")
+    ..add("Party Q")
+    ..add("Party R")
+    ..add("Party S")
+    ..add("Party T")
+    ..add("Party U")
+    ..add("Party V")
+    ..add("Party W")
+    ..add("Party X")
+    ..add("Party Y")
+    ..add("Party Z");
 
-  void _initBarData(int count, double range) {
-    groupCount = count + 1;
-    startYear = 1980;
-    endYear = startYear + groupCount;
-//    tvX.setText(String.format(Locale.ENGLISH, "%d-%d", startYear, endYear));
-//    tvY.setText(String.valueOf(seekBarY.getProgress()));
+  void _initPieData(int count, double range) {
+    List<PieEntry> entries = List();
 
-    List<BarEntry> values1 = List();
-    List<BarEntry> values2 = List();
-    List<BarEntry> values3 = List();
-    List<BarEntry> values4 = List();
-
-    double randomMultiplier = range * 100000;
-
-    for (int i = startYear; i < endYear; i++) {
-      values1.add(BarEntry(
-          x: i.toDouble(), y: (random.nextDouble() * randomMultiplier)));
-      values2.add(BarEntry(
-          x: i.toDouble(), y: (random.nextDouble() * randomMultiplier)));
-      values3.add(BarEntry(
-          x: i.toDouble(), y: (random.nextDouble() * randomMultiplier)));
-      values4.add(BarEntry(
-          x: i.toDouble(), y: (random.nextDouble() * randomMultiplier)));
+    // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+    // the chart.
+    for (int i = 0; i < count; i++) {
+      entries.add(PieEntry(
+        value: ((random.nextDouble() * range) + range / 5),
+        label: PARTIES[i % PARTIES.length],
+//          getResources().getDrawable(R.drawable.star)
+      ));
     }
 
-    BarDataSet set1, set2, set3, set4;
+    PieDataSet dataSet = PieDataSet(entries, "Election Results");
 
-    // create 4 DataSets
-    set1 = BarDataSet(values1, "Company A");
-    set1.setColor1(Color.fromARGB(255, 104, 241, 175));
-    set2 = BarDataSet(values2, "Company B");
-    set2.setColor1(Color.fromARGB(255, 164, 228, 251));
-    set3 = BarDataSet(values3, "Company C");
-    set3.setColor1(Color.fromARGB(255, 242, 247, 158));
-    set4 = BarDataSet(values4, "Company D");
-    set4.setColor1(Color.fromARGB(255, 255, 102, 0));
+    dataSet.setDrawIcons(false);
 
-    _barData = BarData(List()..add(set1)..add(set2)..add(set3)..add(set4));
-    _barData.setValueFormatter(LargeValueFormatter());
-//    _barData.setValueTypeface(tfLight);
+    dataSet.setSliceSpace(3);
+    dataSet.setIconsOffset(MPPointF(0, 40));
+    dataSet.setSelectionShift(5);
 
-    // specify the width each bar should have
-    _barData.setBarWidth(0.2);
+    // add a lot of colors
+
+    List<Color> colors = List();
+
+    for (Color c in ColorUtils.VORDIPLOM_COLORS) colors.add(c);
+
+    for (Color c in ColorUtils.JOYFUL_COLORS) colors.add(c);
+
+    for (Color c in ColorUtils.COLORFUL_COLORS) colors.add(c);
+
+    for (Color c in ColorUtils.LIBERTY_COLORS) colors.add(c);
+
+    for (Color c in ColorUtils.PASTEL_COLORS) colors.add(c);
+
+    colors.add(ColorUtils.HOLO_BLUE);
+
+    dataSet.setColors1(colors);
+    //dataSet.setSelectionShift(0f);
+
+    _pieData = PieData(dataSet);
+    _pieData.setValueFormatter(_formatter);
+    _pieData.setValueTextSize(11);
+    _pieData.setValueTextColor(ColorUtils.WHITE);
+//    data.setValueTypeface(tfLight);
   }
 
-  void _initBarChart() {
+  void _initPieChart() {
     var desc = Description();
     desc.setEnabled(false);
-    _barChart = BarChart(_barData, (painter) {
-      double groupSpace = 0.08;
-      double barSpace = 0.03; // x4 DataSet/ x4 DataSet
-      // (0.2 + 0.03) * 4 + 0.08 = 1.00 -> interval per "group"
+    _pieChart = PieChart(_pieData, (painter) {
+      _formatter.setPieChartPainter(painter);
 
       painter
-        ..groupBars(startYear.toDouble(), groupSpace, barSpace)
+        ..setCenterText(_generateCenterSpannableText())
+//            ..setCenterTextTypeface(tf)
+        ..setHoleColor(ColorUtils.WHITE)
+        ..setTransparentCircleColor(ColorUtils.WHITE)
+        ..setTransparentCircleAlpha(110)
+        ..setHoleRadius(58.0)
+        ..setTransparentCircleRadius(61)
+        ..setDrawCenterText(true)
+        ..setRotationAngle(0)
+        ..mHighLightPerTapEnabled = true
         ..setOnChartValueSelectedListener(this)
-        ..setDrawBarShadow(false);
-
-      painter.mXAxis
-//      ..setTypeface(tf)
-        ..setGranularity(1.0)
-        ..setCenterAxisLabels
-        ..setAxisMinimum(startYear.toDouble())
-        ..setAxisMaximum(startYear +
-            painter.getData().getGroupWidth(groupSpace, barSpace) * groupCount)
-        ..setValueFormatter(A());
-
-      ValueFormatter formatter = LargeValueFormatter();
-      painter.mAxisLeft
-//      ..setTypeface(tf)
-        ..setValueFormatter(formatter)
-        ..setDrawGridLines(false)
-        ..setSpaceTop(35)
-        ..setAxisMinimum(0);
-
-      painter.mAxisRight.setEnabled(false);
+        ..setEntryLabelColor(ColorUtils.WHITE)
+        ..setEntryLabelTextSize(12);
+//        ..highlightValues(null);
+//          ..setEntryLabelTypeface(tf)
 
       painter.mLegend
         ..setVerticalAlignment(LegendVerticalAlignment.TOP)
         ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
         ..setOrientation(LegendOrientation.VERTICAL)
         ..setDrawInside(false)
-//        ..setTypeface(tfLight)
-        ..setYOffset(0.0)
-        ..setXOffset(10)
+        ..setXEntrySpace(7)
         ..setYEntrySpace(0)
-        ..setTextSize(8);
+        ..setYOffset(0);
+
+      painter.mAnimator.animateY2(1400, Easing.EaseInOutQuad);
     },
+        rotateEnabled: true,
+        drawHole: true,
+        extraLeftOffset: 5,
+        extraTopOffset: 10,
+        extraRightOffset: 5,
+        extraBottomOffset: 5,
+        usePercentValues: true,
         touchEnabled: true,
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: false,
-        maxVisibleCount: 60,
+        dragDecelerationFrictionCoef: 0.95,
         desc: desc);
   }
 
@@ -231,11 +252,8 @@ class BarChartMultipleState extends State<BarChartMultiple>
 
   @override
   void onValueSelected(Entry e, Highlight h) {}
-}
 
-class A extends ValueFormatter {
-  @override
-  String getFormattedValue1(double value) {
-    return value.toInt().toString();
+  String _generateCenterSpannableText() {
+    return "basic pie chart";
   }
 }

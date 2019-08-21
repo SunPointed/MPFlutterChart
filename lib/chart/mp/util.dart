@@ -12,6 +12,10 @@ import 'package:vector_math/vector_math_64.dart';
 import 'package:mp_flutter_chart/chart/mp/poolable/size.dart';
 
 abstract class Utils {
+  static double DEG2RAD = pi / 180.0;
+
+  static double FLOAT_EPSILON = 1.4E-45;
+
   static void drawXAxisValue(
       Canvas c,
       String text,
@@ -301,6 +305,12 @@ abstract class Utils {
     final int shifted = (number * magnitude).round();
     return shifted / magnitude;
   }
+
+  static double getNormalizedAngle(double angle) {
+    while (angle < 0.0) angle += 360.0;
+
+    return angle % 360.0;
+  }
 }
 
 abstract class ColorUtils {
@@ -332,11 +342,39 @@ abstract class ColorUtils {
     ..add(Color.fromARGB(255, 140, 234, 255))
     ..add(Color.fromARGB(255, 255, 140, 157));
 
+  static final List<Color> JOYFUL_COLORS = List()
+    ..add(Color.fromARGB(255, 217, 80, 138))
+    ..add(Color.fromARGB(255, 254, 149, 7))
+    ..add(Color.fromARGB(255, 254, 247, 120))
+    ..add(Color.fromARGB(255, 106, 167, 134))
+    ..add(Color.fromARGB(255, 53, 194, 209));
+
   static final List<Color> MATERIAL_COLORS = List()
     ..add(Color(0xFF2ecc71))
     ..add(Color(0xFFf1c40f))
     ..add(Color(0xFFe74c3c))
     ..add(Color(0xFF3498db));
+
+  static final List<Color> COLORFUL_COLORS = List()
+    ..add(Color.fromARGB(255, 193, 37, 82))
+    ..add(Color.fromARGB(255, 255, 102, 0))
+    ..add(Color.fromARGB(255, 245, 199, 0))
+    ..add(Color.fromARGB(255, 106, 150, 31))
+    ..add(Color.fromARGB(255, 179, 100, 53));
+
+  static final List<Color> LIBERTY_COLORS = List()
+    ..add(Color.fromARGB(255, 207, 248, 246))
+    ..add(Color.fromARGB(255, 148, 212, 212))
+    ..add(Color.fromARGB(255, 136, 180, 187))
+    ..add(Color.fromARGB(255, 118, 174, 175))
+    ..add(Color.fromARGB(255, 42, 109, 130));
+
+  static final List<Color> PASTEL_COLORS = List()
+    ..add(Color.fromARGB(255, 64, 89, 128))
+    ..add(Color.fromARGB(255, 149, 165, 124))
+    ..add(Color.fromARGB(255, 217, 184, 162))
+    ..add(Color.fromARGB(255, 191, 134, 134))
+    ..add(Color.fromARGB(255, 179, 48, 80));
 }
 
 abstract class Matrix4Utils {
