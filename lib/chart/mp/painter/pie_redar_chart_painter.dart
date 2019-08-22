@@ -386,16 +386,16 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
    */
   int getIndexForAngle(double angle);
 
-//  /**
-//   * Set an offset for the rotation of the RadarChart in degrees. Default 270f
-//   * --> top (NORTH)
-//   *
-//   * @param angle
-//   */
-//  void setRotationAngle(double angle) {
-//    mRawRotationAngle = angle;
-//    mRotationAngle = Utils.getNormalizedAngle(mRawRotationAngle);
-//  }
+  /**
+   * Set an offset for the rotation of the RadarChart in degrees. Default 270f
+   * --> top (NORTH)
+   *
+   * @param angle
+   */
+  void setRotationAngle(double angle) {
+    mRawRotationAngle = angle;
+    mRotationAngle = Utils.getNormalizedAngle(mRawRotationAngle);
+  }
 
   /**
    * gets the raw version of the current rotation angle of the pie chart the

@@ -604,16 +604,16 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
 //    ((PieChartRenderer) mRenderer).getPaintCenterText().setTextSize(sizePixels);
 //  }
 
-//  /**
-//   * Sets the offset the center text should have from it's original position in dp. Default x = 0, y = 0
-//   *
-//   * @param x
-//   * @param y
-//   */
-//  public void setCenterTextOffset(float x, float y) {
-//    mCenterTextOffset.x = Utils.convertDpToPixel(x);
-//    mCenterTextOffset.y = Utils.convertDpToPixel(y);
-//  }
+  /**
+   * Sets the offset the center text should have from it's original position in dp. Default x = 0, y = 0
+   *
+   * @param x
+   * @param y
+   */
+  void setCenterTextOffset(double x, double y) {
+    mCenterTextOffset.x = Utils.convertDpToPixel(x);
+    mCenterTextOffset.y = Utils.convertDpToPixel(y);
+  }
 
   /**
    * Returns the offset on the x- and y-axis the center text has in dp.

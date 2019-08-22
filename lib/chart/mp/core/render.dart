@@ -4932,8 +4932,13 @@ class PieChartRenderer extends DataRenderer {
                   c, entryLabel, labelPtx, labelPty + lineHeight / 2.0);
             }
           } else if (drawYOutside) {
-            drawValue(c, formattedValue, labelPtx, labelPty + lineHeight / 2.0,
-                dataSet.getValueTextColor2(j));
+            drawValueByHeight(
+                c,
+                formattedValue,
+                labelPtx,
+                labelPty + lineHeight / 2.0,
+                dataSet.getValueTextColor2(j),
+                false);
           }
         }
 
@@ -4944,7 +4949,8 @@ class PieChartRenderer extends DataRenderer {
 
           // draw everything, depending on settings
           if (drawXInside && drawYInside) {
-            drawValue(c, formattedValue, x, y, dataSet.getValueTextColor2(j));
+            drawValueByHeight(
+                c, formattedValue, x, y, dataSet.getValueTextColor2(j), true);
 
             if (j < data.getEntryCount() && entryLabel != null) {
               drawEntryLabel(c, entryLabel, x, y + lineHeight);
@@ -4984,6 +4990,25 @@ class PieChartRenderer extends DataRenderer {
     c.restore();
   }
 
+  void drawValueByHeight(Canvas c, String valueText, double x, double y,
+      Color color, bool useHeight) {
+    mValuePaint = TextPainter(
+        textDirection: TextDirection.ltr,
+        textAlign: TextAlign.center,
+        text: TextSpan(
+            text: valueText,
+            style: TextStyle(
+                color: color,
+                fontSize: mValuePaint.text.style.fontSize == null
+                    ? Utils.convertDpToPixel(13)
+                    : mValuePaint.text.style.fontSize)));
+    mValuePaint.layout();
+    mValuePaint.paint(
+        c,
+        Offset(
+            x - mValuePaint.width / 2, useHeight ? y - mValuePaint.height : y));
+  }
+
   @override
   void drawValue(Canvas c, String valueText, double x, double y, Color color) {
     mValuePaint = TextPainter(
@@ -4998,7 +5023,7 @@ class PieChartRenderer extends DataRenderer {
                     : mValuePaint.text.style.fontSize)));
     mValuePaint.layout();
     mValuePaint.paint(
-        c, Offset(x - mValuePaint.width / 2, y));
+        c, Offset(x - mValuePaint.width / 2, y - mValuePaint.height));
   }
 
   /**
