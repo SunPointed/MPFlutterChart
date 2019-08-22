@@ -4998,7 +4998,7 @@ class PieChartRenderer extends DataRenderer {
                     : mValuePaint.text.style.fontSize)));
     mValuePaint.layout();
     mValuePaint.paint(
-        c, Offset(x - mValuePaint.width / 2, y - mValuePaint.height));
+        c, Offset(x - mValuePaint.width / 2, y));
   }
 
   /**

@@ -19,6 +19,7 @@ import 'package:mp_flutter_chart/demo/line_chart/invert_axis.dart';
 import 'package:mp_flutter_chart/demo/line_chart/multiple.dart';
 import 'package:mp_flutter_chart/demo/line_chart/performance.dart';
 import 'package:mp_flutter_chart/demo/pie_chart/basic.dart';
+import 'package:mp_flutter_chart/demo/pie_chart/value_lines.dart';
 import 'package:mp_flutter_chart/demo/res/styles.dart';
 
 void main() => runApp(MyApp());
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
         '/bar_chart/stacked2': (_) => BarChartStacked2(),
         '/bar_chart/sine': (_) => BarChartSine(),
         '/pie_chart/basic': (_) => PieChartBasic(),
-        '/pie_chart/value_lines': (_) => BarChartBasic2(),
+        '/pie_chart/value_lines': (_) => PieChartValueLines(),
         '/pie_chart/half_pie': (_) => BarChartBasic2(),
         '/other_chart/combined_chart': (_) => BarChartBasic2(),
         '/other_chart/scatter_plot': (_) => BarChartBasic2(),

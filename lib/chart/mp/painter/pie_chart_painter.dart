@@ -576,14 +576,14 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
     return MPPointF.getInstance1(mCircleBox.center.dx, mCircleBox.center.dy);
   }
 
-//  /**
-//   * sets the typeface for the center-text paint
-//   *
-//   * @param t
-//   */
-//  void setCenterTextTypeface(TextStyle t) {
+  /**
+   * sets the typeface for the center-text paint
+   *
+   * @param t
+   */
+  void setCenterTextTypeface(TextStyle t) {
 //    (mRenderer as PieChartRenderer).getPaintCenterText().setTypeface(t);
-//  }
+  }
 //
 //  /**
 //   * Sets the size of the center text of the PieChart in dp.
@@ -787,17 +787,17 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
     return mDrawRoundedSlices;
   }
 
-//
-//  /**
-//   * If this is enabled, values inside the PieChart are drawn in percent and
-//   * not with their original value. Values provided for the IValueFormatter to
-//   * format are then provided in percent.
-//   *
-//   * @param enabled
-//   */
-//  public void setUsePercentValues(boolean enabled) {
-//    mUsePercentValues = enabled;
-//  }
+
+  /**
+   * If this is enabled, values inside the PieChart are drawn in percent and
+   * not with their original value. Values provided for the IValueFormatter to
+   * format are then provided in percent.
+   *
+   * @param enabled
+   */
+  void setUsePercentValues(bool enabled) {
+    mUsePercentValues = enabled;
+  }
 
   /**
    * Returns true if using percentage values is enabled for the chart.
