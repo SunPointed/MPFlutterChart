@@ -216,7 +216,6 @@ class PieChartBasicState extends State<PieChartBasic>
         ..setHoleRadius(58.0)
         ..setTransparentCircleRadius(61)
         ..setDrawCenterText(true)
-        ..setRotationAngle(0)
         ..mHighLightPerTapEnabled = true
         ..setOnChartValueSelectedListener(this)
         ..setEntryLabelColor(ColorUtils.WHITE)

@@ -151,6 +151,20 @@ class PieChartState extends ChartState<PieChartPainter, PieChart> {
     painter.highlightValue6(_lastHighlighted, false);
   }
 
+  MPPointF _touchStartPoint = MPPointF.getInstance1(0, 0);
+  double _startAngle = 0.0;
+
+  void _setGestureStartAngle(double x, double y) {
+    _startAngle =
+        painter.getAngleForPoint(x, y) - painter.getRawRotationAngle();
+  }
+
+  void _updateGestureRotation(double x, double y) {
+    double angle = painter.getAngleForPoint(x, y) - _startAngle;
+    widget.rawRotationAngle = angle;
+    widget.rotationAngle = Utils.getNormalizedAngle(widget.rawRotationAngle);
+  }
+
   @override
   void onDoubleTap() {}
 
@@ -158,10 +172,19 @@ class PieChartState extends ChartState<PieChartPainter, PieChart> {
   void onScaleEnd(ScaleEndDetails detail) {}
 
   @override
-  void onScaleStart(ScaleStartDetails detail) {}
+  void onScaleStart(ScaleStartDetails detail) {
+    _setGestureStartAngle(detail.localFocalPoint.dx, detail.localFocalPoint.dy);
+    _touchStartPoint
+      ..x = detail.localFocalPoint.dx
+      ..y = detail.localFocalPoint.dy;
+  }
 
   @override
-  void onScaleUpdate(ScaleUpdateDetails detail) {}
+  void onScaleUpdate(ScaleUpdateDetails detail) {
+    _updateGestureRotation(
+        detail.localFocalPoint.dx, detail.localFocalPoint.dy);
+    setState(() {});
+  }
 
   @override
   void onSingleTapUp(TapUpDetails detail) {

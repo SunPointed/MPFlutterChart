@@ -5132,38 +5132,36 @@ class PieChartRenderer extends DataRenderer {
             mRectBuffer[1].bottom - dy);
       }
 
-      if (!(centerText == mCenterTextLastValue) ||
-          !(mRectBuffer[1] == mCenterTextLastBounds)) {
-        // Next time we won't recalculate StaticLayout...
-        mCenterTextLastBounds = Rect.fromLTRB(mRectBuffer[1].left,
-            mRectBuffer[1].top, mRectBuffer[1].right, mRectBuffer[1].bottom);
-        mCenterTextLastValue = centerText;
-
-        double width = mCenterTextLastBounds.width;
-
-        // If width is 0, it will crash. Always have a minimum of 1 todo
-//        mCenterTextLayout = new StaticLayout(centerText, 0, centerText.length(),
-//            mCenterTextPaint,
-//            (int) Math.max(Math.ceil(width), 1.f),
-//    Layout.Alignment.ALIGN_CENTER, 1.f, 0.0, false);
-      }
-
-      //double layoutWidth = Utils.getStaticLayoutMaxWidth(mCenterTextLayout);
-//      double layoutHeight = mCenterTextLayout.getHeight(); todo
-
-//      c.save();
-//      if (Build.VERSION.SDK_INT >= 18) {
-//        Path path = mDrawCenterTextPathBuffer;
-//        path.reset();
-//        path.addOval(holeRect, Path.Direction.CW);
-//        c.clipPath(path);
+//      if (!(centerText == mCenterTextLastValue) ||
+//          !(mRectBuffer[1] == mCenterTextLastBounds)) {
+//        // Next time we won't recalculate StaticLayout...
+//        mCenterTextLastBounds = Rect.fromLTRB(mRectBuffer[1].left,
+//            mRectBuffer[1].top, mRectBuffer[1].right, mRectBuffer[1].bottom);
+//        mCenterTextLastValue = centerText;
 //      }
 
-//      c.translate(mRectBuffer[1].left,
-//          mRectBuffer[1].top + (mRectBuffer[1].height() - layoutHeight) / 2.0);
-//      mCenterTextLayout.draw(c);
-//
-//      c.restore();
+      c.save();
+
+      mCenterTextPaint = TextPainter(
+          textDirection: TextDirection.ltr,
+          textAlign: TextAlign.center,
+          text: TextSpan(
+              text: centerText,
+              style: TextStyle(
+                  color: ColorUtils.BLACK,
+                  fontSize: Utils.convertDpToPixel(12))));
+      mCenterTextPaint.layout();
+      mCenterTextPaint.paint(
+          c,
+          Offset(
+              mRectBuffer[1].left +
+                  mRectBuffer[1].width / 2 -
+                  mCenterTextPaint.width / 2,
+              mRectBuffer[1].top +
+                  mRectBuffer[1].height / 2 -
+                  mCenterTextPaint.height / 2));
+
+      c.restore();
 
       MPPointF.recycleInstance(center);
       MPPointF.recycleInstance(offset);
