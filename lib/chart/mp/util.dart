@@ -314,6 +314,9 @@ abstract class Utils {
 }
 
 abstract class ColorUtils {
+  static final Color COLOR_SKIP = Color(0x00112234);
+  static final Color COLOR_NONE = Color(0x00112233);
+  static final Color DKGRAY = Color(0xFF444444);
   static final Color GRAY = Color(0xFF999999);
   static final Color YELLOW = Color(0xFFFFFF00);
   static final Color BLACK = Color(0xFF000000);

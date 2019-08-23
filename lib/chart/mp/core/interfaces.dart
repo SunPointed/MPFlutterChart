@@ -214,7 +214,7 @@ mixin IScatterDataSet on ILineScatterCandleRadarDataSet<Entry> {
    *
    * @return
    */
-  int getScatterShapeHoleColor();
+  Color getScatterShapeHoleColor();
 
   /**
    * Returns the IShapeRenderer responsible for rendering this DataSet.
@@ -414,42 +414,42 @@ mixin ICandleDataSet on ILineScatterCandleRadarDataSet<CandleEntry> {
    *
    * @return
    */
-  int getShadowColor();
+  Color getShadowColor();
 
   /**
    * Returns the neutral color (for open == close)
    *
    * @return
    */
-  int getNeutralColor();
+  Color getNeutralColor();
 
   /**
    * Returns the increasing color (for open < close).
    *
    * @return
    */
-  int getIncreasingColor();
+  Color getIncreasingColor();
 
   /**
    * Returns the decreasing color (for open > close).
    *
    * @return
    */
-  int getDecreasingColor();
+  Color getDecreasingColor();
 
   /**
    * Returns paint style when open < close
    *
    * @return
    */
-  TextStyle getIncreasingPaintStyle();
+  PaintingStyle getIncreasingPaintStyle();
 
   /**
    * Returns paint style when open > close
    *
    * @return
    */
-  TextStyle getDecreasingPaintStyle();
+  PaintingStyle getDecreasingPaintStyle();
 
   /**
    * Is the shadow color same as the candle color?
@@ -536,4 +536,20 @@ abstract class OnDrawListener {
    *            the last drawn DataSet
    */
   void onDrawFinished(DataSet<Entry> dataSet);
+}
+
+mixin BubbleDataProvider on BarLineScatterCandleBubbleDataProvider{
+  BubbleData getBubbleData();
+}
+
+mixin CandleDataProvider on BarLineScatterCandleBubbleDataProvider{
+  CandleData getCandleData();
+}
+
+mixin ScatterDataProvider on BarLineScatterCandleBubbleDataProvider{
+  ScatterData getScatterData();
+}
+
+abstract class CombinedDataProvider implements LineDataProvider, BarDataProvider, BubbleDataProvider, CandleDataProvider, ScatterDataProvider{
+  CombinedData getCombinedData();
 }

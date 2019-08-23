@@ -2,17 +2,19 @@ import 'dart:core';
 import 'dart:ui' as ui;
 
 import 'package:flutter/painting.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
+import 'package:mp_flutter_chart/chart/mp/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/color.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/format.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/range.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render.dart';
 import 'package:mp_flutter_chart/chart/mp/mode.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_chart_painter.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/scatter_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/util.dart';
 
 abstract class BaseEntry {
@@ -38,6 +40,11 @@ class Entry extends BaseEntry {
   Entry({double x, double y, ui.Image icon, Object data})
       : this.x = x,
         super(y: y, icon: icon, data: data);
+
+  Entry copy() {
+    Entry e = Entry(x: x, y: y, data: mData);
+    return e;
+  }
 }
 
 class BarEntry extends Entry {
@@ -73,7 +80,7 @@ class BarEntry extends Entry {
   }
 
   BarEntry copy() {
-    BarEntry copied = new BarEntry(x: x, y: y, data: mData);
+    BarEntry copied = BarEntry(x: x, y: y, data: mData);
     copied.setVals(mYVals);
     return copied;
   }
@@ -207,6 +214,24 @@ class BarEntry extends Entry {
   }
 }
 
+class RadarEntry extends Entry {
+  RadarEntry({double value, Object data}) : super(x: 0, y: value, data: data);
+
+  /**
+   * This is the same as getY(). Returns the value of the RadarEntry.
+   *
+   * @return
+   */
+  double getValue() {
+    return y;
+  }
+
+  RadarEntry copy() {
+    RadarEntry e = RadarEntry(value: y, data: mData);
+    return e;
+  }
+}
+
 class BubbleEntry extends Entry {
   /** size value */
   double mSize = 0;
@@ -224,7 +249,7 @@ class BubbleEntry extends Entry {
   }
 
   BubbleEntry copy() {
-    BubbleEntry c = new BubbleEntry(x: x, y: y, size: mSize, data: mData);
+    BubbleEntry c = BubbleEntry(x: x, y: y, size: mSize, data: mData);
     return c;
   }
 
@@ -366,7 +391,7 @@ class PieEntry extends Entry {
   }
 
   PieEntry copy() {
-    PieEntry e = new PieEntry(value: getValue(), label: label, data: mData);
+    PieEntry e = PieEntry(value: getValue(), label: label, data: mData);
     return e;
   }
 }
@@ -720,7 +745,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   }
 
   /**
-   * Adds a new color to the colors array of the DataSet.
+   * Adds a  color to the colors array of the DataSet.
    *
    * @param color
    */
@@ -1063,7 +1088,7 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
   double mXMin = double.maxFinite;
 
   /**
-   * Creates a new DataSet object with the given values (entries) it represents. Also, a
+   * Creates a  DataSet object with the given values (entries) it represents. Also, a
    * label that describes the DataSet can be specified. The label can also be
    * used to retrieve the DataSet from a ChartData object.
    *
@@ -1174,7 +1199,7 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
   @override
   String toString() {
-    StringBuffer buffer = new StringBuffer();
+    StringBuffer buffer = StringBuffer();
     buffer.write(toSimpleString());
     for (int i = 0; i < mValues.length; i++) {
       buffer.write(mValues[i].toString() + " ");
@@ -1189,7 +1214,7 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
    * @return
    */
   String toSimpleString() {
-    StringBuffer buffer = new StringBuffer();
+    StringBuffer buffer = StringBuffer();
     buffer.write("DataSet, label: " +
         (getLabel() == null ? "" : getLabel()) +
         ", entries:${mValues.length}\n");
@@ -1489,7 +1514,7 @@ class ChartData<T extends IDataSet<Entry>> {
       set.calcMinMaxY(fromX, toX);
     }
 
-    // apply the new data
+    // apply the  data
     calcMinMax1();
   }
 
@@ -2500,7 +2525,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     for (int i = 0; i < mValues.length; i++) {
       entries.add(mValues[i].copy());
     }
-    PieDataSet copied = new PieDataSet(entries, getLabel());
+    PieDataSet copied = PieDataSet(entries, getLabel());
     copy(copied);
     return copied;
   }
@@ -2747,7 +2772,7 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
    * @param phase offset, in degrees (normally, use 0)
    */
 //   void enableDashedHighlightLine(double lineLength, double spaceLength, double phase) {
-//    mHighlightDashPathEffect = new DashPathEffect(new double[] {
+//    mHighlightDashPathEffect =  DashPathEffect( double[] {
 //    lineLength, spaceLength
 //    }, phase);
 //  }
@@ -2944,7 +2969,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   /**
    * formatter for customizing the position of the fill-line
    */
-  IFillFormatter mFillFormatter = new DefaultFillFormatter();
+  IFillFormatter mFillFormatter = DefaultFillFormatter();
 
   /**
    * if true, drawing circles is enabled
@@ -2978,7 +3003,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
           icon: mValues[i].mIcon,
           data: mValues[i].mData));
     }
-    LineDataSet copied = new LineDataSet(entries, getLabel());
+    LineDataSet copied = LineDataSet(entries, getLabel());
     copy(copied);
     return copied;
   }
@@ -3107,7 +3132,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
    * @param phase       offset, in degrees (normally, use 0)
    */
 //  void enableDashedLine(double lineLength, double spaceLength, double phase) {
-//    mDashPathEffect = new DashPathEffect(new double[]{
+//    mDashPathEffect =  DashPathEffect( double[]{
 //    lineLength, spaceLength
 //    }, phase);
 //  }
@@ -3200,7 +3225,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   }
 
   /**
-   * resets the circle-colors array and creates a new one
+   * resets the circle-colors array and creates a  one
    */
   void resetCircleColors() {
     if (mCircleColors == null) {
@@ -3245,7 +3270,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
    */
   void setFillFormatter(IFillFormatter formatter) {
     if (formatter == null)
-      mFillFormatter = new DefaultFillFormatter();
+      mFillFormatter = DefaultFillFormatter();
     else
       mFillFormatter = formatter;
   }
@@ -3315,5 +3340,722 @@ class PieData extends ChartData<IPieDataSet> {
     for (int i = 0; i < getDataSet().getEntryCount(); i++)
       sum += getDataSet().getEntryForIndex(i).getValue();
     return sum;
+  }
+}
+
+class ScatterData extends BarLineScatterCandleBubbleData<IScatterDataSet> {
+  ScatterData() : super();
+
+  ScatterData.fromList(List<IScatterDataSet> dataSets)
+      : super.fromList(dataSets);
+
+  /**
+   * Returns the maximum shape-size across all DataSets.
+   *
+   * @return
+   */
+  double getGreatestShapeSize() {
+    double max = 0;
+
+    for (IScatterDataSet set in mDataSets) {
+      double size = set.getScatterShapeSize();
+
+      if (size > max) max = size;
+    }
+
+    return max;
+  }
+}
+
+class CandleData extends BarLineScatterCandleBubbleData<ICandleDataSet> {
+  CandleData() : super();
+
+  CandleData.fromList(List<ICandleDataSet> dataSets) : super.fromList(dataSets);
+}
+
+class BubbleData extends BarLineScatterCandleBubbleData<IBubbleDataSet> {
+  BubbleData() : super();
+
+  BubbleData.fromList(List<IBubbleDataSet> dataSets) : super.fromList(dataSets);
+
+  /**
+   * Sets the width of the circle that surrounds the bubble when highlighted
+   * for all DataSet objects this data object contains, in dp.
+   *
+   * @param width
+   */
+  void setHighlightCircleWidth(double width) {
+    for (IBubbleDataSet set in mDataSets) {
+      set.setHighlightCircleWidth(width);
+    }
+  }
+}
+
+class CombinedData extends BarLineScatterCandleBubbleData<
+    IBarLineScatterCandleBubbleDataSet<Entry>> {
+  LineData mLineData;
+  BarData mBarData;
+  ScatterData mScatterData;
+  CandleData mCandleData;
+  BubbleData mBubbleData;
+
+  CombinedData() : super();
+
+  void setData1(LineData data) {
+    mLineData = data;
+    notifyDataChanged();
+  }
+
+  void setData2(BarData data) {
+    mBarData = data;
+    notifyDataChanged();
+  }
+
+  void setData3(ScatterData data) {
+    mScatterData = data;
+    notifyDataChanged();
+  }
+
+  void setData4(CandleData data) {
+    mCandleData = data;
+    notifyDataChanged();
+  }
+
+  void setData5(BubbleData data) {
+    mBubbleData = data;
+    notifyDataChanged();
+  }
+
+  @override
+  void calcMinMax1() {
+    if (mDataSets == null) {
+      mDataSets = List();
+    }
+    mDataSets.clear();
+
+    mYMax = -double.maxFinite;
+    mYMin = double.maxFinite;
+    mXMax = -double.maxFinite;
+    mXMin = double.maxFinite;
+
+    mLeftAxisMax = -double.maxFinite;
+    mLeftAxisMin = double.maxFinite;
+    mRightAxisMax = -double.maxFinite;
+    mRightAxisMin = double.maxFinite;
+
+    List<BarLineScatterCandleBubbleData> allData = getAllData();
+
+    for (ChartData data in allData) {
+      data.calcMinMax1();
+
+      List<IBarLineScatterCandleBubbleDataSet<Entry>> sets = data.getDataSets();
+      mDataSets.addAll(sets);
+
+      if (data.getYMax1() > mYMax) mYMax = data.getYMax1();
+
+      if (data.getYMin1() < mYMin) mYMin = data.getYMin1();
+
+      if (data.getXMax() > mXMax) mXMax = data.getXMax();
+
+      if (data.getXMin() < mXMin) mXMin = data.getXMin();
+
+      if (data.mLeftAxisMax > mLeftAxisMax) mLeftAxisMax = data.mLeftAxisMax;
+
+      if (data.mLeftAxisMin < mLeftAxisMin) mLeftAxisMin = data.mLeftAxisMin;
+
+      if (data.mRightAxisMax > mRightAxisMax)
+        mRightAxisMax = data.mRightAxisMax;
+
+      if (data.mRightAxisMin < mRightAxisMin)
+        mRightAxisMin = data.mRightAxisMin;
+    }
+  }
+
+  BubbleData getBubbleData() {
+    return mBubbleData;
+  }
+
+  LineData getLineData() {
+    return mLineData;
+  }
+
+  BarData getBarData() {
+    return mBarData;
+  }
+
+  ScatterData getScatterData() {
+    return mScatterData;
+  }
+
+  CandleData getCandleData() {
+    return mCandleData;
+  }
+
+  /**
+   * Returns all data objects in row: line-bar-scatter-candle-bubble if not null.
+   *
+   * @return
+   */
+  List<BarLineScatterCandleBubbleData> getAllData() {
+    List<BarLineScatterCandleBubbleData> data =
+        List<BarLineScatterCandleBubbleData>();
+    if (mLineData != null) data.add(mLineData);
+    if (mBarData != null) data.add(mBarData);
+    if (mScatterData != null) data.add(mScatterData);
+    if (mCandleData != null) data.add(mCandleData);
+    if (mBubbleData != null) data.add(mBubbleData);
+
+    return data;
+  }
+
+  BarLineScatterCandleBubbleData getDataByIndex(int index) {
+    return getAllData()[index];
+  }
+
+  @override
+  void notifyDataChanged() {
+    if (mLineData != null) mLineData.notifyDataChanged();
+    if (mBarData != null) mBarData.notifyDataChanged();
+    if (mCandleData != null) mCandleData.notifyDataChanged();
+    if (mScatterData != null) mScatterData.notifyDataChanged();
+    if (mBubbleData != null) mBubbleData.notifyDataChanged();
+
+    calcMinMax1(); // recalculate everything
+  }
+
+  /**
+   * Get the Entry for a corresponding highlight object
+   *
+   * @param highlight
+   * @return the entry that is highlighted
+   */
+  @override
+  Entry getEntryForHighlight(Highlight highlight) {
+    if (highlight.getDataIndex() >= getAllData().length) return null;
+
+    ChartData data = getDataByIndex(highlight.getDataIndex());
+
+    if (highlight.getDataSetIndex() >= data.getDataSetCount()) return null;
+
+    // The value of the highlighted entry could be NaN -
+    //   if we are not interested in highlighting a specific value.
+
+    List<Entry> entries = data
+        .getDataSetByIndex(highlight.getDataSetIndex())
+        .getEntriesForXValue(highlight.getX());
+    for (Entry entry in entries)
+      if (entry.y == highlight.getY() || highlight.getY().isNaN) return entry;
+
+    return null;
+  }
+
+  /**
+   * Get dataset for highlight
+   *
+   * @param highlight current highlight
+   * @return dataset related to highlight
+   */
+  IBarLineScatterCandleBubbleDataSet<Entry> getDataSetByHighlight(
+      Highlight highlight) {
+    if (highlight.getDataIndex() >= getAllData().length) return null;
+
+    BarLineScatterCandleBubbleData data =
+        getDataByIndex(highlight.getDataIndex());
+
+    if (highlight.getDataSetIndex() >= data.getDataSetCount()) return null;
+
+    return data.getDataSets()[highlight.getDataSetIndex()];
+  }
+
+  int getDataIndex(ChartData data) {
+    return getAllData().indexOf(data);
+  }
+
+  @override
+  bool removeDataSet1(IBarLineScatterCandleBubbleDataSet<Entry> d) {
+    List<BarLineScatterCandleBubbleData> datas = getAllData();
+    bool success = false;
+    for (ChartData data in datas) {
+      success = data.removeDataSet1(d);
+      if (success) {
+        break;
+      }
+    }
+    return success;
+  }
+}
+
+class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
+    implements IScatterDataSet {
+  /**
+   * the size the scattershape will have, in density pixels
+   */
+  double mShapeSize = 15;
+
+  /**
+   * Renderer responsible for rendering this DataSet, default: square
+   */
+  IShapeRenderer mShapeRenderer = SquareShapeRenderer();
+
+  /**
+   * The radius of the hole in the shape (applies to Square, Circle and Triangle)
+   * - default: 0.0
+   */
+  double mScatterShapeHoleRadius = 0;
+
+  /**
+   * Color for the hole in the shape.
+   * Setting to `ColorUtils.COLOR_NONE` will behave as transparent.
+   * - default: ColorUtils.COLOR_NONE
+   */
+  Color mScatterShapeHoleColor = ColorUtils.COLOR_NONE;
+
+  ScatterDataSet(List<Entry> yVals, String label) : super(yVals, label);
+
+  @override
+  DataSet<Entry> copy1() {
+    List<Entry> entries = List<Entry>();
+    for (int i = 0; i < mValues.length; i++) {
+      entries.add(mValues[i].copy());
+    }
+    ScatterDataSet copied = ScatterDataSet(entries, getLabel());
+    copy(copied);
+    return copied;
+  }
+
+  @override
+  void copy(BaseDataSet baseDataSet) {
+    super.copy(baseDataSet);
+    if (baseDataSet is ScatterDataSet) {
+      var scatterDataSet = baseDataSet as ScatterDataSet;
+      scatterDataSet.mShapeSize = mShapeSize;
+      scatterDataSet.mShapeRenderer = mShapeRenderer;
+      scatterDataSet.mScatterShapeHoleRadius = mScatterShapeHoleRadius;
+      scatterDataSet.mScatterShapeHoleColor = mScatterShapeHoleColor;
+    }
+  }
+
+  /**
+   * Sets the size in density pixels the drawn scattershape will have. This
+   * only applies for non custom shapes.
+   *
+   * @param size
+   */
+  void setScatterShapeSize(double size) {
+    mShapeSize = size;
+  }
+
+  @override
+  double getScatterShapeSize() {
+    return mShapeSize;
+  }
+
+  /**
+   * Sets the ScatterShape this DataSet should be drawn with. This will search for an available IShapeRenderer and set this
+   * renderer for the DataSet.
+   *
+   * @param shape
+   */
+  void setScatterShape(ScatterShape shape) {
+    mShapeRenderer = getRendererForShape(shape);
+  }
+
+  /**
+   * Sets a  IShapeRenderer responsible for drawing this DataSet.
+   * This can also be used to set a custom IShapeRenderer aside from the default ones.
+   *
+   * @param shapeRenderer
+   */
+  void setShapeRenderer(IShapeRenderer shapeRenderer) {
+    mShapeRenderer = shapeRenderer;
+  }
+
+  @override
+  IShapeRenderer getShapeRenderer() {
+    return mShapeRenderer;
+  }
+
+  /**
+   * Sets the radius of the hole in the shape (applies to Square, Circle and Triangle)
+   * Set this to <= 0 to remove holes.
+   *
+   * @param holeRadius
+   */
+  void setScatterShapeHoleRadius(double holeRadius) {
+    mScatterShapeHoleRadius = holeRadius;
+  }
+
+  @override
+  double getScatterShapeHoleRadius() {
+    return mScatterShapeHoleRadius;
+  }
+
+  /**
+   * Sets the color for the hole in the shape.
+   *
+   * @param holeColor
+   */
+  void setScatterShapeHoleColor(Color holeColor) {
+    mScatterShapeHoleColor = holeColor;
+  }
+
+  @override
+  Color getScatterShapeHoleColor() {
+    return mScatterShapeHoleColor;
+  }
+
+  static IShapeRenderer getRendererForShape(ScatterShape shape) {
+    switch (shape) {
+      case ScatterShape.SQUARE:
+        return SquareShapeRenderer();
+      case ScatterShape.CIRCLE:
+        return CircleShapeRenderer();
+      case ScatterShape.TRIANGLE:
+        return TriangleShapeRenderer();
+      case ScatterShape.CROSS:
+        return CrossShapeRenderer();
+      case ScatterShape.X:
+        return XShapeRenderer();
+      case ScatterShape.CHEVRON_UP:
+        return ChevronUpShapeRenderer();
+      case ScatterShape.CHEVRON_DOWN:
+        return ChevronDownShapeRenderer();
+    }
+
+    return null;
+  }
+}
+
+class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
+    implements ICandleDataSet {
+  /**
+   * the width of the shadow of the candle
+   */
+  double mShadowWidth = 3;
+
+  /**
+   * should the candle bars show?
+   * when false, only "ticks" will show
+   * <p/>
+   * - default: true
+   */
+  bool mShowCandleBar = true;
+
+  /**
+   * the space between the candle entries, default 0.1f (10%)
+   */
+  double mBarSpace = 0.1;
+
+  /**
+   * use candle color for the shadow
+   */
+  bool mShadowColorSameAsCandle = false;
+
+  /**
+   * paint style when open < close
+   * increasing candlesticks are traditionally hollow
+   */
+  PaintingStyle mIncreasingPaintStyle = PaintingStyle.stroke;
+
+  /**
+   * paint style when open > close
+   * descreasing candlesticks are traditionally filled
+   */
+  PaintingStyle mDecreasingPaintStyle = PaintingStyle.fill;
+
+  /**
+   * color for open == close
+   */
+  Color mNeutralColor = ColorUtils.COLOR_SKIP;
+
+  /**
+   * color for open < close
+   */
+  Color mIncreasingColor = ColorUtils.COLOR_SKIP;
+
+  /**
+   * color for open > close
+   */
+  Color mDecreasingColor = ColorUtils.COLOR_SKIP;
+
+  /**
+   * shadow line color, set -1 for backward compatibility and uses default
+   * color
+   */
+  Color mShadowColor = ColorUtils.COLOR_SKIP;
+
+  CandleDataSet(List<CandleEntry> yVals, String label) : super(yVals, label);
+
+  @override
+  DataSet<CandleEntry> copy1() {
+    List<CandleEntry> entries = List<CandleEntry>();
+    for (int i = 0; i < mValues.length; i++) {
+      entries.add(mValues[i].copy());
+    }
+    CandleDataSet copied = CandleDataSet(entries, getLabel());
+    copy(copied);
+    return copied;
+  }
+
+  void copy(BaseDataSet baseDataSet) {
+    super.copy(baseDataSet);
+    if (baseDataSet is CandleDataSet) {
+      var candleDataSet = baseDataSet as CandleDataSet;
+      candleDataSet.mShadowWidth = mShadowWidth;
+      candleDataSet.mShowCandleBar = mShowCandleBar;
+      candleDataSet.mBarSpace = mBarSpace;
+      candleDataSet.mShadowColorSameAsCandle = mShadowColorSameAsCandle;
+      candleDataSet.mHighLightColor = mHighLightColor;
+      candleDataSet.mIncreasingPaintStyle = mIncreasingPaintStyle;
+      candleDataSet.mDecreasingPaintStyle = mDecreasingPaintStyle;
+      candleDataSet.mNeutralColor = mNeutralColor;
+      candleDataSet.mIncreasingColor = mIncreasingColor;
+      candleDataSet.mDecreasingColor = mDecreasingColor;
+      candleDataSet.mShadowColor = mShadowColor;
+    }
+  }
+
+  @override
+  void calcMinMax1(CandleEntry e) {
+    if (e.getLow() < mYMin) mYMin = e.getLow();
+
+    if (e.getHigh() > mYMax) mYMax = e.getHigh();
+
+    calcMinMaxX1(e);
+  }
+
+  @override
+  void calcMinMaxY1(CandleEntry e) {
+    if (e.getHigh() < mYMin) mYMin = e.getHigh();
+
+    if (e.getHigh() > mYMax) mYMax = e.getHigh();
+
+    if (e.getLow() < mYMin) mYMin = e.getLow();
+
+    if (e.getLow() > mYMax) mYMax = e.getLow();
+  }
+
+  /**
+   * Sets the space that is left out on the left and right side of each
+   * candle, default 0.1f (10%), max 0.45f, min 0f
+   *
+   * @param space
+   */
+  void setBarSpace(double space) {
+    if (space < 0) space = 0;
+    if (space > 0.45) space = 0.45;
+
+    mBarSpace = space;
+  }
+
+  @override
+  double getBarSpace() {
+    return mBarSpace;
+  }
+
+  /**
+   * Sets the width of the candle-shadow-line in pixels. Default 3f.
+   *
+   * @param width
+   */
+  void setShadowWidth(double width) {
+    mShadowWidth = Utils.convertDpToPixel(width);
+  }
+
+  @override
+  double getShadowWidth() {
+    return mShadowWidth;
+  }
+
+  /**
+   * Sets whether the candle bars should show?
+   *
+   * @param showCandleBar
+   */
+  void setShowCandleBar(bool showCandleBar) {
+    mShowCandleBar = showCandleBar;
+  }
+
+  @override
+  bool getShowCandleBar() {
+    return mShowCandleBar;
+  }
+
+  // TODO
+  /**
+   * It is necessary to implement ColorsList class that will encapsulate
+   * colors list functionality, because It's wrong to copy paste setColor,
+   * addColor, ... resetColors for each time when we want to add a coloring
+   * options for one of objects
+   *
+   * @author Mesrop
+   */
+
+  /** BELOW THIS COLOR HANDLING */
+
+  /**
+   * Sets the one and ONLY color that should be used for this DataSet when
+   * open == close.
+   *
+   * @param color
+   */
+  void setNeutralColor(Color color) {
+    mNeutralColor = color;
+  }
+
+  @override
+  Color getNeutralColor() {
+    return mNeutralColor;
+  }
+
+  /**
+   * Sets the one and ONLY color that should be used for this DataSet when
+   * open <= close.
+   *
+   * @param color
+   */
+  void setIncreasingColor(Color color) {
+    mIncreasingColor = color;
+  }
+
+  @override
+  Color getIncreasingColor() {
+    return mIncreasingColor;
+  }
+
+  /**
+   * Sets the one and ONLY color that should be used for this DataSet when
+   * open > close.
+   *
+   * @param color
+   */
+  void setDecreasingColor(Color color) {
+    mDecreasingColor = color;
+  }
+
+  @override
+  Color getDecreasingColor() {
+    return mDecreasingColor;
+  }
+
+  @override
+  PaintingStyle getIncreasingPaintStyle() {
+    return mIncreasingPaintStyle;
+  }
+
+  /**
+   * Sets paint style when open < close
+   *
+   * @param paintStyle
+   */
+  void setIncreasingPaintStyle(PaintingStyle paintStyle) {
+    this.mIncreasingPaintStyle = paintStyle;
+  }
+
+  @override
+  PaintingStyle getDecreasingPaintStyle() {
+    return mDecreasingPaintStyle;
+  }
+
+  /**
+   * Sets paint style when open > close
+   *
+   * @param decreasingPaintStyle
+   */
+  void setDecreasingPaintStyle(PaintingStyle decreasingPaintStyle) {
+    this.mDecreasingPaintStyle = decreasingPaintStyle;
+  }
+
+  @override
+  Color getShadowColor() {
+    return mShadowColor;
+  }
+
+  /**
+   * Sets shadow color for all entries
+   *
+   * @param shadowColor
+   */
+  void setShadowColor(Color shadowColor) {
+    this.mShadowColor = shadowColor;
+  }
+
+  @override
+  bool getShadowColorSameAsCandle() {
+    return mShadowColorSameAsCandle;
+  }
+
+  /**
+   * Sets shadow color to be the same color as the candle color
+   *
+   * @param shadowColorSameAsCandle
+   */
+  void setShadowColorSameAsCandle(bool shadowColorSameAsCandle) {
+    this.mShadowColorSameAsCandle = shadowColorSameAsCandle;
+  }
+}
+
+class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry>
+    implements IBubbleDataSet {
+  double mMaxSize = 0.0;
+  bool mNormalizeSize = true;
+
+  double mHighlightCircleWidth = 2.5;
+
+  BubbleDataSet(List<BubbleEntry> yVals, String label) : super(yVals, label);
+
+  @override
+  void setHighlightCircleWidth(double width) {
+    mHighlightCircleWidth = Utils.convertDpToPixel(width);
+  }
+
+  @override
+  double getHighlightCircleWidth() {
+    return mHighlightCircleWidth;
+  }
+
+  @override
+  void calcMinMax1(BubbleEntry e) {
+    super.calcMinMax1(e);
+
+    final double size = e.getSize();
+
+    if (size > mMaxSize) {
+      mMaxSize = size;
+    }
+  }
+
+  @override
+  DataSet<BubbleEntry> copy1() {
+    List<BubbleEntry> entries = List<BubbleEntry>();
+    for (int i = 0; i < mValues.length; i++) {
+      entries.add(mValues[i].copy());
+    }
+    BubbleDataSet copied = BubbleDataSet(entries, getLabel());
+    copy(copied);
+    return copied;
+  }
+
+  void copy(BaseDataSet baseDataSet) {
+    super.copy(baseDataSet);
+    if (baseDataSet is BubbleDataSet) {
+      var bubbleDataSet = baseDataSet as BubbleDataSet;
+      bubbleDataSet.mHighlightCircleWidth = mHighlightCircleWidth;
+      bubbleDataSet.mNormalizeSize = mNormalizeSize;
+    }
+  }
+
+  @override
+  double getMaxSize() {
+    return mMaxSize;
+  }
+
+  @override
+  bool isNormalizeSizeEnabled() {
+    return mNormalizeSize;
+  }
+
+  void setNormalizeSizeEnabled(bool normalizeSize) {
+    mNormalizeSize = normalizeSize;
   }
 }

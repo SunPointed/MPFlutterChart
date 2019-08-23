@@ -41,18 +41,18 @@ abstract class ValueFormatter {
   String getPieLabel(double value, PieEntry pieEntry) {
     return getFormattedValue1(value);
   }
-//
-//  String getRadarLabel(RadarEntry radarEntry) {
-//    return getFormattedValue(radarEntry.getY());
-//  }
-//
-//  String getBubbleLabel(BubbleEntry bubbleEntry) {
-//    return getFormattedValue(bubbleEntry.getSize());
-//  }
-//
-//  String getCandleLabel(CandleEntry candleEntry) {
-//    return getFormattedValue(candleEntry.getHigh());
-//  }
+
+  String getRadarLabel(RadarEntry radarEntry) {
+    return getFormattedValue1(radarEntry.getValue());
+  }
+
+  String getBubbleLabel(BubbleEntry bubbleEntry) {
+    return getFormattedValue1(bubbleEntry.getSize());
+  }
+
+  String getCandleLabel(CandleEntry candleEntry) {
+    return getFormattedValue1(candleEntry.getHigh());
+  }
 }
 
 class DefaultAxisValueFormatter extends ValueFormatter {
