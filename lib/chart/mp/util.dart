@@ -311,9 +311,16 @@ abstract class Utils {
 
     return angle % 360.0;
   }
+
+  static void getPosition(
+      MPPointF center, double dist, double angle, MPPointF outputPoint) {
+    outputPoint.x = (center.x + dist * cos((angle / 180 * pi)));
+    outputPoint.y = (center.y + dist * sin((angle / 180 * pi)));
+  }
 }
 
 abstract class ColorUtils {
+  static final Color BLUE = Color(0xFF0000FF);
   static final Color COLOR_SKIP = Color(0x00112234);
   static final Color COLOR_NONE = Color(0x00112233);
   static final Color DKGRAY = Color(0xFF444444);
@@ -378,6 +385,11 @@ abstract class ColorUtils {
     ..add(Color.fromARGB(255, 217, 184, 162))
     ..add(Color.fromARGB(255, 191, 134, 134))
     ..add(Color.fromARGB(255, 179, 48, 80));
+
+  static Color colorWithAlpha(Color strokeColor, int alpha) {
+    return Color.fromARGB(
+        alpha, strokeColor.red, strokeColor.green, strokeColor.blue);
+  }
 }
 
 abstract class Matrix4Utils {

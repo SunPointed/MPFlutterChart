@@ -383,6 +383,28 @@ mixin ILineDataSet on ILineRadarDataSet<Entry> {
   IFillFormatter getFillFormatter();
 }
 
+mixin IRadarDataSet on ILineRadarDataSet<RadarEntry>{
+  /// flag indicating whether highlight circle should be drawn or not
+  bool isDrawHighlightCircleEnabled();
+
+  /// Sets whether highlight circle should be drawn or not
+  void setDrawHighlightCircleEnabled(bool enabled);
+
+  Color getHighlightCircleFillColor();
+
+  /// The stroke color for highlight circle.
+  /// If Utils.COLOR_NONE, the color of the dataset is taken.
+  Color getHighlightCircleStrokeColor();
+
+  int getHighlightCircleStrokeAlpha();
+
+  double getHighlightCircleInnerRadius();
+
+  double getHighlightCircleOuterRadius();
+
+  double getHighlightCircleStrokeWidth();
+}
+
 mixin ICandleDataSet on ILineScatterCandleRadarDataSet<CandleEntry> {
   /**
    * Returns the space that is left out on the left and right side of each

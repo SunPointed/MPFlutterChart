@@ -18,7 +18,10 @@ import 'package:mp_flutter_chart/demo/line_chart/filled.dart';
 import 'package:mp_flutter_chart/demo/line_chart/invert_axis.dart';
 import 'package:mp_flutter_chart/demo/line_chart/multiple.dart';
 import 'package:mp_flutter_chart/demo/line_chart/performance.dart';
+import 'package:mp_flutter_chart/demo/other_chart/bubble.dart';
+import 'package:mp_flutter_chart/demo/other_chart/candlestick.dart';
 import 'package:mp_flutter_chart/demo/other_chart/combined.dart';
+import 'package:mp_flutter_chart/demo/other_chart/radar.dart';
 import 'package:mp_flutter_chart/demo/other_chart/scatter_plot.dart';
 import 'package:mp_flutter_chart/demo/pie_chart/basic.dart';
 import 'package:mp_flutter_chart/demo/pie_chart/half_pie.dart';
@@ -68,9 +71,9 @@ class MyApp extends StatelessWidget {
         '/pie_chart/half_pie': (_) => PieChartHalfPie(),
         '/other_chart/combined_chart': (_) => OtherChartCombined(),
         '/other_chart/scatter_plot': (_) => OtherChartScatterPlot(),
-        '/other_chart/bubble_chart': (_) => BarChartBasic2(),
-        '/other_chart/candlestick': (_) => BarChartBasic2(),
-        '/other_chart/redar_chart': (_) => BarChartBasic2(),
+        '/other_chart/bubble_chart': (_) => OtherChartBubble(),
+        '/other_chart/candlestick': (_) => OtherChartCandlestick(),
+        '/other_chart/redar_chart': (_) => OtherChartRadar(),
         '/scrolling_chart/multiple': (_) => BarChartBasic2(),
         '/scrolling_chart/view_pager': (_) => BarChartBasic2(),
         '/scrolling_chart/tall_bar_chart': (_) => BarChartBasic2(),

@@ -22,6 +22,7 @@ import 'package:mp_flutter_chart/chart/mp/mode.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/combined_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_chart_painter.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/radar_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/poolable/size.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer.dart';
@@ -134,9 +135,7 @@ class LegendRenderer extends Renderer {
 
           for (int j = 0; j < clrs.length && j < entryCount; j++) {
             computedEntries.add(LegendEntry(
-                pds
-                    .getEntryForIndex(j)
-                    .label,
+                pds.getEntryForIndex(j).label,
                 dataSet.getForm(),
                 dataSet.getFormSize(),
                 dataSet.getFormLineWidth(),
@@ -158,9 +157,9 @@ class LegendRenderer extends Renderer {
             (dataSet as ICandleDataSet).getDecreasingColor() !=
                 ColorTemplate.COLOR_NONE) {
           Color decreasingColor =
-          (dataSet as ICandleDataSet).getDecreasingColor();
+              (dataSet as ICandleDataSet).getDecreasingColor();
           Color increasingColor =
-          (dataSet as ICandleDataSet).getIncreasingColor();
+              (dataSet as ICandleDataSet).getIncreasingColor();
 
           computedEntries.add(LegendEntry(
               null,
@@ -243,11 +242,11 @@ class LegendRenderer extends Renderer {
     List<LegendEntry> entries = mLegend.getEntries();
 
     double formToTextSpace =
-    Utils.convertDpToPixel(mLegend.getFormToTextSpace());
+        Utils.convertDpToPixel(mLegend.getFormToTextSpace());
     double xEntrySpace = Utils.convertDpToPixel(mLegend.getXEntrySpace());
     LegendOrientation orientation = mLegend.getOrientation();
     LegendHorizontalAlignment horizontalAlignment =
-    mLegend.getHorizontalAlignment();
+        mLegend.getHorizontalAlignment();
     LegendVerticalAlignment verticalAlignment = mLegend.getVerticalAlignment();
     LegendDirection direction = mLegend.getDirection();
     double defaultFormSize = Utils.convertDpToPixel(mLegend.getFormSize());
@@ -290,7 +289,7 @@ class LegendRenderer extends Renderer {
               mViewPortHandler.contentWidth() / 2;
 
         originPosX +=
-        (direction == LegendDirection.LEFT_TO_RIGHT ? xoffset : -xoffset);
+            (direction == LegendDirection.LEFT_TO_RIGHT ? xoffset : -xoffset);
 
         // Horizontally layed out legends do the center offset on a line basis,
         // So here we offset the vertical ones only.
@@ -309,7 +308,7 @@ class LegendRenderer extends Renderer {
           List<FSize> calculatedLineSizes = mLegend.getCalculatedLineSizes();
           List<FSize> calculatedLabelSizes = mLegend.getCalculatedLabelSizes();
           List<bool> calculatedLabelBreakPoints =
-          mLegend.getCalculatedLabelBreakPoints();
+              mLegend.getCalculatedLabelBreakPoints();
 
           double posX = originPosX;
           double posY = 0;
@@ -328,7 +327,7 @@ class LegendRenderer extends Renderer {
             case LegendVerticalAlignment.CENTER:
               posY =
                   (mViewPortHandler.getChartHeight() - mLegend.mNeededHeight) /
-                      2 +
+                          2 +
                       yoffset;
               break;
           }
@@ -352,8 +351,8 @@ class LegendRenderer extends Renderer {
                 horizontalAlignment == LegendHorizontalAlignment.CENTER &&
                 lineIndex < calculatedLineSizes.length) {
               posX += (direction == LegendDirection.RIGHT_TO_LEFT
-                  ? calculatedLineSizes[lineIndex].width
-                  : -calculatedLineSizes[lineIndex].width) /
+                      ? calculatedLineSizes[lineIndex].width
+                      : -calculatedLineSizes[lineIndex].width) /
                   2;
               lineIndex++;
             }
@@ -485,8 +484,8 @@ class LegendRenderer extends Renderer {
    * @param entry  the entry to render
    * @param legend the legend context
    */
-  void drawForm(Canvas c, double x, double y, LegendEntry entry,
-      Legend legend) {
+  void drawForm(
+      Canvas c, double x, double y, LegendEntry entry, Legend legend) {
     if (entry.formColor == ColorTemplate.COLOR_SKIP ||
         entry.formColor == ColorTemplate.COLOR_NONE) return;
 
@@ -501,11 +500,11 @@ class LegendRenderer extends Renderer {
 
     switch (form) {
       case LegendForm.NONE:
-      // Do nothing
+        // Do nothing
         break;
 
       case LegendForm.EMPTY:
-      // Do not draw, but keep space for the form
+        // Do not draw, but keep space for the form
         break;
 
       case LegendForm.DEFAULT:
@@ -649,8 +648,8 @@ abstract class DataRenderer extends Renderer {
         text: TextSpan(
             style: set.getValueTypeface() == null
                 ? TextStyle(
-                color: Color.fromARGB(255, 63, 63, 63),
-                fontSize: Utils.convertDpToPixel(9))
+                    color: Color.fromARGB(255, 63, 63, 63),
+                    fontSize: Utils.convertDpToPixel(9))
                 : set.getValueTypeface()),
         textDirection: TextDirection.ltr,
         textAlign: TextAlign.center);
@@ -731,8 +730,8 @@ abstract class AxisRenderer extends Renderer {
    */
   Paint mLimitLinePaint;
 
-  AxisRenderer(ViewPortHandler viewPortHandler, Transformer trans,
-      AxisBase axis)
+  AxisRenderer(
+      ViewPortHandler viewPortHandler, Transformer trans, AxisBase axis)
       : super(viewPortHandler) {
     this.mTrans = trans;
     this.mAxis = axis;
@@ -853,11 +852,11 @@ abstract class AxisRenderer extends Renderer {
     // This is used to avoid repeated values when rounding values for display.
     if (mAxis.isGranularityEnabled())
       interval =
-      interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
+          interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
 
     // Normalize interval
     double intervalMagnitude =
-    Utils.roundToNextSignificant(pow(10.0, log(interval) ~/ ln10));
+        Utils.roundToNextSignificant(pow(10.0, log(interval) ~/ ln10));
     int intervalSigDigit = interval ~/ intervalMagnitude;
     if (intervalSigDigit > 5) {
       // Use one order of magnitude higher, to avoid intervals like 0.9 or
@@ -889,7 +888,7 @@ abstract class AxisRenderer extends Renderer {
       // no forced count
     } else {
       double first =
-      interval == 0.0 ? 0.0 : (yMin / interval).ceil() * interval;
+          interval == 0.0 ? 0.0 : (yMin / interval).ceil() * interval;
       if (mAxis.isCenterAxisLabelsEnabled()) {
         first -= interval;
       }
@@ -1088,11 +1087,13 @@ class YAxisRenderer extends AxisRenderer {
    * @param fixedPosition
    * @param positions
    */
-  void drawYLabels(Canvas c,
-      double fixedPosition,
-      List<double> positions,
-      AxisDependency axisDependency,
-      YAxisLabelPosition position,) {
+  void drawYLabels(
+    Canvas c,
+    double fixedPosition,
+    List<double> positions,
+    AxisDependency axisDependency,
+    YAxisLabelPosition position,
+  ) {
     final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
     final int to = mYAxis.isDrawTopYLabelEntryEnabled()
         ? mYAxis.mEntryCount
@@ -1171,18 +1172,10 @@ class YAxisRenderer extends AxisRenderer {
 
   Rect getGridClippingRect() {
     mGridClippingRect = Rect.fromLTRB(
-        mViewPortHandler
-            .getContentRect()
-            .left,
-        mViewPortHandler
-            .getContentRect()
-            .top,
-        mViewPortHandler
-            .getContentRect()
-            .right + mAxis.getGridLineWidth(),
-        mViewPortHandler
-            .getContentRect()
-            .bottom + mAxis.getGridLineWidth());
+        mViewPortHandler.getContentRect().left,
+        mViewPortHandler.getContentRect().top,
+        mViewPortHandler.getContentRect().right + mAxis.getGridLineWidth(),
+        mViewPortHandler.getContentRect().bottom + mAxis.getGridLineWidth());
     return mGridClippingRect;
   }
 
@@ -1234,18 +1227,10 @@ class YAxisRenderer extends AxisRenderer {
   void drawZeroLine(Canvas c) {
     c.save();
     mZeroLineClippingRect = Rect.fromLTRB(
-        mViewPortHandler
-            .getContentRect()
-            .left,
-        mViewPortHandler
-            .getContentRect()
-            .top,
-        mViewPortHandler
-            .getContentRect()
-            .right + mYAxis.getZeroLineWidth(),
-        mViewPortHandler
-            .getContentRect()
-            .bottom + mYAxis.getZeroLineWidth());
+        mViewPortHandler.getContentRect().left,
+        mViewPortHandler.getContentRect().top,
+        mViewPortHandler.getContentRect().right + mYAxis.getZeroLineWidth(),
+        mViewPortHandler.getContentRect().bottom + mYAxis.getZeroLineWidth());
     c.clipRect(mZeroLineClippingRect);
 
     // draw zero line
@@ -1295,18 +1280,10 @@ class YAxisRenderer extends AxisRenderer {
 
       c.save();
       mLimitLineClippingRect = Rect.fromLTRB(
-          mViewPortHandler
-              .getContentRect()
-              .left,
-          mViewPortHandler
-              .getContentRect()
-              .top,
-          mViewPortHandler
-              .getContentRect()
-              .right + l.getLineWidth(),
-          mViewPortHandler
-              .getContentRect()
-              .bottom + l.getLineWidth());
+          mViewPortHandler.getContentRect().left,
+          mViewPortHandler.getContentRect().top,
+          mViewPortHandler.getContentRect().right + l.getLineWidth(),
+          mViewPortHandler.getContentRect().bottom + l.getLineWidth());
       c.clipRect(mLimitLineClippingRect);
 
       mLimitLinePaint
@@ -1337,7 +1314,7 @@ class YAxisRenderer extends AxisRenderer {
             textAlign: TextAlign.center);
 
         final double labelLineHeight =
-        Utils.calcTextHeight(painter, label).toDouble();
+            Utils.calcTextHeight(painter, label).toDouble();
         double xOffset = Utils.convertDpToPixel(4) + l.getXOffset();
         double yOffset = l.getLineWidth() + labelLineHeight + l.getYOffset();
 
@@ -1473,7 +1450,7 @@ class XAxisRenderer extends AxisRenderer {
 
     final double labelWidth = labelSize.width;
     final double labelHeight =
-    Utils.calcTextHeight(mAxisLabelPaint, "Q").toDouble();
+        Utils.calcTextHeight(mAxisLabelPaint, "Q").toDouble();
 
     final FSize labelRotatedSize = Utils.getSizeOfRotatedRectangleByDegrees(
         labelWidth, labelHeight, mXAxis.getLabelRotationAngle());
@@ -1567,8 +1544,8 @@ class XAxisRenderer extends AxisRenderer {
    *
    * @param pos
    */
-  void drawLabels(Canvas c, double pos, MPPointF anchor,
-      XAxisPosition position) {
+  void drawLabels(
+      Canvas c, double pos, MPPointF anchor, XAxisPosition position) {
     final double labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
     bool centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
 
@@ -1598,7 +1575,7 @@ class XAxisRenderer extends AxisRenderer {
           // avoid clipping of the last
           if (i / 2 == mXAxis.mEntryCount - 1 && mXAxis.mEntryCount > 1) {
             double width =
-            Utils.calcTextWidth(mAxisLabelPaint, label).toDouble();
+                Utils.calcTextWidth(mAxisLabelPaint, label).toDouble();
 
             if (width > mViewPortHandler.offsetRight() * 2 &&
                 x + width > mViewPortHandler.getChartWidth()) x -= width / 2;
@@ -1606,34 +1583,21 @@ class XAxisRenderer extends AxisRenderer {
             // avoid clipping of the first
           } else if (i == 0) {
             double width =
-            Utils.calcTextWidth(mAxisLabelPaint, label).toDouble();
+                Utils.calcTextWidth(mAxisLabelPaint, label).toDouble();
             x += width / 2;
           }
         }
 
         drawLabel(
-            c,
-            label,
-            x,
-            pos,
-            anchor,
-            labelRotationAngleDegrees,
-            position);
+            c, label, x, pos, anchor, labelRotationAngleDegrees, position);
       }
     }
   }
 
   void drawLabel(Canvas c, String formattedLabel, double x, double y,
       MPPointF anchor, double angleDegrees, XAxisPosition position) {
-    Utils.drawXAxisValue(
-        c,
-        formattedLabel,
-        x,
-        y,
-        mAxisLabelPaint,
-        anchor,
-        angleDegrees,
-        position);
+    Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor,
+        angleDegrees, position);
   }
 
   Path mRenderGridLinesPath = Path();
@@ -1673,18 +1637,10 @@ class XAxisRenderer extends AxisRenderer {
 
   Rect getGridClippingRect() {
     mGridClippingRect = Rect.fromLTRB(
-        mViewPortHandler
-            .getContentRect()
-            .left - mAxis.getGridLineWidth(),
-        mViewPortHandler
-            .getContentRect()
-            .top - mAxis.getGridLineWidth(),
-        mViewPortHandler
-            .getContentRect()
-            .right,
-        mViewPortHandler
-            .getContentRect()
-            .bottom);
+        mViewPortHandler.getContentRect().left - mAxis.getGridLineWidth(),
+        mViewPortHandler.getContentRect().top - mAxis.getGridLineWidth(),
+        mViewPortHandler.getContentRect().right,
+        mViewPortHandler.getContentRect().bottom);
     return mGridClippingRect;
   }
 
@@ -1731,18 +1687,10 @@ class XAxisRenderer extends AxisRenderer {
 
       c.save();
       mLimitLineClippingRect = Rect.fromLTRB(
-          mViewPortHandler
-              .getContentRect()
-              .left - l.getLineWidth(),
-          mViewPortHandler
-              .getContentRect()
-              .top - l.getLineWidth(),
-          mViewPortHandler
-              .getContentRect()
-              .right,
-          mViewPortHandler
-              .getContentRect()
-              .bottom);
+          mViewPortHandler.getContentRect().left - l.getLineWidth(),
+          mViewPortHandler.getContentRect().top - l.getLineWidth(),
+          mViewPortHandler.getContentRect().right,
+          mViewPortHandler.getContentRect().bottom);
       c.clipRect(mLimitLineClippingRect);
 
       position[0] = l.getLimit();
@@ -1760,8 +1708,8 @@ class XAxisRenderer extends AxisRenderer {
   List<double> mLimitLineSegmentsBuffer = List(4);
   Path mLimitLinePath = Path();
 
-  void renderLimitLineLine(Canvas c, LimitLine limitLine,
-      List<double> position) {
+  void renderLimitLineLine(
+      Canvas c, LimitLine limitLine, List<double> position) {
     mLimitLineSegmentsBuffer[0] = position[0];
     mLimitLineSegmentsBuffer[1] = mViewPortHandler.contentTop();
     mLimitLineSegmentsBuffer[2] = position[0];
@@ -1781,8 +1729,8 @@ class XAxisRenderer extends AxisRenderer {
     c.drawPath(mLimitLinePath, mLimitLinePaint);
   }
 
-  void renderLimitLineLabel(Canvas c, LimitLine limitLine,
-      List<double> position, double yOffset) {
+  void renderLimitLineLabel(
+      Canvas c, LimitLine limitLine, List<double> position, double yOffset) {
     String label = limitLine.getLabel();
 
     // if drawing the limit-value label is enabled
@@ -1801,7 +1749,7 @@ class XAxisRenderer extends AxisRenderer {
 
       if (labelPosition == LimitLabelPosition.RIGHT_TOP) {
         final double labelLineHeight =
-        Utils.calcTextHeight(painter, label).toDouble();
+            Utils.calcTextHeight(painter, label).toDouble();
         painter.textAlign = TextAlign.left;
         painter.layout();
         painter.paint(
@@ -1818,7 +1766,7 @@ class XAxisRenderer extends AxisRenderer {
       } else if (labelPosition == LimitLabelPosition.LEFT_TOP) {
         painter.textAlign = TextAlign.right;
         final double labelLineHeight =
-        Utils.calcTextHeight(painter, label).toDouble();
+            Utils.calcTextHeight(painter, label).toDouble();
         painter.layout();
         painter.paint(
             c,
@@ -1842,8 +1790,8 @@ abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
    */
   XBounds mXBounds;
 
-  BarLineScatterCandleBubbleRenderer(ChartAnimator animator,
-      ViewPortHandler viewPortHandler)
+  BarLineScatterCandleBubbleRenderer(
+      ChartAnimator animator, ViewPortHandler viewPortHandler)
       : super(animator, viewPortHandler) {
     mXBounds = XBounds(mAnimator);
   }
@@ -1887,8 +1835,8 @@ abstract class LineScatterCandleRadarRenderer
    */
   Path mHighlightLinePath = Path();
 
-  LineScatterCandleRadarRenderer(ChartAnimator animator,
-      ViewPortHandler viewPortHandler)
+  LineScatterCandleRadarRenderer(
+      ChartAnimator animator, ViewPortHandler viewPortHandler)
       : super(animator, viewPortHandler);
 
   /**
@@ -1899,8 +1847,8 @@ abstract class LineScatterCandleRadarRenderer
    * @param y y-position of the highlight line intersection
    * @param set the currently drawn dataset
    */
-  void drawHighlightLines(Canvas c, double x, double y,
-      ILineScatterCandleRadarDataSet set) {
+  void drawHighlightLines(
+      Canvas c, double x, double y, ILineScatterCandleRadarDataSet set) {
     // set color and stroke-width
     mHighlightPaint
       ..color = set.getHighLightColor()
@@ -1970,8 +1918,8 @@ abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
    * @param fillColor
    * @param fillAlpha
    */
-  void drawFilledPath2(Canvas c, Path filledPath, int fillColor,
-      int fillAlpha) {
+  void drawFilledPath2(
+      Canvas c, Path filledPath, int fillColor, int fillAlpha) {
     int color = (fillAlpha << 24) | (fillColor & 0xffffff);
 
     if (clipPathSupported()) {
@@ -2274,16 +2222,12 @@ class LineChartRenderer extends LineRadarRenderer {
   void drawCubicFill(Canvas c, ILineDataSet dataSet, Path spline,
       Transformer trans, XBounds bounds) {
     double fillMin =
-    dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart);
+        dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart);
 
     List<double> list = List();
-    list.add(dataSet
-        .getEntryForIndex(bounds.min + bounds.range)
-        .x);
+    list.add(dataSet.getEntryForIndex(bounds.min + bounds.range).x);
     list.add(fillMin);
-    list.add(dataSet
-        .getEntryForIndex(bounds.min)
-        .x);
+    list.add(dataSet.getEntryForIndex(bounds.min).x);
     list.add(fillMin);
 
     trans.pointValuesToPixel(list);
@@ -2298,9 +2242,7 @@ class LineChartRenderer extends LineRadarRenderer {
 //    } else {
 
     drawFilledPath2(
-        c, spline, dataSet
-        .getFillColor()
-        .value, dataSet.getFillAlpha());
+        c, spline, dataSet.getFillColor().value, dataSet.getFillAlpha());
 
 //    }
   }
@@ -2342,9 +2284,7 @@ class LineChartRenderer extends LineRadarRenderer {
     }
 
     // more than 1 color
-    if (dataSet
-        .getColors()
-        .length > 1) {
+    if (dataSet.getColors().length > 1) {
       if (mLineBuffer.length <= pointsPerEntryPair * 2)
         mLineBuffer = List(pointsPerEntryPair * 4);
 
@@ -2430,7 +2370,7 @@ class LineChartRenderer extends LineRadarRenderer {
           trans.pointValuesToPixel(mLineBuffer);
 
           final int size = max((mXBounds.range + 1) * pointsPerEntryPair,
-              pointsPerEntryPair) *
+                  pointsPerEntryPair) *
               2;
 
           mRenderPaint..color = dataSet.getColor1();
@@ -2453,8 +2393,8 @@ class LineChartRenderer extends LineRadarRenderer {
    * @param trans
    * @param bounds
    */
-  void drawLinearFill(Canvas c, ILineDataSet dataSet, Transformer trans,
-      XBounds bounds) {
+  void drawLinearFill(
+      Canvas c, ILineDataSet dataSet, Transformer trans, XBounds bounds) {
     final Path filled = mGenerateFilledPathBuffer;
 
     final int startingIndex = bounds.min;
@@ -2470,7 +2410,7 @@ class LineChartRenderer extends LineRadarRenderer {
       currentStartIndex = startingIndex + (iterations * indexInterval);
       currentEndIndex = currentStartIndex + indexInterval;
       currentEndIndex =
-      currentEndIndex > endingIndex ? endingIndex : currentEndIndex;
+          currentEndIndex > endingIndex ? endingIndex : currentEndIndex;
 
       if (currentStartIndex <= currentEndIndex) {
         generateFilledPath(
@@ -2485,9 +2425,7 @@ class LineChartRenderer extends LineRadarRenderer {
 //        } else {
 
         drawFilledPath2(
-            c, filled, dataSet
-            .getFillColor()
-            .value, dataSet.getFillAlpha());
+            c, filled, dataSet.getFillColor().value, dataSet.getFillAlpha());
 //        }
       }
 
@@ -2507,7 +2445,7 @@ class LineChartRenderer extends LineRadarRenderer {
   void generateFilledPath(final ILineDataSet dataSet, final int startIndex,
       final int endIndex, final Path outputPath, final Transformer trans) {
     final double fillMin =
-    dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart);
+        dataSet.getFillFormatter().getFillLinePosition(dataSet, mChart);
     final double phaseY = mAnimator.getPhaseY();
     final bool isDrawSteppedEnabled = dataSet.getMode() == Mode.STEPPED;
 
@@ -2958,10 +2896,10 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
       double x;
 
       for (int i = 0,
-          count = min((((dataSet.getEntryCount()) * phaseX).ceil()),
-              dataSet.getEntryCount());
-      i < count;
-      i++) {
+              count = min((((dataSet.getEntryCount()) * phaseX).ceil()),
+                  dataSet.getEntryCount());
+          i < count;
+          i++) {
         BarEntry e = dataSet.getEntryForIndex(i);
 
         x = e.x;
@@ -2997,9 +2935,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
     trans.pointValuesToPixel(buffer.buffer);
 
-    final bool isSingleColor = dataSet
-        .getColors()
-        .length == 1;
+    final bool isSingleColor = dataSet.getColors().length == 1;
 
     if (isSingleColor) {
       mRenderPaint..color = dataSet.getColor1();
@@ -3021,31 +2957,29 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         mRenderPaint
           ..shader = (LinearGradient(
-              colors: List()
-                ..add(gradientColor.startColor)..add(gradientColor.endColor),
-              tileMode: TileMode.mirror))
+                  colors: List()
+                    ..add(gradientColor.startColor)
+                    ..add(gradientColor.endColor),
+                  tileMode: TileMode.mirror))
               .createShader(Rect.fromLTRB(
-              buffer.buffer[j],
-              buffer.buffer[j + 3],
-              buffer.buffer[j],
-              buffer.buffer[j + 1]));
+                  buffer.buffer[j],
+                  buffer.buffer[j + 3],
+                  buffer.buffer[j],
+                  buffer.buffer[j + 1]));
       }
 
       if (dataSet.getGradientColors() != null) {
         mRenderPaint
           ..shader = (LinearGradient(
-              colors: List()
-                ..add(dataSet
-                    .getGradientColor2(j ~/ 4)
-                    .startColor)..add(dataSet
-                    .getGradientColor2(j ~/ 4)
-                    .endColor),
-              tileMode: TileMode.mirror))
+                  colors: List()
+                    ..add(dataSet.getGradientColor2(j ~/ 4).startColor)
+                    ..add(dataSet.getGradientColor2(j ~/ 4).endColor),
+                  tileMode: TileMode.mirror))
               .createShader(Rect.fromLTRB(
-              buffer.buffer[j],
-              buffer.buffer[j + 3],
-              buffer.buffer[j],
-              buffer.buffer[j + 1]));
+                  buffer.buffer[j],
+                  buffer.buffer[j + 3],
+                  buffer.buffer[j],
+                  buffer.buffer[j + 1]));
       }
 
       c.drawRect(
@@ -3064,8 +2998,8 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
   Rect mBarShadowRectBuffer = Rect.zero;
 
-  void prepareBarHighlight(double x, double y1, double y2, double barWidthHalf,
-      Transformer trans) {
+  void prepareBarHighlight(
+      double x, double y1, double y2, double barWidthHalf, Transformer trans) {
     double left = x - barWidthHalf;
     double right = x + barWidthHalf;
     double top = y1;
@@ -3099,7 +3033,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
         // calculate the correct offset depending on the draw position of
         // the value
         double valueTextHeight =
-        Utils.calcTextHeight(mValuePaint, "8").toDouble();
+            Utils.calcTextHeight(mValuePaint, "8").toDouble();
         posOffset = (drawValueAboveBar
             ? -valueOffsetPlus
             : valueTextHeight + valueOffsetPlus);
@@ -3126,8 +3060,8 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
         // if only single values are drawn (sum)
         if (!dataSet.isStacked()) {
           for (int j = 0;
-          j < buffer.buffer.length * mAnimator.getPhaseX();
-          j += 4) {
+              j < buffer.buffer.length * mAnimator.getPhaseX();
+              j += 4) {
             double x = (buffer.buffer[j] + buffer.buffer[j + 2]) / 2.0;
 
             if (!mViewPortHandler.isInBoundsRight(x)) break;
@@ -3173,7 +3107,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
           // if we have stacks
         } else {
           Transformer trans =
-          mChart.getTransformer(dataSet.getAxisDependency());
+              mChart.getTransformer(dataSet.getAxisDependency());
 
           int bufferIndex = 0;
           int index = 0;
@@ -3194,7 +3128,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
               if (!mViewPortHandler.isInBoundsRight(x)) break;
 
               if (!mViewPortHandler
-                  .isInBoundsY(buffer.buffer[bufferIndex + 1]) ||
+                      .isInBoundsY(buffer.buffer[bufferIndex + 1]) ||
                   !mViewPortHandler.isInBoundsLeft(x)) continue;
 
               if (dataSet.isDrawValuesEnabled()) {
@@ -3285,7 +3219,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
             }
 
             bufferIndex =
-            vals == null ? bufferIndex + 4 : bufferIndex + 4 * vals.length;
+                vals == null ? bufferIndex + 4 : bufferIndex + 4 * vals.length;
             index++;
           }
         }
@@ -3332,7 +3266,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
           set.getHighLightAlpha(), color.red, color.green, color.blue);
 
       bool isStack =
-      (high.getStackIndex() >= 0 && e.isStacked()) ? true : false;
+          (high.getStackIndex() >= 0 && e.isStacked()) ? true : false;
 
       double y1;
       double y2;
@@ -3372,8 +3306,8 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 }
 
 class XAxisRendererHorizontalBarChart extends XAxisRenderer {
-  XAxisRendererHorizontalBarChart(ViewPortHandler viewPortHandler, XAxis xAxis,
-      Transformer trans)
+  XAxisRendererHorizontalBarChart(
+      ViewPortHandler viewPortHandler, XAxis xAxis, Transformer trans)
       : super(viewPortHandler, xAxis, trans);
 
   @override
@@ -3410,20 +3344,16 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
         text: TextSpan(
             style: TextStyle(
                 fontSize: mXAxis.getTextSize(),
-                color: mXAxis
-                    .getTypeface()
-                    ?.color == null
+                color: mXAxis.getTypeface()?.color == null
                     ? ColorUtils.HOLO_GREEN_DARK
-                    : mXAxis
-                    .getTypeface()
-                    ?.color)));
+                    : mXAxis.getTypeface()?.color)));
 
     String longest = mXAxis.getLongestLabel();
 
     final FSize labelSize = Utils.calcTextSize1(mAxisLabelPaint, longest);
 
     final double labelWidth =
-    (labelSize.width + mXAxis.getXOffset() * 3.5).toInt().toDouble();
+        (labelSize.width + mXAxis.getXOffset() * 3.5).toInt().toDouble();
     final double labelHeight = labelSize.height;
 
     final FSize labelRotatedSize = Utils.getSizeOfRotatedRectangleByDegrees(
@@ -3489,8 +3419,8 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
   }
 
   @override
-  void drawLabels(Canvas c, double pos, MPPointF anchor,
-      XAxisPosition position) {
+  void drawLabels(
+      Canvas c, double pos, MPPointF anchor, XAxisPosition position) {
     final double labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
     bool centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
 
@@ -3514,15 +3444,8 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
         String label = mXAxis
             .getValueFormatter()
             .getAxisLabel(mXAxis.mEntries[i ~/ 2], mXAxis);
-        Utils.drawXAxisValueHorizontal(
-            c,
-            label,
-            pos,
-            y,
-            mAxisLabelPaint,
-            anchor,
-            labelRotationAngleDegrees,
-            position);
+        Utils.drawXAxisValueHorizontal(c, label, pos, y, mAxisLabelPaint,
+            anchor, labelRotationAngleDegrees, position);
       }
     }
   }
@@ -3530,18 +3453,10 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
   @override
   Rect getGridClippingRect() {
     mGridClippingRect = Rect.fromLTRB(
-        mViewPortHandler
-            .getContentRect()
-            .left,
-        mViewPortHandler
-            .getContentRect()
-            .top,
-        mViewPortHandler
-            .getContentRect()
-            .right + mAxis.getGridLineWidth(),
-        mViewPortHandler
-            .getContentRect()
-            .bottom + mAxis.getGridLineWidth());
+        mViewPortHandler.getContentRect().left,
+        mViewPortHandler.getContentRect().top,
+        mViewPortHandler.getContentRect().right + mAxis.getGridLineWidth(),
+        mViewPortHandler.getContentRect().bottom + mAxis.getGridLineWidth());
     return mGridClippingRect;
   }
 
@@ -3614,18 +3529,10 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 
       c.save();
       mLimitLineClippingRect = Rect.fromLTRB(
-          mViewPortHandler
-              .getContentRect()
-              .left,
-          mViewPortHandler
-              .getContentRect()
-              .top,
-          mViewPortHandler
-              .getContentRect()
-              .right + l.getLineWidth(),
-          mViewPortHandler
-              .getContentRect()
-              .bottom + l.getLineWidth());
+          mViewPortHandler.getContentRect().left,
+          mViewPortHandler.getContentRect().top,
+          mViewPortHandler.getContentRect().right + l.getLineWidth(),
+          mViewPortHandler.getContentRect().bottom + l.getLineWidth());
       c.clipRect(mLimitLineClippingRect);
 
       mLimitLinePaint
@@ -3650,7 +3557,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
       // if drawing the limit-value label is enabled
       if (label != null && label.isNotEmpty) {
         final double labelLineHeight =
-        Utils.calcTextHeight(mAxisLabelPaint, label).toDouble();
+            Utils.calcTextHeight(mAxisLabelPaint, label).toDouble();
         double xOffset = Utils.convertDpToPixel(4) + l.getXOffset();
         double yOffset = l.getLineWidth() + labelLineHeight + l.getYOffset();
 
@@ -3717,8 +3624,8 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 }
 
 class YAxisRendererHorizontalBarChart extends YAxisRenderer {
-  YAxisRendererHorizontalBarChart(ViewPortHandler viewPortHandler, YAxis yAxis,
-      Transformer trans)
+  YAxisRendererHorizontalBarChart(
+      ViewPortHandler viewPortHandler, YAxis yAxis, Transformer trans)
       : super(viewPortHandler, yAxis, trans);
 
   /**
@@ -3891,18 +3798,10 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
   @override
   Rect getGridClippingRect() {
     mGridClippingRect = Rect.fromLTRB(
-        mViewPortHandler
-            .getContentRect()
-            .left - mAxis.getGridLineWidth(),
-        mViewPortHandler
-            .getContentRect()
-            .top - mAxis.getGridLineWidth(),
-        mViewPortHandler
-            .getContentRect()
-            .right,
-        mViewPortHandler
-            .getContentRect()
-            .bottom);
+        mViewPortHandler.getContentRect().left - mAxis.getGridLineWidth(),
+        mViewPortHandler.getContentRect().top - mAxis.getGridLineWidth(),
+        mViewPortHandler.getContentRect().right,
+        mViewPortHandler.getContentRect().bottom);
     return mGridClippingRect;
   }
 
@@ -3919,18 +3818,10 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
   void drawZeroLine(Canvas c) {
     c.save();
     mZeroLineClippingRect = Rect.fromLTRB(
-        mViewPortHandler
-            .getContentRect()
-            .left - mYAxis.getZeroLineWidth(),
-        mViewPortHandler
-            .getContentRect()
-            .top - mYAxis.getZeroLineWidth(),
-        mViewPortHandler
-            .getContentRect()
-            .right,
-        mViewPortHandler
-            .getContentRect()
-            .bottom);
+        mViewPortHandler.getContentRect().left - mYAxis.getZeroLineWidth(),
+        mViewPortHandler.getContentRect().top - mYAxis.getZeroLineWidth(),
+        mViewPortHandler.getContentRect().right,
+        mViewPortHandler.getContentRect().bottom);
     c.clipRect(mLimitLineClippingRect);
 
     // draw zero line
@@ -3982,18 +3873,10 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
       c.save();
       mLimitLineClippingRect = Rect.fromLTRB(
-          mViewPortHandler
-              .getContentRect()
-              .left - l.getLineWidth(),
-          mViewPortHandler
-              .getContentRect()
-              .top - l.getLineWidth(),
-          mViewPortHandler
-              .getContentRect()
-              .right,
-          mViewPortHandler
-              .getContentRect()
-              .bottom);
+          mViewPortHandler.getContentRect().left - l.getLineWidth(),
+          mViewPortHandler.getContentRect().top - l.getLineWidth(),
+          mViewPortHandler.getContentRect().right,
+          mViewPortHandler.getContentRect().bottom);
       c.clipRect(mLimitLineClippingRect);
 
       pts[0] = l.getLimit();
@@ -4038,7 +3921,7 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
         if (position == LimitLabelPosition.RIGHT_TOP) {
           final double labelLineHeight =
-          Utils.calcTextHeight(mAxisLabelPaint, label).toDouble();
+              Utils.calcTextHeight(mAxisLabelPaint, label).toDouble();
           mAxisLabelPaint.paint(c,
               Offset(pts[0], mViewPortHandler.contentTop() + labelLineHeight));
         } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
@@ -4046,7 +3929,7 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
               c, Offset(pts[0], mViewPortHandler.contentBottom()));
         } else if (position == LimitLabelPosition.LEFT_TOP) {
           final double labelLineHeight =
-          Utils.calcTextHeight(mAxisLabelPaint, label).toDouble();
+              Utils.calcTextHeight(mAxisLabelPaint, label).toDouble();
           mAxisLabelPaint.paint(c,
               Offset(pts[0], mViewPortHandler.contentTop() + labelLineHeight));
         } else {
@@ -4105,10 +3988,10 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
       double x;
 
       for (int i = 0,
-          count = min(((dataSet.getEntryCount()) * phaseX).ceil(),
-              dataSet.getEntryCount());
-      i < count;
-      i++) {
+              count = min(((dataSet.getEntryCount()) * phaseX).ceil(),
+                  dataSet.getEntryCount());
+          i < count;
+          i++) {
         BarEntry e = dataSet.getEntryForIndex(i);
 
         x = e.x;
@@ -4144,9 +4027,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
     trans.pointValuesToPixel(buffer.buffer);
 
-    final bool isSingleColor = dataSet
-        .getColors()
-        .length == 1;
+    final bool isSingleColor = dataSet.getColors().length == 1;
 
     if (isSingleColor) {
       mRenderPaint..color = dataSet.getColor1();
@@ -4213,8 +4094,8 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
       // if only single values are drawn (sum)
       if (!dataSet.isStacked()) {
         for (int j = 0;
-        j < buffer.buffer.length * mAnimator.getPhaseX();
-        j += 4) {
+            j < buffer.buffer.length * mAnimator.getPhaseX();
+            j += 4) {
           double y = (buffer.buffer[j + 1] + buffer.buffer[j + 3]) / 2;
 
           if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 1])) break;
@@ -4230,7 +4111,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
           // calculate the correct offset depending on the draw position of the value
           double valueTextWidth =
-          Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
+              Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
           posOffset = (drawValueAboveBar
               ? valueOffsetPlus
               : -(valueTextWidth + valueOffsetPlus));
@@ -4302,7 +4183,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
             // calculate the correct offset depending on the draw position of the value
             double valueTextWidth =
-            Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
+                Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
             posOffset = (drawValueAboveBar
                 ? valueOffsetPlus
                 : -(valueTextWidth + valueOffsetPlus));
@@ -4375,7 +4256,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
               // calculate the correct offset depending on the draw position of the value
               double valueTextWidth =
-              Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
+                  Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
               posOffset = (drawValueAboveBar
                   ? valueOffsetPlus
                   : -(valueTextWidth + valueOffsetPlus));
@@ -4393,7 +4274,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
               double x = transformed[k] + (drawBelow ? negOffset : posOffset);
               double y = (buffer.buffer[bufferIndex + 1] +
-                  buffer.buffer[bufferIndex + 3]) /
+                      buffer.buffer[bufferIndex + 3]) /
                   2;
 
               if (!mViewPortHandler.isInBoundsTop(y)) break;
@@ -4421,7 +4302,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
           }
 
           bufferIndex =
-          vals == null ? bufferIndex + 4 : bufferIndex + 4 * vals.length;
+              vals == null ? bufferIndex + 4 : bufferIndex + 4 * vals.length;
           index++;
         }
       }
@@ -4444,8 +4325,8 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
   }
 
   @override
-  void prepareBarHighlight(double x, double y1, double y2, double barWidthHalf,
-      Transformer trans) {
+  void prepareBarHighlight(
+      double x, double y1, double y2, double barWidthHalf, Transformer trans) {
     double top = x - barWidthHalf;
     double bottom = x + barWidthHalf;
     double left = y1;
@@ -4493,7 +4374,9 @@ class PieChartRenderer extends DataRenderer {
   String mCenterTextLastValue;
   Rect mCenterTextLastBounds = Rect.zero;
   List<Rect> mRectBuffer = List()
-    ..add(Rect.zero)..add(Rect.zero)..add(Rect.zero);
+    ..add(Rect.zero)
+    ..add(Rect.zero)
+    ..add(Rect.zero);
 
   /**
    * Bitmap for drawing the center hole
@@ -4597,7 +4480,8 @@ class PieChartRenderer extends DataRenderer {
   Path mPathBuffer = Path();
   Rect mInnerRectBuffer = Rect.zero;
 
-  double calculateMinimumRadiusForSpacedSlice(MPPointF center,
+  double calculateMinimumRadiusForSpacedSlice(
+      MPPointF center,
       double radius,
       double angle,
       double arcStartPointX,
@@ -4624,7 +4508,7 @@ class PieChartRenderer extends DataRenderer {
     //   the angle of the contained triangle should stay the same.
     // So let's find out the height of that triangle.
     double containedTriangleHeight =
-    (basePointsDistance / 2.0 * tan((180.0 - angle) / 2.0 * Utils.DEG2RAD));
+        (basePointsDistance / 2.0 * tan((180.0 - angle) / 2.0 * Utils.DEG2RAD));
 
     // Now we subtract that from the radius
     double spacedRadius = radius - containedTriangleHeight;
@@ -4653,7 +4537,7 @@ class PieChartRenderer extends DataRenderer {
         dataSet.getYMin() / mChart.getData().getYValueSum() * 2;
 
     double sliceSpace =
-    spaceSizeRatio > minValueRatio ? 0 : dataSet.getSliceSpace();
+        spaceSizeRatio > minValueRatio ? 0 : dataSet.getSliceSpace();
 
     return sliceSpace;
   }
@@ -4674,7 +4558,7 @@ class PieChartRenderer extends DataRenderer {
     bool drawInnerArc =
         mChart.isDrawHoleEnabled() && !mChart.isDrawSlicesUnderHoleEnabled();
     final double userInnerRadius =
-    drawInnerArc ? radius * (mChart.getHoleRadius() / 100.0) : 0.0;
+        drawInnerArc ? radius * (mChart.getHoleRadius() / 100.0) : 0.0;
     final double roundedRadius =
         (radius - (radius * mChart.getHoleRadius() / 100)) / 2;
     Rect roundedCircleBox = Rect.zero;
@@ -4691,7 +4575,7 @@ class PieChartRenderer extends DataRenderer {
     }
 
     final double sliceSpace =
-    visibleAngleCount <= 1 ? 0.0 : getSliceSpace(dataSet);
+        visibleAngleCount <= 1 ? 0.0 : getSliceSpace(dataSet);
 
     for (int j = 0; j < entryCount; j++) {
       double sliceAngle = drawAngles[j];
@@ -4717,7 +4601,7 @@ class PieChartRenderer extends DataRenderer {
       mRenderPaint..color = dataSet.getColor2(j);
 
       final double sliceSpaceAngleOuter =
-      visibleAngleCount == 1 ? 0.0 : sliceSpace / (Utils.FDEG2RAD * radius);
+          visibleAngleCount == 1 ? 0.0 : sliceSpace / (Utils.FDEG2RAD * radius);
       final double startAngleOuter =
           rotationAngle + (angle + sliceSpaceAngleOuter / 2.0) * phaseY;
       double sweepAngleOuter = (sliceAngle - sliceSpaceAngleOuter) * phaseY;
@@ -4780,9 +4664,9 @@ class PieChartRenderer extends DataRenderer {
         }
 
         final double sliceSpaceAngleInner =
-        visibleAngleCount == 1 || innerRadius == 0.0
-            ? 0.0
-            : sliceSpace / (Utils.FDEG2RAD * innerRadius);
+            visibleAngleCount == 1 || innerRadius == 0.0
+                ? 0.0
+                : sliceSpace / (Utils.FDEG2RAD * innerRadius);
         final double startAngleInner =
             rotationAngle + (angle + sliceSpaceAngleInner / 2.0) * phaseY;
         double sweepAngleInner = (sliceAngle - sliceSpaceAngleInner) * phaseY;
@@ -4996,15 +4880,15 @@ class PieChartRenderer extends DataRenderer {
 
           if (mChart.isDrawHoleEnabled())
             line1Radius = (radius - (radius * holeRadiusPercent)) *
-                valueLinePart1OffsetPercentage +
+                    valueLinePart1OffsetPercentage +
                 (radius * holeRadiusPercent);
           else
             line1Radius = radius * valueLinePart1OffsetPercentage;
 
           final double polyline2Width = dataSet.isValueLineVariableLength()
               ? labelRadius *
-              valueLineLength2 *
-              sin(transformedAngle * Utils.FDEG2RAD).abs()
+                  valueLineLength2 *
+                  sin(transformedAngle * Utils.FDEG2RAD).abs()
               : labelRadius * valueLineLength2;
 
           final double pt0x = line1Radius * sliceXBase + center.x;
@@ -5253,9 +5137,9 @@ class PieChartRenderer extends DataRenderer {
       double y = center.y + offset.y;
 
       double innerRadius =
-      mChart.isDrawHoleEnabled() && !mChart.isDrawSlicesUnderHoleEnabled()
-          ? mChart.getRadius() * (mChart.getHoleRadius() / 100)
-          : mChart.getRadius();
+          mChart.isDrawHoleEnabled() && !mChart.isDrawSlicesUnderHoleEnabled()
+              ? mChart.getRadius() * (mChart.getHoleRadius() / 100)
+              : mChart.getRadius();
 
       mRectBuffer[0] = Rect.fromLTRB(
           x - innerRadius, y - innerRadius, x + innerRadius, y + innerRadius);
@@ -5338,7 +5222,7 @@ class PieChartRenderer extends DataRenderer {
     final MPPointF center = mChart.getCenterCircleBox();
     final double radius = mChart.getRadius();
     final double userInnerRadius =
-    drawInnerArc ? radius * (mChart.getHoleRadius() / 100.0) : 0.0;
+        drawInnerArc ? radius * (mChart.getHoleRadius() / 100.0) : 0.0;
 
 //    final Rect highlightedCircleBox = mDrawHighlightedRectF;
     mDrawHighlightedRectF = Rect.zero;
@@ -5350,7 +5234,7 @@ class PieChartRenderer extends DataRenderer {
       if (index >= drawAngles.length) continue;
 
       IPieDataSet set =
-      mChart.getData().getDataSetByIndex(indices[i].getDataSetIndex());
+          mChart.getData().getDataSetByIndex(indices[i].getDataSetIndex());
 
       if (set == null || !set.isHighlightEnabled()) continue;
 
@@ -5358,10 +5242,7 @@ class PieChartRenderer extends DataRenderer {
       int visibleAngleCount = 0;
       for (int j = 0; j < entryCount; j++) {
         // draw only if the value is greater than zero
-        if ((set
-            .getEntryForIndex(j)
-            .y
-            .abs() > Utils.FLOAT_EPSILON)) {
+        if ((set.getEntryForIndex(j).y.abs() > Utils.FLOAT_EPSILON)) {
           visibleAngleCount++;
         }
       }
@@ -5372,7 +5253,7 @@ class PieChartRenderer extends DataRenderer {
         angle = absoluteAngles[index - 1] * phaseX;
 
       final double sliceSpace =
-      visibleAngleCount <= 1 ? 0.0 : set.getSliceSpace();
+          visibleAngleCount <= 1 ? 0.0 : set.getSliceSpace();
 
       double sliceAngle = drawAngles[index];
       double innerRadius = userInnerRadius;
@@ -5380,18 +5261,10 @@ class PieChartRenderer extends DataRenderer {
       double shift = set.getSelectionShift();
       final double highlightedRadius = radius + shift;
       mDrawHighlightedRectF = Rect.fromLTRB(
-          mChart
-              .getCircleBox()
-              .left - shift,
-          mChart
-              .getCircleBox()
-              .top - shift,
-          mChart
-              .getCircleBox()
-              .right + shift,
-          mChart
-              .getCircleBox()
-              .bottom + shift);
+          mChart.getCircleBox().left - shift,
+          mChart.getCircleBox().top - shift,
+          mChart.getCircleBox().right + shift,
+          mChart.getCircleBox().bottom + shift);
 
       final bool accountForSliceSpacing =
           sliceSpace > 0.0 && sliceAngle <= 180.0;
@@ -5399,7 +5272,7 @@ class PieChartRenderer extends DataRenderer {
       mRenderPaint.color = set.getColor2(index);
 
       final double sliceSpaceAngleOuter =
-      visibleAngleCount == 1 ? 0.0 : sliceSpace / (Utils.FDEG2RAD * radius);
+          visibleAngleCount == 1 ? 0.0 : sliceSpace / (Utils.FDEG2RAD * radius);
 
       final double sliceSpaceAngleShifted = visibleAngleCount == 1
           ? 0.0
@@ -5471,9 +5344,9 @@ class PieChartRenderer extends DataRenderer {
         }
 
         final double sliceSpaceAngleInner =
-        visibleAngleCount == 1 || innerRadius == 0.0
-            ? 0.0
-            : sliceSpace / (Utils.FDEG2RAD * innerRadius);
+            visibleAngleCount == 1 || innerRadius == 0.0
+                ? 0.0
+                : sliceSpace / (Utils.FDEG2RAD * innerRadius);
         final double startAngleInner =
             rotationAngle + (angle + sliceSpaceAngleInner / 2.0) * phaseY;
         double sweepAngleInner = (sliceAngle - sliceSpaceAngleInner) * phaseY;
@@ -5565,10 +5438,10 @@ class PieChartRenderer extends DataRenderer {
       // draw only if the value is greater than zero
       if ((e.y.abs() > Utils.FLOAT_EPSILON)) {
         double x = ((r - circleRadius) *
-            cos((angle + sliceAngle) * phaseY / 180 * pi) +
+                cos((angle + sliceAngle) * phaseY / 180 * pi) +
             center.x);
         double y = ((r - circleRadius) *
-            sin((angle + sliceAngle) * phaseY / 180 * pi) +
+                sin((angle + sliceAngle) * phaseY / 180 * pi) +
             center.y);
 
         mRenderPaint.color = dataSet.getColor2(j);
@@ -5660,14 +5533,12 @@ class CombinedChartRenderer extends DataRenderer {
 
   @override
   void initBuffers() {
-    for (DataRenderer renderer in mRenderers)
-      renderer.initBuffers();
+    for (DataRenderer renderer in mRenderers) renderer.initBuffers();
   }
 
   @override
   void drawData(Canvas c) {
-    for (DataRenderer renderer in mRenderers)
-      renderer.drawData(c);
+    for (DataRenderer renderer in mRenderers) renderer.drawData(c);
   }
 
   @override
@@ -5675,14 +5546,12 @@ class CombinedChartRenderer extends DataRenderer {
 
   @override
   void drawValues(Canvas c) {
-    for (DataRenderer renderer in mRenderers)
-      renderer.drawValues(c);
+    for (DataRenderer renderer in mRenderers) renderer.drawValues(c);
   }
 
   @override
   void drawExtras(Canvas c) {
-    for (DataRenderer renderer in mRenderers)
-      renderer.drawExtras(c);
+    for (DataRenderer renderer in mRenderers) renderer.drawExtras(c);
   }
 
   List<Highlight> mHighlightBuffer = List<Highlight>();
@@ -5778,8 +5647,8 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
   List<double> sizeBuffer = List(4);
   List<double> pointBuffer = List(2);
 
-  double getShapeSize(double entrySize, double maxSize, double reference,
-      bool normalizeSize) {
+  double getShapeSize(
+      double entrySize, double maxSize, double reference, bool normalizeSize) {
     final double factor = normalizeSize
         ? ((maxSize == 0) ? 1 : sqrt(entrySize / maxSize))
         : entrySize;
@@ -5806,8 +5675,8 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
     // calcualte the full width of 1 step on the x-axis
     final double maxBubbleWidth = (sizeBuffer[2] - sizeBuffer[0]).abs();
     final double maxBubbleHeight =
-    (mViewPortHandler.contentBottom() - mViewPortHandler.contentTop())
-        .abs();
+        (mViewPortHandler.contentBottom() - mViewPortHandler.contentTop())
+            .abs();
     final double referenceSize = min(maxBubbleHeight, maxBubbleWidth);
 
     for (int j = mXBounds.min; j <= mXBounds.range + mXBounds.min; j++) {
@@ -5818,7 +5687,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
       trans.pointValuesToPixel(pointBuffer);
 
       double shapeHalf = getShapeSize(entry.getSize(), dataSet.getMaxSize(),
-          referenceSize, normalizeSize) /
+              referenceSize, normalizeSize) /
           2;
 
       if (!mViewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf) ||
@@ -5866,7 +5735,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
         List<double> positions = mChart
             .getTransformer(dataSet.getAxisDependency())
             .generateTransformedValuesBubble(
-            dataSet, phaseY, mXBounds.min, mXBounds.max);
+                dataSet, phaseY, mXBounds.min, mXBounds.max);
 
         final double alpha = phaseX == 1 ? phaseY : phaseX;
 
@@ -5878,7 +5747,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         for (int j = 0; j < positions.length; j += 2) {
           Color valueTextColor =
-          dataSet.getValueTextColor2(j ~/ 2 + mXBounds.min);
+              dataSet.getValueTextColor2(j ~/ 2 + mXBounds.min);
           valueTextColor = Color.fromARGB((255.0 * alpha).round(),
               valueTextColor.red, valueTextColor.green, valueTextColor.blue);
 
@@ -5947,7 +5816,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
       if (set == null || !set.isHighlightEnabled()) continue;
 
       final BubbleEntry entry =
-      set.getEntryForXValue2(high.getX(), high.getY());
+          set.getEntryForXValue2(high.getX(), high.getY());
 
       if (entry.y != high.getY()) continue;
 
@@ -5965,8 +5834,8 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
       // calcualte the full width of 1 step on the x-axis
       final double maxBubbleWidth = (sizeBuffer[2] - sizeBuffer[0]).abs();
       final double maxBubbleHeight =
-      (mViewPortHandler.contentBottom() - mViewPortHandler.contentTop())
-          .abs();
+          (mViewPortHandler.contentBottom() - mViewPortHandler.contentTop())
+              .abs();
       final double referenceSize = min(maxBubbleHeight, maxBubbleWidth);
 
       pointBuffer[0] = entry.x;
@@ -5976,7 +5845,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
       high.setDraw(pointBuffer[0], pointBuffer[1]);
 
       double shapeHalf = getShapeSize(
-          entry.getSize(), set.getMaxSize(), referenceSize, normalizeSize) /
+              entry.getSize(), set.getMaxSize(), referenceSize, normalizeSize) /
           2;
 
       if (!mViewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf) ||
@@ -6086,24 +5955,24 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
         if (dataSet.getShadowColorSameAsCandle()) {
           if (open > close)
             mRenderPaint.color =
-            dataSet.getDecreasingColor() == ColorTemplate.COLOR_NONE
-                ? dataSet.getColor2(j)
-                : dataSet.getDecreasingColor();
+                dataSet.getDecreasingColor() == ColorTemplate.COLOR_NONE
+                    ? dataSet.getColor2(j)
+                    : dataSet.getDecreasingColor();
           else if (open < close)
             mRenderPaint.color =
-            dataSet.getIncreasingColor() == ColorTemplate.COLOR_NONE
-                ? dataSet.getColor2(j)
-                : dataSet.getIncreasingColor();
+                dataSet.getIncreasingColor() == ColorTemplate.COLOR_NONE
+                    ? dataSet.getColor2(j)
+                    : dataSet.getIncreasingColor();
           else
             mRenderPaint.color =
-            dataSet.getNeutralColor() == ColorTemplate.COLOR_NONE
-                ? dataSet.getColor2(j)
-                : dataSet.getNeutralColor();
+                dataSet.getNeutralColor() == ColorTemplate.COLOR_NONE
+                    ? dataSet.getColor2(j)
+                    : dataSet.getNeutralColor();
         } else {
           mRenderPaint.color =
-          dataSet.getShadowColor() == ColorTemplate.COLOR_NONE
-              ? dataSet.getColor2(j)
-              : dataSet.getShadowColor();
+              dataSet.getShadowColor() == ColorTemplate.COLOR_NONE
+                  ? dataSet.getColor2(j)
+                  : dataSet.getShadowColor();
         }
 
         mRenderPaint.style = PaintingStyle.stroke;
@@ -6403,10 +6272,10 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
         List<double> positions = mChart
             .getTransformer(dataSet.getAxisDependency())
             .generateTransformedValuesScatter(dataSet, mAnimator.getPhaseX(),
-            mAnimator.getPhaseY(), mXBounds.min, mXBounds.max);
+                mAnimator.getPhaseY(), mXBounds.min, mXBounds.max);
 
         double shapeSize =
-        Utils.convertDpToPixel(dataSet.getScatterShapeSize());
+            Utils.convertDpToPixel(dataSet.getScatterShapeSize());
 
         ValueFormatter formatter = dataSet.getValueFormatter();
 
@@ -6476,7 +6345,7 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
     for (Highlight high in indices) {
       IScatterDataSet set =
-      scatterData.getDataSetByIndex(high.getDataSetIndex());
+          scatterData.getDataSetByIndex(high.getDataSetIndex());
 
       if (set == null || !set.isHighlightEnabled()) continue;
 
@@ -6498,7 +6367,8 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
 class SquareShapeRenderer implements IShapeRenderer {
   @override
-  void renderShape(Canvas c,
+  void renderShape(
+      Canvas c,
       IScatterDataSet dataSet,
       ViewPortHandler viewPortHandler,
       double posX,
@@ -6507,7 +6377,7 @@ class SquareShapeRenderer implements IShapeRenderer {
     final double shapeSize = dataSet.getScatterShapeSize();
     final double shapeHalf = shapeSize / 2;
     final double shapeHoleSizeHalf =
-    Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
+        Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
     final double shapeHoleSize = shapeHoleSizeHalf * 2.0;
     final double shapeStrokeSize = (shapeSize - shapeHoleSize) / 2.0;
     final double shapeStrokeSizeHalf = shapeStrokeSize / 2.0;
@@ -6550,7 +6420,8 @@ class SquareShapeRenderer implements IShapeRenderer {
 
 class CircleShapeRenderer implements IShapeRenderer {
   @override
-  void renderShape(Canvas c,
+  void renderShape(
+      Canvas c,
       IScatterDataSet dataSet,
       ViewPortHandler viewPortHandler,
       double posX,
@@ -6559,7 +6430,7 @@ class CircleShapeRenderer implements IShapeRenderer {
     final double shapeSize = dataSet.getScatterShapeSize();
     final double shapeHalf = shapeSize / 2;
     final double shapeHoleSizeHalf =
-    Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
+        Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
     final double shapeHoleSize = shapeHoleSizeHalf * 2.0;
     final double shapeStrokeSize = (shapeSize - shapeHoleSize) / 2.0;
     final double shapeStrokeSizeHalf = shapeStrokeSize / 2.0;
@@ -6593,7 +6464,8 @@ class TriangleShapeRenderer implements IShapeRenderer {
   Path mTrianglePathBuffer = Path();
 
   @override
-  void renderShape(Canvas c,
+  void renderShape(
+      Canvas c,
       IScatterDataSet dataSet,
       ViewPortHandler viewPortHandler,
       double posX,
@@ -6602,7 +6474,7 @@ class TriangleShapeRenderer implements IShapeRenderer {
     final double shapeSize = dataSet.getScatterShapeSize();
     final double shapeHalf = shapeSize / 2;
     final double shapeHoleSizeHalf =
-    Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
+        Utils.convertDpToPixel(dataSet.getScatterShapeHoleRadius());
     final double shapeHoleSize = shapeHoleSizeHalf * 2.0;
     final double shapeStrokeSize = (shapeSize - shapeHoleSize) / 2.0;
 
@@ -6651,38 +6523,32 @@ class TriangleShapeRenderer implements IShapeRenderer {
   }
 }
 
-class CrossShapeRenderer
-    implements IShapeRenderer {
-
-
+class CrossShapeRenderer implements IShapeRenderer {
   @override
-  void renderShape(Canvas c, IScatterDataSet dataSet,
+  void renderShape(
+      Canvas c,
+      IScatterDataSet dataSet,
       ViewPortHandler viewPortHandler,
-      double posX, double posY, Paint renderPaint) {
+      double posX,
+      double posY,
+      Paint renderPaint) {
     final double shapeHalf = dataSet.getScatterShapeSize() / 2;
 
     renderPaint
       ..style = PaintingStyle.stroke
       ..strokeWidth = Utils.convertDpToPixel(1);
 
-    c.drawLine(
-        Offset(posX - shapeHalf,
-            posY),
-        Offset(posX + shapeHalf,
-            posY),
+    c.drawLine(Offset(posX - shapeHalf, posY), Offset(posX + shapeHalf, posY),
         renderPaint);
-    c.drawLine(
-        Offset(posX,
-            posY - shapeHalf),
-        Offset(posX,
-            posY + shapeHalf),
+    c.drawLine(Offset(posX, posY - shapeHalf), Offset(posX, posY + shapeHalf),
         renderPaint);
   }
 }
 
 class XShapeRenderer implements IShapeRenderer {
   @override
-  void renderShape(Canvas c,
+  void renderShape(
+      Canvas c,
       IScatterDataSet dataSet,
       ViewPortHandler viewPortHandler,
       double posX,
@@ -6701,61 +6567,723 @@ class XShapeRenderer implements IShapeRenderer {
   }
 }
 
-class ChevronUpShapeRenderer
-    implements IShapeRenderer {
-
-
-  @override void renderShape(Canvas c, IScatterDataSet dataSet,
+class ChevronUpShapeRenderer implements IShapeRenderer {
+  @override
+  void renderShape(
+      Canvas c,
+      IScatterDataSet dataSet,
       ViewPortHandler viewPortHandler,
-      double posX, double posY, Paint renderPaint) {
+      double posX,
+      double posY,
+      Paint renderPaint) {
     final double shapeHalf = dataSet.getScatterShapeSize() / 2;
 
     renderPaint
       ..style = PaintingStyle.stroke
       ..strokeWidth = Utils.convertDpToPixel(1);
 
-    c.drawLine(
-        Offset(posX,
-            posY - (2 * shapeHalf)),
-        Offset(posX + (2 * shapeHalf),
-            posY),
-        renderPaint);
+    c.drawLine(Offset(posX, posY - (2 * shapeHalf)),
+        Offset(posX + (2 * shapeHalf), posY), renderPaint);
 
-    c.drawLine(
-        Offset(posX,
-            posY - (2 * shapeHalf)),
-        Offset(posX - (2 * shapeHalf),
-            posY),
-        renderPaint);
+    c.drawLine(Offset(posX, posY - (2 * shapeHalf)),
+        Offset(posX - (2 * shapeHalf), posY), renderPaint);
   }
 }
 
-class ChevronDownShapeRenderer
-    implements IShapeRenderer {
-
-
+class ChevronDownShapeRenderer implements IShapeRenderer {
   @override
-  void renderShape(Canvas c, IScatterDataSet dataSet,
+  void renderShape(
+      Canvas c,
+      IScatterDataSet dataSet,
       ViewPortHandler viewPortHandler,
-      double posX, double posY, Paint renderPaint) {
+      double posX,
+      double posY,
+      Paint renderPaint) {
     final double shapeHalf = dataSet.getScatterShapeSize() / 2;
 
     renderPaint
       ..style = PaintingStyle.stroke
       ..strokeWidth = Utils.convertDpToPixel(1);
 
-    c.drawLine(
-        Offset(posX,
-            posY + (2 * shapeHalf)),
-        Offset(posX + (2 * shapeHalf),
-            posY),
-        renderPaint);
+    c.drawLine(Offset(posX, posY + (2 * shapeHalf)),
+        Offset(posX + (2 * shapeHalf), posY), renderPaint);
 
-    c.drawLine(
-        Offset(posX,
-            posY + (2 * shapeHalf)),
-        Offset(posX - (2 * shapeHalf),
-            posY),
-        renderPaint);
+    c.drawLine(Offset(posX, posY + (2 * shapeHalf)),
+        Offset(posX - (2 * shapeHalf), posY), renderPaint);
+  }
+}
+
+class RadarChartRenderer extends LineRadarRenderer {
+  RadarChartPainter mChart;
+
+  /**
+   * paint for drawing the web
+   */
+  Paint mWebPaint;
+  Paint mHighlightCirclePaint;
+
+  RadarChartRenderer(RadarChartPainter chart, ChartAnimator animator,
+      ViewPortHandler viewPortHandler)
+      : super(animator, viewPortHandler) {
+    mChart = chart;
+
+    mHighlightCirclePaint = Paint()
+      ..isAntiAlias = true
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = Utils.convertDpToPixel(2)
+      ..color = Color.fromARGB(255, 255, 187, 115);
+
+    mWebPaint = Paint()
+      ..isAntiAlias = true
+      ..style = PaintingStyle.stroke;
+
+    mHighlightCirclePaint = Paint()
+      ..isAntiAlias = true
+      ..style;
+  }
+
+  Paint getWebPaint() {
+    return mWebPaint;
+  }
+
+  @override
+  void initBuffers() {}
+
+  @override
+  void drawData(Canvas c) {
+    RadarData radarData = mChart.getData();
+
+    int mostEntries = radarData.getMaxEntryCountSet().getEntryCount();
+
+    for (IRadarDataSet set in radarData.getDataSets()) {
+      if (set.isVisible()) {
+        drawDataSet(c, set, mostEntries);
+      }
+    }
+  }
+
+  Path mDrawDataSetSurfacePathBuffer = new Path();
+
+  /**
+   * Draws the RadarDataSet
+   *
+   * @param c
+   * @param dataSet
+   * @param mostEntries the entry count of the dataset with the most entries
+   */
+  void drawDataSet(Canvas c, IRadarDataSet dataSet, int mostEntries) {
+    double phaseX = mAnimator.getPhaseX();
+    double phaseY = mAnimator.getPhaseY();
+
+    double sliceangle = mChart.getSliceAngle();
+
+    // calculate the factor that is needed for transforming the value to
+    // pixels
+    double factor = mChart.getFactor();
+
+    MPPointF center = mChart.getCenterOffsets();
+    MPPointF pOut = MPPointF.getInstance1(0, 0);
+    Path surface = mDrawDataSetSurfacePathBuffer;
+    surface.reset();
+
+    bool hasMovedToPoint = false;
+
+    for (int j = 0; j < dataSet.getEntryCount(); j++) {
+      mRenderPaint.color = dataSet.getColor2(j);
+
+      RadarEntry e = dataSet.getEntryForIndex(j);
+
+      Utils.getPosition(center, (e.y - mChart.getYChartMin()) * factor * phaseY,
+          sliceangle * j * phaseX + mChart.getRotationAngle(), pOut);
+
+      if (pOut.x.isNaN) continue;
+
+      if (!hasMovedToPoint) {
+        surface.moveTo(pOut.x, pOut.y);
+        hasMovedToPoint = true;
+      } else
+        surface.lineTo(pOut.x, pOut.y);
+    }
+
+    if (dataSet.getEntryCount() > mostEntries) {
+      // if this is not the largest set, draw a line to the center before closing
+      surface.lineTo(center.x, center.y);
+    }
+
+    surface.close();
+
+//    if (dataSet.isDrawFilledEnabled()) { todo
+//
+//      final Drawable drawable = dataSet.getFillDrawable();
+//      if (drawable != null) {
+//
+//        drawFilledPath(c, surface, drawable);
+//      } else {
+//
+//        drawFilledPath(c, surface, dataSet.getFillColor(), dataSet.getFillAlpha());
+//      }
+//    }
+
+    mRenderPaint
+      ..strokeWidth = dataSet.getLineWidth()
+      ..style = PaintingStyle.stroke;
+
+    // draw the line (only if filled is disabled or alpha is below 255)
+    if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
+      c.drawPath(surface, mRenderPaint);
+
+    MPPointF.recycleInstance(center);
+    MPPointF.recycleInstance(pOut);
+  }
+
+  @override
+  void drawValues(Canvas c) {
+    double phaseX = mAnimator.getPhaseX();
+    double phaseY = mAnimator.getPhaseY();
+
+    double sliceangle = mChart.getSliceAngle();
+
+    // calculate the factor that is needed for transforming the value to
+    // pixels
+    double factor = mChart.getFactor();
+
+    MPPointF center = mChart.getCenterOffsets();
+    MPPointF pOut = MPPointF.getInstance1(0, 0);
+    MPPointF pIcon = MPPointF.getInstance1(0, 0);
+
+    double yoffset = Utils.convertDpToPixel(5);
+
+    for (int i = 0; i < mChart.getData().getDataSetCount(); i++) {
+      IRadarDataSet dataSet = mChart.getData().getDataSetByIndex(i);
+
+      if (!shouldDrawValues(dataSet)) continue;
+
+      // apply the text-styling defined by the DataSet
+      applyValueTextStyle(dataSet);
+
+      ValueFormatter formatter = dataSet.getValueFormatter();
+
+      MPPointF iconsOffset = MPPointF.getInstance3(dataSet.getIconsOffset());
+      iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
+      iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+
+      for (int j = 0; j < dataSet.getEntryCount(); j++) {
+        RadarEntry entry = dataSet.getEntryForIndex(j);
+
+        Utils.getPosition(
+            center,
+            (entry.y - mChart.getYChartMin()) * factor * phaseY,
+            sliceangle * j * phaseX + mChart.getRotationAngle(),
+            pOut);
+
+        if (dataSet.isDrawValuesEnabled()) {
+          drawValue(c, formatter.getRadarLabel(entry), pOut.x, pOut.y - yoffset,
+              dataSet.getValueTextColor2(j));
+        }
+
+//        if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) { todo
+//
+//          Drawable icon = entry.getIcon();
+//
+//          Utils.getPosition(
+//              center,
+//              (entry.getY()) * factor * phaseY + iconsOffset.y,
+//              sliceangle * j * phaseX + mChart.getRotationAngle(),
+//              pIcon);
+//
+//          //noinspection SuspiciousNameCombination
+//          pIcon.y += iconsOffset.x;
+//
+//          Utils.drawImage(
+//              c,
+//              icon,
+//              (int)pIcon.x,
+//              (int)pIcon.y,
+//              icon.getIntrinsicWidth(),
+//              icon.getIntrinsicHeight());
+//        }
+      }
+
+      MPPointF.recycleInstance(iconsOffset);
+    }
+
+    MPPointF.recycleInstance(center);
+    MPPointF.recycleInstance(pOut);
+    MPPointF.recycleInstance(pIcon);
+  }
+
+  @override
+  void drawValue(Canvas c, String valueText, double x, double y, Color color) {
+    mValuePaint = TextPainter(
+        text: TextSpan(
+            text: valueText,
+            style: TextStyle(
+                fontSize: mValuePaint.text.style.fontSize == null
+                    ? Utils.convertDpToPixel(9)
+                    : mValuePaint.text.style.fontSize,
+                color: color)),
+        textDirection: mValuePaint.textDirection,
+        textAlign: mValuePaint.textAlign);
+    mValuePaint.layout();
+    mValuePaint.paint(
+        c, Offset(x - mValuePaint.width / 2, y - mValuePaint.height));
+  }
+
+  @override
+  void drawExtras(Canvas c) {
+    drawWeb(c);
+  }
+
+  void drawWeb(Canvas c) {
+    double sliceangle = mChart.getSliceAngle();
+
+    // calculate the factor that is needed for transforming the value to
+    // pixels
+    double factor = mChart.getFactor();
+    double rotationangle = mChart.getRotationAngle();
+
+    MPPointF center = mChart.getCenterOffsets();
+
+    // draw the web lines that come from the center
+    var color = mChart.getWebColor();
+    mWebPaint
+      ..strokeWidth = mChart.getWebLineWidth()
+      ..color = Color.fromARGB(
+          mChart.getWebAlpha(), color.red, color.green, color.blue);
+
+    final int xIncrements = 1 + mChart.getSkipWebLineCount();
+    int maxEntryCount = mChart.getData().getMaxEntryCountSet().getEntryCount();
+
+    MPPointF p = MPPointF.getInstance1(0, 0);
+    for (int i = 0; i < maxEntryCount; i += xIncrements) {
+      Utils.getPosition(center, mChart.getYRange() * factor,
+          sliceangle * i + rotationangle, p);
+
+      c.drawLine(Offset(center.x, center.y), Offset(p.x, p.y), mWebPaint);
+    }
+    MPPointF.recycleInstance(p);
+
+    // draw the inner-web
+    color = mChart.getWebColorInner();
+    mWebPaint
+      ..strokeWidth = mChart.getWebLineWidthInner()
+      ..color = Color.fromARGB(
+          mChart.getWebAlpha(), color.red, color.green, color.blue);
+
+    int labelCount = mChart.getYAxis().mEntryCount;
+
+    MPPointF p1out = MPPointF.getInstance1(0, 0);
+    MPPointF p2out = MPPointF.getInstance1(0, 0);
+    for (int j = 0; j < labelCount; j++) {
+      for (int i = 0; i < mChart.getData().getEntryCount(); i++) {
+        double r =
+            (mChart.getYAxis().mEntries[j] - mChart.getYChartMin()) * factor;
+
+        Utils.getPosition(center, r, sliceangle * i + rotationangle, p1out);
+        Utils.getPosition(
+            center, r, sliceangle * (i + 1) + rotationangle, p2out);
+
+        c.drawLine(
+            Offset(p1out.x, p1out.y), Offset(p2out.x, p2out.y), mWebPaint);
+      }
+    }
+    MPPointF.recycleInstance(p1out);
+    MPPointF.recycleInstance(p2out);
+  }
+
+  @override
+  void drawHighlighted(Canvas c, List<Highlight> indices) {
+    double sliceangle = mChart.getSliceAngle();
+
+    // calculate the factor that is needed for transforming the value to
+    // pixels
+    double factor = mChart.getFactor();
+
+    MPPointF center = mChart.getCenterOffsets();
+    MPPointF pOut = MPPointF.getInstance1(0, 0);
+
+    RadarData radarData = mChart.getData();
+
+    for (Highlight high in indices) {
+      IRadarDataSet set = radarData.getDataSetByIndex(high.getDataSetIndex());
+
+      if (set == null || !set.isHighlightEnabled()) continue;
+
+      RadarEntry e = set.getEntryForIndex(high.getX().toInt());
+
+      if (!isInBoundsX(e, set)) continue;
+
+      double y = (e.y - mChart.getYChartMin());
+
+      Utils.getPosition(
+          center,
+          y * factor * mAnimator.getPhaseY(),
+          sliceangle * high.getX() * mAnimator.getPhaseX() +
+              mChart.getRotationAngle(),
+          pOut);
+
+      high.setDraw(pOut.x, pOut.y);
+
+      // draw the lines
+      drawHighlightLines(c, pOut.x, pOut.y, set);
+
+      if (set.isDrawHighlightCircleEnabled()) {
+        if (!pOut.x.isNaN && !pOut.y.isNaN) {
+          Color strokeColor = set.getHighlightCircleStrokeColor();
+          if (strokeColor == ColorTemplate.COLOR_NONE) {
+            strokeColor = set.getColor2(0);
+          }
+
+          if (set.getHighlightCircleStrokeAlpha() < 255) {
+            strokeColor = ColorUtils.colorWithAlpha(
+                strokeColor, set.getHighlightCircleStrokeAlpha());
+          }
+
+          drawHighlightCircle(
+              c,
+              pOut,
+              set.getHighlightCircleInnerRadius(),
+              set.getHighlightCircleOuterRadius(),
+              set.getHighlightCircleFillColor(),
+              strokeColor,
+              set.getHighlightCircleStrokeWidth());
+        }
+      }
+    }
+
+    MPPointF.recycleInstance(center);
+    MPPointF.recycleInstance(pOut);
+  }
+
+  Path mDrawHighlightCirclePathBuffer = new Path();
+
+  void drawHighlightCircle(
+      Canvas c,
+      MPPointF point,
+      double innerRadius,
+      double outerRadius,
+      Color fillColor,
+      Color strokeColor,
+      double strokeWidth) {
+    c.save();
+
+    outerRadius = Utils.convertDpToPixel(outerRadius);
+    innerRadius = Utils.convertDpToPixel(innerRadius);
+
+    if (fillColor != ColorTemplate.COLOR_NONE) {
+      Path p = mDrawHighlightCirclePathBuffer;
+      p.reset();
+      p.addOval(Rect.fromLTRB(point.x - outerRadius, point.y - outerRadius,
+          point.x + outerRadius, point.y + outerRadius));
+//      p.addCircle(point.x, point.y, outerRadius, Path.Direction.CW);
+      if (innerRadius > 0.0) {
+        p.addOval(Rect.fromLTRB(point.x - innerRadius, point.y - innerRadius,
+            point.x + innerRadius, point.y + innerRadius));
+//        p.addCircle(point.x, point.y, innerRadius, Path.Direction.CCW);
+      }
+      mHighlightCirclePaint
+        ..color = fillColor
+        ..style = PaintingStyle.fill;
+      c.drawPath(p, mHighlightCirclePaint);
+    }
+
+    if (strokeColor != ColorTemplate.COLOR_NONE) {
+      mHighlightCirclePaint
+        ..color = strokeColor
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = Utils.convertDpToPixel(strokeWidth);
+      c.drawCircle(
+          Offset(point.x, point.y), outerRadius, mHighlightCirclePaint);
+    }
+
+    c.restore();
+  }
+}
+
+class YAxisRendererRadarChart extends YAxisRenderer {
+  RadarChartPainter mChart;
+
+  YAxisRendererRadarChart(
+      ViewPortHandler viewPortHandler, YAxis yAxis, RadarChartPainter chart)
+      : super(viewPortHandler, yAxis, null) {
+    this.mChart = chart;
+  }
+
+  @override
+  void computeAxisValues(double min, double max) {
+    double yMin = min;
+    double yMax = max;
+
+    int labelCount = mAxis.getLabelCount();
+    double range = (yMax - yMin).abs();
+
+    if (labelCount == 0 || range <= 0 || range.isInfinite) {
+      mAxis.mEntries = List();
+      mAxis.mCenteredEntries = List();
+      mAxis.mEntryCount = 0;
+      return;
+    }
+
+    // Find out how much spacing (in y value space) between axis values
+    double rawInterval = range / labelCount;
+    double interval = Utils.roundToNextSignificant(rawInterval);
+
+    // If granularity is enabled, then do not allow the interval to go below specified granularity.
+    // This is used to avoid repeated values when rounding values for display.
+    if (mAxis.isGranularityEnabled())
+      interval =
+          interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
+
+    // Normalize interval
+    double intervalMagnitude =
+        Utils.roundToNextSignificant(pow(10, (log(interval) / ln10).toInt()));
+    int intervalSigDigit = (interval ~/ intervalMagnitude);
+    if (intervalSigDigit > 5) {
+      // Use one order of magnitude higher, to avoid intervals like 0.9 or
+      // 90
+      interval = (10 * intervalMagnitude).floor().toDouble();
+    }
+
+    bool centeringEnabled = mAxis.isCenterAxisLabelsEnabled();
+    int n = centeringEnabled ? 1 : 0;
+
+    // force label count
+    if (mAxis.isForceLabelsEnabled()) {
+      double step = range / (labelCount - 1);
+      mAxis.mEntryCount = labelCount;
+
+      if (mAxis.mEntries.length < labelCount) {
+        // Ensure stops contains at least numStops elements.
+        mAxis.mEntries = List(labelCount);
+      }
+
+      double v = min;
+
+      for (int i = 0; i < labelCount; i++) {
+        mAxis.mEntries[i] = v;
+        v += step;
+      }
+
+      n = labelCount;
+
+      // no forced count
+    } else {
+      double first =
+          interval == 0.0 ? 0.0 : (yMin / interval).ceil() * interval;
+      if (centeringEnabled) {
+        first -= interval;
+      }
+
+      double last = interval == 0.0
+          ? 0.0
+          : Utils.nextUp((yMax / interval).floor() * interval);
+
+      double f;
+      int i;
+
+      if (interval != 0.0) {
+        for (f = first; f <= last; f += interval) {
+          ++n;
+        }
+      }
+
+      n++;
+
+      mAxis.mEntryCount = n;
+
+      if (mAxis.mEntries.length < n) {
+        // Ensure stops contains at least numStops elements.
+        mAxis.mEntries = List(n);
+      }
+
+      f = first;
+      for (i = 0; i < n; f += interval, ++i) {
+        if (f ==
+            0.0) // Fix for negative zero case (Where value == -0.0, and 0.0 == -0.0)
+          f = 0.0;
+
+        mAxis.mEntries[i] = f.toDouble();
+      }
+    }
+
+    // set decimals
+    if (interval < 1) {
+      mAxis.mDecimals = (-log(interval) / ln10).ceil();
+    } else {
+      mAxis.mDecimals = 0;
+    }
+
+    if (centeringEnabled) {
+      if (mAxis.mCenteredEntries.length < n) {
+        mAxis.mCenteredEntries = List(n);
+      }
+
+      double offset = (mAxis.mEntries[1] - mAxis.mEntries[0]) / 2;
+
+      for (int i = 0; i < n; i++) {
+        mAxis.mCenteredEntries[i] = mAxis.mEntries[i] + offset;
+      }
+    }
+
+    mAxis.mAxisMinimum = mAxis.mEntries[0];
+    mAxis.mAxisMaximum = mAxis.mEntries[n - 1];
+    mAxis.mAxisRange = (mAxis.mAxisMaximum - mAxis.mAxisMinimum).abs();
+  }
+
+  @override
+  void renderAxisLabels(Canvas c) {
+    if (!mYAxis.isEnabled() || !mYAxis.isDrawLabelsEnabled()) return;
+
+//    mAxisLabelPaint.setTypeface(mYAxis.getTypeface());
+
+    MPPointF center = mChart.getCenterOffsets();
+    MPPointF pOut = MPPointF.getInstance1(0, 0);
+    double factor = mChart.getFactor();
+
+    final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
+    final int to = mYAxis.isDrawTopYLabelEntryEnabled()
+        ? mYAxis.mEntryCount
+        : (mYAxis.mEntryCount - 1);
+
+    for (int j = from; j < to; j++) {
+      double r = (mYAxis.mEntries[j] - mYAxis.mAxisMinimum) * factor;
+
+      Utils.getPosition(center, r, mChart.getRotationAngle(), pOut);
+
+      String label = mYAxis.getFormattedLabel(j);
+
+      mAxisLabelPaint = TextPainter(
+          textAlign: TextAlign.center,
+          textDirection: TextDirection.ltr,
+          text: TextSpan(
+              text: label,
+              style: TextStyle(
+                  color: mYAxis.getTextColor(),
+                  fontSize: mYAxis.getTextSize())));
+      mAxisLabelPaint.layout();
+      mAxisLabelPaint.paint(
+          c,
+          Offset(pOut.x + 10 - mAxisLabelPaint.width,
+              pOut.y - mAxisLabelPaint.height));
+    }
+    MPPointF.recycleInstance(center);
+    MPPointF.recycleInstance(pOut);
+  }
+
+  Path mRenderLimitLinesPathBuffer = new Path();
+
+  @override
+  void renderLimitLines(Canvas c) {
+    List<LimitLine> limitLines = mYAxis.getLimitLines();
+
+    if (limitLines == null) return;
+
+    double sliceangle = mChart.getSliceAngle();
+
+    // calculate the factor that is needed for transforming the value to
+    // pixels
+    double factor = mChart.getFactor();
+
+    MPPointF center = mChart.getCenterOffsets();
+    MPPointF pOut = MPPointF.getInstance1(0, 0);
+    for (int i = 0; i < limitLines.length; i++) {
+      LimitLine l = limitLines[i];
+
+      if (!l.isEnabled()) continue;
+
+      mLimitLinePaint
+        ..color = (l.getLineColor())
+        ..strokeWidth = l.getLineWidth();
+//      mLimitLinePaint.setPathEffect(l.getDashPathEffect()); todo
+
+      double r = (l.getLimit() - mChart.getYChartMin()) * factor;
+
+      Path limitPath = mRenderLimitLinesPathBuffer;
+      limitPath.reset();
+
+      for (int j = 0;
+          j < mChart.getData().getMaxEntryCountSet().getEntryCount();
+          j++) {
+        Utils.getPosition(
+            center, r, sliceangle * j + mChart.getRotationAngle(), pOut);
+
+        if (j == 0)
+          limitPath.moveTo(pOut.x, pOut.y);
+        else
+          limitPath.lineTo(pOut.x, pOut.y);
+      }
+      limitPath.close();
+
+      c.drawPath(limitPath, mLimitLinePaint);
+    }
+    MPPointF.recycleInstance(center);
+    MPPointF.recycleInstance(pOut);
+  }
+}
+
+class XAxisRendererRadarChart extends XAxisRenderer {
+  RadarChartPainter mChart;
+
+  XAxisRendererRadarChart(
+      ViewPortHandler viewPortHandler, XAxis xAxis, RadarChartPainter chart)
+      : super(viewPortHandler, xAxis, null) {
+    mChart = chart;
+  }
+
+  @override
+  void renderAxisLabels(Canvas c) {
+    if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled()) return;
+
+    final double labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
+    final MPPointF drawLabelAnchor = MPPointF.getInstance1(0.5, 0.25);
+
+//    mAxisLabelPaint.setTypeface(mXAxis.getTypeface()); todo
+
+    mAxisLabelPaint = TextPainter(
+        text: TextSpan(
+            style: TextStyle(
+                fontSize: mXAxis.getTextSize(), color: mXAxis.getTextColor())),
+        textDirection: TextDirection.ltr,
+        textAlign: TextAlign.center);
+
+    double sliceangle = mChart.getSliceAngle();
+
+    // calculate the factor that is needed for transforming the value to
+    // pixels
+    double factor = mChart.getFactor();
+
+    MPPointF center = mChart.getCenterOffsets();
+    MPPointF pOut = MPPointF.getInstance1(0, 0);
+    for (int i = 0;
+        i < mChart.getData().getMaxEntryCountSet().getEntryCount();
+        i++) {
+      String label =
+          mXAxis.getValueFormatter().getAxisLabel(i.toDouble(), mXAxis);
+
+      double angle = (sliceangle * i + mChart.getRotationAngle()) % 360;
+
+      Utils.getPosition(
+          center,
+          mChart.getYRange() * factor + mXAxis.mLabelRotatedWidth / 2,
+          angle,
+          pOut);
+
+      drawLabel(c, label, pOut.x, pOut.y - mXAxis.mLabelRotatedHeight / 2.0,
+          drawLabelAnchor, labelRotationAngleDegrees, mXAxis.getPosition());
+    }
+
+    MPPointF.recycleInstance(center);
+    MPPointF.recycleInstance(pOut);
+    MPPointF.recycleInstance(drawLabelAnchor);
+  }
+
+  /**
+   * XAxis LimitLines on RadarChart not yet supported.
+   *
+   * @param c
+   */
+  @override
+  void renderLimitLines(Canvas c) {
+    // this space intentionally left blank
   }
 }
