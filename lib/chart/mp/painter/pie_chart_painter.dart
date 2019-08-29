@@ -4,17 +4,20 @@ import 'dart:ui';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/pie_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_pie_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/format.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/pie_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
+import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/pie_chart_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_redar_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 
 class PieChartPainter extends PieRadarChartPainter<PieData> {
   /**
@@ -584,6 +587,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   void setCenterTextTypeface(TextStyle t) {
 //    (mRenderer as PieChartRenderer).getPaintCenterText().setTypeface(t);
   }
+
 //
 //  /**
 //   * Sets the size of the center text of the PieChart in dp.
@@ -787,7 +791,6 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
     return mDrawRoundedSlices;
   }
 
-
   /**
    * If this is enabled, values inside the PieChart are drawn in percent and
    * not with their original value. Values provided for the IValueFormatter to
@@ -882,5 +885,3 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
 //    super.onDetachedFromWindow();
 //  }
 }
-
-enum ValuePosition { INSIDE_SLICE, OUTSIDE_SLICE }

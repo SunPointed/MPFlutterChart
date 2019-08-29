@@ -3,11 +3,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/bar_chart.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/bar_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_set/bar_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/format.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 
 class BarChartNegative extends StatefulWidget {
   @override

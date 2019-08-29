@@ -1,15 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:mp_flutter_chart/chart/mp/chart/bubble_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/candlestick_chart.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/candle_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_set/candle_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
-import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/candle_entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 
 class OtherChartCandlestick extends StatefulWidget {
   @override

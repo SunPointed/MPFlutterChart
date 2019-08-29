@@ -5,16 +5,20 @@ import 'package:flutter/src/gestures/scale.dart';
 import 'package:flutter/src/gestures/tap.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/chart.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/scatter_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render.dart';
+import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
+import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/listener.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/scatter_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 
 class ScatterChart extends Chart {
   Color backgroundColor = null;

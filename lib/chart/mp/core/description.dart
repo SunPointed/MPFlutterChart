@@ -2,8 +2,8 @@ import 'dart:core';
 import 'dart:ui';
 
 import 'package:mp_flutter_chart/chart/mp/core/component.dart';
-import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 
 class Description extends ComponentBase {
   /**

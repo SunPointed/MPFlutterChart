@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/line_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/mode.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/mode.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 
 class LineChartPerformance extends StatefulWidget {
   @override

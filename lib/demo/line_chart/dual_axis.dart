@@ -2,13 +2,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/line_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_form.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 import 'package:mp_flutter_chart/chart/mp/listener.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
 
 class LineChartDualAxis extends StatefulWidget {
   @override

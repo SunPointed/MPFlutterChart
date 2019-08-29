@@ -2,15 +2,20 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/scatter_chart.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/scatter_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_scatter_data_set.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_set/scatter_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/scatter_shape.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/i_shape_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/listener.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/scatter_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
 
 class OtherChartScatterPlot extends StatefulWidget {
   @override

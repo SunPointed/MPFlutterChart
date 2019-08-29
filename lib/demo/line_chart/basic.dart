@@ -2,12 +2,15 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/line_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_line_data_set.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
-import 'package:mp_flutter_chart/chart/mp/core/limit.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_form.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/limite_label_postion.dart';
+import 'package:mp_flutter_chart/chart/mp/core/limit_line.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 
 class LineChartBasic extends StatefulWidget {
   @override
@@ -175,7 +178,7 @@ class LineChartBasicState extends State<LineChartBasic> {
 
     // create a data object with the data sets
     _lineData = LineData.fromList(dataSets);
-    _lineData.setValueTypeface(TextStyle(fontSize: Utils.convertDpToPixel(9)));
+//    _lineData.setValueTypeface(TextStyle(fontSize: Utils.convertDpToPixel(9)));
   }
 
   void _initLineChart() {

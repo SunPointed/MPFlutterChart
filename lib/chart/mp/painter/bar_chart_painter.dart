@@ -2,15 +2,23 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/rendering/custom_paint.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/bar_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_bar_data_set.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_provider/bar_data_provider.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render.dart';
-import 'package:mp_flutter_chart/chart/mp/core/transformer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
+import 'package:mp_flutter_chart/chart/mp/core/fill_formatter/bar_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/bar_chart_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/bar_line_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
 
 class BarChartPainter extends BarLineChartBasePainter<BarData>
     implements BarDataProvider {

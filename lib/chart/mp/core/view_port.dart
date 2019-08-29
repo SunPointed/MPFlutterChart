@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/rendering.dart';
-import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 
 class ViewPortHandler {
   /**
@@ -706,6 +706,4 @@ class ViewPortHandler {
   }
 }
 
-class HorizontalViewPortHandler extends ViewPortHandler{
-
-}
+class HorizontalViewPortHandler extends ViewPortHandler {}

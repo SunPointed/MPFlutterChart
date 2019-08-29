@@ -2,16 +2,24 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/bar_chart.dart';
-import 'package:mp_flutter_chart/chart/mp/color.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/color/gradient_color.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/bar_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_bar_data_set.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_set/bar_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/format.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_form.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/y_axis_label_position.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/value_formatter/day_axis_value_formatter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/value_formatter/my_value_formatter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/listener.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 
 class BarChartBasic extends StatefulWidget {
   @override

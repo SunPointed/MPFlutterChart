@@ -1,5 +1,5 @@
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 
 /**
  * Listener for callbacks when doing gestures on the chart.
@@ -64,7 +64,8 @@ mixin OnChartGestureListener {
    * @param scaleX scalefactor on the x-axis
    * @param scaleY scalefactor on the y-axis
    */
-  void onChartScale(double positionX, double positionY, double scaleX, double scaleY);
+  void onChartScale(
+      double positionX, double positionY, double scaleX, double scaleY);
 
   /**
    * Callbacks when the chart is moved / translated via drag gesture.
@@ -73,7 +74,8 @@ mixin OnChartGestureListener {
    * @param dX translation distance on the x-axis
    * @param dY translation distance on the y-axis
    */
-  void onChartTranslate(double positionX, double positionY, double dX, double dY);
+  void onChartTranslate(
+      double positionX, double positionY, double dX, double dY);
 }
 
 /**
@@ -98,6 +100,6 @@ mixin OnChartValueSelectedListener {
   void onNothingSelected();
 }
 
-mixin AnimatorUpdateListener{
+mixin AnimatorUpdateListener {
   void onAnimationUpdate(double x, double y);
 }

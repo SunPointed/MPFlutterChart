@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/basic.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/basic2.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/horizontal.dart';
@@ -1342,17 +1340,5 @@ class _MyHomePageState extends State<MyHomePage> {
         )
       ]),
     );
-  }
-}
-
-class A implements IFillFormatter {
-  LineChartPainter painter;
-
-  A(this.painter);
-
-  @override
-  double getFillLinePosition(
-      ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return painter.mAxisLeft.getAxisMinimum();
   }
 }

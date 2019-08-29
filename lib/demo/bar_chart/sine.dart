@@ -2,16 +2,15 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/bar_chart.dart';
-import 'package:mp_flutter_chart/chart/mp/color.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/bar_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_set/bar_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/format.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
-import 'package:mp_flutter_chart/chart/mp/listener.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_form.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 import 'package:mp_flutter_chart/demo/util.dart';
 
 class BarChartSine extends StatefulWidget {

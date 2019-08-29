@@ -3,12 +3,16 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/radar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/radar_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_radar_data_set.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_set/radar_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/format.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/radar_entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 
 class OtherChartRadar extends StatefulWidget {
   @override
@@ -37,17 +41,19 @@ class OtherChartRadarState extends State<OtherChartRadar> {
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
             title: Text("Other Chart Radar")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 0,
-              child: _radarChart,
-            ),
-          ],
-        ));
+        body: Container(
+            color: Color.fromARGB(255, 60, 65, 82),
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                  right: 0,
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: _radarChart,
+                ),
+              ],
+            )));
   }
 
   void _initRadarData() {

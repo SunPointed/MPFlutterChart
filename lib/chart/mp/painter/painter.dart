@@ -2,17 +2,22 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_provider/chart_interface.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/format.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
+import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
+import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/value_formatter/default_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/listener.dart';
-import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 
 abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>

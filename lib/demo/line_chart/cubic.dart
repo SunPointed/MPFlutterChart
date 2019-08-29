@@ -2,13 +2,17 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/line_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_line_data_set.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_provider/line_data_provider.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/mode.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/mode.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/y_axis_label_position.dart';
+import 'package:mp_flutter_chart/chart/mp/core/fill_formatter/i_fill_formatter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
 
 class LineChartCubic extends StatefulWidget {
   @override

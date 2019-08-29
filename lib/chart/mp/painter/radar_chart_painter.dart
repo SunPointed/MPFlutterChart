@@ -3,18 +3,20 @@ import 'dart:math';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/rendering/custom_paint.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/radar_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/format.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render.dart';
-import 'package:mp_flutter_chart/chart/mp/core/transformer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/radar_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/radar_chart_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer_radar_chart.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer_radar_chart.dart';
+import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/bar_line_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_redar_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 
 class RadarChartPainter extends PieRadarChartPainter<RadarData> {
   /**
@@ -145,9 +147,8 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
   }
 
   @override
-  void notifyDataSetChanged() {
-    if (mData == null) return;
-
+  void calculateOffsets() {
+    super.calculateOffsets();
     calcMinMax();
 
     mYAxisRenderer.computeAxis(
@@ -156,8 +157,6 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
 
     if (mLegend != null && !mLegend.isLegendCustom())
       mLegendRenderer.computeLegend(mData);
-
-    calculateOffsets();
   }
 
   @override

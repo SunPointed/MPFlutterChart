@@ -2,14 +2,19 @@ import 'dart:math';
 
 import 'package:flutter/painting.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
+import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
-import 'package:mp_flutter_chart/chart/mp/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/util.dart';
 
 abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
     extends ChartPainter<T> {
@@ -165,7 +170,7 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
                 double legendHeight =
                     mLegend.mNeededHeight + mLegend.mTextHeightMax;
 
-                MPPointF center = getCenter(mSize);
+                var center = getCenter(mSize);
 
                 double bottomX = mLegend.getHorizontalAlignment() ==
                         LegendHorizontalAlignment.RIGHT
