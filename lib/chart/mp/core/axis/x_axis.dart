@@ -1,6 +1,6 @@
 import 'package:mp_flutter_chart/chart/mp/core/axis/axis_base.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class XAxis extends AxisBase {
   /**

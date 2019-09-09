@@ -8,7 +8,8 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/mode.dart';
 import 'package:mp_flutter_chart/chart/mp/core/fill_formatter/default_fill_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/fill_formatter/i_fill_formatter.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   /**

@@ -10,7 +10,8 @@ import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_flutter_chart/chart/mp/core/fill_formatter/i_fill_formatter.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
 
 class LineChartFilled extends StatefulWidget {

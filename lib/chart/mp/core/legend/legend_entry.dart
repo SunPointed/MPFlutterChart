@@ -1,7 +1,8 @@
 import 'dart:ui';
 
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_form.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class LegendEntry {
   LegendEntry.empty();

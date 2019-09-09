@@ -2,7 +2,8 @@ import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_pie_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/dart_adapter_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class PieData extends ChartData<IPieDataSet> {
   PieData(IPieDataSet dataSet) : super.fromList(List()..add(dataSet));

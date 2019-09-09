@@ -5,7 +5,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data_set/base_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/pie_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/value_position.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
   /**

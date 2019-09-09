@@ -1,5 +1,5 @@
 import 'package:flutter/painting.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 abstract class ComponentBase {
   /**

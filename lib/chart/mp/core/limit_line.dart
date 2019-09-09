@@ -2,7 +2,7 @@ import 'package:flutter/painting.dart';
 import 'package:mp_flutter_chart/chart/mp/core/component.dart';
 import 'package:mp_flutter_chart/chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/limite_label_postion.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class LimitLine extends ComponentBase {
   /** limit / maximum (the y-value or xIndex) */

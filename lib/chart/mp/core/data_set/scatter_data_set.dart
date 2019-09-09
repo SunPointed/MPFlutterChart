@@ -14,7 +14,8 @@ import 'package:mp_flutter_chart/chart/mp/core/render/i_shape_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/square_shape_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/triangle_shape_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_shape_renderer.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
     implements IScatterDataSet {

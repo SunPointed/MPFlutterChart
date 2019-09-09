@@ -5,7 +5,8 @@ import 'package:mp_flutter_chart/chart/mp/core/data_set/base_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/line_scatter_candle_radar_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/candle_entry.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
     implements ICandleDataSet {

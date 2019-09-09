@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_scatter_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/i_shape_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class ChevronDownShapeRenderer implements IShapeRenderer {
   @override

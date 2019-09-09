@@ -7,7 +7,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data_provider/chart_interface.dar
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 abstract class DataRenderer extends Renderer {
   /**

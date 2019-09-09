@@ -2,7 +2,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_line_scatter_ca
 import 'package:mp_flutter_chart/chart/mp/core/data_set/bar_line_scatter_candle_bubble_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/base_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 abstract class LineScatterCandleRadarDataSet<T extends Entry>
     extends BarLineScatterCandleBubbleDataSet<T>

@@ -16,7 +16,7 @@ import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer_radar_char
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_redar_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class RadarChartPainter extends PieRadarChartPainter<RadarData> {
   /**

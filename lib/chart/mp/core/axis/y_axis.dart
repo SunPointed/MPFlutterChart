@@ -5,7 +5,8 @@ import 'package:flutter/painting.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/axis_base.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/y_axis_label_position.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class YAxis extends AxisBase {
   /**

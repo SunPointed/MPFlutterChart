@@ -3,9 +3,10 @@ import 'dart:ui';
 import 'package:mp_flutter_chart/chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/core/component.dart';
 import 'package:mp_flutter_chart/chart/mp/core/limit_line.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/default_axis_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 abstract class AxisBase extends ComponentBase {
   /**

@@ -5,7 +5,8 @@ import 'package:mp_flutter_chart/chart/mp/core/data_set/base_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/line_radar_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/radar_entry.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class RadarDataSet extends LineRadarDataSet<RadarEntry>
     implements IRadarDataSet {

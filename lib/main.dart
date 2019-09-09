@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/basic.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/basic2.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/horizontal.dart';

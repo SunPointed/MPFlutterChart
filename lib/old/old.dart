@@ -9,7 +9,7 @@
 //import 'package:mp_flutter_chart/chart/mp/core/limit_line.dart';
 //import 'package:mp_flutter_chart/chart/mp/mode.dart';
 //import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
-//import 'package:mp_flutter_chart/chart/mp/util.dart';
+//import 'package:mp_flutter_chart/chart/mp/utils.dart';
 //import 'package:mp_flutter_chart/demo/res/styles.dart';
 //
 //void main() => runApp(MyApp());

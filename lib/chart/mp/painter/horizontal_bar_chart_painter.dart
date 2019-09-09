@@ -26,7 +26,7 @@ import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer_horizonta
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/bar_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class HorizontalBarChartPainter extends BarChartPainter {
   HorizontalBarChartPainter(BarData data,

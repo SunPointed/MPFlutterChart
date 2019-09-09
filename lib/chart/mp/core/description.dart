@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:mp_flutter_chart/chart/mp/core/component.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class Description extends ComponentBase {
   /**

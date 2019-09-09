@@ -6,7 +6,8 @@ import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_scatter_data_se
 import 'package:mp_flutter_chart/chart/mp/core/entry/candle_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/matrix4_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 
 class Transformer {

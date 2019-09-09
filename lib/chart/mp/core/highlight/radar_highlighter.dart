@@ -4,7 +4,7 @@ import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/pie_radar_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/radar_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/core/util.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class RadarHighlighter extends PieRadarHighlighter<RadarChartPainter> {
   RadarHighlighter(RadarChartPainter chart) : super(chart);

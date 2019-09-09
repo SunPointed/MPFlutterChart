@@ -1,16 +1,14 @@
 import 'dart:math';
-import 'dart:typed_data';
 
+import 'package:flustars/flustars.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/size.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/default_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
-import 'package:vector_math/vector_math_64.dart';
+
 
 abstract class Utils {
   static double DEG2RAD = pi / 180.0;
@@ -230,7 +228,7 @@ abstract class Utils {
   }
 
   static double convertDpToPixel(double dp) {
-    return dp;
+    return ScreenUtil.getInstance().getSp(dp);
   }
 
   static int calcTextWidth(TextPainter p, String demoText) {
@@ -320,269 +318,12 @@ abstract class Utils {
   }
 }
 
-abstract class ColorUtils {
-  static final Color BLUE = Color(0xFF0000FF);
-  static final Color COLOR_SKIP = Color(0x00112234);
-  static final Color COLOR_NONE = Color(0x00112233);
-  static final Color DKGRAY = Color(0xFF444444);
-  static final Color GRAY = Color(0xFF999999);
-  static final Color YELLOW = Color(0xFFFFFF00);
-  static final Color BLACK = Color(0xFF000000);
-  static final Color LTGRAY = Color(0xFFCCCCCC);
-  static final Color RED = FADE_RED_END;
-  static final Color HOLO_BLUE = Color.fromARGB(255, 51, 181, 229);
-  static final Color WHITE = Color(0xFFFFFFFF);
-  static final Color PURPLE = Color(0xFF512DA8);
-  static final Color FADE_RED_START = Color(0x00FF0000);
-  static final Color FADE_RED_END = Color(0xFFFF0000);
 
-  static final Color HOLO_ORANGE_LIGHT = Color(0xffffbb33);
-  static final Color HOLO_BLUE_LIGHT = Color(0xff33b5e5);
-  static final Color HOLO_GREEN_LIGHT = Color(0xff99cc00);
-  static final Color HOLO_RED_LIGHT = Color(0xffff4444);
-  static final Color HOLO_BLUE_DARK = Color(0xff0099cc);
-  static final Color HOLO_PURPLE = Color(0xffaa66cc);
-  static final Color HOLO_GREEN_DARK = Color(0xff669900);
-  static final Color HOLO_RED_DARK = Color(0xffcc0000);
-  static final Color HOLO_ORANGE_DARK = Color(0xffff8800);
 
-  static final List<Color> VORDIPLOM_COLORS = List()
-    ..add(Color.fromARGB(255, 192, 255, 140))
-    ..add(Color.fromARGB(255, 255, 247, 140))
-    ..add(Color.fromARGB(255, 255, 208, 140))
-    ..add(Color.fromARGB(255, 140, 234, 255))
-    ..add(Color.fromARGB(255, 255, 140, 157));
 
-  static final List<Color> JOYFUL_COLORS = List()
-    ..add(Color.fromARGB(255, 217, 80, 138))
-    ..add(Color.fromARGB(255, 254, 149, 7))
-    ..add(Color.fromARGB(255, 254, 247, 120))
-    ..add(Color.fromARGB(255, 106, 167, 134))
-    ..add(Color.fromARGB(255, 53, 194, 209));
 
-  static final List<Color> MATERIAL_COLORS = List()
-    ..add(Color(0xFF2ecc71))
-    ..add(Color(0xFFf1c40f))
-    ..add(Color(0xFFe74c3c))
-    ..add(Color(0xFF3498db));
 
-  static final List<Color> COLORFUL_COLORS = List()
-    ..add(Color.fromARGB(255, 193, 37, 82))
-    ..add(Color.fromARGB(255, 255, 102, 0))
-    ..add(Color.fromARGB(255, 245, 199, 0))
-    ..add(Color.fromARGB(255, 106, 150, 31))
-    ..add(Color.fromARGB(255, 179, 100, 53));
 
-  static final List<Color> LIBERTY_COLORS = List()
-    ..add(Color.fromARGB(255, 207, 248, 246))
-    ..add(Color.fromARGB(255, 148, 212, 212))
-    ..add(Color.fromARGB(255, 136, 180, 187))
-    ..add(Color.fromARGB(255, 118, 174, 175))
-    ..add(Color.fromARGB(255, 42, 109, 130));
 
-  static final List<Color> PASTEL_COLORS = List()
-    ..add(Color.fromARGB(255, 64, 89, 128))
-    ..add(Color.fromARGB(255, 149, 165, 124))
-    ..add(Color.fromARGB(255, 217, 184, 162))
-    ..add(Color.fromARGB(255, 191, 134, 134))
-    ..add(Color.fromARGB(255, 179, 48, 80));
 
-  static Color colorWithAlpha(Color strokeColor, int alpha) {
-    return Color.fromARGB(
-        alpha, strokeColor.red, strokeColor.green, strokeColor.blue);
-  }
-}
 
-abstract class Matrix4Utils {
-  static void postScaleByPoint(
-      Matrix4 m, double sx, double sy, double px, double py) {
-    m.translate(px, py);
-    m
-      ..storage[15] = 1.0
-      ..storage[10] = 1.0
-      ..storage[13] *= sy
-      ..storage[5] *= sy
-      ..storage[12] *= sx
-      ..storage[0] *= sx;
-    m.translate(-px, -py);
-  }
-
-  static void postScale(Matrix4 m, double sx, double sy) {
-    m
-      ..storage[15] = 1.0
-      ..storage[10] = 1.0
-      ..storage[13] *= sy
-      ..storage[5] *= sy
-      ..storage[12] *= sx
-      ..storage[0] *= sx;
-  }
-
-  static void setScaleByPoint(
-      Matrix4 m, double sx, double sy, double px, double py) {
-    m.translate(px, py);
-    m
-      ..storage[15] = 1.0
-      ..storage[10] = 1.0
-      ..storage[13] *= sy
-      ..storage[12] *= sx
-      ..storage[5] = sy
-      ..storage[0] = sx;
-    m.translate(-px, -py);
-  }
-
-  static void setScale(Matrix4 m, double sx, double sy) {
-    m
-      ..storage[13] *= sy
-      ..storage[12] *= sx
-      ..storage[5] = sy
-      ..storage[0] = sx;
-  }
-
-  static void postTranslate(Matrix4 m, double tx, double ty) {
-    final Matrix4 result = Matrix4.identity()..setTranslationRaw(tx, ty, 0.0);
-    multiply(m, result).copyInto(m);
-  }
-
-  static void setTranslate(Matrix4 m, double tx, double ty) {
-    (Matrix4.identity()..setTranslationRaw(tx, ty, 0.0)).copyInto(m);
-  }
-
-  static void mapPoints(Matrix4 m, List<double> valuePoints) {
-    double x = 0;
-    double y = 0;
-    for (int i = 0; i < valuePoints.length; i += 2) {
-      x = valuePoints[i] == null ? 0 : valuePoints[i];
-      y = valuePoints[i + 1] == null ? 0 : valuePoints[i + 1];
-      final Vector3 transformed = m.perspectiveTransform(Vector3(x, y, 0));
-      valuePoints[i] = transformed.x;
-      valuePoints[i + 1] = transformed.y;
-    }
-  }
-
-  static void postConcat(Matrix4 m, Matrix4 c) {
-    multiply(c, m).copyInto(m);
-  }
-
-  static Matrix4 multiply(Matrix4 first, Matrix4 second) {
-    var f0 = first.storage[0]; // 123
-    var f1 = first.storage[4]; // 567
-    var f2 = first.storage[8];
-    var f3 = first.storage[12];
-    var f4 = first.storage[1];
-    var f5 = first.storage[5];
-    var f6 = first.storage[9];
-    var f7 = first.storage[13];
-    var f8 = first.storage[2];
-    var f9 = first.storage[6];
-    var f10 = first.storage[10];
-    var f11 = first.storage[14];
-    var f12 = first.storage[3];
-    var f13 = first.storage[7];
-    var f14 = first.storage[11];
-    var f15 = first.storage[15];
-
-    var s0 = second.storage[0]; // 123
-    var s1 = second.storage[4]; // 567
-    var s2 = second.storage[8];
-    var s3 = second.storage[12];
-    var s4 = second.storage[1];
-    var s5 = second.storage[5];
-    var s6 = second.storage[9];
-    var s7 = second.storage[13];
-    var s8 = second.storage[2];
-    var s9 = second.storage[6];
-    var s10 = second.storage[10];
-    var s11 = second.storage[14];
-    var s12 = second.storage[3];
-    var s13 = second.storage[7];
-    var s14 = second.storage[11];
-    var s15 = second.storage[15];
-
-    Matrix4 res = Matrix4.identity();
-
-    res.storage[0] = f0 * s0 + f1 * s4 + f2 * s8 + f3 * s12; // 123
-    res.storage[4] = f0 * s1 + f1 * s5 + f2 * s9 + f3 * s13; // 567
-    res.storage[8] = f0 * s2 + f1 * s6 + f2 * s10 + f3 * s14;
-    res.storage[12] = f0 * s3 + f1 * s7 + f2 * s11 + f3 * s15;
-
-    res.storage[1] = f4 * s0 + f5 * s4 + f6 * s8 + f7 * s12;
-    res.storage[5] = f4 * s1 + f5 * s5 + f6 * s9 + f7 * s13;
-    res.storage[9] = f4 * s2 + f5 * s6 + f6 * s10 + f7 * s14;
-    res.storage[13] = f4 * s3 + f5 * s7 + f6 * s11 + f7 * s15;
-
-    res.storage[2] = f8 * s0 + f9 * s4 + f10 * s8 + f11 * s12;
-    res.storage[6] = f8 * s1 + f9 * s5 + f10 * s9 + f11 * s13;
-    res.storage[10] = f8 * s2 + f9 * s6 + f10 * s10 + f11 * s14;
-    res.storage[14] = f8 * s3 + f9 * s7 + f10 * s11 + f11 * s15;
-
-    res.storage[3] = f12 * s0 + f13 * s4 + f14 * s8 + f15 * s12;
-    res.storage[7] = f12 * s1 + f13 * s5 + f14 * s9 + f15 * s13;
-    res.storage[11] = f12 * s2 + f13 * s6 + f14 * s10 + f15 * s14;
-    res.storage[15] = f12 * s3 + f13 * s7 + f14 * s11 + f15 * s15;
-
-    return res;
-  }
-
-  static Rect mapRect(Matrix4 m, Rect r) {
-    return MatrixUtils.transformRect(m, r);
-  }
-
-  static void moveTo(Path p, Matrix4 m, Offset o) {
-    o = MatrixUtils.transformPoint(m, o);
-    p.moveTo(o.dx, o.dy);
-  }
-
-  static void lineTo(Path p, Matrix4 m, Offset o) {
-    o = MatrixUtils.transformPoint(m, o);
-    p.lineTo(o.dx, o.dy);
-  }
-
-  static void cubicTo(Path p, Matrix4 m, Offset o1, Offset o2, Offset o3) {
-    o1 = MatrixUtils.transformPoint(m, o1);
-    o2 = MatrixUtils.transformPoint(m, o2);
-    o3 = MatrixUtils.transformPoint(m, o3);
-    p.cubicTo(o1.dx, o1.dy, o2.dx, o2.dy, o3.dx, o3.dy);
-  }
-}
-
-abstract class DartAdapterUtils {
-  static bool equalsIgnoreCase(String string1, String string2) {
-    return string1?.toLowerCase() == string2?.toLowerCase();
-  }
-}
-
-abstract class CanvasUtils {
-  static void drawLines(
-      Canvas canvas, List<double> pts, int offset, int count, Paint paint) {
-    for (int i = offset; i < count; i += 4) {
-      canvas.drawLine(
-          Offset(pts[i], pts[i + 1]), Offset(pts[i + 2], pts[i + 3]), paint);
-    }
-  }
-}
-
-abstract class HighlightUtils {
-  static Highlight performHighlight(
-      ChartPainter painter, Highlight curHighlight, Highlight lastHighlight) {
-    if (curHighlight == null || curHighlight.equalTo(lastHighlight)) {
-      painter.highlightValue6(null, true);
-      lastHighlight = null;
-    } else {
-      painter.highlightValue6(curHighlight, true);
-      lastHighlight = curHighlight;
-    }
-    return lastHighlight;
-  }
-
-  static Highlight performHighlightDrag(
-      ChartPainter painter, Highlight lastHighlight, Offset offset) {
-    Highlight h = painter.getHighlightByTouchPoint(offset.dx, offset.dy);
-
-    if (h != null && !h.equalTo(lastHighlight)) {
-      lastHighlight = h;
-      painter.highlightValue6(h, true);
-    }
-
-    return lastHighlight;
-  }
-}
