@@ -149,7 +149,8 @@ class CombinedData extends BarLineScatterCandleBubbleData<
    */
   @override
   Entry getEntryForHighlight(Highlight highlight) {
-    if (highlight.getDataIndex() >= getAllData().length) return null;
+    if (highlight.getDataIndex() >= getAllData().length ||
+        highlight.getDataIndex() < 0) return null;
 
     ChartData data = getDataByIndex(highlight.getDataIndex());
 
@@ -175,7 +176,8 @@ class CombinedData extends BarLineScatterCandleBubbleData<
    */
   IBarLineScatterCandleBubbleDataSet<Entry> getDataSetByHighlight(
       Highlight highlight) {
-    if (highlight.getDataIndex() >= getAllData().length) return null;
+    if (highlight.getDataIndex() >= getAllData().length ||
+        highlight.getDataIndex() < 0) return null;
 
     BarLineScatterCandleBubbleData data =
         getDataByIndex(highlight.getDataIndex());

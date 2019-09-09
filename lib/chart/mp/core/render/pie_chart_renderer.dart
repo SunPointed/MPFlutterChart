@@ -11,6 +11,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/value_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_chart_painter.dart';
@@ -70,27 +71,14 @@ class PieChartRenderer extends DataRenderer {
           ColorUtils.WHITE.green, ColorUtils.WHITE.blue)
       ..style = PaintingStyle.fill;
 
-    mCenterTextPaint = TextPainter(
-        textDirection: TextDirection.ltr,
-        textAlign: TextAlign.center,
-        text: TextSpan(
-            style: TextStyle(
-                color: ColorUtils.BLACK,
-                fontSize: Utils.convertDpToPixel(12))));
-    mValuePaint = TextPainter(
-        textDirection: TextDirection.ltr,
-        textAlign: TextAlign.center,
-        text: TextSpan(
-            style: TextStyle(
-                color: ColorUtils.WHITE, fontSize: Utils.convertDpToPixel(9))));
+    mCenterTextPaint = PainterUtils.create(
+        null, null, ColorUtils.BLACK, Utils.convertDpToPixel(12));
 
-    mEntryLabelsPaint = TextPainter(
-        textDirection: TextDirection.ltr,
-        textAlign: TextAlign.center,
-        text: TextSpan(
-            style: TextStyle(
-                color: ColorUtils.WHITE,
-                fontSize: Utils.convertDpToPixel(10))));
+    mValuePaint = PainterUtils.create(
+        null, null, ColorUtils.WHITE, Utils.convertDpToPixel(9));
+
+    mEntryLabelsPaint = PainterUtils.create(
+        null, null, ColorUtils.WHITE, Utils.convertDpToPixel(10));
 
     mValueLinePaint = Paint()
       ..isAntiAlias = true
@@ -666,16 +654,13 @@ class PieChartRenderer extends DataRenderer {
 
   void drawValueByHeight(Canvas c, String valueText, double x, double y,
       Color color, bool useHeight) {
-    mValuePaint = TextPainter(
-        textDirection: TextDirection.ltr,
-        textAlign: TextAlign.center,
-        text: TextSpan(
-            text: valueText,
-            style: TextStyle(
-                color: color,
-                fontSize: mValuePaint.text.style.fontSize == null
-                    ? Utils.convertDpToPixel(13)
-                    : mValuePaint.text.style.fontSize)));
+    mValuePaint = PainterUtils.create(
+        mValuePaint,
+        valueText,
+        color,
+        mValuePaint.text.style.fontSize == null
+            ? Utils.convertDpToPixel(13)
+            : mValuePaint.text.style.fontSize);
     mValuePaint.layout();
     mValuePaint.paint(
         c,
@@ -685,16 +670,13 @@ class PieChartRenderer extends DataRenderer {
 
   @override
   void drawValue(Canvas c, String valueText, double x, double y, Color color) {
-    mValuePaint = TextPainter(
-        textDirection: TextDirection.ltr,
-        textAlign: TextAlign.center,
-        text: TextSpan(
-            text: valueText,
-            style: TextStyle(
-                color: color,
-                fontSize: mValuePaint.text.style.fontSize == null
-                    ? Utils.convertDpToPixel(13)
-                    : mValuePaint.text.style.fontSize)));
+    mValuePaint = PainterUtils.create(
+        mValuePaint,
+        valueText,
+        color,
+        mValuePaint.text.style.fontSize == null
+            ? Utils.convertDpToPixel(13)
+            : mValuePaint.text.style.fontSize);
     mValuePaint.layout();
     mValuePaint.paint(
         c, Offset(x - mValuePaint.width / 2, y - mValuePaint.height));
@@ -709,14 +691,8 @@ class PieChartRenderer extends DataRenderer {
    * @param y
    */
   void drawEntryLabel(Canvas c, String label, double x, double y) {
-    mEntryLabelsPaint = TextPainter(
-        textDirection: TextDirection.ltr,
-        textAlign: TextAlign.center,
-        text: TextSpan(
-            text: label,
-            style: TextStyle(
-                color: ColorUtils.WHITE,
-                fontSize: Utils.convertDpToPixel(10))));
+    mEntryLabelsPaint = PainterUtils.create(
+        mEntryLabelsPaint, label, ColorUtils.WHITE, Utils.convertDpToPixel(10));
     mEntryLabelsPaint.layout();
     mEntryLabelsPaint.paint(c,
         Offset(x - mEntryLabelsPaint.width / 2, y - mEntryLabelsPaint.height));
@@ -841,14 +817,8 @@ class PieChartRenderer extends DataRenderer {
 
       c.save();
 
-      mCenterTextPaint = TextPainter(
-          textDirection: TextDirection.ltr,
-          textAlign: TextAlign.center,
-          text: TextSpan(
-              text: centerText,
-              style: TextStyle(
-                  color: ColorUtils.BLACK,
-                  fontSize: Utils.convertDpToPixel(12))));
+      mCenterTextPaint = PainterUtils.create(mCenterTextPaint, centerText,
+          ColorUtils.BLACK, Utils.convertDpToPixel(12));
       mCenterTextPaint.layout();
       mCenterTextPaint.paint(
           c,

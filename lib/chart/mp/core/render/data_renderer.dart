@@ -6,6 +6,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_provider/chart_interface.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
@@ -39,13 +40,8 @@ abstract class DataRenderer extends Renderer {
 
     mDrawPaint = Paint();
 
-    mValuePaint = TextPainter(
-        text: TextSpan(
-            style: TextStyle(
-                color: Color.fromARGB(255, 63, 63, 63),
-                fontSize: Utils.convertDpToPixel(9))),
-        textDirection: TextDirection.ltr,
-        textAlign: TextAlign.center);
+    mValuePaint = PainterUtils.create(mValuePaint, null,
+        Color.fromARGB(255, 63, 63, 63), Utils.convertDpToPixel(9));
 
     mHighlightPaint = Paint()
       ..isAntiAlias = true
@@ -95,15 +91,8 @@ abstract class DataRenderer extends Renderer {
    * @param set
    */
   void applyValueTextStyle(IDataSet set) {
-    mValuePaint = TextPainter(
-        text: TextSpan(
-            style: set.getValueTypeface() == null
-                ? TextStyle(
-                    color: Color.fromARGB(255, 63, 63, 63),
-                    fontSize: Utils.convertDpToPixel(9))
-                : set.getValueTypeface()),
-        textDirection: TextDirection.ltr,
-        textAlign: TextAlign.center);
+    mValuePaint = PainterUtils.create(mValuePaint, null,
+        Color.fromARGB(255, 63, 63, 63), Utils.convertDpToPixel(9));
   }
 
   /**

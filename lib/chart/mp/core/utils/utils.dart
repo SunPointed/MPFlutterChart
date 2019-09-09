@@ -1,14 +1,14 @@
 import 'dart:math';
 
-import 'package:flustars/flustars.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/size.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/screen_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/default_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
-
 
 abstract class Utils {
   static double DEG2RAD = pi / 180.0;
@@ -228,23 +228,19 @@ abstract class Utils {
   }
 
   static double convertDpToPixel(double dp) {
-    return ScreenUtil.getInstance().getSp(dp);
+    return ScreenUtils.getInstance().getSp(dp);
   }
 
   static int calcTextWidth(TextPainter p, String demoText) {
-    TextPainter painter = TextPainter(
-        text: TextSpan(text: demoText, style: p.text.style),
-        textDirection: p.textDirection,
-        textAlign: p.textAlign);
+    TextPainter painter = PainterUtils.create(
+        p, demoText, p.text.style.color, p.text.style.fontSize);
     painter.layout();
     return painter.width.toInt();
   }
 
   static int calcTextHeight(TextPainter p, String demoText) {
-    TextPainter painter = TextPainter(
-        text: TextSpan(text: demoText, style: p.text.style),
-        textAlign: p.textAlign,
-        textDirection: p.textDirection);
+    TextPainter painter = PainterUtils.create(
+        p, demoText, p.text.style.color, p.text.style.fontSize);
     painter.layout();
     return painter.height.toInt();
   }
@@ -256,10 +252,8 @@ abstract class Utils {
   }
 
   static void calcTextSize2(TextPainter p, String demoText, FSize outputFSize) {
-    TextPainter painter = TextPainter(
-        text: TextSpan(text: demoText, style: p.text.style),
-        textDirection: p.textDirection,
-        textAlign: p.textAlign);
+    TextPainter painter = PainterUtils.create(
+        p, demoText, p.text.style.color, p.text.style.fontSize);
     painter.layout();
     outputFSize.width = painter.width;
     outputFSize.height = painter.height;
@@ -317,13 +311,3 @@ abstract class Utils {
     outputPoint.y = (center.y + dist * sin((angle / 180 * pi)));
   }
 }
-
-
-
-
-
-
-
-
-
-

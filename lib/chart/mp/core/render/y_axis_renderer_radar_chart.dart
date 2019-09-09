@@ -4,6 +4,7 @@ import 'package:flutter/painting.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/limit_line.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/radar_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
@@ -160,15 +161,8 @@ class YAxisRendererRadarChart extends YAxisRenderer {
       Utils.getPosition(center, r, mChart.getRotationAngle(), pOut);
 
       String label = mYAxis.getFormattedLabel(j);
-
-      mAxisLabelPaint = TextPainter(
-          textAlign: TextAlign.center,
-          textDirection: TextDirection.ltr,
-          text: TextSpan(
-              text: label,
-              style: TextStyle(
-                  color: mYAxis.getTextColor(),
-                  fontSize: mYAxis.getTextSize())));
+      mAxisLabelPaint = PainterUtils.create(
+          mAxisLabelPaint, label, mYAxis.getTextColor(), mYAxis.getTextSize());
       mAxisLabelPaint.layout();
       mAxisLabelPaint.paint(
           c,

@@ -5,6 +5,7 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/default_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
@@ -34,13 +35,11 @@ class LineChartMarker implements IMarker {
 
   @override
   void draw(Canvas canvas, double posX, double posY) {
-    TextPainter painter = TextPainter(
-        text: TextSpan(
-            text:
-                "${formatter.getFormattedValue1(entry.x)},${formatter.getFormattedValue1(entry.y)}",
-            style: TextStyle(color: textColor, fontSize: fontSize)),
-        textDirection: TextDirection.ltr,
-        textAlign: TextAlign.center);
+    TextPainter painter = PainterUtils.create(
+        null,
+        "${formatter.getFormattedValue1(entry.x)},${formatter.getFormattedValue1(entry.y)}",
+        textColor,
+        fontSize);
     Paint paint = Paint()
       ..color = backColor
       ..strokeWidth = 2

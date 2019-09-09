@@ -15,6 +15,7 @@ import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/pie_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_redar_chart_painter.dart';
@@ -734,16 +735,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
    * @param color
    */
   void setEntryLabelColor(Color color) {
-    var style = (mRenderer as PieChartRenderer).mEntryLabelsPaint.text.style;
-    (mRenderer as PieChartRenderer).mEntryLabelsPaint = TextPainter(
-        textDirection: TextDirection.ltr,
-        textAlign: TextAlign.center,
-        text: TextSpan(
-            style: TextStyle(
-                fontSize: style?.fontSize == null
-                    ? Utils.convertDpToPixel(13)
-                    : style?.fontSize,
-                color: color)));
+    (mRenderer as PieChartRenderer).mEntryLabelsPaint = PainterUtils.create(
+        (mRenderer as PieChartRenderer).mEntryLabelsPaint, null, color, null);
   }
 
 //  /**
@@ -762,14 +755,11 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
    */
   void setEntryLabelTextSize(double size) {
     var style = (mRenderer as PieChartRenderer).mEntryLabelsPaint.text.style;
-    (mRenderer as PieChartRenderer).mEntryLabelsPaint = TextPainter(
-        textDirection: TextDirection.ltr,
-        textAlign: TextAlign.center,
-        text: TextSpan(
-            style: TextStyle(
-                fontSize: Utils.convertDpToPixel(size),
-                color:
-                    style?.color == null ? ColorUtils.WHITE : style?.color)));
+    (mRenderer as PieChartRenderer).mEntryLabelsPaint = PainterUtils.create(
+        (mRenderer as PieChartRenderer).mEntryLabelsPaint,
+        null,
+        style?.color == null ? ColorUtils.WHITE : style?.color,
+        Utils.convertDpToPixel(size));
   }
 
 //  /**

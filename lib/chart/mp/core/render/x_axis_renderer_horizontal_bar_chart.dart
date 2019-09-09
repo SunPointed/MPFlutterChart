@@ -6,6 +6,7 @@ import 'package:mp_flutter_chart/chart/mp/core/limit_line.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/size.dart';
@@ -44,15 +45,13 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 
   @override
   void computeSize() {
-    mAxisLabelPaint = TextPainter(
-        textAlign: mAxisLabelPaint.textAlign,
-        textDirection: mAxisLabelPaint.textDirection,
-        text: TextSpan(
-            style: TextStyle(
-                fontSize: mXAxis.getTextSize(),
-                color: mXAxis.getTypeface()?.color == null
-                    ? ColorUtils.HOLO_GREEN_DARK
-                    : mXAxis.getTypeface()?.color)));
+    mAxisLabelPaint = PainterUtils.create(
+        mAxisLabelPaint,
+        null,
+        mXAxis.getTypeface()?.color == null
+            ? ColorUtils.HOLO_GREEN_DARK
+            : mXAxis.getTypeface()?.color,
+        mXAxis.getTextSize());
 
     String longest = mXAxis.getLongestLabel();
 
@@ -80,12 +79,8 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 
 //    double xoffset = mXAxis.getXOffset();
 
-    mAxisLabelPaint = TextPainter(
-        text: TextSpan(
-            style: TextStyle(
-                color: mXAxis.getTextColor(), fontSize: mXAxis.getTextSize())),
-        textDirection: mAxisLabelPaint.textDirection,
-        textAlign: mAxisLabelPaint.textAlign);
+    mAxisLabelPaint = PainterUtils.create(
+        mAxisLabelPaint, null, mXAxis.getTextColor(), mXAxis.getTextSize());
 
     MPPointF pointF = MPPointF.getInstance1(0, 0);
 
@@ -270,52 +265,32 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
         final LimitLabelPosition position = l.getLabelPosition();
 
         if (position == LimitLabelPosition.RIGHT_TOP) {
-          mAxisLabelPaint = TextPainter(
-              textAlign: TextAlign.center,
-              textDirection: TextDirection.ltr,
-              text: TextSpan(
-                  text: label,
-                  style: TextStyle(
-                      color: l.getTextColor(), fontSize: l.getTextSize())));
+          mAxisLabelPaint = PainterUtils.create(
+              mAxisLabelPaint, label, l.getTextColor(), l.getTextSize());
           mAxisLabelPaint.layout();
           mAxisLabelPaint.paint(
               c,
               Offset(mViewPortHandler.contentRight() - xOffset,
                   pts[1] - yOffset + labelLineHeight));
         } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
-          mAxisLabelPaint = TextPainter(
-              textAlign: TextAlign.center,
-              textDirection: TextDirection.ltr,
-              text: TextSpan(
-                  text: label,
-                  style: TextStyle(
-                      color: l.getTextColor(), fontSize: l.getTextSize())));
+          mAxisLabelPaint = PainterUtils.create(
+              mAxisLabelPaint, label, l.getTextColor(), l.getTextSize());
           mAxisLabelPaint.layout();
           mAxisLabelPaint.paint(
               c,
               Offset(
                   mViewPortHandler.contentRight() - xOffset, pts[1] + yOffset));
         } else if (position == LimitLabelPosition.LEFT_TOP) {
-          mAxisLabelPaint = TextPainter(
-              textAlign: TextAlign.center,
-              textDirection: TextDirection.ltr,
-              text: TextSpan(
-                  text: label,
-                  style: TextStyle(
-                      color: l.getTextColor(), fontSize: l.getTextSize())));
+          mAxisLabelPaint = PainterUtils.create(
+              mAxisLabelPaint, label, l.getTextColor(), l.getTextSize());
           mAxisLabelPaint.layout();
           mAxisLabelPaint.paint(
               c,
               Offset(mViewPortHandler.contentLeft() + xOffset,
                   pts[1] - yOffset + labelLineHeight));
         } else {
-          mAxisLabelPaint = TextPainter(
-              textAlign: TextAlign.center,
-              textDirection: TextDirection.ltr,
-              text: TextSpan(
-                  text: label,
-                  style: TextStyle(
-                      color: l.getTextColor(), fontSize: l.getTextSize())));
+          mAxisLabelPaint = PainterUtils.create(
+              mAxisLabelPaint, label, l.getTextColor(), l.getTextSize());
           mAxisLabelPaint.layout();
           mAxisLabelPaint.paint(
               c,

@@ -18,24 +18,16 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
     extends ChartPainter<T> {
-  /**
-   * holds the normalized version of the current rotation angle of the chart
-   */
+  /// holds the normalized version of the current rotation angle of the chart
   double mRotationAngle = 270;
 
-  /**
-   * holds the raw version of the current rotation angle of the chart
-   */
+  /// holds the raw version of the current rotation angle of the chart
   double mRawRotationAngle = 270;
 
-  /**
-   * flag that indicates if rotation is enabled or not
-   */
+  /// flag that indicates if rotation is enabled or not
   bool mRotateEnabled = true;
 
-  /**
-   * Sets the minimum offset (padding) around the chart, defaults to 0.f
-   */
+  /// Sets the minimum offset (padding) around the chart, defaults to 0.f
   double mMinOffset = 0.0;
 
   PieRadarChartPainter(T data,

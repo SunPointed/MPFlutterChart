@@ -117,7 +117,7 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
   void init() {
     super.init();
 
-    mRenderer = new CandleStickChartRenderer(this, mAnimator, mViewPortHandler);
+    mRenderer = CandleStickChartRenderer(this, mAnimator, mViewPortHandler);
 
     mXAxis.setSpaceMin(0.5);
     mXAxis.setSpaceMax(0.5);

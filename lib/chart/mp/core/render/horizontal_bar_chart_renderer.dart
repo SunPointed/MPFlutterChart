@@ -12,6 +12,7 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/bar_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
@@ -62,10 +63,10 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
       double x;
 
       for (int i = 0,
-          count = min(((dataSet.getEntryCount()) * phaseX).ceil(),
-              dataSet.getEntryCount());
-      i < count;
-      i++) {
+              count = min(((dataSet.getEntryCount()) * phaseX).ceil(),
+                  dataSet.getEntryCount());
+          i < count;
+          i++) {
         BarEntry e = dataSet.getEntryForIndex(i);
 
         x = e.x;
@@ -168,8 +169,8 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
       // if only single values are drawn (sum)
       if (!dataSet.isStacked()) {
         for (int j = 0;
-        j < buffer.buffer.length * mAnimator.getPhaseX();
-        j += 4) {
+            j < buffer.buffer.length * mAnimator.getPhaseX();
+            j += 4) {
           double y = (buffer.buffer[j + 1] + buffer.buffer[j + 3]) / 2;
 
           if (!mViewPortHandler.isInBoundsTop(buffer.buffer[j + 1])) break;
@@ -185,7 +186,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
           // calculate the correct offset depending on the draw position of the value
           double valueTextWidth =
-          Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
+              Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
           posOffset = (drawValueAboveBar
               ? valueOffsetPlus
               : -(valueTextWidth + valueOffsetPlus));
@@ -257,7 +258,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
             // calculate the correct offset depending on the draw position of the value
             double valueTextWidth =
-            Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
+                Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
             posOffset = (drawValueAboveBar
                 ? valueOffsetPlus
                 : -(valueTextWidth + valueOffsetPlus));
@@ -330,7 +331,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
               // calculate the correct offset depending on the draw position of the value
               double valueTextWidth =
-              Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
+                  Utils.calcTextWidth(mValuePaint, formattedValue).toDouble();
               posOffset = (drawValueAboveBar
                   ? valueOffsetPlus
                   : -(valueTextWidth + valueOffsetPlus));
@@ -348,7 +349,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
               double x = transformed[k] + (drawBelow ? negOffset : posOffset);
               double y = (buffer.buffer[bufferIndex + 1] +
-                  buffer.buffer[bufferIndex + 3]) /
+                      buffer.buffer[bufferIndex + 3]) /
                   2;
 
               if (!mViewPortHandler.isInBoundsTop(y)) break;
@@ -376,7 +377,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
           }
 
           bufferIndex =
-          vals == null ? bufferIndex + 4 : bufferIndex + 4 * vals.length;
+              vals == null ? bufferIndex + 4 : bufferIndex + 4 * vals.length;
           index++;
         }
       }
@@ -387,13 +388,13 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
   @override
   void drawValue(Canvas c, String valueText, double x, double y, Color color) {
-    mValuePaint = TextPainter(
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr,
-        text: TextSpan(
-            text: valueText,
-            style: TextStyle(
-                color: color, fontSize: mValuePaint.text.style.fontSize)));
+    mValuePaint = PainterUtils.create(
+        mValuePaint,
+        valueText,
+        color,
+        mValuePaint.text.style.fontSize == null
+            ? Utils.convertDpToPixel(13)
+            : mValuePaint.text.style.fontSize);
     mValuePaint.layout();
     mValuePaint.paint(c, Offset(x, y - mValuePaint.height / 2));
   }

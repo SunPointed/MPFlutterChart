@@ -5,48 +5,36 @@ import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 
 mixin ChartInterface {
-  /**
-   * Returns the minimum x value of the chart, regardless of zoom or translation.
-   *
-   * @return
-   */
+  /// Returns the minimum x value of the chart, regardless of zoom or translation.
+  ///
+  /// @return
   double getXChartMin();
 
-  /**
-   * Returns the maximum x value of the chart, regardless of zoom or translation.
-   *
-   * @return
-   */
+  /// Returns the maximum x value of the chart, regardless of zoom or translation.
+  ///
+  /// @return
   double getXChartMax();
 
   double getXRange();
 
-  /**
-   * Returns the minimum y value of the chart, regardless of zoom or translation.
-   *
-   * @return
-   */
+  /// Returns the minimum y value of the chart, regardless of zoom or translation.
+  ///
+  /// @return
   double getYChartMin();
 
-  /**
-   * Returns the maximum y value of the chart, regardless of zoom or translation.
-   *
-   * @return
-   */
+  /// Returns the maximum y value of the chart, regardless of zoom or translation.
+  ///
+  /// @return
   double getYChartMax();
 
-  /**
-   * Returns the maximum distance in scren dp a touch can be away from an entry to cause it to get highlighted.
-   *
-   * @return
-   */
+  /// Returns the maximum distance in scren dp a touch can be away from an entry to cause it to get highlighted.
+  ///
+  /// @return
   double getMaxHighlightDistance();
 
-  MPPointF getCenterOfView(Size size);
+  MPPointF getCenter(Size size);
 
   MPPointF getCenterOffsets();
-
-  Rect getContentRect();
 
   ValueFormatter getDefaultValueFormatter();
 

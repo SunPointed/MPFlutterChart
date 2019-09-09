@@ -9,6 +9,7 @@ import 'package:mp_flutter_chart/chart/mp/core/render/line_scatter_candle_radar_
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/canvas_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
@@ -98,19 +99,19 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
         if (dataSet.getShadowColorSameAsCandle()) {
           if (open > close)
             mRenderPaint.color =
-                dataSet.getDecreasingColor() == ColorUtils.COLOR_NONE
-                    ? dataSet.getColor2(j)
-                    : dataSet.getDecreasingColor();
+            dataSet.getDecreasingColor() == ColorUtils.COLOR_NONE
+                ? dataSet.getColor2(j)
+                : dataSet.getDecreasingColor();
           else if (open < close)
             mRenderPaint.color =
-                dataSet.getIncreasingColor() == ColorUtils.COLOR_NONE
-                    ? dataSet.getColor2(j)
-                    : dataSet.getIncreasingColor();
+            dataSet.getIncreasingColor() == ColorUtils.COLOR_NONE
+                ? dataSet.getColor2(j)
+                : dataSet.getIncreasingColor();
           else
             mRenderPaint.color =
-                dataSet.getNeutralColor() == ColorUtils.COLOR_NONE
-                    ? dataSet.getColor2(j)
-                    : dataSet.getNeutralColor();
+            dataSet.getNeutralColor() == ColorUtils.COLOR_NONE
+                ? dataSet.getColor2(j)
+                : dataSet.getNeutralColor();
         } else {
           mRenderPaint.color = dataSet.getShadowColor() == ColorUtils.COLOR_NONE
               ? dataSet.getColor2(j)
@@ -141,7 +142,7 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
             mRenderPaint.color = dataSet.getDecreasingColor();
           }
 
-//          mRenderPaint.setStyle(dataSet.getDecreasingPaintStyle());
+          mRenderPaint.style = PaintingStyle.fill;
 
           c.drawRect(
               Rect.fromLTRB(mBodyBuffers[0], mBodyBuffers[3], mBodyBuffers[2],
@@ -154,7 +155,7 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
             mRenderPaint.color = dataSet.getIncreasingColor();
           }
 
-//          mRenderPaint.setStyle(dataSet.getIncreasingPaintStyle());
+          mRenderPaint.style = PaintingStyle.fill;
 
           c.drawRect(
               Rect.fromLTRB(mBodyBuffers[0], mBodyBuffers[1], mBodyBuffers[2],
@@ -289,16 +290,10 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
 
   @override
   void drawValue(Canvas c, String valueText, double x, double y, Color color) {
-    mValuePaint = TextPainter(
-        text: TextSpan(
-            text: valueText,
-            style: TextStyle(
-                fontSize: mValuePaint.text.style.fontSize == null
-                    ? Utils.convertDpToPixel(9)
-                    : mValuePaint.text.style.fontSize,
-                color: color)),
-        textDirection: mValuePaint.textDirection,
-        textAlign: mValuePaint.textAlign);
+    mValuePaint = PainterUtils.create(
+        mValuePaint, valueText, color, mValuePaint.text.style.fontSize == null
+        ? Utils.convertDpToPixel(9)
+        : mValuePaint.text.style.fontSize);
     mValuePaint.layout();
     mValuePaint.paint(
         c, Offset(x - mValuePaint.width / 2, y - mValuePaint.height));

@@ -6,6 +6,7 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/radar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/line_radar_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/radar_chart_painter.dart';
@@ -213,16 +214,13 @@ class RadarChartRenderer extends LineRadarRenderer {
 
   @override
   void drawValue(Canvas c, String valueText, double x, double y, Color color) {
-    mValuePaint = TextPainter(
-        text: TextSpan(
-            text: valueText,
-            style: TextStyle(
-                fontSize: mValuePaint.text.style.fontSize == null
-                    ? Utils.convertDpToPixel(9)
-                    : mValuePaint.text.style.fontSize,
-                color: color)),
-        textDirection: mValuePaint.textDirection,
-        textAlign: mValuePaint.textAlign);
+    mValuePaint = PainterUtils.create(
+        mValuePaint,
+        valueText,
+        color,
+        mValuePaint.text.style.fontSize == null
+            ? Utils.convertDpToPixel(9)
+            : mValuePaint.text.style.fontSize);
     mValuePaint.layout();
     mValuePaint.paint(
         c, Offset(x - mValuePaint.width / 2, y - mValuePaint.height));

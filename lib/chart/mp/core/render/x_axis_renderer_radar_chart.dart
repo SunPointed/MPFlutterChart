@@ -1,6 +1,7 @@
 import 'package:flutter/painting.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/radar_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
@@ -24,12 +25,8 @@ class XAxisRendererRadarChart extends XAxisRenderer {
 
 //    mAxisLabelPaint.setTypeface(mXAxis.getTypeface()); todo
 
-    mAxisLabelPaint = TextPainter(
-        text: TextSpan(
-            style: TextStyle(
-                fontSize: mXAxis.getTextSize(), color: mXAxis.getTextColor())),
-        textDirection: TextDirection.ltr,
-        textAlign: TextAlign.center);
+    mAxisLabelPaint = PainterUtils.create(
+        null, null, mXAxis.getTextColor(), mXAxis.getTextSize());
 
     double sliceangle = mChart.getSliceAngle();
 

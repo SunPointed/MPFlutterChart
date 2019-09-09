@@ -6,6 +6,7 @@ import 'package:mp_flutter_chart/chart/mp/core/axis/axis_base.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/y_axis_label_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class YAxis extends AxisBase {
@@ -285,10 +286,7 @@ class YAxis extends AxisBase {
    * @return
    */
   double getRequiredWidthSpace(TextPainter p) {
-    p = TextPainter(
-        text: TextSpan(style: TextStyle(fontSize: mTextSize)),
-        textDirection: p.textDirection,
-        textAlign: p.textAlign);
+    p = PainterUtils.create(p, null, null, mTextSize);
 
     String label = getLongestLabel();
     double width = Utils.calcTextWidth(p, label) + getXOffset() * 2;
@@ -313,10 +311,7 @@ class YAxis extends AxisBase {
    * @return
    */
   double getRequiredHeightSpace(TextPainter p) {
-    p = TextPainter(
-        text: TextSpan(style: TextStyle(fontSize: mTextSize)),
-        textDirection: p.textDirection,
-        textAlign: p.textAlign);
+    p = PainterUtils.create(p, null, null, mTextSize);
 
     String label = getLongestLabel();
     return Utils.calcTextHeight(p, label) + getYOffset() * 2;

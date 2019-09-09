@@ -217,7 +217,7 @@ class CandlestickChartState
         descPainter: widget.descPainter,
         highlighter: widget.highlighter,
         unbind: widget.unbind);
-//    painter.highlightValue6(_lastHighlighted, false);
+    painter.highlightValue6(_lastHighlighted, false);
   }
 
   IDataSet _closestDataSetToTouch;

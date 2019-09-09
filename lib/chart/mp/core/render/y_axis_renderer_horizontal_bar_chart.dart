@@ -8,6 +8,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/y_axis_label_position.dart'
 import 'package:mp_flutter_chart/chart/mp/core/limit_line.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
@@ -58,12 +59,8 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
     List<double> positions = getTransformedPositions();
 
-    mAxisLabelPaint = TextPainter(
-        textAlign: TextAlign.center,
-        textDirection: mAxisLabelPaint.textDirection,
-        text: TextSpan(
-            style: TextStyle(
-                fontSize: mYAxis.getTextSize(), color: mYAxis.getTextColor())));
+    mAxisLabelPaint = PainterUtils.create(
+        mAxisLabelPaint, null, mYAxis.getTextColor(), mYAxis.getTextSize());
 
 //    double baseYOffset = Utils.convertDpToPixel(2.5);
 //    double textHeight = Utils.calcTextHeight(mAxisLabelPaint, "Q").toDouble();
@@ -122,12 +119,8 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
   @override
   void drawYLabels(Canvas c, double fixedPosition, List<double> positions,
       AxisDependency axisDependency, YAxisLabelPosition position) {
-    mAxisLabelPaint = TextPainter(
-        textDirection: mAxisLabelPaint.textDirection,
-        textAlign: mAxisLabelPaint.textAlign,
-        text: TextSpan(
-            style: TextStyle(
-                fontSize: mYAxis.getTextSize(), color: mYAxis.getTextColor())));
+    mAxisLabelPaint = PainterUtils.create(
+        mAxisLabelPaint, null, mYAxis.getTextColor(), mYAxis.getTextSize());
 
     final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
     final int to = mYAxis.isDrawTopYLabelEntryEnabled()
@@ -292,13 +285,8 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
       // if drawing the limit-value label is enabled
       if (label != null && label.isNotEmpty) {
-        mAxisLabelPaint = TextPainter(
-            textAlign: TextAlign.center,
-            textDirection: mAxisLabelPaint.textDirection,
-            text: TextSpan(
-                text: label,
-                style: TextStyle(
-                    color: l.getTextColor(), fontSize: l.getTextSize())));
+        mAxisLabelPaint = PainterUtils.create(
+            mAxisLabelPaint, label, l.getTextColor(), l.getTextSize());
         mAxisLabelPaint.layout();
 //        mLimitLinePaint.setPathEffect(null);
 //        mLimitLinePaint.setStrokeWidth(0.5f);

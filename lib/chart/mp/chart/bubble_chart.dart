@@ -5,10 +5,10 @@ import 'package:flutter/src/gestures/scale.dart';
 import 'package:flutter/src/gestures/tap.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/chart.dart';
+import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/bubble_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
@@ -19,7 +19,6 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/highlight_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/listener.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/bubble_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class BubbleChart extends Chart {
   Color backgroundColor = null;
@@ -216,7 +215,7 @@ class BubbleChartState extends ChartState<BubbleChartPainter, BubbleChart> {
         descPainter: widget.descPainter,
         highlighter: widget.highlighter,
         unbind: widget.unbind);
-//    painter.highlightValue6(_lastHighlighted, false);
+    painter.highlightValue6(_lastHighlighted, false);
   }
 
   IDataSet _closestDataSetToTouch;

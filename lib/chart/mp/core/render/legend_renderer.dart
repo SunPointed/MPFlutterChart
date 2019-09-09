@@ -13,6 +13,7 @@ import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/size.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
@@ -37,12 +38,8 @@ class LegendRenderer extends Renderer {
       : super(viewPortHandler) {
     this.mLegend = legend;
 
-    mLegendLabelPaint = TextPainter(
-        text: TextSpan(
-            style: TextStyle(
-                color: ColorUtils.BLACK, fontSize: Utils.convertDpToPixel(9))),
-        textAlign: TextAlign.left,
-        textDirection: TextDirection.ltr);
+    mLegendLabelPaint = PainterUtils.create(
+        mLegendLabelPaint, null, ColorUtils.BLACK, Utils.convertDpToPixel(9));
 
     mLegendFormPaint = Paint()
       ..isAntiAlias = true
@@ -187,10 +184,7 @@ class LegendRenderer extends Renderer {
       mLegend.setEntries(computedEntries);
     }
 
-    mLegendLabelPaint = TextPainter(
-        text: TextSpan(style: getStyle()),
-        textAlign: TextAlign.left,
-        textDirection: TextDirection.ltr);
+    mLegendLabelPaint = PainterUtils.createWithStyle(null, getStyle());
 
     // calculate all dimensions of the mLegend
     mLegend.calculateDimensions(mLegendLabelPaint, mViewPortHandler);
@@ -207,10 +201,7 @@ class LegendRenderer extends Renderer {
   void renderLegend(Canvas c) {
     if (!mLegend.isEnabled()) return;
 
-    mLegendLabelPaint = TextPainter(
-        text: TextSpan(style: getStyle()),
-        textAlign: TextAlign.left,
-        textDirection: TextDirection.ltr);
+    mLegendLabelPaint = PainterUtils.createWithStyle(null, getStyle());
 
     double labelLineHeight = Utils.getLineHeight1(mLegendLabelPaint);
     double labelLineSpacing = Utils.getLineSpacing1(mLegendLabelPaint) +

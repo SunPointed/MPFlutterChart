@@ -6,12 +6,13 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/limite_label_postion.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/y_axis_label_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/limit_line.dart';
+import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
-import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 
 class YAxisRenderer extends AxisRenderer {
   YAxis mYAxis;
@@ -23,13 +24,8 @@ class YAxisRenderer extends AxisRenderer {
     this.mYAxis = yAxis;
 
     if (mViewPortHandler != null) {
-      mAxisLabelPaint = TextPainter(
-          text: TextSpan(
-              style: TextStyle(
-                  color: ColorUtils.BLACK,
-                  fontSize: Utils.convertDpToPixel(10))),
-          textDirection: TextDirection.ltr,
-          textAlign: TextAlign.center);
+      mAxisLabelPaint = PainterUtils.create(
+          mAxisLabelPaint, null, ColorUtils.BLACK, Utils.convertDpToPixel(10));
 
       mZeroLinePaint = Paint()
         ..isAntiAlias = true
@@ -55,42 +51,22 @@ class YAxisRenderer extends AxisRenderer {
 
     if (dependency == AxisDependency.LEFT) {
       if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
-        mAxisLabelPaint = TextPainter(
-            text: TextSpan(
-                style: TextStyle(
-                    color: mYAxis.getTextColor(),
-                    fontSize: mYAxis.getTextSize())),
-            textDirection: TextDirection.ltr,
-            textAlign: TextAlign.center);
+        mAxisLabelPaint = PainterUtils.create(
+            mAxisLabelPaint, null, mYAxis.getTextColor(), mYAxis.getTextSize());
         xPos = mViewPortHandler.offsetLeft();
       } else {
-        mAxisLabelPaint = TextPainter(
-            text: TextSpan(
-                style: TextStyle(
-                    color: mYAxis.getTextColor(),
-                    fontSize: mYAxis.getTextSize())),
-            textDirection: TextDirection.ltr,
-            textAlign: TextAlign.center);
+        mAxisLabelPaint = PainterUtils.create(
+            mAxisLabelPaint, null, mYAxis.getTextColor(), mYAxis.getTextSize());
         xPos = mViewPortHandler.offsetLeft();
       }
     } else {
       if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
-        mAxisLabelPaint = TextPainter(
-            text: TextSpan(
-                style: TextStyle(
-                    color: mYAxis.getTextColor(),
-                    fontSize: mYAxis.getTextSize())),
-            textDirection: TextDirection.ltr,
-            textAlign: TextAlign.center);
+        mAxisLabelPaint = PainterUtils.create(
+            mAxisLabelPaint, null, mYAxis.getTextColor(), mYAxis.getTextSize());
         xPos = mViewPortHandler.contentRight();
       } else {
-        mAxisLabelPaint = TextPainter(
-            text: TextSpan(
-                style: TextStyle(
-                    color: mYAxis.getTextColor(),
-                    fontSize: mYAxis.getTextSize())),
-            textDirection: TextDirection.ltr,
-            textAlign: TextAlign.center);
+        mAxisLabelPaint = PainterUtils.create(
+            mAxisLabelPaint, null, mYAxis.getTextColor(), mYAxis.getTextSize());
         xPos = mViewPortHandler.contentRight();
       }
     }
@@ -347,13 +323,8 @@ class YAxisRenderer extends AxisRenderer {
 
       // if drawing the limit-value label is enabled
       if (label != null && label.isNotEmpty) {
-        TextPainter painter = TextPainter(
-            text: TextSpan(
-                style: TextStyle(
-                    color: l.getTextColor(), fontSize: l.getTextSize())),
-            textDirection: TextDirection.ltr,
-            textAlign: TextAlign.center);
-
+        TextPainter painter =
+            PainterUtils.create(null, null, l.getTextColor(), l.getTextSize());
         final double labelLineHeight =
             Utils.calcTextHeight(painter, label).toDouble();
         double xOffset = Utils.convertDpToPixel(4) + l.getXOffset();
@@ -362,52 +333,32 @@ class YAxisRenderer extends AxisRenderer {
         final LimitLabelPosition position = l.getLabelPosition();
 
         if (position == LimitLabelPosition.RIGHT_TOP) {
-          painter = TextPainter(
-              text: TextSpan(
-                  text: label,
-                  style: TextStyle(
-                      color: l.getTextColor(), fontSize: l.getTextSize())),
-              textDirection: TextDirection.ltr,
-              textAlign: TextAlign.right);
+          TextPainter painter = PainterUtils.create(
+              null, null, l.getTextColor(), l.getTextSize());
           painter.layout();
           painter.paint(
               c,
               Offset(mViewPortHandler.contentRight() - xOffset - painter.width,
                   pts[1] - yOffset + labelLineHeight - painter.height));
         } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
-          painter = TextPainter(
-              text: TextSpan(
-                  text: label,
-                  style: TextStyle(
-                      color: l.getTextColor(), fontSize: l.getTextSize())),
-              textDirection: TextDirection.ltr,
-              textAlign: TextAlign.right);
+          TextPainter painter = PainterUtils.create(
+              null, null, l.getTextColor(), l.getTextSize());
           painter.layout();
           painter.paint(
               c,
               Offset(mViewPortHandler.contentRight() - xOffset - painter.width,
                   pts[1] + yOffset - painter.height));
         } else if (position == LimitLabelPosition.LEFT_TOP) {
-          painter = TextPainter(
-              text: TextSpan(
-                  text: label,
-                  style: TextStyle(
-                      color: l.getTextColor(), fontSize: l.getTextSize())),
-              textDirection: TextDirection.ltr,
-              textAlign: TextAlign.left);
+          TextPainter painter = PainterUtils.create(
+              null, null, l.getTextColor(), l.getTextSize());
           painter.layout();
           painter.paint(
               c,
               Offset(mViewPortHandler.contentLeft() + xOffset - painter.width,
                   pts[1] - yOffset + labelLineHeight - painter.height));
         } else {
-          painter = TextPainter(
-              text: TextSpan(
-                  text: label,
-                  style: TextStyle(
-                      color: l.getTextColor(), fontSize: l.getTextSize())),
-              textDirection: TextDirection.ltr,
-              textAlign: TextAlign.left);
+          TextPainter painter = PainterUtils.create(
+              null, null, l.getTextColor(), l.getTextSize());
           painter.layout();
           painter.paint(
               c,
