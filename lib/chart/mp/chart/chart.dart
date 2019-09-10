@@ -1,20 +1,28 @@
 import 'package:flutter/widgets.dart';
+import 'package:mp_flutter_chart/chart/mp/chart/horizontal_bar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
+import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/highlight_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/listener.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/bar_line_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/pie_redar_chart_painter.dart';
 
 abstract class Chart extends StatefulWidget {
   InitPainterCallback _initialPainterCallback;
 
-  ////////////////////////////////////////////
   ChartData data;
   double minOffset = 15;
   double maxHighlightDistance = 0.0;
@@ -34,8 +42,6 @@ abstract class Chart extends StatefulWidget {
   TextPainter descPainter = null;
   IHighlighter highlighter = null;
   bool unbind = false;
-
-/////////////////////////////////
 
   ViewPortHandler viewPortHandler = ViewPortHandler();
 
@@ -184,3 +190,279 @@ abstract class ChartState<P extends ChartPainter, T extends Chart>
 }
 
 typedef InitPainterCallback = void Function(ChartPainter painter);
+
+abstract class PieRadarChart extends Chart {
+  double rotationAngle;
+  double rawRotationAngle;
+
+  PieRadarChart(
+      ChartData<IDataSet<Entry>> data, InitPainterCallback initPainterCallback,
+      {double rotationAngle = 270,
+      double rawRotationAngle = 270,
+      double minOffset = 30,
+      double maxHighlightDistance = 0.0,
+      bool highLightPerTapEnabled = true,
+      bool dragDecelerationEnabled = true,
+      double dragDecelerationFrictionCoef = 0.9,
+      double extraLeftOffset = 0.0,
+      double extraTopOffset = 0.0,
+      double extraRightOffset = 0.0,
+      double extraBottomOffset = 0.0,
+      String noDataText = "No chart data available.",
+      bool touchEnabled = true,
+      IMarker marker = null,
+      Description desc = null,
+      bool drawMarkers = true,
+      TextPainter infoPainter = null,
+      TextPainter descPainter = null,
+      IHighlighter highlighter = null,
+      bool unbind = false})
+      : rotationAngle = rotationAngle,
+        rawRotationAngle = rawRotationAngle,
+        super(data, initPainterCallback,
+            maxHighlightDistance: maxHighlightDistance,
+            highLightPerTapEnabled: highLightPerTapEnabled,
+            dragDecelerationEnabled: dragDecelerationEnabled,
+            dragDecelerationFrictionCoef: dragDecelerationFrictionCoef,
+            extraLeftOffset: extraLeftOffset,
+            extraTopOffset: extraTopOffset,
+            extraRightOffset: extraRightOffset,
+            extraBottomOffset: extraBottomOffset,
+            touchEnabled: touchEnabled,
+            noDataText: noDataText,
+            marker: marker,
+            desc: desc,
+            drawMarkers: drawMarkers,
+            infoPainter: infoPainter,
+            descPainter: descPainter,
+            highlighter: highlighter,
+            unbind: unbind);
+}
+
+abstract class PieRadarChartState<P extends PieRadarChartPainter,
+    T extends PieRadarChart> extends ChartState<P, T> {
+  Highlight lastHighlighted;
+  MPPointF _touchStartPoint = MPPointF.getInstance1(0, 0);
+  double _startAngle = 0.0;
+
+  void _setGestureStartAngle(double x, double y) {
+    _startAngle =
+        painter.getAngleForPoint(x, y) - painter.getRawRotationAngle();
+  }
+
+  void _updateGestureRotation(double x, double y) {
+    double angle = painter.getAngleForPoint(x, y) - _startAngle;
+    widget.rawRotationAngle = angle;
+    widget.rotationAngle = Utils.getNormalizedAngle(widget.rawRotationAngle);
+  }
+
+  @override
+  void onDoubleTap() {}
+
+  @override
+  void onScaleEnd(ScaleEndDetails detail) {}
+
+  @override
+  void onScaleStart(ScaleStartDetails detail) {
+    _setGestureStartAngle(detail.localFocalPoint.dx, detail.localFocalPoint.dy);
+    _touchStartPoint
+      ..x = detail.localFocalPoint.dx
+      ..y = detail.localFocalPoint.dy;
+  }
+
+  @override
+  void onScaleUpdate(ScaleUpdateDetails detail) {
+    _updateGestureRotation(
+        detail.localFocalPoint.dx, detail.localFocalPoint.dy);
+    setState(() {});
+  }
+
+  @override
+  void onSingleTapUp(TapUpDetails detail) {
+    if (painter.mHighLightPerTapEnabled) {
+      Highlight h = painter.getHighlightByTouchPoint(
+          detail.localPosition.dx, detail.localPosition.dy);
+      lastHighlighted =
+          HighlightUtils.performHighlight(painter, h, lastHighlighted);
+      painter.getOnChartGestureListener()?.onChartSingleTapped(
+          detail.localPosition.dx, detail.localPosition.dy);
+      setState(() {});
+    } else {
+      lastHighlighted = null;
+    }
+  }
+
+  @override
+  void onTapDown(TapDownDetails detail) {}
+}
+
+abstract class BarLineScatterCandleBubbleState<
+    P extends BarLineChartBasePainter,
+    T extends Chart> extends ChartState<P, T> {
+  IDataSet _closestDataSetToTouch;
+
+  Highlight lastHighlighted;
+  double _curX = 0.0;
+  double _curY = 0.0;
+  double _scaleX = -1.0;
+  double _scaleY = -1.0;
+  bool _isZoom = false;
+
+  MPPointF _getTrans(double x, double y) {
+    ViewPortHandler vph = painter.mViewPortHandler;
+
+    double xTrans = x - vph.offsetLeft();
+    double yTrans = 0.0;
+
+    // check if axis is inverted
+    if (_inverted()) {
+      yTrans = -(y - vph.offsetTop());
+    } else {
+      yTrans = -(painter.getMeasuredHeight() - y - vph.offsetBottom());
+    }
+
+    return MPPointF.getInstance1(xTrans, yTrans);
+  }
+
+  bool _inverted() {
+    return (_closestDataSetToTouch == null && painter.isAnyAxisInverted()) ||
+        (_closestDataSetToTouch != null &&
+            painter.isInverted(_closestDataSetToTouch.getAxisDependency()));
+  }
+
+  @override
+  void onTapDown(TapDownDetails detail) {
+    _curX = detail.localPosition.dx;
+    _curY = detail.localPosition.dy;
+    _closestDataSetToTouch = painter.getDataSetByTouchPoint(
+        detail.localPosition.dx, detail.localPosition.dy);
+  }
+
+  @override
+  void onDoubleTap() {
+    if (painter.mDoubleTapToZoomEnabled && painter.mData.getEntryCount() > 0) {
+      MPPointF trans = _getTrans(_curX, _curY);
+      painter.zoom(painter.mScaleXEnabled ? 1.4 : 1,
+          painter.mScaleYEnabled ? 1.4 : 1, trans.x, trans.y);
+      painter.getOnChartGestureListener()?.onChartDoubleTapped(_curX, _curY);
+      setState(() {});
+      MPPointF.recycleInstance(trans);
+    }
+  }
+
+  @override
+  void onScaleEnd(ScaleEndDetails detail) {
+    if (_isZoom) {
+      _isZoom = false;
+    }
+    _scaleX = -1.0;
+    _scaleY = -1.0;
+  }
+
+  @override
+  void onScaleStart(ScaleStartDetails detail) {
+    _curX = detail.localFocalPoint.dx;
+    _curY = detail.localFocalPoint.dy;
+  }
+
+  @override
+  void onScaleUpdate(ScaleUpdateDetails detail) {
+    if (_scaleX == -1.0 && _scaleY == -1.0) {
+      _scaleX = detail.horizontalScale;
+      _scaleY = detail.verticalScale;
+      return;
+    }
+
+    OnChartGestureListener listener = painter.getOnChartGestureListener();
+    if (_scaleX == detail.horizontalScale && _scaleY == detail.verticalScale) {
+      if (_isZoom) {
+        return;
+      }
+
+      var dx = detail.localFocalPoint.dx - _curX;
+      var dy = detail.localFocalPoint.dy - _curY;
+      if (painter.mDragYEnabled && painter.mDragXEnabled) {
+        painter.translate(dx, dy);
+        _dragHighlight(
+            Offset(detail.localFocalPoint.dx, detail.localFocalPoint.dy));
+        listener?.onChartTranslate(
+            detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
+        setState(() {});
+      } else {
+        if (painter.mDragXEnabled) {
+          painter.translate(dx, 0.0);
+          _dragHighlight(Offset(detail.localFocalPoint.dx, 0.0));
+          listener?.onChartTranslate(
+              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
+          setState(() {});
+        } else if (painter.mDragYEnabled) {
+          if (_inverted()) {
+            // if there is an inverted horizontalbarchart
+            if (widget is HorizontalBarChart) {
+              dx = -dx;
+            } else {
+              dy = -dy;
+            }
+          }
+          painter.translate(0.0, dy);
+          _dragHighlight(Offset(0.0, detail.localFocalPoint.dy));
+          listener?.onChartTranslate(
+              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
+          setState(() {});
+        }
+      }
+      _curX = detail.localFocalPoint.dx;
+      _curY = detail.localFocalPoint.dy;
+    } else {
+      var scaleX = detail.horizontalScale / _scaleX;
+      var scaleY = detail.verticalScale / _scaleY;
+
+      if (!_isZoom) {
+        scaleX = detail.horizontalScale;
+        scaleY = detail.verticalScale;
+        _isZoom = true;
+      }
+
+      MPPointF trans = _getTrans(_curX, _curY);
+
+      scaleX = painter.mScaleXEnabled ? scaleX : 1.0;
+      scaleY = painter.mScaleYEnabled ? scaleY : 1.0;
+      painter.zoom(scaleX, scaleY, trans.x, trans.y);
+      listener?.onChartScale(
+          detail.localFocalPoint.dx, detail.localFocalPoint.dy, scaleX, scaleY);
+      setState(() {});
+      MPPointF.recycleInstance(trans);
+    }
+    _scaleX = detail.horizontalScale;
+    _scaleY = detail.verticalScale;
+    _curX = detail.localFocalPoint.dx;
+    _curY = detail.localFocalPoint.dy;
+  }
+
+  void _dragHighlight(Offset offset) {
+    if (painter.mHighlightPerDragEnabled) {
+      Highlight h = painter.getHighlightByTouchPoint(offset.dx, offset.dy);
+      if (h != null && !h.equalTo(lastHighlighted)) {
+        lastHighlighted = h;
+        painter.highlightValue6(h, true);
+      }
+    } else {
+      lastHighlighted = null;
+    }
+  }
+
+  @override
+  void onSingleTapUp(TapUpDetails detail) {
+    if (painter.mHighLightPerTapEnabled) {
+      Highlight h = painter.getHighlightByTouchPoint(
+          detail.localPosition.dx, detail.localPosition.dy);
+      lastHighlighted =
+          HighlightUtils.performHighlight(painter, h, lastHighlighted);
+      painter.getOnChartGestureListener()?.onChartSingleTapped(
+          detail.localPosition.dx, detail.localPosition.dy);
+      setState(() {});
+    } else {
+      lastHighlighted = null;
+    }
+  }
+}

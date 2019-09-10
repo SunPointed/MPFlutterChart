@@ -15,7 +15,7 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 import 'chart.dart';
 
-class PieChart extends Chart {
+class PieChart extends PieRadarChart {
   Rect circleBox = Rect.zero;
   bool drawEntryLabels = true;
   bool drawHole = true;
@@ -109,9 +109,7 @@ class PieChart extends Chart {
   }
 }
 
-class PieChartState extends ChartState<PieChartPainter, PieChart> {
-  Highlight _lastHighlighted;
-
+class PieChartState extends PieRadarChartState<PieChartPainter, PieChart> {
   @override
   void initialPainter() {
     painter = PieChartPainter(widget.data,
@@ -147,61 +145,8 @@ class PieChartState extends ChartState<PieChartPainter, PieChart> {
         descPainter: widget.descPainter,
         highlighter: widget.highlighter,
         unbind: widget.unbind);
-    painter.highlightValue6(_lastHighlighted, false);
+    painter.highlightValue6(lastHighlighted, false);
   }
-
-  MPPointF _touchStartPoint = MPPointF.getInstance1(0, 0);
-  double _startAngle = 0.0;
-
-  void _setGestureStartAngle(double x, double y) {
-    _startAngle =
-        painter.getAngleForPoint(x, y) - painter.getRawRotationAngle();
-  }
-
-  void _updateGestureRotation(double x, double y) {
-    double angle = painter.getAngleForPoint(x, y) - _startAngle;
-    widget.rawRotationAngle = angle;
-    widget.rotationAngle = Utils.getNormalizedAngle(widget.rawRotationAngle);
-  }
-
-  @override
-  void onDoubleTap() {}
-
-  @override
-  void onScaleEnd(ScaleEndDetails detail) {}
-
-  @override
-  void onScaleStart(ScaleStartDetails detail) {
-    _setGestureStartAngle(detail.localFocalPoint.dx, detail.localFocalPoint.dy);
-    _touchStartPoint
-      ..x = detail.localFocalPoint.dx
-      ..y = detail.localFocalPoint.dy;
-  }
-
-  @override
-  void onScaleUpdate(ScaleUpdateDetails detail) {
-    _updateGestureRotation(
-        detail.localFocalPoint.dx, detail.localFocalPoint.dy);
-    setState(() {});
-  }
-
-  @override
-  void onSingleTapUp(TapUpDetails detail) {
-    if (painter.mHighLightPerTapEnabled) {
-      Highlight h = painter.getHighlightByTouchPoint(
-          detail.localPosition.dx, detail.localPosition.dy);
-      _lastHighlighted =
-          HighlightUtils.performHighlight(painter, h, _lastHighlighted);
-      painter.getOnChartGestureListener()?.onChartSingleTapped(
-          detail.localPosition.dx, detail.localPosition.dy);
-      setState(() {});
-    } else {
-      _lastHighlighted = null;
-    }
-  }
-
-  @override
-  void onTapDown(TapDownDetails detail) {}
 }
 
 typedef InitPieChartPainterCallback = void Function(PieChartPainter painter);

@@ -6,13 +6,18 @@ import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/marker/bar_chart_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
+import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/highlight_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/radar_chart_painter.dart';
 
 import 'chart.dart';
 
-class RadarChart extends Chart {
+class RadarChart extends PieRadarChart {
   double webLineWidth;
   double innerWebLineWidth;
   int webAlpha;
@@ -79,7 +84,9 @@ class RadarChart extends Chart {
             infoPainter: infoPainter,
             descPainter: descPainter,
             highlighter: highlighter,
-            unbind: unbind);
+            unbind: unbind) {
+    this.marker = BarChartMarker();
+  }
 
   @override
   State<StatefulWidget> createState() {
@@ -87,7 +94,8 @@ class RadarChart extends Chart {
   }
 }
 
-class RadarChartState extends ChartState<RadarChartPainter, RadarChart> {
+class RadarChartState
+    extends PieRadarChartState<RadarChartPainter, RadarChart> {
   @override
   void initialPainter() {
     painter = RadarChartPainter(widget.data,
@@ -119,36 +127,7 @@ class RadarChartState extends ChartState<RadarChartPainter, RadarChart> {
         descPainter: widget.descPainter,
         highlighter: widget.highlighter,
         unbind: widget.unbind);
-  }
-
-  @override
-  void onDoubleTap() {
-    // TODO: implement onDoubleTap
-  }
-
-  @override
-  void onScaleEnd(ScaleEndDetails detail) {
-    // TODO: implement onScaleEnd
-  }
-
-  @override
-  void onScaleStart(ScaleStartDetails detail) {
-    // TODO: implement onScaleStart
-  }
-
-  @override
-  void onScaleUpdate(ScaleUpdateDetails detail) {
-    // TODO: implement onScaleUpdate
-  }
-
-  @override
-  void onSingleTapUp(TapUpDetails detail) {
-    // TODO: implement onSingleTapUp
-  }
-
-  @override
-  void onTapDown(TapDownDetails detail) {
-    // TODO: implement onTapDown
+    painter.highlightValue6(lastHighlighted, false);
   }
 }
 
