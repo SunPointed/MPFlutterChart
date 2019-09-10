@@ -10,6 +10,7 @@ import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/bar_chart_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
+import 'package:mp_flutter_chart/chart/mp/core/marker/radar_chart_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/highlight_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
@@ -85,7 +86,7 @@ class RadarChart extends PieRadarChart {
             descPainter: descPainter,
             highlighter: highlighter,
             unbind: unbind) {
-    this.marker = BarChartMarker();
+    this.marker = RadarChartMarker();
   }
 
   @override
