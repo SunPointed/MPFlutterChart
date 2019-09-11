@@ -7,16 +7,16 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
   List<T> mValues = null;
 
   /// maximum y-value in the value array
-  double mYMax = -double.maxFinite;
+  double mYMax = -double.infinity;
 
   /// minimum y-value in the value array
-  double mYMin = double.maxFinite;
+  double mYMin = double.infinity;
 
   /// maximum x-value in the value array
-  double mXMax = -double.maxFinite;
+  double mXMax = -double.infinity;
 
   /// minimum x-value in the value array
-  double mXMin = double.maxFinite;
+  double mXMin = double.infinity;
 
   /// Creates a  DataSet object with the given values (entries) it represents. Also, a
   /// label that describes the DataSet can be specified. The label can also be
@@ -36,10 +36,10 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
   void calcMinMax() {
     if (mValues == null || mValues.isEmpty) return;
 
-    mYMax = -double.maxFinite;
-    mYMin = double.maxFinite;
-    mXMax = -double.maxFinite;
-    mXMin = double.maxFinite;
+    mYMax = -double.infinity;
+    mYMin = double.infinity;
+    mXMax = -double.infinity;
+    mXMin = double.infinity;
 
     for (T e in mValues) {
       calcMinMax1(e);
@@ -50,8 +50,8 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
   void calcMinMaxY(double fromX, double toX) {
     if (mValues == null || mValues.isEmpty) return;
 
-    mYMax = -double.maxFinite;
-    mYMin = double.maxFinite;
+    mYMax = -double.infinity;
+    mYMin = double.infinity;
 
     int indexFrom = getEntryIndex1(fromX, double.nan, Rounding.DOWN);
     int indexTo = getEntryIndex1(toX, double.nan, Rounding.UP);

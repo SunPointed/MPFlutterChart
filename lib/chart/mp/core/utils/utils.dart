@@ -206,7 +206,7 @@ abstract class Utils {
   }
 
   static double nextUp(double d) {
-    if (d == double.maxFinite)
+    if (d == double.infinity)
       return d;
     else {
       d += 0.1;

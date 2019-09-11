@@ -51,15 +51,15 @@ class CombinedData extends BarLineScatterCandleBubbleData<
     }
     mDataSets.clear();
 
-    mYMax = -double.maxFinite;
-    mYMin = double.maxFinite;
-    mXMax = -double.maxFinite;
-    mXMin = double.maxFinite;
+    mYMax = -double.infinity;
+    mYMin = double.infinity;
+    mXMax = -double.infinity;
+    mXMin = double.infinity;
 
-    mLeftAxisMax = -double.maxFinite;
-    mLeftAxisMin = double.maxFinite;
-    mRightAxisMax = -double.maxFinite;
-    mRightAxisMin = double.maxFinite;
+    mLeftAxisMax = -double.infinity;
+    mLeftAxisMin = double.infinity;
+    mRightAxisMax = -double.infinity;
+    mRightAxisMin = double.infinity;
 
     List<BarLineScatterCandleBubbleData> allData = getAllData();
 
