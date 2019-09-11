@@ -195,7 +195,8 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
           yPx: h.mYPx,
           dataSetIndex: h.getDataSetIndex(),
           stackIndex: -1,
-          axis: h.getAxis());
+          axis: h.getAxis())
+        ..setDataIndex(h.getDataIndex());
     }
   }
 
