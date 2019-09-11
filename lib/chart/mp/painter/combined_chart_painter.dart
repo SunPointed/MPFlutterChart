@@ -158,9 +158,6 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
 
     mHighlighter = CombinedHighlighter(this, this);
 
-    // Old default behaviour
-    mHighlightFullBarEnabled = true;
-
     mRenderer = CombinedChartRenderer(this, mAnimator, mViewPortHandler);
 
     (mRenderer as CombinedChartRenderer).createRenderers();
@@ -194,7 +191,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
           xPx: h.mXPx,
           yPx: h.mYPx,
           dataSetIndex: h.getDataSetIndex(),
-          stackIndex: -1,
+          stackIndex: h.getStackIndex(),
           axis: h.getAxis())
         ..setDataIndex(h.getDataIndex());
     }
