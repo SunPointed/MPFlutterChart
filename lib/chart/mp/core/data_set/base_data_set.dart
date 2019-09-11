@@ -13,43 +13,29 @@ import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.d
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
-  /**
-   * List representing all colors that are used for this DataSet
-   */
+  /// List representing all colors that are used for this DataSet
   List<ui.Color> mColors = null;
 
   GradientColor mGradientColor = null;
 
   List<GradientColor> mGradientColors = null;
 
-  /**
-   * List representing all colors that are used for drawing the actual values for this DataSet
-   */
+  /// List representing all colors that are used for drawing the actual values for this DataSet
   List<ui.Color> mValueColors = null;
 
-  /**
-   * label that describes the DataSet or the data the DataSet represents
-   */
+  /// label that describes the DataSet or the data the DataSet represents
   String mLabel = "DataSet";
 
-  /**
-   * this specifies which axis this DataSet should be plotted against
-   */
+  /// this specifies which axis this DataSet should be plotted against
   AxisDependency mAxisDependency = AxisDependency.LEFT;
 
-  /**
-   * if true, value highlightning is enabled
-   */
+  /// if true, value highlightning is enabled
   bool mHighlightEnabled = true;
 
-  /**
-   * custom formatter that is used instead of the auto-formatter if set
-   */
+  /// custom formatter that is used instead of the auto-formatter if set
   ValueFormatter mValueFormatter;
 
-  /**
-   * the typeface used for the value text
-   */
+  /// the typeface used for the value text
   ui.TextStyle mValueTypeface;
 
   LegendForm mForm = LegendForm.DEFAULT;
@@ -57,34 +43,22 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   double mFormLineWidth = double.nan;
   DashPathEffect mFormLineDashEffect = null;
 
-  /**
-   * if true, y-values are drawn on the chart
-   */
+  /// if true, y-values are drawn on the chart
   bool mDrawValues = true;
 
-  /**
-   * if true, y-icons are drawn on the chart
-   */
+  /// if true, y-icons are drawn on the chart
   bool mDrawIcons = true;
 
-  /**
-   * the offset for drawing icons (in dp)
-   */
+  /// the offset for drawing icons (in dp)
   MPPointF mIconsOffset = MPPointF(0, 0);
 
-  /**
-   * the size of the value-text labels
-   */
+  /// the size of the value-text labels
   double mValueTextSize = 17;
 
-  /**
-   * flag that indicates if the DataSet is visible or not
-   */
+  /// flag that indicates if the DataSet is visible or not
   bool mVisible = true;
 
-  /**
-   * Default constructor.
-   */
+  /// Default constructor.
   BaseDataSet() {
     mColors = List();
     mValueColors = List();
@@ -94,11 +68,9 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     mValueColors.add(ColorUtils.BLACK);
   }
 
-  /**
-   * Constructor with label.
-   *
-   * @param label
-   */
+  /// Constructor with label.
+  ///
+  /// @param label
   BaseDataSet.withLabel(String label) {
     mColors = List();
     mValueColors = List();
@@ -109,9 +81,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     this.mLabel = label;
   }
 
-  /**
-   * Use this method to tell the data set that the underlying data has changed.
-   */
+  /// Use this method to tell the data set that the underlying data has changed.
   void notifyDataSetChanged() {
     calcMinMax();
   }
@@ -158,35 +128,29 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
    * ###### ###### COLOR SETTING RELATED METHODS ##### ######
    */
 
-  /**
-   * Sets the colors that should be used fore this DataSet. Colors are reused
-   * as soon as the number of Entries the DataSet represents is higher than
-   * the size of the colors array. If you are using colors from the resources,
-   * make sure that the colors are already prepared (by calling
-   * getResources().getColor(...)) before adding them to the DataSet.
-   *
-   * @param colors
-   */
+  /// Sets the colors that should be used fore this DataSet. Colors are reused
+  /// as soon as the number of Entries the DataSet represents is higher than
+  /// the size of the colors array. If you are using colors from the resources,
+  /// make sure that the colors are already prepared (by calling
+  /// getResources().getColor(...)) before adding them to the DataSet.
+  ///
+  /// @param colors
   void setColors1(List<ui.Color> colors) {
     this.mColors = colors;
   }
 
-  /**
-   * Adds a  color to the colors array of the DataSet.
-   *
-   * @param color
-   */
+  /// Adds a  color to the colors array of the DataSet.
+  ///
+  /// @param color
   void addColor(ui.Color color) {
     if (mColors == null) mColors = List();
     mColors.add(color);
   }
 
-  /**
-   * Sets the one and ONLY color that should be used for this DataSet.
-   * Internally, this recreates the colors array and adds the specified color.
-   *
-   * @param color
-   */
+  /// Sets the one and ONLY color that should be used for this DataSet.
+  /// Internally, this recreates the colors array and adds the specified color.
+  ///
+  /// @param color
   void setColor1(ui.Color color) {
     resetColors();
     mColors.add(color);
@@ -198,41 +162,33 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     mColors.add(Color.fromARGB(alpha, color.red, color.green, color.blue));
   }
 
-  /**
-   * Sets the start and end color for gradient color, ONLY color that should be used for this DataSet.
-   *
-   * @param startColor
-   * @param endColor
-   */
+  /// Sets the start and end color for gradient color, ONLY color that should be used for this DataSet.
+  ///
+  /// @param startColor
+  /// @param endColor
   void setGradientColor(ui.Color startColor, ui.Color endColor) {
     mGradientColor = GradientColor(startColor, endColor);
   }
 
-  /**
-   * Sets the start and end color for gradient colors, ONLY color that should be used for this DataSet.
-   *
-   * @param gradientColors
-   */
+  /// Sets the start and end color for gradient colors, ONLY color that should be used for this DataSet.
+  ///
+  /// @param gradientColors
   void setGradientColors(List<GradientColor> gradientColors) {
     this.mGradientColors = gradientColors;
   }
 
-  /**
-   * Sets a color with a specific alpha value.
-   *
-   * @param color
-   * @param alpha from 0-255
-   */
+  /// Sets a color with a specific alpha value.
+  ///
+  /// @param color
+  /// @param alpha from 0-255
   void setColor2(ui.Color color, int alpha) {
     setColor1(ui.Color.fromARGB(alpha, color.red, color.green, color.blue));
   }
 
-  /**
-   * Sets colors with a specific alpha value.
-   *
-   * @param colors
-   * @param alpha
-   */
+  /// Sets colors with a specific alpha value.
+  ///
+  /// @param colors
+  /// @param alpha
   void setColors2(List<ui.Color> colors, int alpha) {
     resetColors();
     for (ui.Color color in colors) {
@@ -240,9 +196,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     }
   }
 
-  /**
-   * Resets all colors of this DataSet and recreates the colors array.
-   */
+  /// Resets all colors of this DataSet and recreates the colors array.
   void resetColors() {
     if (mColors == null) {
       mColors = List();
@@ -250,9 +204,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     mColors.clear();
   }
 
-  /**
-   * ###### ###### OTHER STYLING RELATED METHODS ##### ######
-   */
+  /// ###### ###### OTHER STYLING RELATED METHODS ##### ######
 
   @override
   void setLabel(String label) {
@@ -421,9 +373,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     mAxisDependency = dependency;
   }
 
-  /**
-   * ###### ###### DATA RELATED METHODS ###### ######
-   */
+  /// ###### ###### DATA RELATED METHODS ###### ######
 
   @override
   int getIndexInEntries(int xIndex) {

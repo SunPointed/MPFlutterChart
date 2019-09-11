@@ -10,11 +10,9 @@ class RadarData extends ChartData<IRadarDataSet> {
 
   RadarData.fromList(List<IRadarDataSet> dataSets) : super.fromList(dataSets);
 
-  /**
-   * Sets the labels that should be drawn around the RadarChart at the end of each web line.
-   *
-   * @param labels
-   */
+  /// Sets the labels that should be drawn around the RadarChart at the end of each web line.
+  ///
+  /// @param labels
   void setLabels(List<String> labels) {
     this.mLabels = labels;
   }

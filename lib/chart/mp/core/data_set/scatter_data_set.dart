@@ -15,31 +15,22 @@ import 'package:mp_flutter_chart/chart/mp/core/render/square_shape_renderer.dart
 import 'package:mp_flutter_chart/chart/mp/core/render/triangle_shape_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_shape_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
     implements IScatterDataSet {
-  /**
-   * the size the scattershape will have, in density pixels
-   */
+  /// the size the scattershape will have, in density pixels
   double mShapeSize = 15;
 
-  /**
-   * Renderer responsible for rendering this DataSet, default: square
-   */
+  /// Renderer responsible for rendering this DataSet, default: square
   IShapeRenderer mShapeRenderer = SquareShapeRenderer();
 
-  /**
-   * The radius of the hole in the shape (applies to Square, Circle and Triangle)
-   * - default: 0.0
-   */
+  /// The radius of the hole in the shape (applies to Square, Circle and Triangle)
+  /// - default: 0.0
   double mScatterShapeHoleRadius = 0;
 
-  /**
-   * Color for the hole in the shape.
-   * Setting to `ColorUtils.COLOR_NONE` will behave as transparent.
-   * - default: ColorUtils.COLOR_NONE
-   */
+  /// Color for the hole in the shape.
+  /// Setting to `ColorUtils.COLOR_NONE` will behave as transparent.
+  /// - default: ColorUtils.COLOR_NONE
   Color mScatterShapeHoleColor = ColorUtils.COLOR_NONE;
 
   ScatterDataSet(List<Entry> yVals, String label) : super(yVals, label);
@@ -67,12 +58,10 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
     }
   }
 
-  /**
-   * Sets the size in density pixels the drawn scattershape will have. This
-   * only applies for non custom shapes.
-   *
-   * @param size
-   */
+  /// Sets the size in density pixels the drawn scattershape will have. This
+  /// only applies for non custom shapes.
+  ///
+  /// @param size
   void setScatterShapeSize(double size) {
     mShapeSize = size;
   }
@@ -82,22 +71,18 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
     return mShapeSize;
   }
 
-  /**
-   * Sets the ScatterShape this DataSet should be drawn with. This will search for an available IShapeRenderer and set this
-   * renderer for the DataSet.
-   *
-   * @param shape
-   */
+  /// Sets the ScatterShape this DataSet should be drawn with. This will search for an available IShapeRenderer and set this
+  /// renderer for the DataSet.
+  ///
+  /// @param shape
   void setScatterShape(ScatterShape shape) {
     mShapeRenderer = getRendererForShape(shape);
   }
 
-  /**
-   * Sets a  IShapeRenderer responsible for drawing this DataSet.
-   * This can also be used to set a custom IShapeRenderer aside from the default ones.
-   *
-   * @param shapeRenderer
-   */
+  /// Sets a  IShapeRenderer responsible for drawing this DataSet.
+  /// This can also be used to set a custom IShapeRenderer aside from the default ones.
+  ///
+  /// @param shapeRenderer
   void setShapeRenderer(IShapeRenderer shapeRenderer) {
     mShapeRenderer = shapeRenderer;
   }
@@ -107,12 +92,10 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
     return mShapeRenderer;
   }
 
-  /**
-   * Sets the radius of the hole in the shape (applies to Square, Circle and Triangle)
-   * Set this to <= 0 to remove holes.
-   *
-   * @param holeRadius
-   */
+  /// Sets the radius of the hole in the shape (applies to Square, Circle and Triangle)
+  /// Set this to <= 0 to remove holes.
+  ///
+  /// @param holeRadius
   void setScatterShapeHoleRadius(double holeRadius) {
     mScatterShapeHoleRadius = holeRadius;
   }
@@ -122,11 +105,9 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
     return mScatterShapeHoleRadius;
   }
 
-  /**
-   * Sets the color for the hole in the shape.
-   *
-   * @param holeColor
-   */
+  /// Sets the color for the hole in the shape.
+  ///
+  /// @param holeColor
   void setScatterShapeHoleColor(Color holeColor) {
     mScatterShapeHoleColor = holeColor;
   }

@@ -9,13 +9,11 @@ abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
   LineRadarRenderer(ChartAnimator animator, ViewPortHandler viewPortHandler)
       : super(animator, viewPortHandler);
 
-  /**
-   * Draws the provided path in filled mode with the provided drawable.
-   *
-   * @param c
-   * @param filledPath
-   * @param drawable
-   */
+  /// Draws the provided path in filled mode with the provided drawable.
+  ///
+  /// @param c
+  /// @param filledPath
+  /// @param drawable
   void drawFilledPath1(Canvas c, Path filledPath, Image drawable) {
     if (clipPathSupported()) {
       c.save();
@@ -35,15 +33,13 @@ abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
 //    }
   }
 
-  /**
-   * Draws the provided path in filled mode with the provided color and alpha.
-   * Special thanks to Angelo Suzuki (https://github.com/tinsukE) for this.
-   *
-   * @param c
-   * @param filledPath
-   * @param fillColor
-   * @param fillAlpha
-   */
+  /// Draws the provided path in filled mode with the provided color and alpha.
+  /// Special thanks to Angelo Suzuki (https://github.com/tinsukE) for this.
+  ///
+  /// @param c
+  /// @param filledPath
+  /// @param fillColor
+  /// @param fillAlpha
   void drawFilledPath2(
       Canvas c, Path filledPath, int fillColor, int fillAlpha) {
     int color = (fillAlpha << 24) | (fillColor & 0xffffff);
@@ -72,11 +68,9 @@ abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
     }
   }
 
-  /**
-   * Clip path with hardware acceleration only working properly on API level 18 and above.
-   *
-   * @return
-   */
+  /// Clip path with hardware acceleration only working properly on API level 18 and above.
+  ///
+  /// @return
   bool clipPathSupported() {
     return true;
   }

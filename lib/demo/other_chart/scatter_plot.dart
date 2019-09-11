@@ -16,7 +16,7 @@ import 'package:mp_flutter_chart/chart/mp/core/render/i_shape_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
-import 'package:mp_flutter_chart/chart/mp/listener.dart';
+import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 
 class OtherChartScatterPlot extends StatefulWidget {
   @override

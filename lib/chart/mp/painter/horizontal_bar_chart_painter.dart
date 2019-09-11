@@ -255,13 +255,11 @@ class HorizontalBarChartPainter extends BarChartPainter {
 
   List<double> mGetPositionBuffer = List(2);
 
-  /**
-   * Returns a recyclable MPPointF instance.
-   *
-   * @param e
-   * @param axis
-   * @return
-   */
+  /// Returns a recyclable MPPointF instance.
+  ///
+  /// @param e
+  /// @param axis
+  /// @return
   @override
   MPPointF getPosition(Entry e, AxisDependency axis) {
     if (e == null) return null;
@@ -275,17 +273,18 @@ class HorizontalBarChartPainter extends BarChartPainter {
     return MPPointF.getInstance1(vals[0], vals[1]);
   }
 
-  /**
-   * Returns the Highlight object (contains x-index and DataSet index) of the selected value at the given touch point
-   * inside the BarChart.
-   *
-   * @param x
-   * @param y
-   * @return
-   */
+  /// Returns the Highlight object (contains x-index and DataSet index) of the selected value at the given touch point
+  /// inside the BarChart.
+  ///
+  /// @param x
+  /// @param y
+  /// @return
   @override
   Highlight getHighlightByTouchPoint(double x, double y) {
-    if (mData != null) return mHighlighter.getHighlight(y, x); // switch x and y
+    if (mData != null) {
+      return mHighlighter.getHighlight(y, x);// switch x and y
+    }
+    return null;
   }
 
   @override
@@ -308,9 +307,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
     return result;
   }
 
-  /**
-   * ###### VIEWPORT METHODS BELOW THIS ######
-   */
+  /// ###### VIEWPORT METHODS BELOW THIS ######
 
   void setVisibleXRangeMaximum(double maxXRange) {
     double xScale = mXAxis.mAxisRange / (maxXRange);

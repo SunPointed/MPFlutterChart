@@ -7,35 +7,26 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/rounding.dart';
 
 class XBounds {
-  /**
-   * minimum visible entry index
-   */
+  /// minimum visible entry index
   int min;
 
-  /**
-   * maximum visible entry index
-   */
+  /// maximum visible entry index
   int max;
 
-  /**
-   * range of visible entry indices
-   */
+  /// range of visible entry indices
   int range;
 
   ChartAnimator animator;
 
   XBounds(this.animator);
 
-  /**
-   * Calculates the minimum and maximum x values as well as the range between them.
-   *
-   * @param chart
-   * @param dataSet
-   */
+  /// Calculates the minimum and maximum x values as well as the range between them.
+  ///
+  /// @param chart
+  /// @param dataSet
   void set(BarLineScatterCandleBubbleDataProvider chart,
       IBarLineScatterCandleBubbleDataSet dataSet) {
     double phaseX = math.max(0.0, math.min(1.0, animator.getPhaseX()));
-    ;
 
     double low = chart.getLowestVisibleX();
     double high = chart.getHighestVisibleX();

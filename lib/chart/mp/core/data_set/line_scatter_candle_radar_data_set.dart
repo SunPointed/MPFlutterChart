@@ -10,10 +10,10 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
   bool mDrawVerticalHighlightIndicator = true;
   bool mDrawHorizontalHighlightIndicator = true;
 
-  /** the width of the highlight indicator lines */
+  /// the width of the highlight indicator lines
   double mHighlightLineWidth = 0.5;
 
-  /** the path effect for dashed highlight-lines */
+  /// the path effect for dashed highlight-lines
 //   DashPathEffect mHighlightDashPathEffect = null;
 
   LineScatterCandleRadarDataSet(List<T> yVals, String label)
@@ -21,26 +21,20 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
     mHighlightLineWidth = Utils.convertDpToPixel(0.5);
   }
 
-  /**
-   * Enables / disables the horizontal highlight-indicator. If disabled, the indicator is not drawn.
-   * @param enabled
-   */
+  /// Enables / disables the horizontal highlight-indicator. If disabled, the indicator is not drawn.
+  /// @param enabled
   void setDrawHorizontalHighlightIndicator(bool enabled) {
     this.mDrawHorizontalHighlightIndicator = enabled;
   }
 
-  /**
-   * Enables / disables the vertical highlight-indicator. If disabled, the indicator is not drawn.
-   * @param enabled
-   */
+  /// Enables / disables the vertical highlight-indicator. If disabled, the indicator is not drawn.
+  /// @param enabled
   void setDrawVerticalHighlightIndicator(bool enabled) {
     this.mDrawVerticalHighlightIndicator = enabled;
   }
 
-  /**
-   * Enables / disables both vertical and horizontal highlight-indicators.
-   * @param enabled
-   */
+  /// Enables / disables both vertical and horizontal highlight-indicators.
+  /// @param enabled
   void setDrawHighlightIndicators(bool enabled) {
     setDrawVerticalHighlightIndicator(enabled);
     setDrawHorizontalHighlightIndicator(enabled);
@@ -56,10 +50,8 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
     return mDrawHorizontalHighlightIndicator;
   }
 
-  /**
-   * Sets the width of the highlight line in dp.
-   * @param width
-   */
+  /// Sets the width of the highlight line in dp.
+  /// @param width
   void setHighlightLineWidth(double width) {
     mHighlightLineWidth = Utils.convertDpToPixel(width);
   }

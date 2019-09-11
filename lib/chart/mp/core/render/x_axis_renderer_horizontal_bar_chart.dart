@@ -204,12 +204,10 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
 
   Path mRenderLimitLinesPathBuffer = Path();
 
-  /**
-   * Draws the LimitLines associated with this axis to the screen.
-   * This is the standard YAxis renderer using the XAxis limit lines.
-   *
-   * @param c
-   */
+  /// Draws the LimitLines associated with this axis to the screen.
+  /// This is the standard YAxis renderer using the XAxis limit lines.
+  ///
+  /// @param c
   @override
   void renderLimitLines(Canvas c) {
     List<LimitLine> limitLines = mXAxis.getLimitLines();

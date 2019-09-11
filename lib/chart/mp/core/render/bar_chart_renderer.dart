@@ -10,21 +10,19 @@ import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_bar_data_set.da
 import 'package:mp_flutter_chart/chart/mp/core/data_provider/bar_data_provider.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/range.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/bar_line_scatter_candle_bubble_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
-import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
   BarDataProvider mChart;
 
-  /**
-   * the rect object that is used for drawing the bars
-   */
+  /// the rect object that is used for drawing the bars
   Rect mBarRect = Rect.zero;
 
   List<BarBuffer> mBarBuffers;
@@ -494,10 +492,8 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
     }
   }
 
-  /**
-   * Sets the drawing position of the highlight object based on the riven bar-rect.
-   * @param high
-   */
+  /// Sets the drawing position of the highlight object based on the riven bar-rect.
+  /// @param high
   void setHighlightDrawPos(Highlight high, Rect bar) {
     high.setDraw(bar.center.dx, bar.top);
   }

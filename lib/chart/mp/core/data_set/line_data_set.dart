@@ -12,49 +12,32 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
-  /**
-   * Drawing mode for this line dataset
-   **/
+  /// Drawing mode for this line dataset
+  ///*/
   Mode mMode = Mode.LINEAR;
 
-  /**
-   * List representing all colors that are used for the circles
-   */
+  /// List representing all colors that are used for the circles
   List<Color> mCircleColors = null;
 
-  /**
-   * the color of the inner circles
-   */
+  /// the color of the inner circles
   Color mCircleHoleColor = ColorUtils.WHITE;
 
-  /**
-   * the radius of the circle-shaped value indicators
-   */
+  /// the radius of the circle-shaped value indicators
   double mCircleRadius = 8;
 
-  /**
-   * the hole radius of the circle-shaped value indicators
-   */
+  /// the hole radius of the circle-shaped value indicators
   double mCircleHoleRadius = 4;
 
-  /**
-   * sets the intensity of the cubic lines
-   */
+  /// sets the intensity of the cubic lines
   double mCubicIntensity = 0.2;
 
-  /**
-   * the path effect of this DataSet that makes dashed lines possible
-   */
+  /// the path effect of this DataSet that makes dashed lines possible
   DashPathEffect mDashPathEffect = null;
 
-  /**
-   * formatter for customizing the position of the fill-line
-   */
+  /// formatter for customizing the position of the fill-line
   IFillFormatter mFillFormatter = DefaultFillFormatter();
 
-  /**
-   * if true, drawing circles is enabled
-   */
+  /// if true, drawing circles is enabled
   bool mDrawCircles = true;
 
   bool mDrawCircleHole = true;
@@ -92,31 +75,25 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
     }
   }
 
-  /**
-   * Returns the drawing mode for this line dataset
-   *
-   * @return
-   */
+  /// Returns the drawing mode for this line dataset
+  ///
+  /// @return
   @override
   Mode getMode() {
     return mMode;
   }
 
-  /**
-   * Returns the drawing mode for this LineDataSet
-   *
-   * @return
-   */
+  /// Returns the drawing mode for this LineDataSet
+  ///
+  /// @return
   void setMode(Mode mode) {
     mMode = mode;
   }
 
-  /**
-   * Sets the intensity for cubic lines (if enabled). Max = 1f = very cubic,
-   * Min = 0.05f = low cubic effect, Default: 0.2f
-   *
-   * @param intensity
-   */
+  /// Sets the intensity for cubic lines (if enabled). Max = 1f = very cubic,
+  /// Min = 0.05f = low cubic effect, Default: 0.2f
+  ///
+  /// @param intensity
   void setCubicIntensity(double intensity) {
     if (intensity > 1) intensity = 1;
     if (intensity < 0.05) intensity = 0.05;
@@ -129,19 +106,14 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
     return mCubicIntensity;
   }
 
-  /**
-   * Sets the radius of the drawn circles.
-   * Default radius = 4f, Min = 1f
-   *
-   * @param radius
-   */
+  /// Sets the radius of the drawn circles.
+  /// Default radius = 4f, Min = 1f
+  ///
+  /// @param radius
   void setCircleRadius(double radius) {
     if (radius >= 1) {
       mCircleRadius = Utils.convertDpToPixel(radius);
     }
-//    else {
-//      Log.e("LineDataSet", "Circle radius cannot be < 1");
-//    }
   }
 
   @override
@@ -149,19 +121,14 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
     return mCircleRadius;
   }
 
-  /**
-   * Sets the hole radius of the drawn circles.
-   * Default radius = 2f, Min = 0.5f
-   *
-   * @param holeRadius
-   */
+  /// Sets the hole radius of the drawn circles.
+  /// Default radius = 2f, Min = 0.5f
+  ///
+  /// @param holeRadius
   void setCircleHoleRadius(double holeRadius) {
     if (holeRadius >= 0.5) {
       mCircleHoleRadius = Utils.convertDpToPixel(holeRadius);
     }
-//    else {
-//      Log.e("LineDataSet", "Circle radius cannot be < 0.5");
-//    }
   }
 
   @override
@@ -169,21 +136,17 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
     return mCircleHoleRadius;
   }
 
-  /**
-   * sets the size (radius) of the circle shpaed value indicators,
-   * default size = 4f
-   * <p/>
-   * This method is deprecated because of unclarity. Use setCircleRadius instead.
-   *
-   * @param size
-   */
+  /// sets the size (radius) of the circle shpaed value indicators,
+  /// default size = 4f
+  /// <p/>
+  /// This method is deprecated because of unclarity. Use setCircleRadius instead.
+  ///
+  /// @param size
   void setCircleSize(double size) {
     setCircleRadius(size);
   }
 
-  /**
-   * This function is deprecated because of unclarity. Use getCircleRadius instead.
-   */
+  /// This function is deprecated because of unclarity. Use getCircleRadius instead.
   double getCircleSize() {
     return getCircleRadius();
   }
@@ -197,15 +160,13 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
    * @param spaceLength the length of space in between the pieces
    * @param phase       offset, in degrees (normally, use 0)
    */
-//  void enableDashedLine(double lineLength, double spaceLength, double phase) {
+//  void enableDashedLine(double lineLength, double spaceLength, double phase) { todo
 //    mDashPathEffect =  DashPathEffect( double[]{
 //    lineLength, spaceLength
 //    }, phase);
 //  }
 
-  /**
-   * Disables the line to be drawn in dashed mode.
-   */
+  /// Disables the line to be drawn in dashed mode.
   void disableDashedLine() {
     mDashPathEffect = null;
   }
@@ -220,12 +181,10 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
 //    return mDashPathEffect;
 //  }
 
-  /**
-   * set this to true to enable the drawing of circle indicators for this
-   * DataSet, default true
-   *
-   * @param enabled
-   */
+  /// set this to true to enable the drawing of circle indicators for this
+  /// DataSet, default true
+  ///
+  /// @param enabled
   void setDrawCircles(bool enabled) {
     this.mDrawCircles = enabled;
   }
@@ -247,11 +206,9 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
 
   /** ALL CODE BELOW RELATED TO CIRCLE-COLORS */
 
-  /**
-   * returns all colors specified for the circles
-   *
-   * @return
-   */
+  /// returns all colors specified for the circles
+  ///
+  /// @return
   List<Color> getCircleColors() {
     return mCircleColors;
   }
@@ -266,33 +223,27 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
     return mCircleColors.length;
   }
 
-  /**
-   * Sets the colors that should be used for the circles of this DataSet.
-   * Colors are reused as soon as the number of Entries the DataSet represents
-   * is higher than the size of the colors array. Make sure that the colors
-   * are already prepared (by calling getResources().getColor(...)) before
-   * adding them to the DataSet.
-   *
-   * @param colors
-   */
+  /// Sets the colors that should be used for the circles of this DataSet.
+  /// Colors are reused as soon as the number of Entries the DataSet represents
+  /// is higher than the size of the colors array. Make sure that the colors
+  /// are already prepared (by calling getResources().getColor(...)) before
+  /// adding them to the DataSet.
+  ///
+  /// @param colors
   void setCircleColors(List<Color> colors) {
     mCircleColors = colors;
   }
 
-  /**
-   * Sets the one and ONLY color that should be used for this DataSet.
-   * Internally, this recreates the colors array and adds the specified color.
-   *
-   * @param color
-   */
+  /// Sets the one and ONLY color that should be used for this DataSet.
+  /// Internally, this recreates the colors array and adds the specified color.
+  ///
+  /// @param color
   void setCircleColor(Color color) {
     resetCircleColors();
     mCircleColors.add(color);
   }
 
-  /**
-   * resets the circle-colors array and creates a  one
-   */
+  /// resets the circle-colors array and creates a  one
   void resetCircleColors() {
     if (mCircleColors == null) {
       mCircleColors = List();
@@ -300,11 +251,9 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
     mCircleColors.clear();
   }
 
-  /**
-   * Sets the color of the inner circle of the line-circles.
-   *
-   * @param color
-   */
+  /// Sets the color of the inner circle of the line-circles.
+  ///
+  /// @param color
   void setCircleHoleColor(Color color) {
     mCircleHoleColor = color;
   }
@@ -314,11 +263,9 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
     return mCircleHoleColor;
   }
 
-  /**
-   * Set this to true to allow drawing a hole in each data circle.
-   *
-   * @param enabled
-   */
+  /// Set this to true to allow drawing a hole in each data circle.
+  ///
+  /// @param enabled
   void setDrawCircleHole(bool enabled) {
     mDrawCircleHole = enabled;
   }
@@ -328,12 +275,10 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
     return mDrawCircleHole;
   }
 
-  /**
-   * Sets a custom IFillFormatter to the chart that handles the position of the
-   * filled-line for each DataSet. Set this to null to use the default logic.
-   *
-   * @param formatter
-   */
+  /// Sets a custom IFillFormatter to the chart that handles the position of the
+  /// filled-line for each DataSet. Set this to null to use the default logic.
+  ///
+  /// @param formatter
   void setFillFormatter(IFillFormatter formatter) {
     if (formatter == null)
       mFillFormatter = DefaultFillFormatter();

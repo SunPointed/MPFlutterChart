@@ -35,9 +35,7 @@ class YAxisRenderer extends AxisRenderer {
     }
   }
 
-  /**
-   * draws the y-axis labels to the screen
-   */
+  /// draws the y-axis labels to the screen
   @override
   void renderAxisLabels(Canvas c) {
     if (!mYAxis.isEnabled() || !mYAxis.isDrawLabelsEnabled()) return;
@@ -98,12 +96,10 @@ class YAxisRenderer extends AxisRenderer {
     }
   }
 
-  /**
-   * draws the y-labels on the specified x-position
-   *
-   * @param fixedPosition
-   * @param positions
-   */
+  /// draws the y-labels on the specified x-position
+  ///
+  /// @param fixedPosition
+  /// @param positions
   void drawYLabels(
     Canvas c,
     double fixedPosition,
@@ -196,14 +192,12 @@ class YAxisRenderer extends AxisRenderer {
     return mGridClippingRect;
   }
 
-  /**
-   * Calculates the path for a grid line.
-   *
-   * @param p
-   * @param i
-   * @param positions
-   * @return
-   */
+  /// Calculates the path for a grid line.
+  ///
+  /// @param p
+  /// @param i
+  /// @param positions
+  /// @return
   Path linePath(Path p, int i, List<double> positions) {
     p.moveTo(mViewPortHandler.offsetLeft(), positions[i + 1]);
     p.lineTo(mViewPortHandler.contentRight(), positions[i + 1]);
@@ -213,12 +207,10 @@ class YAxisRenderer extends AxisRenderer {
 
   List<double> mGetTransformedPositionsBuffer = List(2);
 
-  /**
-   * Transforms the values contained in the axis entries to screen pixels and returns them in form of a double array
-   * of x- and y-coordinates.
-   *
-   * @return
-   */
+  /// Transforms the values contained in the axis entries to screen pixels and returns them in form of a double array
+  /// of x- and y-coordinates.
+  ///
+  /// @return
   List<double> getTransformedPositions() {
     if (mGetTransformedPositionsBuffer.length != mYAxis.mEntryCount * 2) {
       mGetTransformedPositionsBuffer = List(mYAxis.mEntryCount * 2);
@@ -238,9 +230,7 @@ class YAxisRenderer extends AxisRenderer {
   Path mDrawZeroLinePath = Path();
   Rect mZeroLineClippingRect = Rect.zero;
 
-  /**
-   * Draws the zero line.
-   */
+  /// Draws the zero line.
   void drawZeroLine(Canvas c) {
     c.save();
     mZeroLineClippingRect = Rect.fromLTRB(
@@ -273,11 +263,9 @@ class YAxisRenderer extends AxisRenderer {
   List<double> mRenderLimitLinesBuffer = List(2);
   Rect mLimitLineClippingRect = Rect.zero;
 
-  /**
-   * Draws the LimitLines associated with this axis to the screen.
-   *
-   * @param c
-   */
+  /// Draws the LimitLines associated with this axis to the screen.
+  ///
+  /// @param c
   @override
   void renderLimitLines(Canvas c) {
     List<LimitLine> limitLines = mYAxis.getLimitLines();

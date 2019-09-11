@@ -16,7 +16,7 @@ class RadarHighlighter extends PieRadarHighlighter<RadarChartPainter> {
     double distanceToCenter =
         mChart.distanceToCenter(x, y) / mChart.getFactor();
 
-    Highlight closest = null;
+    Highlight closest;
     double distance = double.maxFinite;
 
     for (int i = 0; i < highlights.length; i++) {
@@ -32,15 +32,13 @@ class RadarHighlighter extends PieRadarHighlighter<RadarChartPainter> {
     return closest;
   }
 
-  /**
-   * Returns an array of Highlight objects for the given index. The Highlight
-   * objects give information about the value at the selected index and the
-   * DataSet it belongs to. INFORMATION: This method does calculations at
-   * runtime. Do not over-use in performance critical situations.
-   *
-   * @param index
-   * @return
-   */
+  /// Returns an array of Highlight objects for the given index. The Highlight
+  /// objects give information about the value at the selected index and the
+  /// DataSet it belongs to. INFORMATION: This method does calculations at
+  /// runtime. Do not over-use in performance critical situations.
+  ///
+  /// @param index
+  /// @return
   List<Highlight> getHighlightsAtIndex(int index) {
     mHighlightBuffer.clear();
 

@@ -36,6 +36,7 @@ class Utils{
     }
   }
 
+  // ignore: non_constant_identifier_names
   static final DEBUG = true;
 
   static void log(Object object){

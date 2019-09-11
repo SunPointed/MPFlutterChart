@@ -7,12 +7,10 @@ class Range {
     this.to = to;
   }
 
-  /**
-   * Returns true if this range contains (if the value is in between) the given value, false if not.
-   *
-   * @param value
-   * @return
-   */
+  /// Returns true if this range contains (if the value is in between) the given value, false if not.
+  ///
+  /// @param value
+  /// @return
   bool contains(double value) {
     if (value > from && value <= to)
       return true;

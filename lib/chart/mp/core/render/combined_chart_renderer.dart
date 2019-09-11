@@ -14,9 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/painter/combined_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 
 class CombinedChartRenderer extends DataRenderer {
-  /**
-   * all rederers for the different kinds of data this combined-renderer can draw
-   */
+  /// all rederers for the different kinds of data this combined-renderer can draw
   List<DataRenderer> mRenderers = List<DataRenderer>();
 
   ChartPainter mChart;
@@ -28,10 +26,8 @@ class CombinedChartRenderer extends DataRenderer {
     createRenderers();
   }
 
-  /**
-   * Creates the renderers needed for this combined-renderer in the required order. Also takes the DrawOrder into
-   * consideration.
-   */
+  /// Creates the renderers needed for this combined-renderer in the required order. Also takes the DrawOrder into
+  /// consideration.
   void createRenderers() {
     mRenderers.clear();
 
@@ -102,18 +98,18 @@ class CombinedChartRenderer extends DataRenderer {
     if (chart == null) return;
 
     for (DataRenderer renderer in mRenderers) {
-      ChartData data = null;
+      ChartData data;
 
       if (renderer is BarChartRenderer)
-        data = (renderer as BarChartRenderer).mChart.getBarData();
+        data = renderer.mChart.getBarData();
       else if (renderer is LineChartRenderer)
-        data = (renderer as LineChartRenderer).mChart.getLineData();
+        data = renderer.mChart.getLineData();
       else if (renderer is CandleStickChartRenderer)
-        data = (renderer as CandleStickChartRenderer).mChart.getCandleData();
+        data = renderer.mChart.getCandleData();
       else if (renderer is ScatterChartRenderer)
-        data = (renderer as ScatterChartRenderer).mChart.getScatterData();
+        data = renderer.mChart.getScatterData();
       else if (renderer is BubbleChartRenderer)
-        data = (renderer as BubbleChartRenderer).mChart.getBubbleData();
+        data = renderer.mChart.getBubbleData();
 
       int dataIndex = data == null
           ? -1
@@ -130,12 +126,10 @@ class CombinedChartRenderer extends DataRenderer {
     }
   }
 
-  /**
-   * Returns the sub-renderer object at the specified index.
-   *
-   * @param index
-   * @return
-   */
+  /// Returns the sub-renderer object at the specified index.
+  ///
+  /// @param index
+  /// @return
   DataRenderer getSubRenderer(int index) {
     if (index >= mRenderers.length || index < 0)
       return null;
@@ -143,11 +137,9 @@ class CombinedChartRenderer extends DataRenderer {
       return mRenderers[index];
   }
 
-  /**
-   * Returns all sub-renderers.
-   *
-   * @return
-   */
+  /// Returns all sub-renderers.
+  ///
+  /// @return
   List<DataRenderer> getSubRenderers() {
     return mRenderers;
   }

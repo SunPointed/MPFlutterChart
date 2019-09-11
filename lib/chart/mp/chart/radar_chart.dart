@@ -1,19 +1,12 @@
 import 'package:flutter/painting.dart';
-import 'package:flutter/src/gestures/scale.dart';
-import 'package:flutter/src/gestures/tap.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
-import 'package:mp_flutter_chart/chart/mp/core/marker/bar_chart_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/radar_chart_marker.dart';
-import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/highlight_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/radar_chart_painter.dart';
 
 import 'chart.dart';

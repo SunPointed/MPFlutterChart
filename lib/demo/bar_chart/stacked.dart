@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/bar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/bar_data.dart';
@@ -18,8 +19,6 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/my_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/stacked_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
-import 'package:mp_flutter_chart/chart/mp/listener.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class BarChartStacked extends StatefulWidget {
   @override

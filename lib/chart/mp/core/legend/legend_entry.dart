@@ -22,33 +22,25 @@ class LegendEntry {
     this.formColor = formColor;
   }
 
-  /**
-   * The legend entry text.
-   * A `null` label will start a group.
-   */
+  /// The legend entry text.
+  /// A `null` label will start a group.
   String label;
 
-  /**
-   * The form to draw for this entry.
-   *
-   * `NONE` will avoid drawing a form, and any related space.
-   * `EMPTY` will avoid drawing a form, but keep its space.
-   * `DEFAULT` will use the Legend's default.
-   */
+  /// The form to draw for this entry.
+  ///
+  /// `NONE` will avoid drawing a form, and any related space.
+  /// `EMPTY` will avoid drawing a form, but keep its space.
+  /// `DEFAULT` will use the Legend's default.
   LegendForm form = LegendForm.DEFAULT;
 
-  /**
-   * Form size will be considered except for when .None is used
-   *
-   * Set as NaN to use the legend's default
-   */
+  /// Form size will be considered except for when .None is used
+  ///
+  /// Set as NaN to use the legend's default
   double formSize = double.nan;
 
-  /**
-   * Line width used for shapes that consist of lines.
-   *
-   * Set as NaN to use the legend's default
-   */
+  /// Line width used for shapes that consist of lines.
+  ///
+  /// Set as NaN to use the legend's default
   double formLineWidth = double.nan;
 
   /**
@@ -58,8 +50,6 @@ class LegendEntry {
    */
 //   DashPathEffect formLineDashEffect = null;
 
-  /**
-   * The color for drawing the form
-   */
+  /// The color for drawing the form
   Color formColor = ColorUtils.COLOR_NONE;
 }

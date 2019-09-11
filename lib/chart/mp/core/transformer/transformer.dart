@@ -7,18 +7,13 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/candle_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/matrix4_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 
 class Transformer {
-  /**
-   * matrix to map the values to the screen pixels
-   */
+  /// matrix to map the values to the screen pixels
   Matrix4 mMatrixValueToPx = Matrix4.identity();
 
-  /**
-   * matrix for handling the different offsets of the chart
-   */
+  /// matrix for handling the different offsets of the chart
   Matrix4 mMatrixOffset = Matrix4.identity();
 
   ViewPortHandler mViewPortHandler;
@@ -27,15 +22,13 @@ class Transformer {
     this.mViewPortHandler = viewPortHandler;
   }
 
-  /**
-   * Prepares the matrix that Matrix4Utils.transforms values to pixels. Calculates the
-   * scale factors from the charts size and offsets.
-   *
-   * @param xChartMin
-   * @param deltaX
-   * @param deltaY
-   * @param yChartMin
-   */
+  /// Prepares the matrix that Matrix4Utils.transforms values to pixels. Calculates the
+  /// scale factors from the charts size and offsets.
+  ///
+  /// @param xChartMin
+  /// @param deltaX
+  /// @param deltaY
+  /// @param yChartMin
   void prepareMatrixValuePx(
       double xChartMin, double deltaX, double deltaY, double yChartMin) {
     double scaleX = ((mViewPortHandler.contentWidth()) / deltaX);
@@ -54,11 +47,9 @@ class Transformer {
     Matrix4Utils.postScale(mMatrixValueToPx, scaleX, -scaleY);
   }
 
-  /**
-   * Prepares the matrix that contains all offsets.
-   *
-   * @param copyInverseed
-   */
+  /// Prepares the matrix that contains all offsets.
+  ///
+  /// @param copyInverseed
   void prepareMatrixOffset(bool copyInverseed) {
     mMatrixOffset = Matrix4.identity();
 
@@ -76,13 +67,11 @@ class Transformer {
 
   List<double> valuePointsForGenerateTransformedValuesScatter = List(1);
 
-  /**
-   * Transforms an List of Entry into a double array containing the x and
-   * y values Matrix4Utils.transformed with all matrices for the SCATTERCHART.
-   *
-   * @param data
-   * @return
-   */
+  /// Transforms an List of Entry into a double array containing the x and
+  /// y values Matrix4Utils.transformed with all matrices for the SCATTERCHART.
+  ///
+  /// @param data
+  /// @return
   List<double> generateTransformedValuesScatter(
       IScatterDataSet data, double phaseX, double phaseY, int from, int to) {
     final int count = (((to - from) * phaseX + 1) * 2).toInt();
@@ -111,13 +100,11 @@ class Transformer {
 
   List<double> valuePointsForGenerateTransformedValuesBubble = List(1);
 
-  /**
-   * Transforms an List of Entry into a double array containing the x and
-   * y values Matrix4Utils.transformed with all matrices for the BUBBLECHART.
-   *
-   * @param data
-   * @return
-   */
+  /// Transforms an List of Entry into a double array containing the x and
+  /// y values Matrix4Utils.transformed with all matrices for the BUBBLECHART.
+  ///
+  /// @param data
+  /// @return
   List<double> generateTransformedValuesBubble(
       IBubbleDataSet data, double phaseY, int from, int to) {
     final int count =
@@ -147,13 +134,11 @@ class Transformer {
 
   List<double> valuePointsForGenerateTransformedValuesLine = List(1);
 
-  /**
-   * Transforms an List of Entry into a double array containing the x and
-   * y values Matrix4Utils.transformed with all matrices for the LINECHART.
-   *
-   * @param data
-   * @return
-   */
+  /// Transforms an List of Entry into a double array containing the x and
+  /// y values Matrix4Utils.transformed with all matrices for the LINECHART.
+  ///
+  /// @param data
+  /// @return
   List<double> generateTransformedValuesLine(
       ILineDataSet data, double phaseX, double phaseY, int min, int max) {
     final int count = ((((max - min) * phaseX) + 1).toInt() * 2);
@@ -182,13 +167,11 @@ class Transformer {
 
   List<double> valuePointsForGenerateTransformedValuesCandle = List(1);
 
-  /**
-   * Transforms an List of Entry into a double array containing the x and
-   * y values Matrix4Utils.transformed with all matrices for the CANDLESTICKCHART.
-   *
-   * @param data
-   * @return
-   */
+  /// Transforms an List of Entry into a double array containing the x and
+  /// y values Matrix4Utils.transformed with all matrices for the CANDLESTICKCHART.
+  ///
+  /// @param data
+  /// @return
   List<double> generateTransformedValuesCandle(
       ICandleDataSet data, double phaseX, double phaseY, int from, int to) {
     final int count = (((to - from) * phaseX + 1) * 2).toInt();
@@ -215,23 +198,19 @@ class Transformer {
     return valuePoints;
   }
 
-  /**
-   * Transform an array of points with all matrices. VERY IMPORTANT: Keep
-   * matrix order "value-touch-offset" when Matrix4Utils.transforming.
-   *
-   * @param pts
-   */
+  /// Transform an array of points with all matrices. VERY IMPORTANT: Keep
+  /// matrix order "value-touch-offset" when Matrix4Utils.transforming.
+  ///
+  /// @param pts
   void pointValuesToPixel(List<double> pts) {
     Matrix4Utils.mapPoints(mMatrixValueToPx, pts);
     Matrix4Utils.mapPoints(mViewPortHandler.getMatrixTouch(), pts);
     Matrix4Utils.mapPoints(mMatrixOffset, pts);
   }
 
-  /**
-   * Transform a rectangle with all matrices.
-   *
-   * @param r
-   */
+  /// Transform a rectangle with all matrices.
+  ///
+  /// @param r
   Rect rectValueToPixel(Rect r) {
     r = Matrix4Utils.mapRect(mMatrixValueToPx, r);
     r = Matrix4Utils.mapRect(mViewPortHandler.getMatrixTouch(), r);
@@ -239,12 +218,10 @@ class Transformer {
     return r;
   }
 
-  /**
-   * Transform a rectangle with all matrices with potential animation phases.
-   *
-   * @param r
-   * @param phaseY
-   */
+  /// Transform a rectangle with all matrices with potential animation phases.
+  ///
+  /// @param r
+  /// @param phaseY
   Rect rectToPixelPhase(Rect r, double phaseY) {
     // multiply the height of the rect with the phase
     r = Rect.fromLTRB(r.left, r.top * phaseY, r.right, r.bottom * phaseY);
@@ -265,11 +242,9 @@ class Transformer {
     return r;
   }
 
-  /**
-   * Transform a rectangle with all matrices with potential animation phases.
-   *
-   * @param r
-   */
+  /// Transform a rectangle with all matrices with potential animation phases.
+  ///
+  /// @param r
   Rect rectValueToPixelHorizontal1(Rect r) {
     r = Matrix4Utils.mapRect(mMatrixValueToPx, r);
     r = Matrix4Utils.mapRect(mViewPortHandler.getMatrixTouch(), r);
@@ -277,12 +252,10 @@ class Transformer {
     return r;
   }
 
-  /**
-   * Transform a rectangle with all matrices with potential animation phases.
-   *
-   * @param r
-   * @param phaseY
-   */
+  /// Transform a rectangle with all matrices with potential animation phases.
+  ///
+  /// @param r
+  /// @param phaseY
   Rect rectValueToPixelHorizontal2(Rect r, double phaseY) {
     // multiply the height of the rect with the phase
     r = Rect.fromLTRB(r.left * phaseY, r.top, r.right * phaseY, r.bottom);
@@ -293,11 +266,9 @@ class Transformer {
     return r;
   }
 
-  /**
-   * Matrix4Utils.transforms multiple rects with all matrices
-   *
-   * @param rects
-   */
+  /// Matrix4Utils.transforms multiple rects with all matrices
+  ///
+  /// @param rects
   void rectValuesToPixel(List<Rect> rects) {
     Matrix4 m = getValueToPixelMatrix();
 
@@ -307,12 +278,10 @@ class Transformer {
 
   Matrix4 mPixelToValueMatrixBuffer = Matrix4.identity();
 
-  /**
-   * Transforms the given array of touch positions (pixels) (x, y, x, y, ...)
-   * into values on the chart.
-   *
-   * @param pixels
-   */
+  /// Transforms the given array of touch positions (pixels) (x, y, x, y, ...)
+  /// into values on the chart.
+  ///
+  /// @param pixels
   void pixelsToValue(List<double> pixels) {
     mPixelToValueMatrixBuffer = Matrix4.identity();
     Matrix4 tmp = mPixelToValueMatrixBuffer;
@@ -327,22 +296,18 @@ class Transformer {
     Matrix4Utils.mapPoints(tmp, pixels);
   }
 
-  /**
-   * buffer for performance
-   */
+  /// buffer for performance
   List<double> ptsBuffer = List(2);
 
-  /**
-   * Returns a recyclable MPPointD instance.
-   * returns the x and y values in the chart at the given touch point
-   * (encapsulated in a MPPointD). This method Matrix4Utils.transforms pixel coordinates to
-   * coordinates / values in the chart. This is the opposite method to
-   * getPixelForValues(...).
-   *
-   * @param x
-   * @param y
-   * @return
-   */
+  /// Returns a recyclable MPPointD instance.
+  /// returns the x and y values in the chart at the given touch point
+  /// (encapsulated in a MPPointD). This method Matrix4Utils.transforms pixel coordinates to
+  /// coordinates / values in the chart. This is the opposite method to
+  /// getPixelForValues(...).
+  ///
+  /// @param x
+  /// @param y
+  /// @return
   MPPointD getValuesByTouchPoint1(double x, double y) {
     MPPointD result = MPPointD.getInstance1(0, 0);
     getValuesByTouchPoint2(x, y, result);
@@ -359,14 +324,12 @@ class Transformer {
     outputPoint.y = ptsBuffer[1];
   }
 
-  /**
-   * Returns a recyclable MPPointD instance.
-   * Returns the x and y coordinates (pixels) for a given x and y value in the chart.
-   *
-   * @param x
-   * @param y
-   * @return
-   */
+  /// Returns a recyclable MPPointD instance.
+  /// Returns the x and y coordinates (pixels) for a given x and y value in the chart.
+  ///
+  /// @param x
+  /// @param y
+  /// @return
   MPPointD getPixelForValues(double x, double y) {
     ptsBuffer[0] = x;
     ptsBuffer[1] = y;

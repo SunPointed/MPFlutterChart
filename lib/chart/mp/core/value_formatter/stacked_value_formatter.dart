@@ -3,25 +3,19 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 
 class StackedValueFormatter extends ValueFormatter {
-  /**
-   * if true, all stack values of the stacked bar entry are drawn, else only top
-   */
+  /// if true, all stack values of the stacked bar entry are drawn, else only top
   bool mDrawWholeStack;
 
-  /**
-   * a string that should be appended behind the value
-   */
+  /// a string that should be appended behind the value
   String mSuffix;
 
   NumberFormat mFormat;
 
-  /**
-   * Constructor.
-   *
-   * @param drawWholeStack if true, all stack values of the stacked bar entry are drawn, else only top
-   * @param suffix         a string that should be appended behind the value
-   * @param decimals       the number of decimal digits to use
-   */
+  /// Constructor.
+  ///
+  /// @param drawWholeStack if true, all stack values of the stacked bar entry are drawn, else only top
+  /// @param suffix         a string that should be appended behind the value
+  /// @param decimals       the number of decimal digits to use
   StackedValueFormatter(bool drawWholeStack, String suffix, int decimals) {
     this.mDrawWholeStack = drawWholeStack;
     this.mSuffix = suffix;

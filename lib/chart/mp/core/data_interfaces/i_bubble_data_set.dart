@@ -2,21 +2,17 @@ import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_bar_line_scatte
 import 'package:mp_flutter_chart/chart/mp/core/entry/bubble_entry.dart';
 
 mixin IBubbleDataSet on IBarLineScatterCandleBubbleDataSet<BubbleEntry> {
-  /**
-   * Sets the width of the circle that surrounds the bubble when highlighted,
-   * in dp.
-   *
-   * @param width
-   */
+  /// Sets the width of the circle that surrounds the bubble when highlighted,
+  /// in dp.
+  ///
+  /// @param width
   void setHighlightCircleWidth(double width);
 
   double getMaxSize();
 
   bool isNormalizeSizeEnabled();
 
-  /**
-   * Returns the width of the highlight-circle that surrounds the bubble
-   * @return
-   */
+  /// Returns the width of the highlight-circle that surrounds the bubble
+  /// @return
   double getHighlightCircleWidth();
 }

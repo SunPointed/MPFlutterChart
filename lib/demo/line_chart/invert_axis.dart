@@ -9,8 +9,7 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_form.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
-import 'package:mp_flutter_chart/chart/mp/listener.dart';
+import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 
 class LineChartInvertAxis extends StatefulWidget {
   @override

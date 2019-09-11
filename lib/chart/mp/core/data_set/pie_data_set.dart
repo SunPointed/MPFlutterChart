@@ -8,15 +8,11 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/value_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
-  /**
-   * the space in pixels between the chart-slices, default 0f
-   */
+  /// the space in pixels between the chart-slices, default 0f
   double mSliceSpace = 0;
   bool mAutomaticallyDisableSliceSpacing = false;
 
-  /**
-   * indicates the selection distance of a pie slice
-   */
+  /// indicates the selection distance of a pie slice
   double mShift = 18;
 
   ValuePosition mXValuePosition = ValuePosition.INSIDE_SLICE;
@@ -52,12 +48,10 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     calcMinMaxY1(e);
   }
 
-  /**
-   * Sets the space that is left out between the piechart-slices in dp.
-   * Default: 0 --> no space, maximum 20f
-   *
-   * @param spaceDp
-   */
+  /// Sets the space that is left out between the piechart-slices in dp.
+  /// Default: 0 --> no space, maximum 20f
+  ///
+  /// @param spaceDp
   void setSliceSpace(double spaceDp) {
     if (spaceDp > 20) spaceDp = 20;
     if (spaceDp < 0) spaceDp = 0;
@@ -70,33 +64,27 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     return mSliceSpace;
   }
 
-  /**
-   * When enabled, slice spacing will be 0.0 when the smallest value is going to be
-   * smaller than the slice spacing itself.
-   *
-   * @param autoDisable
-   */
+  /// When enabled, slice spacing will be 0.0 when the smallest value is going to be
+  /// smaller than the slice spacing itself.
+  ///
+  /// @param autoDisable
   void setAutomaticallyDisableSliceSpacing(bool autoDisable) {
     mAutomaticallyDisableSliceSpacing = autoDisable;
   }
 
-  /**
-   * When enabled, slice spacing will be 0.0 when the smallest value is going to be
-   * smaller than the slice spacing itself.
-   *
-   * @return
-   */
+  /// When enabled, slice spacing will be 0.0 when the smallest value is going to be
+  /// smaller than the slice spacing itself.
+  ///
+  /// @return
   @override
   bool isAutomaticallyDisableSliceSpacingEnabled() {
     return mAutomaticallyDisableSliceSpacing;
   }
 
-  /**
-   * sets the distance the highlighted piechart-slice of this DataSet is
-   * "shifted" away from the center of the chart, default 12f
-   *
-   * @param shift
-   */
+  /// sets the distance the highlighted piechart-slice of this DataSet is
+  /// "shifted" away from the center of the chart, default 12f
+  ///
+  /// @param shift
   void setSelectionShift(double shift) {
     mShift = Utils.convertDpToPixel(shift);
   }
@@ -124,9 +112,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     this.mYValuePosition = yValuePosition;
   }
 
-  /**
-   * When valuePosition is OutsideSlice, use slice colors as line color if true
-   */
+  /// When valuePosition is OutsideSlice, use slice colors as line color if true
   @override
   bool isUsingSliceColorAsValueLineColor() {
     return mUsingSliceColorAsValueLineColor;
@@ -137,9 +123,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     this.mUsingSliceColorAsValueLineColor = usingSliceColorAsValueLineColor;
   }
 
-  /**
-   * When valuePosition is OutsideSlice, indicates line color
-   */
+  /// When valuePosition is OutsideSlice, indicates line color
   @override
   Color getValueLineColor() {
     return mValueLineColor;
@@ -149,9 +133,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     this.mValueLineColor = valueLineColor;
   }
 
-  /**
-   * When valuePosition is OutsideSlice, indicates line width
-   */
+  /// When valuePosition is OutsideSlice, indicates line width
   @override
   double getValueLineWidth() {
     return mValueLineWidth;
@@ -161,9 +143,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     this.mValueLineWidth = valueLineWidth;
   }
 
-  /**
-   * When valuePosition is OutsideSlice, indicates offset as percentage out of the slice size
-   */
+  /// When valuePosition is OutsideSlice, indicates offset as percentage out of the slice size
   @override
   double getValueLinePart1OffsetPercentage() {
     return mValueLinePart1OffsetPercentage;
@@ -174,9 +154,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     this.mValueLinePart1OffsetPercentage = valueLinePart1OffsetPercentage;
   }
 
-  /**
-   * When valuePosition is OutsideSlice, indicates length of first half of the line
-   */
+  /// When valuePosition is OutsideSlice, indicates length of first half of the line
   @override
   double getValueLinePart1Length() {
     return mValueLinePart1Length;
@@ -186,9 +164,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     this.mValueLinePart1Length = valueLinePart1Length;
   }
 
-  /**
-   * When valuePosition is OutsideSlice, indicates length of second half of the line
-   */
+  /// When valuePosition is OutsideSlice, indicates length of second half of the line
   @override
   double getValueLinePart2Length() {
     return mValueLinePart2Length;
@@ -198,9 +174,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     this.mValueLinePart2Length = valueLinePart2Length;
   }
 
-  /**
-   * When valuePosition is OutsideSlice, this allows variable line length
-   */
+  /// When valuePosition is OutsideSlice, this allows variable line length
   @override
   bool isValueLineVariableLength() {
     return mValueLineVariableLength;

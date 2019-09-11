@@ -12,9 +12,7 @@ import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
 
 class CombinedHighlighter extends ChartHighlighter<CombinedDataProvider>
     implements IHighlighter {
-  /**
-   * bar highlighter for supporting stacked highlighting
-   */
+  /// bar highlighter for supporting stacked highlighting
   BarHighlighter barHighlighter;
 
   CombinedHighlighter(CombinedDataProvider chart, BarDataProvider barChart)

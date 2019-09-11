@@ -18,12 +18,10 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
       ViewPortHandler viewPortHandler, YAxis yAxis, Transformer trans)
       : super(viewPortHandler, yAxis, trans);
 
-  /**
-   * Computes the axis values.
-   *
-   * @param yMin - the minimum y-value in the data object for this axis
-   * @param yMax - the maximum y-value in the data object for this axis
-   */
+  /// Computes the axis values.
+  ///
+  /// @param yMin - the minimum y-value in the data object for this axis
+  /// @param yMax - the maximum y-value in the data object for this axis
   @override
   void computeAxis(double yMin, double yMax, bool inverted) {
     // calculate the starting and entry point of the y-labels (depending on
@@ -50,9 +48,7 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     computeAxisValues(yMin, yMax);
   }
 
-  /**
-   * draws the y-axis labels to the screen
-   */
+  /// draws the y-axis labels to the screen
   @override
   void renderAxisLabels(Canvas c) {
     if (!mYAxis.isEnabled() || !mYAxis.isDrawLabelsEnabled()) return;
@@ -110,12 +106,10 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     }
   }
 
-  /**
-   * draws the y-labels on the specified x-position
-   *
-   * @param fixedPosition
-   * @param positions
-   */
+  /// draws the y-labels on the specified x-position
+  ///
+  /// @param fixedPosition
+  /// @param positions
   @override
   void drawYLabels(Canvas c, double fixedPosition, List<double> positions,
       AxisDependency axisDependency, YAxisLabelPosition position) {
@@ -228,12 +222,10 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
   Path mRenderLimitLinesPathBuffer = Path();
   List<double> mRenderLimitLinesBuffer = List(4);
 
-  /**
-   * Draws the LimitLines associated with this axis to the screen.
-   * This is the standard XAxis renderer using the YAxis limit lines.
-   *
-   * @param c
-   */
+  /// Draws the LimitLines associated with this axis to the screen.
+  /// This is the standard XAxis renderer using the YAxis limit lines.
+  ///
+  /// @param c
   @override
   void renderLimitLines(Canvas c) {
     List<LimitLine> limitLines = mYAxis.getLimitLines();

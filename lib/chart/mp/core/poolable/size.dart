@@ -37,7 +37,7 @@ class FSize extends Poolable {
       return true;
     }
     if (obj is FSize) {
-      final FSize other = obj as FSize;
+      final FSize other = obj;
       return width == other.width && height == other.height;
     }
     return false;
@@ -45,10 +45,11 @@ class FSize extends Poolable {
 
   @override
   String toString() {
-    return "${width}x${height}";
+    return "${width}x$height";
   }
 
   @override
+  // ignore: hash_and_equals
   int get hashCode {
     return width.toInt() ^ height.toInt();
   }

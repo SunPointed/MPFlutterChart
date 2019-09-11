@@ -1,13 +1,13 @@
 import 'dart:ui' as ui;
 
 abstract class BaseEntry {
-  /** the y value */
+  /// the y value
   double y = 0;
 
-  /** optional spot for additional data this Entry represents */
+  /// optional spot for additional data this Entry represents
   Object mData = null;
 
-  /** optional icon image */
+  /// optional icon image
   ui.Image mIcon = null;
 
   BaseEntry({double y, ui.Image icon, Object data}) {

@@ -1,33 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:mp_flutter_chart/chart/mp/chart/horizontal_bar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/bar_data.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/bar_chart_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
-import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/highlight_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
-import 'package:mp_flutter_chart/chart/mp/listener.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/bar_chart_painter.dart';
 
 import 'chart.dart';
 
 class BarChart extends Chart {
-  Color backgroundColor = null;
-  Color borderColor = null;
+  Color backgroundColor;
+  Color borderColor;
   double borderStrokeWidth = 1.0;
   bool keepPositionOnRotation = false;
   bool pinchZoomEnabled = false;
-  XAxisRenderer xAxisRenderer = null;
-  YAxisRenderer rendererLeftYAxis = null;
-  YAxisRenderer rendererRightYAxis = null;
+  XAxisRenderer xAxisRenderer;
+  YAxisRenderer rendererLeftYAxis;
+  YAxisRenderer rendererRightYAxis;
   bool autoScaleMinMaxEnabled = false;
   bool clipValuesToContent = false;
   bool drawBorders = false;
@@ -39,7 +32,7 @@ class BarChart extends Chart {
   bool dragYEnabled = true;
   bool highlightPerDragEnabled = true;
   int maxVisibleCount = 100;
-  OnDrawListener drawListener = null;
+  OnDrawListener drawListener;
   double minXRange = 1.0;
   double maxXRange = 1.0;
   double minimumScaleX = 1.0;

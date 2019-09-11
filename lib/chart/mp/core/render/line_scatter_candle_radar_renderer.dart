@@ -6,23 +6,19 @@ import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 
 abstract class LineScatterCandleRadarRenderer
     extends BarLineScatterCandleBubbleRenderer {
-  /**
-   * path that is used for drawing highlight-lines (drawLines(...) cannot be used because of dashes)
-   */
+  /// path that is used for drawing highlight-lines (drawLines(...) cannot be used because of dashes)
   Path mHighlightLinePath = Path();
 
   LineScatterCandleRadarRenderer(
       ChartAnimator animator, ViewPortHandler viewPortHandler)
       : super(animator, viewPortHandler);
 
-  /**
-   * Draws vertical & horizontal highlight-lines if enabled.
-   *
-   * @param c
-   * @param x x-position of the highlight line intersection
-   * @param y y-position of the highlight line intersection
-   * @param set the currently drawn dataset
-   */
+  /// Draws vertical & horizontal highlight-lines if enabled.
+  ///
+  /// @param c
+  /// @param x x-position of the highlight line intersection
+  /// @param y y-position of the highlight line intersection
+  /// @param set the currently drawn dataset
   void drawHighlightLines(
       Canvas c, double x, double y, ILineScatterCandleRadarDataSet set) {
     // set color and stroke-width

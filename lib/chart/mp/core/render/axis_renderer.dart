@@ -12,30 +12,22 @@ import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 abstract class AxisRenderer extends Renderer {
-  /** base axis this axis renderer works with */
+  /// base axis this axis renderer works with */
   AxisBase mAxis;
 
-  /** transformer to transform values to screen pixels and return */
+  /// transformer to transform values to screen pixels and return */
   Transformer mTrans;
 
-  /**
-   * paint object for the grid lines
-   */
+  /// paint object for the grid lines
   Paint mGridPaint;
 
-  /**
-   * paint for the x-label values
-   */
+  /// paint for the x-label values
   TextPainter mAxisLabelPaint;
 
-  /**
-   * paint for the line surrounding the chart
-   */
+  /// paint for the line surrounding the chart
   Paint mAxisLinePaint;
 
-  /**
-   * paint used for the limit lines
-   */
+  /// paint used for the limit lines
   Paint mLimitLinePaint;
 
   AxisRenderer(
@@ -57,50 +49,40 @@ abstract class AxisRenderer extends Renderer {
     }
   }
 
-  /**
-   * Returns the Paint object used for drawing the axis (labels).
-   *
-   * @return
-   */
+  /// Returns the Paint object used for drawing the axis (labels).
+  ///
+  /// @return
   TextPainter getPaintAxisLabels() {
     return mAxisLabelPaint;
   }
 
-  /**
-   * Returns the Paint object that is used for drawing the grid-lines of the
-   * axis.
-   *
-   * @return
-   */
+  /// Returns the Paint object that is used for drawing the grid-lines of the
+  /// axis.
+  ///
+  /// @return
   Paint getPaintGrid() {
     return mGridPaint;
   }
 
-  /**
-   * Returns the Paint object that is used for drawing the axis-line that goes
-   * alongside the axis.
-   *
-   * @return
-   */
+  /// Returns the Paint object that is used for drawing the axis-line that goes
+  /// alongside the axis.
+  ///
+  /// @return
   Paint getPaintAxisLine() {
     return mAxisLinePaint;
   }
 
-  /**
-   * Returns the Transformer object used for transforming the axis values.
-   *
-   * @return
-   */
+  /// Returns the Transformer object used for transforming the axis values.
+  ///
+  /// @return
   Transformer getTransformer() {
     return mTrans;
   }
 
-  /**
-   * Computes the axis values.
-   *
-   * @param min - the minimum value in the data object for this axis
-   * @param max - the maximum value in the data object for this axis
-   */
+  /// Computes the axis values.
+  ///
+  /// @param min - the minimum value in the data object for this axis
+  /// @param max - the maximum value in the data object for this axis
   void computeAxis(double min, double max, bool inverted) {
     // calculate the starting and entry point of the y-labels (depending on
     // zoom / contentrect bounds)
@@ -127,11 +109,9 @@ abstract class AxisRenderer extends Renderer {
     computeAxisValues(min, max);
   }
 
-  /**
-   * Sets up the axis values. Computes the desired number of labels between the two given extremes.
-   *
-   * @return
-   */
+  /// Sets up the axis values. Computes the desired number of labels between the two given extremes.
+  ///
+  /// @return
   void computeAxisValues(double min, double max) {
     double yMin = min;
     double yMax = max;
@@ -245,31 +225,23 @@ abstract class AxisRenderer extends Renderer {
     }
   }
 
-  /**
-   * Draws the axis labels to the screen.
-   *
-   * @param c
-   */
+  /// Draws the axis labels to the screen.
+  ///
+  /// @param c
   void renderAxisLabels(Canvas c);
 
-  /**
-   * Draws the grid lines belonging to the axis.
-   *
-   * @param c
-   */
+  /// Draws the grid lines belonging to the axis.
+  ///
+  /// @param c
   void renderGridLines(Canvas c);
 
-  /**
-   * Draws the line that goes alongside the axis.
-   *
-   * @param c
-   */
+  /// Draws the line that goes alongside the axis.
+  ///
+  /// @param c
   void renderAxisLine(Canvas c);
 
-  /**
-   * Draws the LimitLines associated with this axis to the screen.
-   *
-   * @param c
-   */
+  /// Draws the LimitLines associated with this axis to the screen.
+  ///
+  /// @param c
   void renderLimitLines(Canvas c);
 }

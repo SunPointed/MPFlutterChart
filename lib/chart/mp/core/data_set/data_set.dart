@@ -3,39 +3,27 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/rounding.dart';
 
 abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
-  /**
-   * the entries that this DataSet represents / holds together
-   */
+  /// the entries that this DataSet represents / holds together
   List<T> mValues = null;
 
-  /**
-   * maximum y-value in the value array
-   */
+  /// maximum y-value in the value array
   double mYMax = -double.maxFinite;
 
-  /**
-   * minimum y-value in the value array
-   */
+  /// minimum y-value in the value array
   double mYMin = double.maxFinite;
 
-  /**
-   * maximum x-value in the value array
-   */
+  /// maximum x-value in the value array
   double mXMax = -double.maxFinite;
 
-  /**
-   * minimum x-value in the value array
-   */
+  /// minimum x-value in the value array
   double mXMin = double.maxFinite;
 
-  /**
-   * Creates a  DataSet object with the given values (entries) it represents. Also, a
-   * label that describes the DataSet can be specified. The label can also be
-   * used to retrieve the DataSet from a ChartData object.
-   *
-   * @param values
-   * @param label
-   */
+  /// Creates a  DataSet object with the given values (entries) it represents. Also, a
+  /// label that describes the DataSet can be specified. The label can also be
+  /// used to retrieve the DataSet from a ChartData object.
+  ///
+  /// @param values
+  /// @param label
   DataSet(List<T> values, String label) : super.withLabel(label) {
     this.mValues = values;
 
@@ -74,11 +62,9 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
   }
 
-  /**
-   * Updates the min and max x and y value of this DataSet based on the given Entry.
-   *
-   * @param e
-   */
+  /// Updates the min and max x and y value of this DataSet based on the given Entry.
+  ///
+  /// @param e
   void calcMinMax1(T e) {
     if (e == null) return;
 
@@ -104,36 +90,28 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     return mValues.length;
   }
 
-  /**
-   * Returns the array of entries that this DataSet represents.
-   *
-   * @return
-   */
+  /// Returns the array of entries that this DataSet represents.
+  ///
+  /// @return
   List<T> getValues() {
     return mValues;
   }
 
-  /**
-   * Sets the array of entries that this DataSet represents, and calls notifyDataSetChanged()
-   *
-   * @return
-   */
+  /// Sets the array of entries that this DataSet represents, and calls notifyDataSetChanged()
+  ///
+  /// @return
   void setValues(List<T> values) {
     mValues = values;
     notifyDataSetChanged();
   }
 
-  /**
-   * Provides an exact copy of the DataSet this method is used on.
-   *
-   * @return
-   */
+  /// Provides an exact copy of the DataSet this method is used on.
+  ///
+  /// @return
   DataSet<T> copy1();
 
-  /**
-   *
-   * @param dataSet
-   */
+  ///
+  /// @param dataSet
   void copy2(DataSet dataSet) {
     super.copy(dataSet);
   }
@@ -148,12 +126,10 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     return buffer.toString();
   }
 
-  /**
-   * Returns a simple string representation of the DataSet with the type and
-   * the number of Entries.
-   *
-   * @return
-   */
+  /// Returns a simple string representation of the DataSet with the type and
+  /// the number of Entries.
+  ///
+  /// @return
   String toSimpleString() {
     StringBuffer buffer = StringBuffer();
     buffer.write("DataSet, label: " +

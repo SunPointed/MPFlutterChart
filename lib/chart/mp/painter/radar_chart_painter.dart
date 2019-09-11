@@ -13,50 +13,34 @@ import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/radar_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer_radar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer_radar_chart.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_redar_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class RadarChartPainter extends PieRadarChartPainter<RadarData> {
-  /**
-   * width of the main web lines
-   */
+  /// width of the main web lines
   double mWebLineWidth;
 
-  /**
-   * width of the inner web lines
-   */
+  /// width of the inner web lines
   double mInnerWebLineWidth;
 
-  /**
-   * color for the main web lines
-   */
+  /// color for the main web lines
   Color mWebColor = Color.fromARGB(255, 122, 122, 122);
 
-  /**
-   * color for the inner web
-   */
+  /// color for the inner web
   Color mWebColorInner = Color.fromARGB(255, 122, 122, 122);
 
-  /**
-   * transparency the grid is drawn with (0-255)
-   */
+  /// transparency the grid is drawn with (0-255)
   int mWebAlpha;
 
-  /**
-   * flag indicating if the web lines should be drawn or not
-   */
+  /// flag indicating if the web lines should be drawn or not
   bool mDrawWeb;
 
-  /**
-   * modulus that determines how many labels and web-lines are skipped before the next is drawn
-   */
+  /// modulus that determines how many labels and web-lines are skipped before the next is drawn
   int mSkipWebLineCount;
 
-  /**
-   * the object reprsenting the y-axis labels
-   */
+  /// the object reprsenting the y-axis labels
   YAxis mYAxis;
 
   YAxisRendererRadarChart mYAxisRenderer;
@@ -164,9 +148,6 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
     super.paint(canvas, size);
 
     if (mData == null) return;
-
-//        if (mYAxis.isEnabled())
-//            mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
 
     if (mXAxis.isEnabled())
       mXAxisRenderer.computeAxis(

@@ -1,6 +1,7 @@
 import 'package:flutter/painting.dart';
 
 class ColorTemplate {
+  // ignore: non_constant_identifier_names
   static final List<Color> DEFAULT_COLORS = List<Color>.from({
     Color(0xFFf44336),
     Color(0xFF00b8d4),

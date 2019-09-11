@@ -74,9 +74,7 @@ class MPPointD extends Poolable {
 
   MPPointD(this.x, this.y);
 
-  /**
-   * returns a string representation of the object
-   */
+  /// returns a string representation of the object
   @override
   String toString() {
     return "MPPointD, x: $x, y: $y";
@@ -100,22 +98,18 @@ class ObjectPool<T extends Poolable> {
   T modelObject;
   double replenishPercentage;
 
-  /**
-   * Returns the id of the given pool instance.
-   *
-   * @return an integer ID belonging to this pool instance.
-   */
+  /// Returns the id of the given pool instance.
+  ///
+  /// @return an integer ID belonging to this pool instance.
   int getPoolId() {
     return poolId;
   }
 
-  /**
-   * Returns an ObjectPool instance, of a given starting capacity, that recycles instances of a given Poolable object.
-   *
-   * @param withCapacity A positive integer value.
-   * @param object An instance of the object that the pool should recycle.
-   * @return
-   */
+  /// Returns an ObjectPool instance, of a given starting capacity, that recycles instances of a given Poolable object.
+  ///
+  /// @param withCapacity A positive integer value.
+  /// @param object An instance of the object that the pool should recycle.
+  /// @return
   static ObjectPool create(int withCapacity, Poolable object) {
     ObjectPool result = ObjectPool(withCapacity, object);
     result.poolId = ids;
@@ -137,12 +131,10 @@ class ObjectPool<T extends Poolable> {
     this.refillPool1();
   }
 
-  /**
-   * Set the percentage of the pool to replenish on empty.  Valid values are between
-   * 0.00f and 1.00f
-   *
-   * @param percentage a value between 0 and 1, representing the percentage of the pool to replenish.
-   */
+  /// Set the percentage of the pool to replenish on empty.  Valid values are between
+  /// 0.00f and 1.00f
+  ///
+  /// @param percentage a value between 0 and 1, representing the percentage of the pool to replenish.
   void setReplenishPercentage(double percentage) {
     double p = percentage;
     if (p > 1) {
@@ -176,13 +168,11 @@ class ObjectPool<T extends Poolable> {
     objectsPointer = portionOfCapacity - 1;
   }
 
-  /**
-   * Returns an instance of Poolable.  If get() is called with an empty pool, the pool will be
-   * replenished.  If the pool capacity is sufficiently large, this could come at a performance
-   * cost.
-   *
-   * @return An instance of Poolable object T
-   */
+  /// Returns an instance of Poolable.  If get() is called with an empty pool, the pool will be
+  /// replenished.  If the pool capacity is sufficiently large, this could come at a performance
+  /// cost.
+  ///
+  /// @return An instance of Poolable object T
   T get() {
     if (this.objectsPointer == -1 && this.replenishPercentage > 0.0) {
       this.refillPool1();
@@ -195,12 +185,10 @@ class ObjectPool<T extends Poolable> {
     return result;
   }
 
-  /**
-   * Recycle an instance of Poolable that this pool is capable of generating.
-   * The T instance passed must not already exist inside this or any other ObjectPool instance.
-   *
-   * @param object An object of type T to recycle
-   */
+  /// Recycle an instance of Poolable that this pool is capable of generating.
+  /// The T instance passed must not already exist inside this or any other ObjectPool instance.
+  ///
+  /// @param object An object of type T to recycle
   void recycle1(T object) {
     if (object.currentOwnerId != Poolable.NO_OWNER) {
       if (object.currentOwnerId == this.poolId) {
@@ -221,12 +209,10 @@ class ObjectPool<T extends Poolable> {
     objects[this.objectsPointer] = object;
   }
 
-  /**
-   * Recycle a List of Poolables that this pool is capable of generating.
-   * The T instances passed must not already exist inside this or any other ObjectPool instance.
-   *
-   * @param objects A list of objects of type T to recycle
-   */
+  /// Recycle a List of Poolables that this pool is capable of generating.
+  /// The T instances passed must not already exist inside this or any other ObjectPool instance.
+  ///
+  /// @param objects A list of objects of type T to recycle
   void recycle2(List<T> objects) {
     while (objects.length + this.objectsPointer + 1 > this.desiredCapacity) {
       this.resizePool();
@@ -261,22 +247,18 @@ class ObjectPool<T extends Poolable> {
     this.objects = temp;
   }
 
-  /**
-   * Returns the capacity of this object pool.  Note : The pool will automatically resize
-   * to contain additional objects if the user tries to add more objects than the pool's
-   * capacity allows, but this comes at a performance cost.
-   *
-   * @return The capacity of the pool.
-   */
+  /// Returns the capacity of this object pool.  Note : The pool will automatically resize
+  /// to contain additional objects if the user tries to add more objects than the pool's
+  /// capacity allows, but this comes at a performance cost.
+  ///
+  /// @return The capacity of the pool.
   int getPoolCapacity() {
     return this.objects.length;
   }
 
-  /**
-   * Returns the number of objects remaining in the pool, for diagnostic purposes.
-   *
-   * @return The number of objects remaining in the pool.
-   */
+  /// Returns the number of objects remaining in the pool, for diagnostic purposes.
+  ///
+  /// @return The number of objects remaining in the pool.
   int getPoolCount() {
     return this.objectsPointer + 1;
   }

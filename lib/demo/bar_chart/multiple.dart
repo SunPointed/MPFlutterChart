@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/bar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/bar_data.dart';
@@ -12,10 +13,8 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/large_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
-import 'package:mp_flutter_chart/chart/mp/listener.dart';
 
 class BarChartMultiple extends StatefulWidget {
   @override

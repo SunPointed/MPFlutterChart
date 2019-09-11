@@ -4,24 +4,16 @@ import 'dart:ui' as ui;
 import 'package:mp_flutter_chart/chart/mp/core/range.dart';
 
 class BarEntry extends Entry {
-  /**
-   * the values the stacked barchart holds
-   */
+  /// the values the stacked barchart holds
   List<double> mYVals;
 
-  /**
-   * the ranges for the individual stack values - automatically calculated
-   */
+  /// the ranges for the individual stack values - automatically calculated
   List<Range> mRanges;
 
-  /**
-   * the sum of all negative values this entry (if stacked) contains
-   */
+  /// the sum of all negative values this entry (if stacked) contains
   double mNegativeSum;
 
-  /**
-   * the sum of all positive values this entry (if stacked) contains
-   */
+  /// the sum of all positive values this entry (if stacked) contains
   double mPositiveSum;
 
   BarEntry({double x, double y, ui.Image icon, Object data})
@@ -41,21 +33,17 @@ class BarEntry extends Entry {
     return copied;
   }
 
-  /**
-   * Returns the stacked values this BarEntry represents, or null, if only a single value is represented (then, use
-   * getY()).
-   *
-   * @return
-   */
+  /// Returns the stacked values this BarEntry represents, or null, if only a single value is represented (then, use
+  /// getY()).
+  ///
+  /// @return
   List<double> getYVals() {
     return mYVals;
   }
 
-  /**
-   * Set the array of values this BarEntry should represent.
-   *
-   * @param vals
-   */
+  /// Set the array of values this BarEntry should represent.
+  ///
+  /// @param vals
   void setVals(List<double> vals) {
     y = calcSum(vals);
     mYVals = vals;
@@ -63,20 +51,16 @@ class BarEntry extends Entry {
     calcRanges();
   }
 
-  /**
-   * Returns the ranges of the individual stack-entries. Will return null if this entry is not stacked.
-   *
-   * @return
-   */
+  /// Returns the ranges of the individual stack-entries. Will return null if this entry is not stacked.
+  ///
+  /// @return
   List<Range> getRanges() {
     return mRanges;
   }
 
-  /**
-   * Returns true if this BarEntry is stacked (has a values array), false if not.
-   *
-   * @return
-   */
+  /// Returns true if this BarEntry is stacked (has a values array), false if not.
+  ///
+  /// @return
   bool isStacked() {
     return mYVals != null;
   }
@@ -94,20 +78,16 @@ class BarEntry extends Entry {
     return remainder;
   }
 
-  /**
-   * Reuturns the sum of all positive values this entry (if stacked) contains.
-   *
-   * @return
-   */
+  /// Reuturns the sum of all positive values this entry (if stacked) contains.
+  ///
+  /// @return
   double getPositiveSum() {
     return mPositiveSum;
   }
 
-  /**
-   * Returns the sum of all negative values this entry (if stacked) contains. (this is a positive number)
-   *
-   * @return
-   */
+  /// Returns the sum of all negative values this entry (if stacked) contains. (this is a positive number)
+  ///
+  /// @return
   double getNegativeSum() {
     return mNegativeSum;
   }
@@ -133,12 +113,10 @@ class BarEntry extends Entry {
     mPositiveSum = sumPos;
   }
 
-  /**
-   * Calculates the sum across all values of the given stack.
-   *
-   * @param vals
-   * @return
-   */
+  /// Calculates the sum across all values of the given stack.
+  ///
+  /// @param vals
+  /// @return
   static double calcSum(List<double> vals) {
     if (vals == null) return 0.0;
     double sum = 0.0;

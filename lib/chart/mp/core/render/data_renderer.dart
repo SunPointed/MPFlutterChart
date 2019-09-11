@@ -11,19 +11,13 @@ import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 abstract class DataRenderer extends Renderer {
-  /**
-   * the animator object used to perform animations on the chart data
-   */
+  /// the animator object used to perform animations on the chart data
   ChartAnimator mAnimator;
 
-  /**
-   * main paint object used for rendering
-   */
+  /// main paint object used for rendering
   Paint mRenderPaint;
 
-  /**
-   * paint used for highlighting values
-   */
+  /// paint used for highlighting values
   Paint mHighlightPaint;
 
   Paint mDrawPaint;
@@ -55,90 +49,70 @@ abstract class DataRenderer extends Renderer {
         chart.getMaxVisibleCount() * mViewPortHandler.getScaleX();
   }
 
-  /**
-   * Returns the Paint object this renderer uses for drawing the values
-   * (value-text).
-   *
-   * @return
-   */
+  /// Returns the Paint object this renderer uses for drawing the values
+  /// (value-text).
+  ///
+  /// @return
   TextPainter getPaintValues() {
     return mValuePaint;
   }
 
-  /**
-   * Returns the Paint object this renderer uses for drawing highlight
-   * indicators.
-   *
-   * @return
-   */
+  /// Returns the Paint object this renderer uses for drawing highlight
+  /// indicators.
+  ///
+  /// @return
   Paint getPaintHighlight() {
     return mHighlightPaint;
   }
 
-  /**
-   * Returns the Paint object used for rendering.
-   *
-   * @return
-   */
+  /// Returns the Paint object used for rendering.
+  ///
+  /// @return
   Paint getPaintRender() {
     return mRenderPaint;
   }
 
-  /**
-   * Applies the required styling (provided by the DataSet) to the value-paint
-   * object.
-   *
-   * @param set
-   */
+  /// Applies the required styling (provided by the DataSet) to the value-paint
+  /// object.
+  ///
+  /// @param set
   void applyValueTextStyle(IDataSet set) {
     mValuePaint = PainterUtils.create(mValuePaint, null,
         Color.fromARGB(255, 63, 63, 63), Utils.convertDpToPixel(9));
   }
 
-  /**
-   * Initializes the buffers used for rendering with a  size. Since this
-   * method performs memory allocations, it should only be called if
-   * necessary.
-   */
+  /// Initializes the buffers used for rendering with a  size. Since this
+  /// method performs memory allocations, it should only be called if
+  /// necessary.
   void initBuffers();
 
-  /**
-   * Draws the actual data in form of lines, bars, ... depending on Renderer subclass.
-   *
-   * @param c
-   */
+  /// Draws the actual data in form of lines, bars, ... depending on Renderer subclass.
+  ///
+  /// @param c
   void drawData(Canvas c);
 
-  /**
-   * Loops over all Entrys and draws their values.
-   *
-   * @param c
-   */
+  /// Loops over all Entrys and draws their values.
+  ///
+  /// @param c
   void drawValues(Canvas c);
 
-  /**
-   * Draws the value of the given entry by using the provided IValueFormatter.
-   *
-   * @param c         canvas
-   * @param valueText label to draw
-   * @param x         position
-   * @param y         position
-   * @param color
-   */
+  /// Draws the value of the given entry by using the provided IValueFormatter.
+  ///
+  /// @param c         canvas
+  /// @param valueText label to draw
+  /// @param x         position
+  /// @param y         position
+  /// @param color
   void drawValue(Canvas c, String valueText, double x, double y, Color color);
 
-  /**
-   * Draws any kind of additional information (e.g. line-circles).
-   *
-   * @param c
-   */
+  /// Draws any kind of additional information (e.g. line-circles).
+  ///
+  /// @param c
   void drawExtras(Canvas c);
 
-  /**
-   * Draws all highlight indicators for the values that are currently highlighted.
-   *
-   * @param c
-   * @param indices the highlighted values
-   */
+  /// Draws all highlight indicators for the values that are currently highlighted.
+  ///
+  /// @param c
+  /// @param indices the highlighted values
   void drawHighlighted(Canvas c, List<Highlight> indices);
 }

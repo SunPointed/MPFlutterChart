@@ -7,9 +7,7 @@ abstract class PieRadarHighlighter<T extends PieRadarChartPainter>
     implements IHighlighter {
   T mChart;
 
-  /**
-   * buffer for storing previously highlighted values
-   */
+  /// buffer for storing previously highlighted values
   List<Highlight> mHighlightBuffer = List();
 
   PieRadarHighlighter(T chart) {
@@ -43,13 +41,11 @@ abstract class PieRadarHighlighter<T extends PieRadarChartPainter>
     }
   }
 
-  /**
-   * Returns the closest Highlight object of the given objects based on the touch position inside the chart.
-   *
-   * @param index
-   * @param x
-   * @param y
-   * @return
-   */
+  /// Returns the closest Highlight object of the given objects based on the touch position inside the chart.
+  ///
+  /// @param index
+  /// @param x
+  /// @param y
+  /// @return
   Highlight getClosestHighlight(int index, double x, double y);
 }

@@ -1,20 +1,20 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:mp_flutter_chart/chart/mp/listener.dart';
+import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 
 class ChartAnimator {
   static const int REFRESH_RATE = 16;
   static const double MIN = 0.0;
   static const double MAX = 1.0;
 
-  /** object that is updated upon animation update */
+  /// object that is updated upon animation update
   AnimatorUpdateListener mListener;
 
-  /** The phase of drawn values on the y-axis. 0 - 1 */
+  /// The phase of drawn values on the y-axis. 0 - 1
   double mPhaseY = MAX;
 
-  /** The phase of drawn values on the x-axis. 0 - 1 */
+  /// The phase of drawn values on the x-axis. 0 - 1
   double mPhaseX = MAX;
 
   Timer _countdownTimer;
@@ -47,21 +47,17 @@ class ChartAnimator {
 //    return animatorY;
 //  }
 
-  /**
-   * Animates values along the X axis, in a linear fashion.
-   *
-   * @param durationMillis animation duration
-   */
+  /// Animates values along the X axis, in a linear fashion.
+  ///
+  /// @param durationMillis animation duration
   void animateX1(int durationMillis) {
     animateX2(durationMillis, Easing.Linear);
   }
 
-  /**
-   * Animates values along the X axis.
-   *
-   * @param durationMillis animation duration
-   * @param easing EasingFunction
-   */
+  /// Animates values along the X axis.
+  ///
+  /// @param durationMillis animation duration
+  /// @param easing EasingFunction
   void animateX2(int durationMillis, EasingFunction easing) {
 //    ObjectAnimator animatorX = xAnimator(durationMillis, easing);
 //    animatorX.addUpdateListener(mListener);
@@ -90,23 +86,19 @@ class ChartAnimator {
     });
   }
 
-  /**
-   * Animates values along both the X and Y axes, in a linear fashion.
-   *
-   * @param durationMillisX animation duration along the X axis
-   * @param durationMillisY animation duration along the Y axis
-   */
+  /// Animates values along both the X and Y axes, in a linear fashion.
+  ///
+  /// @param durationMillisX animation duration along the X axis
+  /// @param durationMillisY animation duration along the Y axis
   void animateXY1(int durationMillisX, int durationMillisY) {
     animateXY3(durationMillisX, durationMillisY, Easing.Linear, Easing.Linear);
   }
 
-  /**
-   * Animates values along both the X and Y axes.
-   *
-   * @param durationMillisX animation duration along the X axis
-   * @param durationMillisY animation duration along the Y axis
-   * @param easing EasingFunction for both axes
-   */
+  /// Animates values along both the X and Y axes.
+  ///
+  /// @param durationMillisX animation duration along the X axis
+  /// @param durationMillisY animation duration along the Y axis
+  /// @param easing EasingFunction for both axes
   void animateXY2(
       int durationMillisX, int durationMillisY, EasingFunction easing) {
 //    ObjectAnimator xAnimator = xAnimator(durationMillisX, easing);
@@ -158,14 +150,12 @@ class ChartAnimator {
     });
   }
 
-  /**
-   * Animates values along both the X and Y axes.
-   *
-   * @param durationMillisX animation duration along the X axis
-   * @param durationMillisY animation duration along the Y axis
-   * @param easingX EasingFunction for the X axis
-   * @param easingY EasingFunction for the Y axis
-   */
+  /// Animates values along both the X and Y axes.
+  ///
+  /// @param durationMillisX animation duration along the X axis
+  /// @param durationMillisY animation duration along the Y axis
+  /// @param easingX EasingFunction for the X axis
+  /// @param easingY EasingFunction for the Y axis
   void animateXY3(int durationMillisX, int durationMillisY,
       EasingFunction easingX, EasingFunction easingY) {
 //    ObjectAnimator xAnimator = xAnimator(durationMillisX, easingX);
@@ -216,21 +206,17 @@ class ChartAnimator {
     });
   }
 
-  /**
-   * Animates values along the Y axis, in a linear fashion.
-   *
-   * @param durationMillis animation duration
-   */
+  /// Animates values along the Y axis, in a linear fashion.
+  ///
+  /// @param durationMillis animation duration
   void animateY1(int durationMillis) {
     animateY2(durationMillis, Easing.Linear);
   }
 
-  /**
-   * Animates values along the Y axis.
-   *
-   * @param durationMillis animation duration
-   * @param easing EasingFunction
-   */
+  /// Animates values along the Y axis.
+  ///
+  /// @param durationMillis animation duration
+  /// @param easing EasingFunction
   void animateY2(int durationMillis, EasingFunction easing) {
 //    ObjectAnimator animatorY = yAnimator(durationMillis, easing);
 //    animatorY.addUpdateListener(mListener);
@@ -259,20 +245,16 @@ class ChartAnimator {
     });
   }
 
-  /**
-   * Gets the Y axis phase of the animation.
-   *
-   * @return double value of {@link #mPhaseY}
-   */
+  /// Gets the Y axis phase of the animation.
+  ///
+  /// @return double value of {@link #mPhaseY}
   double getPhaseY() {
     return mPhaseY;
   }
 
-  /**
-   * Sets the Y axis phase of the animation.
-   *
-   * @param phase double value between 0 - 1
-   */
+  /// Sets the Y axis phase of the animation.
+  ///
+  /// @param phase double value between 0 - 1
   void setPhaseY(double phase) {
     if (phase > 1) {
       phase = 1;
@@ -282,20 +264,16 @@ class ChartAnimator {
     mPhaseY = phase;
   }
 
-  /**
-   * Gets the X axis phase of the animation.
-   *
-   * @return double value of {@link #mPhaseX}
-   */
+  /// Gets the X axis phase of the animation.
+  ///
+  /// @return double value of {@link #mPhaseX}
   double getPhaseX() {
     return mPhaseX;
   }
 
-  /**
-   * Sets the X axis phase of the animation.
-   *
-   * @param phase double value between 0 - 1
-   */
+  /// Sets the X axis phase of the animation.
+  ///
+  /// @param phase double value between 0 - 1
   void setPhaseX(double phase) {
     if (phase > 1) {
       phase = 1;
@@ -307,18 +285,16 @@ class ChartAnimator {
 }
 
 mixin EasingFunction {
-  /**
-   * Maps a value representing the elapsed fraction of an animation to a value that represents
-   * the interpolated fraction. This interpolated value is then multiplied by the change in
-   * value of an animation to derive the animated value at the current elapsed animation time.
-   *
-   * @param input A value between 0 and 1.0 indicating our current point
-   *        in the animation where 0 represents the start and 1.0 represents
-   *        the end
-   * @return The interpolation value. This value can be more than 1.0 for
-   *         interpolators which overshoot their targets, or less than 0 for
-   *         interpolators that undershoot their targets.
-   */
+  /// Maps a value representing the elapsed fraction of an animation to a value that represents
+  /// the interpolated fraction. This interpolated value is then multiplied by the change in
+  /// value of an animation to derive the animated value at the current elapsed animation time.
+  ///
+  /// @param input A value between 0 and 1.0 indicating our current point
+  ///        in the animation where 0 represents the start and 1.0 represents
+  ///        the end
+  /// @return The interpolation value. This value can be more than 1.0 for
+  ///         interpolators which overshoot their targets, or less than 0 for
+  ///         interpolators that undershoot their targets.
   double getInterpolation(double input);
 }
 

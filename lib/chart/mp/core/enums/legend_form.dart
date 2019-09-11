@@ -1,31 +1,19 @@
 enum LegendForm {
-  /**
-   * Avoid drawing a form
-   */
+  /// Avoid drawing a form
   NONE,
 
-  /**
-   * Do not draw the a form, but leave space for it
-   */
+  /// Do not draw the a form, but leave space for it
   EMPTY,
 
-  /**
-   * Use default (default dataset's form to the legend's form)
-   */
+  /// Use default (default dataset's form to the legend's form)
   DEFAULT,
 
-  /**
-   * Draw a square
-   */
+  /// Draw a square
   SQUARE,
 
-  /**
-   * Draw a circle
-   */
+  /// Draw a circle
   CIRCLE,
 
-  /**
-   * Draw a horizontal line
-   */
+  /// Draw a horizontal line
   LINE
 }

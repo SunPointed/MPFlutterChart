@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
 import 'package:flutter/painting.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
@@ -15,6 +16,8 @@ import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
+
+import 'radar_chart_painter.dart';
 
 abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
     extends ChartPainter<T> {
@@ -95,35 +98,6 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
   int getMaxVisibleCount() {
     return mData.getEntryCount();
   }
-
-//  @override todo
-//   boolean onTouchEvent(MotionEvent event) {
-//    // use the pie- and radarchart listener own listener
-//    if (mTouchEnabled && mChartTouchListener != null)
-//      return mChartTouchListener.onTouch(this, event);
-//    else
-//      return super.onTouchEvent(event);
-//  }
-
-//  @override todo
-//   void computeScroll() {
-//
-//    if (mChartTouchListener instanceof PieRadarChartTouchListener)
-//      ((PieRadarChartTouchListener) mChartTouchListener).computeScroll();
-//  }
-
-//  @Override todo
-//   void notifyDataSetChanged() {
-//    if (mData == null)
-//      return;
-//
-//    calcMinMax();
-//
-//    if (mLegend != null)
-//      mLegendRenderer.computeLegend(mData);
-//
-//    calculateOffsets();
-//  }
 
   @override
   void calculateOffsets() {
@@ -262,13 +236,13 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
 
     double minOffset = Utils.convertDpToPixel(mMinOffset);
 
-//    if (this is RadarChartPainter) { todo
-//      XAxis x = this.mXAxis;
-//
-//      if (x.isEnabled() && x.isDrawLabelsEnabled()) {
-//        minOffset = max(minOffset, x.mLabelRotatedWidth.toDouble());
-//      }
-//    }
+    if (this is RadarChartPainter) {
+      XAxis x = this.mXAxis;
+
+      if (x.isEnabled() && x.isDrawLabelsEnabled()) {
+        minOffset = max(minOffset, x.mLabelRotatedWidth.toDouble());
+      }
+    }
 
     legendTop += mExtraTopOffset;
     legendRight += mExtraRightOffset;
@@ -285,15 +259,13 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
         offsetLeft, offsetTop, offsetRight, offsetBottom);
   }
 
-  /**
-   * returns the angle relative to the chart center for the given point on the
-   * chart in degrees. The angle is always between 0 and 360°, 0° is NORTH,
-   * 90° is EAST, ...
-   *
-   * @param x
-   * @param y
-   * @return
-   */
+  /// returns the angle relative to the chart center for the given point on the
+  /// chart in degrees. The angle is always between 0 and 360°, 0° is NORTH,
+  /// 90° is EAST, ...
+  ///
+  /// @param x
+  /// @param y
+  /// @return
   double getAngleForPoint(double x, double y) {
     MPPointF c = getCenterOffsets();
 
@@ -316,16 +288,14 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
     return angle;
   }
 
-  /**
-   * Returns a recyclable MPPointF instance.
-   * Calculates the position around a center point, depending on the distance
-   * from the center, and the angle of the position around the center.
-   *
-   * @param center
-   * @param dist
-   * @param angle  in degrees, converted to radians internally
-   * @return
-   */
+  /// Returns a recyclable MPPointF instance.
+  /// Calculates the position around a center point, depending on the distance
+  /// from the center, and the angle of the position around the center.
+  ///
+  /// @param center
+  /// @param dist
+  /// @param angle  in degrees, converted to radians internally
+  /// @return
   MPPointF getPosition1(MPPointF center, double dist, double angle) {
     MPPointF p = MPPointF.getInstance1(0, 0);
     getPosition2(center, dist, angle, p);
@@ -338,14 +308,12 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
     outputPoint.y = (center.y + dist * sin(angle / 180.0 * pi));
   }
 
-  /**
-   * Returns the distance of a certain point on the chart to the center of the
-   * chart.
-   *
-   * @param x
-   * @param y
-   * @return
-   */
+  /// Returns the distance of a certain point on the chart to the center of the
+  /// chart.
+  ///
+  /// @param x
+  /// @param y
+  /// @return
   double distanceToCenter(double x, double y) {
     MPPointF c = getCenterOffsets();
 
@@ -374,86 +342,68 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
     return dist;
   }
 
-  /**
-   * Returns the xIndex for the given angle around the center of the chart.
-   * Returns -1 if not found / outofbounds.
-   *
-   * @param angle
-   * @return
-   */
+  /// Returns the xIndex for the given angle around the center of the chart.
+  /// Returns -1 if not found / outofbounds.
+  ///
+  /// @param angle
+  /// @return
   int getIndexForAngle(double angle);
 
-  /**
-   * Set an offset for the rotation of the RadarChart in degrees. Default 270f
-   * --> top (NORTH)
-   *
-   * @param angle
-   */
+  /// Set an offset for the rotation of the RadarChart in degrees. Default 270f
+  /// --> top (NORTH)
+  ///
+  /// @param angle
   void setRotationAngle(double angle) {
     mRawRotationAngle = angle;
     mRotationAngle = Utils.getNormalizedAngle(mRawRotationAngle);
   }
 
-  /**
-   * gets the raw version of the current rotation angle of the pie chart the
-   * returned value could be any value, negative or positive, outside of the
-   * 360 degrees. this is used when working with rotation direction, mainly by
-   * gestures and animations.
-   *
-   * @return
-   */
+  /// gets the raw version of the current rotation angle of the pie chart the
+  /// returned value could be any value, negative or positive, outside of the
+  /// 360 degrees. this is used when working with rotation direction, mainly by
+  /// gestures and animations.
+  ///
+  /// @return
   double getRawRotationAngle() {
     return mRawRotationAngle;
   }
 
-  /**
-   * gets a normalized version of the current rotation angle of the pie chart,
-   * which will always be between 0.0 < 360.0
-   *
-   * @return
-   */
+  /// gets a normalized version of the current rotation angle of the pie chart,
+  /// which will always be between 0.0 < 360.0
+  ///
+  /// @return
   double getRotationAngle() {
     return mRotationAngle;
   }
 
-  /**
-   * Set this to true to enable the rotation / spinning of the chart by touch.
-   * Set it to false to disable it. Default: true
-   *
-   * @param enabled
-   */
+  /// Set this to true to enable the rotation / spinning of the chart by touch.
+  /// Set it to false to disable it. Default: true
+  ///
+  /// @param enabled
   void setRotationEnabled(bool enabled) {
     mRotateEnabled = enabled;
   }
 
-  /**
-   * Returns true if rotation of the chart by touch is enabled, false if not.
-   *
-   * @return
-   */
+  /// Returns true if rotation of the chart by touch is enabled, false if not.
+  ///
+  /// @return
   bool isRotationEnabled() {
     return mRotateEnabled;
   }
 
-  /**
-   * Gets the minimum offset (padding) around the chart, defaults to 0.f
-   */
+  /// Gets the minimum offset (padding) around the chart, defaults to 0.f
   double getMinOffset() {
     return mMinOffset;
   }
 
-  /**
-   * Sets the minimum offset (padding) around the chart, defaults to 0.f
-   */
+  /// Sets the minimum offset (padding) around the chart, defaults to 0.f
   void setMinOffset(double minOffset) {
     mMinOffset = minOffset;
   }
 
-  /**
-   * returns the diameter of the pie- or radar-chart
-   *
-   * @return
-   */
+  /// returns the diameter of the pie- or radar-chart
+  ///
+  /// @return
   double getDiameter() {
     Rect content = Rect.fromLTRB(
         mViewPortHandler.getContentRect().left + mExtraLeftOffset,
@@ -463,26 +413,20 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
     return min(content.width, content.height);
   }
 
-  /**
-   * Returns the radius of the chart in pixels.
-   *
-   * @return
-   */
+  /// Returns the radius of the chart in pixels.
+  ///
+  /// @return
   double getRadius();
 
-  /**
-   * Returns the required offset for the chart legend.
-   *
-   * @return
-   */
+  /// Returns the required offset for the chart legend.
+  ///
+  /// @return
   double getRequiredLegendOffset();
 
-  /**
-   * Returns the base offset needed for the chart without calculating the
-   * legend size.
-   *
-   * @return
-   */
+  /// Returns the base offset needed for the chart without calculating the
+  /// legend size.
+  ///
+  /// @return
   double getRequiredBaseOffset();
 
   @override
@@ -493,37 +437,5 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
   @override
   double getYChartMin() {
     return 0;
-  }
-
-  /**
-   * ################ ################ ################ ################
-   */
-  /** CODE BELOW THIS RELATED TO ANIMATION */
-
-  /**
-   * Applys a spin animation to the Chart.
-   *
-   * @param durationmillis
-   * @param fromangle
-   * @param toangle
-   */
-  void spin(int durationmillis, double fromangle, double toangle,
-      EasingFunction easing) {
-//  todo
-//    setRotationAngle(fromangle);
-//
-//    ObjectAnimator spinAnimator = ObjectAnimator.ofFloat(this, "rotationAngle", fromangle,
-//        toangle);
-//    spinAnimator.setDuration(durationmillis);
-//    spinAnimator.setInterpolator(easing);
-//
-//    spinAnimator.addUpdateListener(new AnimatorUpdateListener() {
-//
-//    @Override
-//    public void onAnimationUpdate(ValueAnimator animation) {
-//    postInvalidate();
-//    }
-//    });
-//    spinAnimator.start();
   }
 }

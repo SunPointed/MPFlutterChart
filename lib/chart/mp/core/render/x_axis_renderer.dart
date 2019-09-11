@@ -162,11 +162,9 @@ class XAxisRenderer extends AxisRenderer {
     }
   }
 
-  /**
-   * draws the x-labels on the specified y-position
-   *
-   * @param pos
-   */
+  /// draws the x-labels on the specified y-position
+  ///
+  /// @param pos
   void drawLabels(Canvas c, double pos, MPPointF anchor,
       XAxisPosition position) {
     final double labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
@@ -288,14 +286,12 @@ class XAxisRenderer extends AxisRenderer {
     return mGridClippingRect;
   }
 
-  /**
-   * Draws the grid line at the specified position using the provided path.
-   *
-   * @param c
-   * @param x
-   * @param y
-   * @param gridLinePath
-   */
+  /// Draws the grid line at the specified position using the provided path.
+  ///
+  /// @param c
+  /// @param x
+  /// @param y
+  /// @param gridLinePath
   void drawGridLine(Canvas c, double x, double y, Path path) {
     path.moveTo(x, mViewPortHandler.contentBottom());
     path.lineTo(x, mViewPortHandler.contentTop());
@@ -309,11 +305,9 @@ class XAxisRenderer extends AxisRenderer {
   List<double> mRenderLimitLinesBuffer = List(2);
   Rect mLimitLineClippingRect = Rect.zero;
 
-  /**
-   * Draws the LimitLines associated with this axis to the screen.
-   *
-   * @param c
-   */
+  /// Draws the LimitLines associated with this axis to the screen.
+  ///
+  /// @param c
   @override
   void renderLimitLines(Canvas c) {
     List<LimitLine> limitLines = mXAxis.getLimitLines();

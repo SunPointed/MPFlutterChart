@@ -12,36 +12,30 @@ class LargeValueFormatter extends ValueFormatter {
   NumberFormat mFormat;
   String mText = "";
 
-  /**
-   * Creates a formatter that appends a specified text to the result string
-   *
-   * @param appendix a text that will be appended
-   */
+  /// Creates a formatter that appends a specified text to the result string
+  ///
+  /// @param appendix a text that will be appended
   LargeValueFormatter({String appendix}) {
     mFormat = new NumberFormat("###E00");
     mText = appendix;
   }
 
   @override
-  String getFormattedValue(double value) {
+  String getFormattedValue1(double value) {
     return makePretty(value) + mText;
   }
 
-  /**
-   * Set an appendix text to be added at the end of the formatted value.
-   *
-   * @param appendix
-   */
+  /// Set an appendix text to be added at the end of the formatted value.
+  ///
+  /// @param appendix
   void setAppendix(String appendix) {
     this.mText = appendix;
   }
 
-  /**
-   * Set custom suffix to be appended after the values.
-   * Default suffix: ["", "k", "m", "b", "t"]
-   *
-   * @param suffix new suffix
-   */
+  /// Set custom suffix to be appended after the values.
+  /// Default suffix: ["", "k", "m", "b", "t"]
+  ///
+  /// @param suffix new suffix
   void setSuffix(List<String> suffix) {
     this.mSuffix = suffix;
   }
@@ -50,10 +44,8 @@ class LargeValueFormatter extends ValueFormatter {
     this.mMaxLength = maxLength;
   }
 
-  /**
-   * Formats each number properly. Special thanks to Roman Gromov
-   * (https://github.com/romangromov) for this piece of code.
-   */
+  /// Formats each number properly. Special thanks to Roman Gromov
+  /// (https://github.com/romangromov) for this piece of code.
   String makePretty(double number) {
     String r = mFormat.format(number);
 

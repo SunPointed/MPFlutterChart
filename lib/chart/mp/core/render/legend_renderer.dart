@@ -11,27 +11,21 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend_entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/poolable/size.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
-import 'package:mp_flutter_chart/chart/mp/core/poolable/size.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 
 class LegendRenderer extends Renderer {
-  /**
-   * paint for the legend labels
-   */
+  /// paint for the legend labels
   TextPainter mLegendLabelPaint;
 
-  /**
-   * paint used for the legend forms
-   */
+  /// paint used for the legend forms
   Paint mLegendFormPaint;
 
-  /**
-   * the legend object this renderer renders
-   */
+  /// the legend object this renderer renders
   Legend mLegend;
 
   LegendRenderer(ViewPortHandler viewPortHandler, Legend legend)
@@ -46,31 +40,25 @@ class LegendRenderer extends Renderer {
       ..style = PaintingStyle.fill;
   }
 
-  /**
-   * Returns the Paint object used for drawing the Legend labels.
-   *
-   * @return
-   */
+  /// Returns the Paint object used for drawing the Legend labels.
+  ///
+  /// @return
   TextPainter getLabelPaint() {
     return mLegendLabelPaint;
   }
 
-  /**
-   * Returns the Paint object used for drawing the Legend forms.
-   *
-   * @return
-   */
+  /// Returns the Paint object used for drawing the Legend forms.
+  ///
+  /// @return
   Paint getFormPaint() {
     return mLegendFormPaint;
   }
 
   List<LegendEntry> computedEntries = List(16);
 
-  /**
-   * Prepares the legend and calculates all needed forms, labels and colors.
-   *
-   * @param data
-   */
+  /// Prepares the legend and calculates all needed forms, labels and colors.
+  ///
+  /// @param data
   void computeLegend(ChartData<IDataSet> data) {
     if (!mLegend.isLegendCustom()) {
       computedEntries = List();
@@ -82,8 +70,8 @@ class LegendRenderer extends Renderer {
         List<Color> clrs = dataSet.getColors();
         int entryCount = dataSet.getEntryCount();
 
-        if (dataSet is IBarDataSet && (dataSet as IBarDataSet).isStacked()) {
-          IBarDataSet bds = dataSet as IBarDataSet;
+        if (dataSet is IBarDataSet && dataSet.isStacked()) {
+          IBarDataSet bds = dataSet;
           List<String> sLabels = bds.getStackLabels();
 
           for (int j = 0; j < clrs.length && j < bds.getStackSize(); j++) {
@@ -107,7 +95,7 @@ class LegendRenderer extends Renderer {
                 ColorUtils.COLOR_NONE));
           }
         } else if (dataSet is IPieDataSet) {
-          IPieDataSet pds = dataSet as IPieDataSet;
+          IPieDataSet pds = dataSet;
 
           for (int j = 0; j < clrs.length && j < entryCount; j++) {
             computedEntries.add(LegendEntry(
@@ -130,12 +118,12 @@ class LegendRenderer extends Renderer {
                 ColorUtils.COLOR_NONE));
           }
         } else if (dataSet is ICandleDataSet &&
-            (dataSet as ICandleDataSet).getDecreasingColor() !=
+            dataSet.getDecreasingColor() !=
                 ColorUtils.COLOR_NONE) {
           Color decreasingColor =
-              (dataSet as ICandleDataSet).getDecreasingColor();
+              dataSet.getDecreasingColor();
           Color increasingColor =
-              (dataSet as ICandleDataSet).getIncreasingColor();
+              dataSet.getIncreasingColor();
 
           computedEntries.add(LegendEntry(
               null,
@@ -444,16 +432,14 @@ class LegendRenderer extends Renderer {
 
   Path mLineFormPath = Path();
 
-  /**
-   * Draws the Legend-form at the given position with the color at the given
-   * index.
-   *
-   * @param c      canvas to draw with
-   * @param x      position
-   * @param y      position
-   * @param entry  the entry to render
-   * @param legend the legend context
-   */
+  /// Draws the Legend-form at the given position with the color at the given
+  /// index.
+  ///
+  /// @param c      canvas to draw with
+  /// @param x      position
+  /// @param y      position
+  /// @param entry  the entry to render
+  /// @param legend the legend context
   void drawForm(
       Canvas c, double x, double y, LegendEntry entry, Legend legend) {
     if (entry.formColor == ColorUtils.COLOR_SKIP ||

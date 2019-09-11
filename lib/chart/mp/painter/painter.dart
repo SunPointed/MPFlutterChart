@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
@@ -17,9 +18,8 @@ import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/value_formatter/default_value_formatter.dart';
-import 'package:mp_flutter_chart/chart/mp/listener.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/value_formatter/default_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 
 abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>

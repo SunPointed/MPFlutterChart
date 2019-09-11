@@ -9,35 +9,29 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/pie_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/value_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class PieChartRenderer extends DataRenderer {
   PieChartPainter mChart;
 
-  /**
-   * paint for the hole in the center of the pie chart and the transparent
-   * circle
-   */
+  /// paint for the hole in the center of the pie chart and the transparent
+  /// circle
   Paint mHolePaint;
   Paint mTransparentCirclePaint;
   Paint mValueLinePaint;
 
-  /**
-   * paint object for the text that can be displayed in the center of the
-   * chart
-   */
+  /// paint object for the text that can be displayed in the center of the
+  /// chart
   TextPainter mCenterTextPaint;
 
-  /**
-   * paint object used for drwing the slice-text
-   */
+  /// paint object used for drwing the slice-text
   TextPainter mEntryLabelsPaint;
 
 //   StaticLayout mCenterTextLayout;
@@ -48,9 +42,7 @@ class PieChartRenderer extends DataRenderer {
     ..add(Rect.zero)
     ..add(Rect.zero);
 
-  /**
-   * Bitmap for drawing the center hole
-   */
+  /// Bitmap for drawing the center hole
 //   WeakReference<Bitmap> mDrawBitmap;
 
 //   Canvas mBitmapCanvas;
@@ -178,12 +170,10 @@ class PieChartRenderer extends DataRenderer {
     return spacedRadius;
   }
 
-  /**
-   * Calculates the sliceSpace to use based on visible values and their size compared to the set sliceSpace.
-   *
-   * @param dataSet
-   * @return
-   */
+  /// Calculates the sliceSpace to use based on visible values and their size compared to the set sliceSpace.
+  ///
+  /// @param dataSet
+  /// @return
   double getSliceSpace(IPieDataSet dataSet) {
     if (!dataSet.isAutomaticallyDisableSliceSpacingEnabled())
       return dataSet.getSliceSpace();
@@ -682,14 +672,12 @@ class PieChartRenderer extends DataRenderer {
         c, Offset(x - mValuePaint.width / 2, y - mValuePaint.height));
   }
 
-  /**
-   * Draws an entry label at the specified position.
-   *
-   * @param c
-   * @param label
-   * @param x
-   * @param y
-   */
+  /// Draws an entry label at the specified position.
+  ///
+  /// @param c
+  /// @param label
+  /// @param x
+  /// @param y
   void drawEntryLabel(Canvas c, String label, double x, double y) {
     mEntryLabelsPaint = PainterUtils.create(
         mEntryLabelsPaint, label, ColorUtils.WHITE, Utils.convertDpToPixel(10));
@@ -707,10 +695,8 @@ class PieChartRenderer extends DataRenderer {
 
   Path mHoleCirclePath = Path();
 
-  /**
-   * draws the hole in the center of the chart and the transparent circle /
-   * hole
-   */
+  /// draws the hole in the center of the chart and the transparent circle /
+  /// hole
   void drawHole(Canvas c) {
 //    if (mChart.isDrawHoleEnabled() && mBitmapCanvas != null) {
     if (mChart.isDrawHoleEnabled()) {
@@ -767,10 +753,8 @@ class PieChartRenderer extends DataRenderer {
 
   Path mDrawCenterTextPathBuffer = Path();
 
-  /**
-   * draws the description text in the center of the pie chart makes most
-   * sense when center-hole is enabled
-   */
+  /// draws the description text in the center of the pie chart makes most
+  /// sense when center-hole is enabled
   void drawCenterText(Canvas c) {
     String centerText = mChart.getCenterText();
 
@@ -1045,11 +1029,9 @@ class PieChartRenderer extends DataRenderer {
     MPPointF.recycleInstance(center);
   }
 
-  /**
-   * This gives all pie-slices a rounded edge.
-   *
-   * @param c
-   */
+  /// This gives all pie-slices a rounded edge.
+  ///
+  /// @param c
   void drawRoundedSlices(Canvas c) {
     if (!mChart.isDrawRoundedSlicesEnabled()) return;
 

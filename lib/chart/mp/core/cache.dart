@@ -3,7 +3,6 @@ import 'dart:ui' as ui;
 import 'dart:ui';
 
 import 'package:flutter/painting.dart';
-import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_line_data_set.dart';
 
 class DataSetImageCache {
@@ -11,12 +10,10 @@ class DataSetImageCache {
 
   List<ByteData> circleBitmaps;
 
-  /**
-   * Sets up the cache, returns true if a change of cache was required.
-   *
-   * @param set
-   * @return
-   */
+  /// Sets up the cache, returns true if a change of cache was required.
+  ///
+  /// @param set
+  /// @return
   bool init(ILineDataSet set) {
     int size = set.getCircleColorCount();
     bool changeRequired = false;
@@ -32,13 +29,11 @@ class DataSetImageCache {
     return changeRequired;
   }
 
-  /**
-   * Fills the cache with bitmaps for the given dataset.
-   *
-   * @param set
-   * @param drawCircleHole
-   * @param drawTransparentCircleHole
-   */
+  /// Fills the cache with bitmaps for the given dataset.
+  ///
+  /// @param set
+  /// @param drawCircleHole
+  /// @param drawTransparentCircleHole
   void fill(
       ILineDataSet set,
       bool drawCircleHole,

@@ -16,9 +16,7 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 class RadarChartRenderer extends LineRadarRenderer {
   RadarChartPainter mChart;
 
-  /**
-   * paint for drawing the web
-   */
+  /// paint for drawing the web
   Paint mWebPaint;
   Paint mHighlightCirclePaint;
 
@@ -64,13 +62,11 @@ class RadarChartRenderer extends LineRadarRenderer {
 
   Path mDrawDataSetSurfacePathBuffer = new Path();
 
-  /**
-   * Draws the RadarDataSet
-   *
-   * @param c
-   * @param dataSet
-   * @param mostEntries the entry count of the dataset with the most entries
-   */
+  /// Draws the RadarDataSet
+  ///
+  /// @param c
+  /// @param dataSet
+  /// @param mostEntries the entry count of the dataset with the most entries
   void drawDataSet(Canvas c, IRadarDataSet dataSet, int mostEntries) {
     double phaseX = mAnimator.getPhaseX();
     double phaseY = mAnimator.getPhaseY();

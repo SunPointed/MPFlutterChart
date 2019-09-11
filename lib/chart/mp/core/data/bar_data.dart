@@ -3,19 +3,15 @@ import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_bar_data_set.da
 import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 
 class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
-  /**
-   * the width of the bars on the x-axis, in values (not pixels)
-   */
+  /// the width of the bars on the x-axis, in values (not pixels)
   double mBarWidth = 0.85;
 
   BarData(List<IBarDataSet> dataSets) : super.fromList(dataSets);
 
-  /**
-   * Sets the width each bar should have on the x-axis (in values, not pixels).
-   * Default 0.85f
-   *
-   * @param mBarWidth
-   */
+  /// Sets the width each bar should have on the x-axis (in values, not pixels).
+  /// Default 0.85f
+  ///
+  /// @param mBarWidth
   void setBarWidth(double mBarWidth) {
     this.mBarWidth = mBarWidth;
   }
@@ -24,16 +20,14 @@ class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
     return mBarWidth;
   }
 
-  /**
-   * Groups all BarDataSet objects this data object holds together by modifying the x-value of their entries.
-   * Previously set x-values of entries will be overwritten. Leaves space between bars and groups as specified
-   * by the parameters.
-   * Do not forget to call notifyDataSetChanged() on your BarChart object after calling this method.
-   *
-   * @param fromX      the starting point on the x-axis where the grouping should begin
-   * @param groupSpace the space between groups of bars in values (not pixels) e.g. 0.8f for bar width 1f
-   * @param barSpace   the space between individual bars in values (not pixels) e.g. 0.1f for bar width 1f
-   */
+  /// Groups all BarDataSet objects this data object holds together by modifying the x-value of their entries.
+  /// Previously set x-values of entries will be overwritten. Leaves space between bars and groups as specified
+  /// by the parameters.
+  /// Do not forget to call notifyDataSetChanged() on your BarChart object after calling this method.
+  ///
+  /// @param fromX      the starting point on the x-axis where the grouping should begin
+  /// @param groupSpace the space between groups of bars in values (not pixels) e.g. 0.8f for bar width 1f
+  /// @param barSpace   the space between individual bars in values (not pixels) e.g. 0.1f for bar width 1f
   void groupBars(double fromX, double groupSpace, double barSpace) {
     int setCount = mDataSets.length;
     if (setCount <= 1) {
@@ -85,13 +79,11 @@ class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
     notifyDataChanged();
   }
 
-  /**
-   * In case of grouped bars, this method returns the space an individual group of bar needs on the x-axis.
-   *
-   * @param groupSpace
-   * @param barSpace
-   * @return
-   */
+  /// In case of grouped bars, this method returns the space an individual group of bar needs on the x-axis.
+  ///
+  /// @param groupSpace
+  /// @param barSpace
+  /// @return
   double getGroupWidth(double groupSpace, double barSpace) {
     return mDataSets.length * (mBarWidth + barSpace) + groupSpace;
   }

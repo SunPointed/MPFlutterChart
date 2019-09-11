@@ -25,9 +25,7 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 class LineChartRenderer extends LineRadarRenderer {
   LineDataProvider mChart;
 
-  /**
-   * paint for the inner circle of the value indicators
-   */
+  /// paint for the inner circle of the value indicators
   Paint mCirclePaintInner;
 
   /**
@@ -42,9 +40,7 @@ class LineChartRenderer extends LineRadarRenderer {
 //   */
 //  Canvas mBitmapCanvas;
 
-  /**
-   * the bitmap configuration to be used
-   */
+  /// the bitmap configuration to be used
 //   Bitmap.Config mBitmapConfig = Bitmap.Config.ARGB_8888;
 
   Path cubicPath = Path();
@@ -315,12 +311,10 @@ class LineChartRenderer extends LineRadarRenderer {
 
   List<double> mLineBuffer = List(4);
 
-  /**
-   * Draws a normal line.
-   *
-   * @param c
-   * @param dataSet
-   */
+  /// Draws a normal line.
+  ///
+  /// @param c
+  /// @param dataSet
   void drawLinear(Canvas canvas, ILineDataSet dataSet) {
     int entryCount = dataSet.getEntryCount();
 
@@ -451,14 +445,12 @@ class LineChartRenderer extends LineRadarRenderer {
 
   Path mGenerateFilledPathBuffer = Path();
 
-  /**
-   * Draws a filled linear path on the canvas.
-   *
-   * @param c
-   * @param dataSet
-   * @param trans
-   * @param bounds
-   */
+  /// Draws a filled linear path on the canvas.
+  ///
+  /// @param c
+  /// @param dataSet
+  /// @param trans
+  /// @param bounds
   void drawLinearFill(
       Canvas c, ILineDataSet dataSet, Transformer trans, XBounds bounds) {
     final Path filled = mGenerateFilledPathBuffer;
@@ -499,15 +491,13 @@ class LineChartRenderer extends LineRadarRenderer {
     } while (currentStartIndex <= currentEndIndex);
   }
 
-  /**
-   * Generates a path that is used for filled drawing.
-   *
-   * @param dataSet    The dataset from which to read the entries.
-   * @param startIndex The index from which to start reading the dataset
-   * @param endIndex   The index from which to stop reading the dataset
-   * @param outputPath The path object that will be assigned the chart data.
-   * @return
-   */
+  /// Generates a path that is used for filled drawing.
+  ///
+  /// @param dataSet    The dataset from which to read the entries.
+  /// @param startIndex The index from which to start reading the dataset
+  /// @param endIndex   The index from which to stop reading the dataset
+  /// @param outputPath The path object that will be assigned the chart data.
+  /// @return
   void generateFilledPath(final ILineDataSet dataSet, final int startIndex,
       final int endIndex, final Path outputPath, final Transformer trans) {
     final double fillMin =
@@ -529,7 +519,7 @@ class LineChartRenderer extends LineRadarRenderer {
 //    filled.lineTo(entry.x, entry.y * phaseY);
 
     // create a  path
-    Entry currentEntry = null;
+    Entry currentEntry;
     Entry previousEntry = entry;
     for (int x = startIndex + 1; x <= endIndex; x++) {
       currentEntry = dataSet.getEntryForIndex(x);
@@ -659,9 +649,7 @@ class LineChartRenderer extends LineRadarRenderer {
    */
 //   HashMap<IDataSet, DataSetImageCache> mImageCaches =  HashMap<>();
 
-  /**
-   * buffer for drawing the circles
-   */
+  /// buffer for drawing the circles
   List<double> mCirclesBuffer = List(2);
   Map<IDataSet, DataSetImageCache> mImageCaches = Map();
 
@@ -675,7 +663,7 @@ class LineChartRenderer extends LineRadarRenderer {
 
     List<ILineDataSet> dataSets = mChart.getLineData().getDataSets();
 
-    Transformer trans = null;
+    Transformer trans;
     for (int i = 0; i < dataSets.length; i++) {
       ILineDataSet dataSet = dataSets[i];
 

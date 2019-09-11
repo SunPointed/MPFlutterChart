@@ -10,60 +10,40 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
     implements ICandleDataSet {
-  /**
-   * the width of the shadow of the candle
-   */
+  /// the width of the shadow of the candle
   double mShadowWidth = 3;
 
-  /**
-   * should the candle bars show?
-   * when false, only "ticks" will show
-   * <p/>
-   * - default: true
-   */
+  /// should the candle bars show?
+  /// when false, only "ticks" will show
+  /// <p/>
+  /// - default: true
   bool mShowCandleBar = true;
 
-  /**
-   * the space between the candle entries, default 0.1f (10%)
-   */
+  /// the space between the candle entries, default 0.1f (10%)
   double mBarSpace = 0.1;
 
-  /**
-   * use candle color for the shadow
-   */
+  /// use candle color for the shadow
   bool mShadowColorSameAsCandle = false;
 
-  /**
-   * paint style when open < close
-   * increasing candlesticks are traditionally hollow
-   */
+  /// paint style when open < close
+  /// increasing candlesticks are traditionally hollow
   PaintingStyle mIncreasingPaintStyle = PaintingStyle.stroke;
 
-  /**
-   * paint style when open > close
-   * descreasing candlesticks are traditionally filled
-   */
+  /// paint style when open > close
+  /// descreasing candlesticks are traditionally filled
   PaintingStyle mDecreasingPaintStyle = PaintingStyle.fill;
 
-  /**
-   * color for open == close
-   */
+  /// color for open == close
   Color mNeutralColor = ColorUtils.COLOR_SKIP;
 
-  /**
-   * color for open < close
-   */
+  /// color for open < close
   Color mIncreasingColor = ColorUtils.COLOR_SKIP;
 
-  /**
-   * color for open > close
-   */
+  /// color for open > close
   Color mDecreasingColor = ColorUtils.COLOR_SKIP;
 
-  /**
-   * shadow line color, set -1 for backward compatibility and uses default
-   * color
-   */
+  /// shadow line color, set -1 for backward compatibility and uses default
+  /// color
   Color mShadowColor = ColorUtils.COLOR_SKIP;
 
   CandleDataSet(List<CandleEntry> yVals, String label) : super(yVals, label);
@@ -117,12 +97,10 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
     if (e.getLow() > mYMax) mYMax = e.getLow();
   }
 
-  /**
-   * Sets the space that is left out on the left and right side of each
-   * candle, default 0.1f (10%), max 0.45f, min 0f
-   *
-   * @param space
-   */
+  /// Sets the space that is left out on the left and right side of each
+  /// candle, default 0.1f (10%), max 0.45f, min 0f
+  ///
+  /// @param space
   void setBarSpace(double space) {
     if (space < 0) space = 0;
     if (space > 0.45) space = 0.45;
@@ -135,11 +113,9 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
     return mBarSpace;
   }
 
-  /**
-   * Sets the width of the candle-shadow-line in pixels. Default 3f.
-   *
-   * @param width
-   */
+  /// Sets the width of the candle-shadow-line in pixels. Default 3f.
+  ///
+  /// @param width
   void setShadowWidth(double width) {
     mShadowWidth = Utils.convertDpToPixel(width);
   }
@@ -149,11 +125,9 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
     return mShadowWidth;
   }
 
-  /**
-   * Sets whether the candle bars should show?
-   *
-   * @param showCandleBar
-   */
+  /// Sets whether the candle bars should show?
+  ///
+  /// @param showCandleBar
   void setShowCandleBar(bool showCandleBar) {
     mShowCandleBar = showCandleBar;
   }
@@ -175,12 +149,10 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
 
   /** BELOW THIS COLOR HANDLING */
 
-  /**
-   * Sets the one and ONLY color that should be used for this DataSet when
-   * open == close.
-   *
-   * @param color
-   */
+  /// Sets the one and ONLY color that should be used for this DataSet when
+  /// open == close.
+  ///
+  /// @param color
   void setNeutralColor(Color color) {
     mNeutralColor = color;
   }
@@ -190,12 +162,10 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
     return mNeutralColor;
   }
 
-  /**
-   * Sets the one and ONLY color that should be used for this DataSet when
-   * open <= close.
-   *
-   * @param color
-   */
+  /// Sets the one and ONLY color that should be used for this DataSet when
+  /// open <= close.
+  ///
+  /// @param color
   void setIncreasingColor(Color color) {
     mIncreasingColor = color;
   }
@@ -205,12 +175,10 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
     return mIncreasingColor;
   }
 
-  /**
-   * Sets the one and ONLY color that should be used for this DataSet when
-   * open > close.
-   *
-   * @param color
-   */
+  /// Sets the one and ONLY color that should be used for this DataSet when
+  /// open > close.
+  ///
+  /// @param color
   void setDecreasingColor(Color color) {
     mDecreasingColor = color;
   }
@@ -225,11 +193,9 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
     return mIncreasingPaintStyle;
   }
 
-  /**
-   * Sets paint style when open < close
-   *
-   * @param paintStyle
-   */
+  /// Sets paint style when open < close
+  ///
+  /// @param paintStyle
   void setIncreasingPaintStyle(PaintingStyle paintStyle) {
     this.mIncreasingPaintStyle = paintStyle;
   }
@@ -239,11 +205,9 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
     return mDecreasingPaintStyle;
   }
 
-  /**
-   * Sets paint style when open > close
-   *
-   * @param decreasingPaintStyle
-   */
+  /// Sets paint style when open > close
+  ///
+  /// @param decreasingPaintStyle
   void setDecreasingPaintStyle(PaintingStyle decreasingPaintStyle) {
     this.mDecreasingPaintStyle = decreasingPaintStyle;
   }
@@ -253,11 +217,9 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
     return mShadowColor;
   }
 
-  /**
-   * Sets shadow color for all entries
-   *
-   * @param shadowColor
-   */
+  /// Sets shadow color for all entries
+  ///
+  /// @param shadowColor
   void setShadowColor(Color shadowColor) {
     this.mShadowColor = shadowColor;
   }
@@ -267,11 +229,9 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
     return mShadowColorSameAsCandle;
   }
 
-  /**
-   * Sets shadow color to be the same color as the candle color
-   *
-   * @param shadowColorSameAsCandle
-   */
+  /// Sets shadow color to be the same color as the candle color
+  ///
+  /// @param shadowColorSameAsCandle
   void setShadowColorSameAsCandle(bool shadowColorSameAsCandle) {
     this.mShadowColorSameAsCandle = shadowColorSameAsCandle;
   }

@@ -28,21 +28,15 @@ enum DrawOrder { BAR, BUBBLE, LINE, CANDLE, SCATTER }
 
 class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
     implements CombinedDataProvider {
-  /**
-   * if set to true, all values are drawn above their bars, instead of below
-   * their top
-   */
+  /// if set to true, all values are drawn above their bars, instead of below
+  /// their top
   bool mDrawValueAboveBar = true;
 
-  /**
-   * flag that indicates whether the highlight should be full-bar oriented, or single-value?
-   */
+  /// flag that indicates whether the highlight should be full-bar oriented, or single-value?
   bool mHighlightFullBarEnabled = false;
 
-  /**
-   * if set to true, a grey area is drawn behind each bar that indicates the
-   * maximum value
-   */
+  /// if set to true, a grey area is drawn behind each bar that indicates the
+  /// maximum value
   bool mDrawBarShadow = false;
 
   List<DrawOrder> mDrawOrder;
@@ -178,23 +172,13 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
     return mData;
   }
 
-//  @override
-//  void setData(CombinedData data) {
-//    super.setData(data);
-//    setHighlighter(new CombinedHighlighter(this, this));
-//    ((CombinedChartRenderer)mRenderer).createRenderers();
-//    mRenderer.initBuffers();
-//  }
-
-  /**
-   * Returns the Highlight object (contains x-index and DataSet index) of the selected value at the given touch
-   * point
-   * inside the CombinedChart.
-   *
-   * @param x
-   * @param y
-   * @return
-   */
+  /// Returns the Highlight object (contains x-index and DataSet index) of the selected value at the given touch
+  /// point
+  /// inside the CombinedChart.
+  ///
+  /// @param x
+  /// @param y
+  /// @return
   @override
   Highlight getHighlightByTouchPoint(double x, double y) {
     if (mData == null) {
@@ -255,69 +239,55 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
     return mDrawValueAboveBar;
   }
 
-  /**
-   * If set to true, all values are drawn above their bars, instead of below
-   * their top.
-   *
-   * @param enabled
-   */
+  /// If set to true, all values are drawn above their bars, instead of below
+  /// their top.
+  ///
+  /// @param enabled
   void setDrawValueAboveBar(bool enabled) {
     mDrawValueAboveBar = enabled;
   }
 
-  /**
-   * If set to true, a grey area is drawn behind each bar that indicates the
-   * maximum value. Enabling his will reduce performance by about 50%.
-   *
-   * @param enabled
-   */
+  /// If set to true, a grey area is drawn behind each bar that indicates the
+  /// maximum value. Enabling his will reduce performance by about 50%.
+  ///
+  /// @param enabled
   void setDrawBarShadow(bool enabled) {
     mDrawBarShadow = enabled;
   }
 
-  /**
-   * Set this to true to make the highlight operation full-bar oriented,
-   * false to make it highlight single values (relevant only for stacked).
-   *
-   * @param enabled
-   */
+  /// Set this to true to make the highlight operation full-bar oriented,
+  /// false to make it highlight single values (relevant only for stacked).
+  ///
+  /// @param enabled
   void setHighlightFullBarEnabled(bool enabled) {
     mHighlightFullBarEnabled = enabled;
   }
 
-  /**
-   * @return true the highlight operation is be full-bar oriented, false if single-value
-   */
+  /// @return true the highlight operation is be full-bar oriented, false if single-value
   @override
   bool isHighlightFullBarEnabled() {
     return mHighlightFullBarEnabled;
   }
 
-  /**
-   * Returns the currently set draw order.
-   *
-   * @return
-   */
+  /// Returns the currently set draw order.
+  ///
+  /// @return
   List<DrawOrder> getDrawOrder() {
     return mDrawOrder;
   }
 
-  /**
-   * Sets the order in which the provided data objects should be drawn. The
-   * earlier you place them in the provided array, the further they will be in
-   * the background. e.g. if you provide new DrawOrer[] { DrawOrder.BAR,
-   * DrawOrder.LINE }, the bars will be drawn behind the lines.
-   *
-   * @param order
-   */
+  /// Sets the order in which the provided data objects should be drawn. The
+  /// earlier you place them in the provided array, the further they will be in
+  /// the background. e.g. if you provide new DrawOrer[] { DrawOrder.BAR,
+  /// DrawOrder.LINE }, the bars will be drawn behind the lines.
+  ///
+  /// @param order
   void setDrawOrder(List<DrawOrder> order) {
     if (order == null || order.length <= 0) return;
     mDrawOrder = order;
   }
 
-  /**
-   * draws all MarkerViews on the highlighted positions
-   */
+  /// draws all MarkerViews on the highlighted positions
   void drawMarkers(Canvas canvas) {
     // if there is no marker view or drawing marker is disabled
     if (mMarker == null || !isDrawMarkersEnabled() || !valuesToHighlight())

@@ -8,7 +8,7 @@ class BarBuffer extends AbstractBuffer<IBarDataSet> {
   bool mContainsStacks = false;
   bool mInverted = false;
 
-  /** width of the bar on the x-axis, in values (not pixels) */
+  /// width of the bar on the x-axis, in values (not pixels)
   double mBarWidth = 1.0;
 
   BarBuffer(int size, int dataSetCount, bool containsStacks) : super(size) {

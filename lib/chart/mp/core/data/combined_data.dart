@@ -109,11 +109,9 @@ class CombinedData extends BarLineScatterCandleBubbleData<
     return mCandleData;
   }
 
-  /**
-   * Returns all data objects in row: line-bar-scatter-candle-bubble if not null.
-   *
-   * @return
-   */
+  /// Returns all data objects in row: line-bar-scatter-candle-bubble if not null.
+  ///
+  /// @return
   List<BarLineScatterCandleBubbleData> getAllData() {
     List<BarLineScatterCandleBubbleData> data =
         List<BarLineScatterCandleBubbleData>();
@@ -141,12 +139,10 @@ class CombinedData extends BarLineScatterCandleBubbleData<
     calcMinMax1(); // recalculate everything
   }
 
-  /**
-   * Get the Entry for a corresponding highlight object
-   *
-   * @param highlight
-   * @return the entry that is highlighted
-   */
+  /// Get the Entry for a corresponding highlight object
+  ///
+  /// @param highlight
+  /// @return the entry that is highlighted
   @override
   Entry getEntryForHighlight(Highlight highlight) {
     if (highlight.getDataIndex() >= getAllData().length ||
@@ -168,12 +164,10 @@ class CombinedData extends BarLineScatterCandleBubbleData<
     return null;
   }
 
-  /**
-   * Get dataset for highlight
-   *
-   * @param highlight current highlight
-   * @return dataset related to highlight
-   */
+  /// Get dataset for highlight
+  ///
+  /// @param highlight current highlight
+  /// @return dataset related to highlight
   IBarLineScatterCandleBubbleDataSet<Entry> getDataSetByHighlight(
       Highlight highlight) {
     if (highlight.getDataIndex() >= getAllData().length ||

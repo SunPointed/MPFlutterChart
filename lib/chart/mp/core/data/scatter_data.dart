@@ -7,11 +7,9 @@ class ScatterData extends BarLineScatterCandleBubbleData<IScatterDataSet> {
   ScatterData.fromList(List<IScatterDataSet> dataSets)
       : super.fromList(dataSets);
 
-  /**
-   * Returns the maximum shape-size across all DataSets.
-   *
-   * @return
-   */
+  /// Returns the maximum shape-size across all DataSets.
+  ///
+  /// @return
   double getGreatestShapeSize() {
     double max = 0;
 
