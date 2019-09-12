@@ -49,6 +49,10 @@ class ScrollingChartViewPagerState extends State<ScrollingChartViewPager> {
 
   var random = Random(1);
 
+  bool _isParentMove = true;
+  double _curX = 0.0;
+  int _preTime = 0;
+
   @override
   void initState() {
     _initLineData1();
@@ -56,6 +60,7 @@ class ScrollingChartViewPagerState extends State<ScrollingChartViewPager> {
     _initBarData();
     _initScatterData();
     _initPieData();
+    print("11111111");
     super.initState();
   }
 
@@ -73,41 +78,64 @@ class ScrollingChartViewPagerState extends State<ScrollingChartViewPager> {
               left: 0,
               top: 0,
               bottom: 0,
-              child: GestureDetector(
-                onHorizontalDragStart: (p) => print(p),
-                child: PageView.builder(
-                  itemBuilder: (context, index) {
-                    switch (index) {
-                      case 0:
-                        {
-                          _initLineChart1();
-                          return _lineChart1;
+              child: Listener(
+                  onPointerDown: (e) {
+                    _curX = e.localPosition.dx;
+                    _preTime = Util.currentTimeMillis();
+                  },
+                  onPointerMove: (e) {
+                    if (_preTime + 500 < Util.currentTimeMillis()) {
+                      if ((_curX - e.localPosition.dx) < 5) {
+                        _isParentMove = false;
+                        if (mounted) {
+                          setState(() {});
                         }
-                      case 1:
-                        {
-                          _initLineChart2();
-                          return _lineChart2;
-                        }
-                      case 2:
-                        {
-                          _initBarChart();
-                          return _barChart;
-                        }
-                      case 3:
-                        {
-                          _initScatterChart();
-                          return _scatterChart;
-                        }
-                      default:
-                        {
-                          _initPieChart();
-                          return _pieChart;
-                        }
+                      }
                     }
                   },
-                  itemCount: 5,
-                ),
-              ),
+                  onPointerUp: (e) {
+                    if (!_isParentMove) {
+                      _isParentMove = true;
+                      if (mounted) {
+                        setState(() {});
+                      }
+                    }
+                  },
+                  child: PageView.builder(
+                    physics: _isParentMove
+                        ? PageScrollPhysics()
+                        : NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      switch (index) {
+                        case 0:
+                          {
+                            _initLineChart1();
+                            return _lineChart1;
+                          }
+                        case 1:
+                          {
+                            _initLineChart2();
+                            return _lineChart2;
+                          }
+                        case 2:
+                          {
+                            _initBarChart();
+                            return _barChart;
+                          }
+                        case 3:
+                          {
+                            _initScatterChart();
+                            return _scatterChart;
+                          }
+                        default:
+                          {
+                            _initPieChart();
+                            return _pieChart;
+                          }
+                      }
+                    },
+                    itemCount: 5,
+                  )),
             ),
           ],
         ));
@@ -333,6 +361,10 @@ class ScrollingChartViewPagerState extends State<ScrollingChartViewPager> {
   }
 
   void _initLineChart1() {
+    if (_lineData1 == null || _lineChart1 != null) {
+      return;
+    }
+
     var desc = Description();
     desc.setEnabled(false);
     _lineChart1 = LineChart(_lineData1, (painter) {
@@ -356,6 +388,10 @@ class ScrollingChartViewPagerState extends State<ScrollingChartViewPager> {
   }
 
   void _initLineChart2() {
+    if (_lineData2 == null || _lineChart2 != null) {
+      return;
+    }
+
     var desc = Description();
     desc.setEnabled(false);
     _lineChart2 = LineChart(_lineData2, (painter) {
@@ -375,6 +411,10 @@ class ScrollingChartViewPagerState extends State<ScrollingChartViewPager> {
   }
 
   void _initBarChart() {
+    if (_barData == null || _barChart != null) {
+      return;
+    }
+
     var desc = Description();
     desc.setEnabled(false);
     _barChart = BarChart(_barData, (painter) {
@@ -394,6 +434,10 @@ class ScrollingChartViewPagerState extends State<ScrollingChartViewPager> {
   }
 
   void _initScatterChart() {
+    if (_scatterData == null || _scatterChart != null) {
+      return;
+    }
+
     var desc = Description();
     desc.setEnabled(false);
     _scatterChart = ScatterChart(_scatterData, (painter) {
@@ -417,6 +461,10 @@ class ScrollingChartViewPagerState extends State<ScrollingChartViewPager> {
   }
 
   void _initPieChart() {
+    if (_pieData == null || _pieChart != null) {
+      return;
+    }
+
     var desc = Description();
     desc.setEnabled(false);
     _pieChart = PieChart(_pieData, (painter) {

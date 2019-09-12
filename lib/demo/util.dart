@@ -4,4 +4,8 @@ abstract class Util {
   static Future<String> loadAsset(String filename) async {
     return await rootBundle.loadString('assets/$filename');
   }
+
+  static int currentTimeMillis() {
+    return new DateTime.now().millisecondsSinceEpoch;
+  }
 }
