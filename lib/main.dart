@@ -25,6 +25,7 @@ import 'package:mp_flutter_chart/demo/pie_chart/basic.dart';
 import 'package:mp_flutter_chart/demo/pie_chart/half_pie.dart';
 import 'package:mp_flutter_chart/demo/pie_chart/value_lines.dart';
 import 'package:mp_flutter_chart/demo/res/styles.dart';
+import 'package:mp_flutter_chart/demo/scrolling_chart/view_pager.dart';
 
 void main() => runApp(MyApp());
 
@@ -73,7 +74,7 @@ class MyApp extends StatelessWidget {
         '/other_chart/candlestick': (_) => OtherChartCandlestick(),
         '/other_chart/redar_chart': (_) => OtherChartRadar(),
         '/scrolling_chart/multiple': (_) => BarChartBasic2(),
-        '/scrolling_chart/view_pager': (_) => BarChartBasic2(),
+        '/scrolling_chart/view_pager': (_) => ScrollingChartViewPager(),
         '/scrolling_chart/tall_bar_chart': (_) => BarChartBasic2(),
         '/scrolling_chart/many_bar_charts': (_) => BarChartBasic2(),
         '/even_more_line_chart/dynamic': (_) => BarChartBasic2(),

@@ -15,7 +15,7 @@ class LargeValueFormatter extends ValueFormatter {
   /// Creates a formatter that appends a specified text to the result string
   ///
   /// @param appendix a text that will be appended
-  LargeValueFormatter({String appendix}) {
+  LargeValueFormatter({String appendix = ""}) {
     mFormat = new NumberFormat("###E00");
     mText = appendix;
   }
@@ -48,10 +48,9 @@ class LargeValueFormatter extends ValueFormatter {
   /// (https://github.com/romangromov) for this piece of code.
   String makePretty(double number) {
     String r = mFormat.format(number);
-
-    int numericValue1 = r.codeUnitAt(r.length - 1);
-    int numericValue2 = r.codeUnitAt(r.length - 2);
-    int combined = int.parse("$numericValue1$numericValue2");
+    int numericValue1 = int.tryParse(r[r.length - 1]);
+    int numericValue2 = int.tryParse(r[r.length - 2]);
+    int combined = int.parse("$numericValue2$numericValue1");
 
     r = r.replaceAllMapped(
         RegExp(

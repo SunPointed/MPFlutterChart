@@ -11,7 +11,6 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/percent_formatter.dart';
 
 class PieChartHalfPie extends StatefulWidget {

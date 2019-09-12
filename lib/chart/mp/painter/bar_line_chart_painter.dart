@@ -187,6 +187,10 @@ abstract class BarLineChartBasePainter<
             descPainter: descPainter,
             highlighter: highlighter,
             unbind: unbind) {
+    if (data == null) {
+      return;
+    }
+
     double minXScale = mXAxis.mAxisRange / (minXRange);
     mViewPortHandler.setMaximumScaleX(minXScale);
     double maxXScale = mXAxis.mAxisRange / (maxXRange);

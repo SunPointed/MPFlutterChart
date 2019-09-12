@@ -119,7 +119,18 @@ abstract class ChartState<P extends ChartPainter, T extends Chart>
 
   @override
   void onAnimationUpdate(double x, double y) {
-    setState(() {});
+    setStateIfNotDispose();
+  }
+
+  void setStateIfNotDispose() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -131,7 +142,9 @@ abstract class ChartState<P extends ChartPainter, T extends Chart>
   @override
   Widget build(BuildContext context) {
     initialPainter();
-    widget._initialPainterCallback(painter);
+    if (painter.mData != null) {
+      widget._initialPainterCallback(painter);
+    }
     return Stack(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -273,7 +286,7 @@ abstract class PieRadarChartState<P extends PieRadarChartPainter,
   void onScaleUpdate(ScaleUpdateDetails detail) {
     _updateGestureRotation(
         detail.localFocalPoint.dx, detail.localFocalPoint.dy);
-    setState(() {});
+    setStateIfNotDispose();
   }
 
   @override
@@ -285,7 +298,7 @@ abstract class PieRadarChartState<P extends PieRadarChartPainter,
           HighlightUtils.performHighlight(painter, h, lastHighlighted);
       painter.getOnChartGestureListener()?.onChartSingleTapped(
           detail.localPosition.dx, detail.localPosition.dy);
-      setState(() {});
+      setStateIfNotDispose();
     } else {
       lastHighlighted = null;
     }
@@ -344,7 +357,7 @@ abstract class BarLineScatterCandleBubbleState<
       painter.zoom(painter.mScaleXEnabled ? 1.4 : 1,
           painter.mScaleYEnabled ? 1.4 : 1, trans.x, trans.y);
       painter.getOnChartGestureListener()?.onChartDoubleTapped(_curX, _curY);
-      setState(() {});
+      setStateIfNotDispose();
       MPPointF.recycleInstance(trans);
     }
   }
@@ -386,14 +399,14 @@ abstract class BarLineScatterCandleBubbleState<
             Offset(detail.localFocalPoint.dx, detail.localFocalPoint.dy));
         listener?.onChartTranslate(
             detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
-        setState(() {});
+        setStateIfNotDispose();
       } else {
         if (painter.mDragXEnabled) {
           painter.translate(dx, 0.0);
           _dragHighlight(Offset(detail.localFocalPoint.dx, 0.0));
           listener?.onChartTranslate(
               detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
-          setState(() {});
+          setStateIfNotDispose();
         } else if (painter.mDragYEnabled) {
           if (_inverted()) {
             // if there is an inverted horizontalbarchart
@@ -407,7 +420,7 @@ abstract class BarLineScatterCandleBubbleState<
           _dragHighlight(Offset(0.0, detail.localFocalPoint.dy));
           listener?.onChartTranslate(
               detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
-          setState(() {});
+          setStateIfNotDispose();
         }
       }
       _curX = detail.localFocalPoint.dx;
@@ -429,7 +442,7 @@ abstract class BarLineScatterCandleBubbleState<
       painter.zoom(scaleX, scaleY, trans.x, trans.y);
       listener?.onChartScale(
           detail.localFocalPoint.dx, detail.localFocalPoint.dy, scaleX, scaleY);
-      setState(() {});
+      setStateIfNotDispose();
       MPPointF.recycleInstance(trans);
     }
     _scaleX = detail.horizontalScale;
@@ -459,7 +472,7 @@ abstract class BarLineScatterCandleBubbleState<
           HighlightUtils.performHighlight(painter, h, lastHighlighted);
       painter.getOnChartGestureListener()?.onChartSingleTapped(
           detail.localPosition.dx, detail.localPosition.dy);
-      setState(() {});
+      setStateIfNotDispose();
     } else {
       lastHighlighted = null;
     }

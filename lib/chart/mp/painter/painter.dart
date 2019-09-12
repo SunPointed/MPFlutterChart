@@ -129,16 +129,16 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
         mHighlighter = highlighter,
         mUnbind = unbind,
         super() {
+    if (data == null) {
+      return;
+    }
+
     if (dragDecelerationFrictionCoef < 0) dragDecelerationFrictionCoef = 0;
 
     if (dragDecelerationFrictionCoef >= 1) dragDecelerationFrictionCoef = 0.999;
     mDragDecelerationFrictionCoef = dragDecelerationFrictionCoef;
 
     mOffsetsCalculated = false;
-
-    if (data == null) {
-      return;
-    }
 
     // calculate how many digits are needed
     setupDefaultFormatter(data.getYMin1(), data.getYMax1());
