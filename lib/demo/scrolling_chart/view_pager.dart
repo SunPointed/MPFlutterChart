@@ -60,7 +60,6 @@ class ScrollingChartViewPagerState extends State<ScrollingChartViewPager> {
     _initBarData();
     _initScatterData();
     _initPieData();
-    print("11111111");
     super.initState();
   }
 
@@ -70,7 +69,7 @@ class ScrollingChartViewPagerState extends State<ScrollingChartViewPager> {
         appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
-            title: Text("Bar Chart Basic")),
+            title: Text("Scrolling Chart View Pager")),
         body: Stack(
           children: <Widget>[
             Positioned(

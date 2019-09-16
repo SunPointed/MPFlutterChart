@@ -27,6 +27,8 @@ import 'package:mp_flutter_chart/demo/pie_chart/value_lines.dart';
 import 'package:mp_flutter_chart/demo/res/styles.dart';
 import 'package:mp_flutter_chart/demo/scrolling_chart/view_pager.dart';
 
+import 'demo/scrolling_chart/many_bar_chart.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -76,7 +78,7 @@ class MyApp extends StatelessWidget {
         '/scrolling_chart/multiple': (_) => BarChartBasic2(),
         '/scrolling_chart/view_pager': (_) => ScrollingChartViewPager(),
         '/scrolling_chart/tall_bar_chart': (_) => BarChartBasic2(),
-        '/scrolling_chart/many_bar_charts': (_) => BarChartBasic2(),
+        '/scrolling_chart/many_bar_charts': (_) => ScrollingChartManyBar(),
         '/even_more_line_chart/dynamic': (_) => BarChartBasic2(),
         '/even_more_line_chart/realtime': (_) => BarChartBasic2(),
         '/even_more_line_chart/hourly': (_) => BarChartBasic2(),
