@@ -15,6 +15,7 @@ import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/large_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class BarChartMultiple extends StatefulWidget {
   @override
@@ -23,13 +24,9 @@ class BarChartMultiple extends StatefulWidget {
   }
 }
 
-class BarChartMultipleState extends State<BarChartMultiple>
+class BarChartMultipleState extends BarActionState<BarChartMultiple>
     implements OnChartValueSelectedListener {
-  BarChart _barChart;
-  BarData _barData;
-
   var random = Random(1);
-
   int _count = 10;
   double _range = 100.0;
 
@@ -40,93 +37,95 @@ class BarChartMultipleState extends State<BarChartMultiple>
   }
 
   @override
-  Widget build(BuildContext context) {
+  void chartInit() {
     _initBarChart();
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Bar Chart Multiple")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 100,
-              child: _barChart,
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+  }
+
+  @override
+  String getTitle() => "Bar Chart Multiple";
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: barChart,
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _count.toDouble(),
-                                min: 0,
-                                max: 1500,
-                                onChanged: (value) {
-                                  _count = value.toInt();
-                                  _initBarData(_count, _range);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 1500,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initBarData(_count, _range);
+                              setState(() {});
+                            })),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _range,
-                                min: 0,
-                                max: 200,
-                                onChanged: (value) {
-                                  _range = value;
-                                  _initBarData(_count, _range);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "${_range.toInt()}",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
-                  )
+                  Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )),
                 ],
               ),
-            )
-          ],
-        ));
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _range,
+                            min: 0,
+                            max: 200,
+                            onChanged: (value) {
+                              _range = value;
+                              _initBarData(_count, _range);
+                              setState(() {});
+                            })),
+                  ),
+                  Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: Text(
+                        "${_range.toInt()}",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   int groupCount;
@@ -170,18 +169,18 @@ class BarChartMultipleState extends State<BarChartMultiple>
     set4 = BarDataSet(values4, "Company D");
     set4.setColor1(Color.fromARGB(255, 255, 102, 0));
 
-    _barData = BarData(List()..add(set1)..add(set2)..add(set3)..add(set4));
-    _barData.setValueFormatter(LargeValueFormatter());
-//    _barData.setValueTypeface(tfLight);
+    barData = BarData(List()..add(set1)..add(set2)..add(set3)..add(set4));
+    barData.setValueFormatter(LargeValueFormatter());
+//    barData.setValueTypeface(tfLight);
 
     // specify the width each bar should have
-    _barData.setBarWidth(0.2);
+    barData.setBarWidth(0.2);
   }
 
   void _initBarChart() {
     var desc = Description();
     desc.setEnabled(false);
-    _barChart = BarChart(_barData, (painter) {
+    barChart = BarChart(barData, (painter) {
       double groupSpace = 0.08;
       double barSpace = 0.03; // x4 DataSet/ x4 DataSet
       // (0.2 + 0.03) * 4 + 0.08 = 1.00 -> interval per "group"

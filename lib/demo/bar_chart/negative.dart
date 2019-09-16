@@ -9,8 +9,8 @@ import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class BarChartNegative extends StatefulWidget {
   @override
@@ -19,10 +19,11 @@ class BarChartNegative extends StatefulWidget {
   }
 }
 
-class BarChartNegativeState extends State<BarChartNegative> {
+class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
   BarChart _barChart;
   BarData _barData;
   List<Data> _data = List();
+
   @override
   void initState() {
     _data.clear();
@@ -37,24 +38,26 @@ class BarChartNegativeState extends State<BarChartNegative> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  String getTitle() => "Bar Chart Negative";
+
+  @override
+  void chartInit() {
     _initBarChart();
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Bar Chart Negative")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 0,
-              child: _barChart,
-            ),
-          ],
-        ));
+  }
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 0,
+          child: _barChart,
+        ),
+      ],
+    );
   }
 
   void _initBarData() {

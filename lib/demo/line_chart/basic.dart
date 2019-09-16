@@ -28,12 +28,8 @@ class LineChartBasic extends StatefulWidget {
   }
 }
 
-class LineChartBasicState extends ActionState<LineChartBasic> {
-  LineChart _lineChart;
-  LineData _lineData;
-
+class LineChartBasicState extends LineActionState<LineChartBasic> {
   var random = Random(1);
-
   int _count = 45;
   double _range = 180.0;
 
@@ -57,7 +53,7 @@ class LineChartBasicState extends ActionState<LineChartBasic> {
           left: 0,
           top: 0,
           bottom: 100,
-          child: _lineChart,
+          child: lineChart,
         ),
         Positioned(
           left: 0,
@@ -133,121 +129,6 @@ class LineChartBasicState extends ActionState<LineChartBasic> {
   }
 
   @override
-  void itemClick(String action) {
-    var state = _lineChart?.getState();
-    var painter = state?.painter as LineChartPainter;
-    if (state == null || painter == null) {
-      return;
-    }
-
-    switch (action) {
-      case 'A':
-        break;
-      case 'B':
-        List<ILineDataSet> sets = painter.getData().getDataSets();
-        for (ILineDataSet iSet in sets) {
-          LineDataSet set = iSet as LineDataSet;
-          set.setDrawValues(!set.isDrawValuesEnabled());
-        }
-        state.setState(() {});
-        break;
-      case 'C':
-        // todo icons
-        break;
-      case 'D':
-        List<ILineDataSet> sets = painter.getData().getDataSets();
-
-        for (ILineDataSet iSet in sets) {
-          LineDataSet set = iSet as LineDataSet;
-          if (set.isDrawFilledEnabled())
-            set.setDrawFilled(false);
-          else
-            set.setDrawFilled(true);
-        }
-        state.setState(() {});
-        break;
-      case 'E':
-        List<ILineDataSet> sets = painter.getData().getDataSets();
-
-        for (ILineDataSet iSet in sets) {
-          LineDataSet set = iSet as LineDataSet;
-          if (set.isDrawCirclesEnabled())
-            set.setDrawCircles(false);
-          else
-            set.setDrawCircles(true);
-        }
-        state.setState(() {});
-        break;
-      case 'F':
-        List<ILineDataSet> sets = painter.getData().getDataSets();
-
-        for (ILineDataSet iSet in sets) {
-          LineDataSet set = iSet as LineDataSet;
-          set.setMode(set.getMode() == Mode.CUBIC_BEZIER
-              ? Mode.LINEAR
-              : Mode.CUBIC_BEZIER);
-        }
-        state.setState(() {});
-        break;
-      case 'G':
-        List<ILineDataSet> sets = painter.getData().getDataSets();
-
-        for (ILineDataSet iSet in sets) {
-          LineDataSet set = iSet as LineDataSet;
-          set.setMode(
-              set.getMode() == Mode.STEPPED ? Mode.LINEAR : Mode.STEPPED);
-        }
-        state.setState(() {});
-        break;
-      case 'H':
-        List<ILineDataSet> sets = painter.getData().getDataSets();
-
-        for (ILineDataSet iSet in sets) {
-          LineDataSet set = iSet as LineDataSet;
-          set.setMode(set.getMode() == Mode.HORIZONTAL_BEZIER
-              ? Mode.LINEAR
-              : Mode.HORIZONTAL_BEZIER);
-        }
-        state.setState(() {});
-        break;
-      case 'I':
-        painter.mPinchZoomEnabled = !painter.mPinchZoomEnabled;
-        state.setState(() {});
-        break;
-      case 'J':
-        painter.mAutoScaleMinMaxEnabled = !painter.mAutoScaleMinMaxEnabled;
-        state.setState(() {});
-        break;
-      case 'K':
-        if (painter.getData() != null) {
-          painter
-              .getData()
-              .setHighlightEnabled(!painter.getData().isHighlightEnabled());
-          state.setState(() {});
-        }
-        break;
-      case 'L':
-        painter.mAnimator
-          ..reset()
-          ..animateX1(2000);
-        break;
-      case 'M':
-        painter.mAnimator
-          ..reset()
-          ..animateY2(2000, Easing.EaseInCubic);
-        break;
-      case 'N':
-        painter.mAnimator
-          ..reset()
-          ..animateXY1(2000, 2000);
-        break;
-      case 'O':
-        // todo save
-        break;
-    }
-  }
-
-  @override
   String getTitle() {
     return "Line Chart Basic";
   }
@@ -295,7 +176,7 @@ class LineChartBasicState extends ActionState<LineChartBasic> {
 
     // set the filled area
     set1.setDrawFilled(true);
-//    set1.setFillFormatter(A(_lineChart.painter));
+//    set1.setFillFormatter(A(lineChart.painter));
 
     // set color of filled area
     set1.setFillColor(ColorUtils.FADE_RED_END);
@@ -305,20 +186,20 @@ class LineChartBasicState extends ActionState<LineChartBasic> {
     dataSets.add(set1); // add the data sets
 
     // create a data object with the data sets
-    _lineData = LineData.fromList(dataSets);
-//    _lineData.setValueTypeface(TextStyle(fontSize: Utils.convertDpToPixel(9)));
+    lineData = LineData.fromList(dataSets);
+//    lineData.setValueTypeface(TextStyle(fontSize: Utils.convertDpToPixel(9)));
   }
 
   void _initLineChart() {
     var desc = Description();
     desc.setEnabled(false);
-    _lineChart = LineChart(_lineData, (painter) {
+    lineChart = LineChart(lineData, (painter) {
       painter.mXAxis.enableGridDashedLine(10, 10, 0);
 
       painter.mAxisRight.setEnabled(false);
-//    _lineChart.painter.mAxisRight.enableGridDashedLine(10, 10, 0);
-//    _lineChart.painter.mAxisRight.setAxisMaximum(200);
-//    _lineChart.painter.mAxisRight.setAxisMinimum(-50);
+//    lineChart.painter.mAxisRight.enableGridDashedLine(10, 10, 0);
+//    lineChart.painter.mAxisRight.setAxisMaximum(200);
+//    lineChart.painter.mAxisRight.setAxisMinimum(-50);
 
       painter.mAxisLeft.enableGridDashedLine(10, 10, 0);
       painter.mAxisLeft.setAxisMaximum(200);

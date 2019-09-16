@@ -11,7 +11,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 import 'package:mp_flutter_chart/demo/util.dart';
 
 class BarChartSine extends StatefulWidget {
@@ -21,14 +21,9 @@ class BarChartSine extends StatefulWidget {
   }
 }
 
-class BarChartSineState extends State<BarChartSine> {
-  BarChart _barChart;
-  BarData _barData;
-
+class BarChartSineState extends BarActionState<BarChartSine> {
   List<BarEntry> _data;
-
   var random = Random(1);
-
   int _count = 150;
 
   @override
@@ -51,66 +46,68 @@ class BarChartSineState extends State<BarChartSine> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  String getTitle() => "Bar Chart Sine";
+
+  @override
+  void chartInit() {
     _initBarChart();
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Bar Chart Basic")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 100,
-              child: _barChart == null
-                  ? Center(child: Text("no data"))
-                  : _barChart,
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+  }
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: barChart == null
+              ? Center(child: Text("no data"))
+              : barChart,
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _count.toDouble(),
-                                min: 0,
-                                max: 1500,
-                                onChanged: (value) {
-                                  _count = value.toInt();
-                                  _initBarData(_count);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 1500,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initBarData(_count);
+                              setState(() {});
+                            })),
                   ),
+                  Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )),
                 ],
               ),
-            )
-          ],
-        ));
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   void _initBarData(int count) {
@@ -124,19 +121,19 @@ class BarChartSineState extends State<BarChartSine> {
     BarDataSet set = BarDataSet(entries, "Sinus Function");
     set.setColor1(Color.fromARGB(255, 240, 120, 124));
 
-    _barData = BarData(List()..add(set));
-    _barData.setValueTextSize(10);
-//    _barData.setValueTypeface(tfLight);
-    _barData.setDrawValues(false);
-    _barData.setBarWidth(0.8);
+    barData = BarData(List()..add(set));
+    barData.setValueTextSize(10);
+//    barData.setValueTypeface(tfLight);
+    barData.setDrawValues(false);
+    barData.setBarWidth(0.8);
   }
 
   void _initBarChart() {
-    if (_barData == null) return;
+    if (barData == null) return;
 
     var desc = Description();
     desc.setEnabled(false);
-    _barChart = BarChart(_barData, (painter) {
+    barChart = BarChart(barData, (painter) {
       painter
         ..setDrawBarShadow(false)
         ..setDrawValueAboveBar(true);

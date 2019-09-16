@@ -8,6 +8,7 @@ import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/mode.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class LineChartPerformance extends StatefulWidget {
   @override
@@ -16,7 +17,8 @@ class LineChartPerformance extends StatefulWidget {
   }
 }
 
-class LineChartPerformanceState extends State<LineChartPerformance> {
+class LineChartPerformanceState
+    extends SimpleActionState<LineChartPerformance> {
   LineChart _lineChart;
   LineData _lineData;
   var random = Random(1);
@@ -31,64 +33,66 @@ class LineChartPerformanceState extends State<LineChartPerformance> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  String getTitle() => "Line Chart Performance";
+
+  @override
+  void chartInit() {
     _initLineChart();
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Line Chart Performance ")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 100,
-              child: _lineChart,
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+  }
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: _lineChart,
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _range,
-                                min: 0,
-                                max: 9000,
-                                onChanged: (value) {
-                                  _range = value;
-                                  _initLineData(_range);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _range,
+                            min: 0,
+                            max: 9000,
+                            onChanged: (value) {
+                              _range = value;
+                              _initLineData(_range);
+                              setState(() {});
+                            })),
                   ),
+                  Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )),
                 ],
               ),
-            )
-          ],
-        ));
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   void _initLineData(double range) {
@@ -98,7 +102,7 @@ class LineChartPerformanceState extends State<LineChartPerformance> {
 
     for (int i = 0; i < _count; i++) {
       double val = (random.nextDouble() * (range + 1)) + 3;
-      values.add(new Entry(x: i * 0.001, y:val));
+      values.add(new Entry(x: i * 0.001, y: val));
     }
 
     // create a dataset and give it a type

@@ -13,6 +13,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.d
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class LineChartMultiple extends StatefulWidget {
   @override
@@ -21,10 +22,8 @@ class LineChartMultiple extends StatefulWidget {
   }
 }
 
-class LineChartMultipleState extends State<LineChartMultiple>
+class LineChartMultipleState extends LineActionState<LineChartMultiple>
     implements OnChartValueSelectedListener, OnChartGestureListener {
-  LineChart _lineChart;
-  LineData _lineData;
   var random = Random(1);
 
   int _count = 20;
@@ -73,93 +72,95 @@ class LineChartMultipleState extends State<LineChartMultiple>
   }
 
   @override
-  Widget build(BuildContext context) {
+  String getTitle() => "Line Chart Multiple";
+
+  @override
+  void chartInit() {
     _initLineChart();
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Line Chart Multiple")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 100,
-              child: _lineChart,
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+  }
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: lineChart,
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _count.toDouble(),
-                                min: 0,
-                                max: 500,
-                                onChanged: (value) {
-                                  _count = value.toInt();
-                                  _initLineData(_count, _range);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 500,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initLineData(_count, _range);
+                              setState(() {});
+                            })),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _range,
-                                min: 0,
-                                max: 150,
-                                onChanged: (value) {
-                                  _range = value;
-                                  _initLineData(_count, _range);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "${_range.toInt()}",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
-                  )
+                  Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )),
                 ],
               ),
-            )
-          ],
-        ));
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _range,
+                            min: 0,
+                            max: 150,
+                            onChanged: (value) {
+                              _range = value;
+                              _initLineData(_count, _range);
+                              setState(() {});
+                            })),
+                  ),
+                  Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: Text(
+                        "${_range.toInt()}",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   void _initLineData(int count, double range) {
@@ -189,12 +190,12 @@ class LineChartMultipleState extends State<LineChartMultiple>
     (dataSets[0] as LineDataSet).setColors1(ColorUtils.VORDIPLOM_COLORS);
     (dataSets[0] as LineDataSet).setCircleColors(ColorUtils.VORDIPLOM_COLORS);
 
-    _lineData = LineData.fromList(dataSets);
+    lineData = LineData.fromList(dataSets);
   }
 
   void _initLineChart() {
     var desc = Description();
-    _lineChart = LineChart(_lineData, (painter) {
+    lineChart = LineChart(lineData, (painter) {
       painter.setOnChartValueSelectedListener(this);
       painter.setOnChartGestureListener(this);
       painter

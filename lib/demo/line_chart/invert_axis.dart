@@ -10,6 +10,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_form.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class LineChartInvertAxis extends StatefulWidget {
   @override
@@ -18,12 +19,9 @@ class LineChartInvertAxis extends StatefulWidget {
   }
 }
 
-class LineChartInvertAxisState extends State<LineChartInvertAxis>
+class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
     implements OnChartValueSelectedListener {
-  LineChart _lineChart;
-  LineData _lineData;
   var random = Random(1);
-
   int _count = 25;
   double _range = 50.0;
 
@@ -34,93 +32,95 @@ class LineChartInvertAxisState extends State<LineChartInvertAxis>
   }
 
   @override
-  Widget build(BuildContext context) {
+  String getTitle() => "Line Chart Invert Axis";
+
+  @override
+  void chartInit() {
     _initLineChart();
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Line Chart Invert Axis")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 100,
-              child: _lineChart,
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+  }
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: lineChart,
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _count.toDouble(),
-                                min: 0,
-                                max: 500,
-                                onChanged: (value) {
-                                  _count = value.toInt();
-                                  _initLineData(_count, _range);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 500,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initLineData(_count, _range);
+                              setState(() {});
+                            })),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _range,
-                                min: 0,
-                                max: 150,
-                                onChanged: (value) {
-                                  _range = value;
-                                  _initLineData(_count, _range);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "${_range.toInt()}",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
-                  )
+                  Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )),
                 ],
               ),
-            )
-          ],
-        ));
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _range,
+                            min: 0,
+                            max: 150,
+                            onChanged: (value) {
+                              _range = value;
+                              _initLineData(_count, _range);
+                              setState(() {});
+                            })),
+                  ),
+                  Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: Text(
+                        "${_range.toInt()}",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   @override
@@ -158,13 +158,13 @@ class LineChartInvertAxisState extends State<LineChartInvertAxis>
     set1.setCircleRadius(4);
 
     // create a data object with the data sets
-    _lineData = LineData.fromList(List()..add(set1));
+    lineData = LineData.fromList(List()..add(set1));
   }
 
   void _initLineChart() {
     var desc = Description();
     desc.setEnabled(false);
-    _lineChart = LineChart(_lineData, (painter) {
+    lineChart = LineChart(lineData, (painter) {
       painter..setOnChartValueSelectedListener(this);
 
       painter.mXAxis

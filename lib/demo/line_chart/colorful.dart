@@ -7,7 +7,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class LineChartColorful extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class LineChartColorful extends StatefulWidget {
   }
 }
 
-class LineChartColorfulState extends State<LineChartColorful> {
+class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
   List<LineChart> _lineCharts = List(4);
   List<LineData> _lineDatas = List(4);
   var random = Random(1);
@@ -37,33 +37,35 @@ class LineChartColorfulState extends State<LineChartColorful> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  String getTitle() => "Line Chart Colorful";
+
+  @override
+  void chartInit() {
     _initLineChart();
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Line Chart Colorful")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(child: _lineCharts[0]),
-                  Expanded(child: _lineCharts[1]),
-                  Expanded(child: _lineCharts[2]),
-                  Expanded(child: _lineCharts[3]),
-                ],
-              ),
-            )
-          ],
-        ));
+  }
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(child: _lineCharts[0]),
+              Expanded(child: _lineCharts[1]),
+              Expanded(child: _lineCharts[2]),
+              Expanded(child: _lineCharts[3]),
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   void _initLineData(int count, double range) {

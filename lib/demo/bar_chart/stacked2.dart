@@ -14,6 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.d
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class BarChartStacked2 extends StatefulWidget {
   @override
@@ -22,10 +23,8 @@ class BarChartStacked2 extends StatefulWidget {
   }
 }
 
-class BarChartStacked2State extends State<BarChartStacked2>
+class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
     implements OnChartValueSelectedListener {
-  HorizontalBarChart _barChart;
-  BarData _barData;
 
   @override
   void initState() {
@@ -34,24 +33,26 @@ class BarChartStacked2State extends State<BarChartStacked2>
   }
 
   @override
-  Widget build(BuildContext context) {
+  String getTitle() => "Bar Chart Stacked2";
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 0,
+          child: barChart,
+        ),
+      ],
+    );
+  }
+
+  @override
+  void chartInit() {
     _initBarChart();
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Bar Chart Stacked2")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 0,
-              child: _barChart,
-            ),
-          ],
-        ));
   }
 
   void _initBarData() {
@@ -94,14 +95,14 @@ class BarChartStacked2State extends State<BarChartStacked2>
       ..add(Color.fromARGB(255, 124, 181, 236)));
     set.setStackLabels(List()..add("Men")..add("Women"));
 
-    _barData = BarData(List()..add(set));
-    _barData.setBarWidth(8.5);
+    barData = BarData(List()..add(set));
+    barData.setBarWidth(8.5);
   }
 
   void _initBarChart() {
     var desc = Description();
     desc.setEnabled(false);
-    _barChart = HorizontalBarChart(_barData, (painter) {
+    barChart = HorizontalBarChart(barData, (painter) {
       painter
         ..setOnChartValueSelectedListener(this)
         ..setDrawBarShadow(false)

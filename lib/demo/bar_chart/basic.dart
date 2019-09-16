@@ -31,13 +31,9 @@ class BarChartBasic extends StatefulWidget {
   }
 }
 
-class BarChartBasicState extends ActionState<BarChartBasic>
+class BarChartBasicState extends BarActionState<BarChartBasic>
     implements OnChartValueSelectedListener {
-  BarChart _barChart;
-  BarData _barData;
-
   var random = Random(1);
-
   int _count = 12;
   double _range = 50.0;
 
@@ -52,12 +48,6 @@ class BarChartBasicState extends ActionState<BarChartBasic>
     _initBarChart();
   }
 
-
-  @override
-  void itemClick(String action) {
-
-  }
-
   @override
   Widget getBody() {
     return Stack(
@@ -67,7 +57,7 @@ class BarChartBasicState extends ActionState<BarChartBasic>
           left: 0,
           top: 0,
           bottom: 100,
-          child: _barChart,
+          child: barChart,
         ),
         Positioned(
           left: 0,
@@ -198,16 +188,16 @@ class BarChartBasicState extends ActionState<BarChartBasic>
     List<IBarDataSet> dataSets = List();
     dataSets.add(set1);
 
-    _barData = BarData(dataSets);
-    _barData.setValueTextSize(10);
-//    _barData.setValueTypeface(tfLight);
-    _barData.setBarWidth(0.9);
+    barData = BarData(dataSets);
+    barData.setValueTextSize(10);
+//    barData.setValueTypeface(tfLight);
+    barData.setBarWidth(0.9);
   }
 
   void _initBarChart() {
     var desc = Description();
     desc.setEnabled(false);
-    _barChart = BarChart(_barData, (painter) {
+    barChart = BarChart(barData, (painter) {
       painter
         ..setOnChartValueSelectedListener(this)
         ..setDrawBarShadow(false)
