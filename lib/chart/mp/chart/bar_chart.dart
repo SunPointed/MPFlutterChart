@@ -163,12 +163,14 @@ class BarChart extends Chart {
   }
 
   @override
-  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart> createChartState() {
+  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart>
+      createChartState() {
     return BarChartState();
   }
 }
 
-class BarChartState extends BarLineScatterCandleBubbleState<BarChartPainter, BarChart> {
+class BarChartState
+    extends BarLineScatterCandleBubbleState<BarChartPainter, BarChart> {
   @override
   void initialPainter() {
     painter = BarChartPainter(widget.data,

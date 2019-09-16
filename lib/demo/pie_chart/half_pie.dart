@@ -12,6 +12,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/percent_formatter.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class PieChartHalfPie extends StatefulWidget {
   @override
@@ -20,7 +21,7 @@ class PieChartHalfPie extends StatefulWidget {
   }
 }
 
-class PieChartHalfPieState extends State<PieChartHalfPie> {
+class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
   PieChart _pieChart;
   PieData _pieData;
 
@@ -33,24 +34,26 @@ class PieChartHalfPieState extends State<PieChartHalfPie> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  String getTitle() => "Pie Chart Half Pie";
+
+  @override
+  void chartInit() {
     _initPieChart();
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Pie Chart Half Pie")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 0,
-              child: _pieChart,
-            )
-          ],
-        ));
+  }
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 0,
+          child: _pieChart,
+        )
+      ],
+    );
   }
 
   final List<String> PARTIES = List()

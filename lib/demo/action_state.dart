@@ -3,9 +3,11 @@ import 'package:flutter/widgets.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/bar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/horizontal_bar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
+import 'package:mp_flutter_chart/chart/mp/chart/pie_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/bar_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/line_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/pie_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_bar_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_line_data_set.dart';
@@ -15,6 +17,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/mode.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/bar_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/pie_chart_painter.dart';
 import 'package:mp_flutter_chart/demo/util.dart';
 
 PopupMenuItem _item(String text, String id) {
@@ -307,25 +310,26 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
   }
 }
 
-abstract class HorizontalBarActionState<T extends StatefulWidget> extends ActionState<T> {
+abstract class HorizontalBarActionState<T extends StatefulWidget>
+    extends ActionState<T> {
   HorizontalBarChart barChart;
   BarData barData;
 
   @override
   getBuilder() {
     return (BuildContext context) => <PopupMenuItem<String>>[
-      _item('View on GitHub', 'A'),
-      _item('Toggle Bar Borders', 'B'),
-      _item('Toggle Values', 'C'),
-      _item('Toggle Icons', 'D'),
-      _item('Toggle Highlight', 'E'),
-      _item('Toggle PinchZoom', 'F'),
-      _item('Toggle Auto Scale', 'G'),
-      _item('Animate X', 'H'),
-      _item('Animate Y', 'I'),
-      _item('Animate XY', 'J'),
-      _item('Save to Gallery', 'K'),
-    ];
+          _item('View on GitHub', 'A'),
+          _item('Toggle Bar Borders', 'B'),
+          _item('Toggle Values', 'C'),
+          _item('Toggle Icons', 'D'),
+          _item('Toggle Highlight', 'E'),
+          _item('Toggle PinchZoom', 'F'),
+          _item('Toggle Auto Scale', 'G'),
+          _item('Animate X', 'H'),
+          _item('Animate Y', 'I'),
+          _item('Animate XY', 'J'),
+          _item('Save to Gallery', 'K'),
+        ];
   }
 
   @override
@@ -352,7 +356,7 @@ abstract class HorizontalBarActionState<T extends StatefulWidget> extends Action
         state.setState(() {});
         break;
       case 'D':
-      // todo icons
+        // todo icons
         break;
       case 'E':
         if (painter.getData() != null) {
@@ -386,7 +390,115 @@ abstract class HorizontalBarActionState<T extends StatefulWidget> extends Action
           ..animateXY1(2000, 2000);
         break;
       case 'K':
-      // todo save
+        // todo save
+        break;
+    }
+  }
+}
+
+abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
+  PieChart pieChart;
+  PieData pieData;
+
+  @override
+  getBuilder() {
+    return (BuildContext context) => <PopupMenuItem<String>>[
+          _item('View on GitHub', 'A'),
+          _item('Toggle Y-Values', 'B'),
+          _item('Toggle X-Values', 'C'),
+          _item('Toggle Icons', 'D'),
+          _item('Toggle Percent', 'E'),
+          _item('Toggle Minimum Angles', 'F'),
+          _item('Toggle Hole', 'G'),
+          _item('Toggle Curved Slices Cubic', 'H'),
+          _item('Draw Center Text', 'I'),
+          _item('Spin Animation', 'J'),
+          _item('Animate X', 'K'),
+          _item('Animate Y', 'L'),
+          _item('Animate XY', 'M'),
+          _item('Save to Gallery', 'N'),
+        ];
+  }
+
+  @override
+  void itemClick(String action) {
+    var state = pieChart?.getState();
+    var painter = state?.painter as PieChartPainter;
+    if (state == null || painter == null) {
+      return;
+    }
+
+    switch (action) {
+      case 'A':
+        Util.openGithub();
+        break;
+      case 'B':
+        for (IDataSet set in painter.getData().getDataSets())
+          set.setDrawValues(!set.isDrawValuesEnabled());
+        state.setState(() {});
+        break;
+      case 'C':
+        painter.mDrawEntryLabels = !painter.mDrawEntryLabels;
+        state.setState(() {});
+        break;
+      case 'D':
+        // todo icons
+        break;
+      case 'E':
+        painter.setUsePercentValues(!painter.isUsePercentValuesEnabled());
+        state.setState(() {});
+        break;
+      case 'F':
+        if (painter.mMinAngleForSlices == 0)
+          painter.mMinAngleForSlices = 36;
+        else
+          painter.mMinAngleForSlices = 0;
+        state.setState(() {});
+        break;
+      case 'G':
+        if (painter.isDrawHoleEnabled())
+          painter.setDrawHoleEnabled(false);
+        else
+          painter.setDrawHoleEnabled(true);
+        state.setState(() {});
+        break;
+      case 'H':
+        bool toSet = !painter.isDrawRoundedSlicesEnabled() ||
+            !painter.isDrawHoleEnabled();
+        painter.mDrawRoundedSlices = toSet;
+        if (toSet && !painter.isDrawHoleEnabled()) {
+          painter.setDrawHoleEnabled(true);
+        }
+        if (toSet && painter.isDrawSlicesUnderHoleEnabled()) {
+          painter.setDrawSlicesUnderHole(false);
+        }
+        state.setState(() {});
+        break;
+      case 'I':
+        painter.mDrawCenterText = !painter.mDrawCenterText;
+        state.setState(() {});
+        break;
+      case 'J':
+        //        painter.spin(1000, chart.getRotationAngle(), chart.getRotationAngle() + 360, Easing.EaseInOutCubic);
+        // todo
+        break;
+      case 'K':
+        painter.mAnimator
+          ..reset()
+          ..animateX1(1400);
+        break;
+      case 'L':
+        painter.mAnimator
+          ..reset()
+          ..animateY1(1400);
+        break;
+      case 'M':
+        painter.mAnimator
+          ..reset()
+          ..animateXY1(1400, 1400);
+        break;
+      case 'N':
+        // todo save
         break;
     }
   }
