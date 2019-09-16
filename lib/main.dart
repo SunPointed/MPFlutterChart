@@ -25,6 +25,7 @@ import 'package:mp_flutter_chart/demo/pie_chart/basic.dart';
 import 'package:mp_flutter_chart/demo/pie_chart/half_pie.dart';
 import 'package:mp_flutter_chart/demo/pie_chart/value_lines.dart';
 import 'package:mp_flutter_chart/demo/res/styles.dart';
+import 'package:mp_flutter_chart/demo/scrolling_chart/multiple.dart';
 import 'package:mp_flutter_chart/demo/scrolling_chart/view_pager.dart';
 
 import 'demo/scrolling_chart/many_bar_chart.dart';
@@ -75,7 +76,7 @@ class MyApp extends StatelessWidget {
         '/other_chart/bubble_chart': (_) => OtherChartBubble(),
         '/other_chart/candlestick': (_) => OtherChartCandlestick(),
         '/other_chart/redar_chart': (_) => OtherChartRadar(),
-        '/scrolling_chart/multiple': (_) => BarChartBasic2(),
+        '/scrolling_chart/multiple': (_) => ScrollingChartMultiple(),
         '/scrolling_chart/view_pager': (_) => ScrollingChartViewPager(),
         '/scrolling_chart/tall_bar_chart': (_) => BarChartBasic2(),
         '/scrolling_chart/many_bar_charts': (_) => ScrollingChartManyBar(),
@@ -1072,7 +1073,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 InkWell(
                     onTap: () => Navigator.of(context)
-                        .pushNamed('/scrolling_chart/mutiple'),
+                        .pushNamed('/scrolling_chart/multiple'),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
