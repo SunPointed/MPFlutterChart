@@ -108,6 +108,34 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  PopupMenuItem _item(String text, String id) {
+    return PopupMenuItem<String>(
+        value: id,
+        child: Container(
+            padding: EdgeInsets.only(top: 15.0),
+            child: Center(
+                child: Text(
+              text,
+              textDirection: TextDirection.ltr,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: ColorUtils.BLACK,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ))));
+  }
+
+  void _itemClick(String action) {
+    switch (action) {
+      case 'A':
+        break;
+      case 'B':
+        break;
+      case 'C':
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,12 +143,24 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
+              _item('View on GitHub', 'A'),
+              _item('Problem Report', 'B'),
+              _item('Developer Website', 'C'),
+            ],
+            onSelected: (String action) {
+              _itemClick(action);
+            },
+          ),
+        ],
       ),
       body: CustomScrollView(shrinkWrap: false, slivers: [
-        new SliverPadding(
+        SliverPadding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-          sliver: new SliverList(
-            delegate: new SliverChildListDelegate(
+          sliver: SliverList(
+            delegate: SliverChildListDelegate(
               <Widget>[
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 15.0),

@@ -7,6 +7,7 @@ import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_chart_painter.dart';
 
 import 'chart.dart';
@@ -100,7 +101,7 @@ class PieChart extends PieRadarChart {
   }
 
   @override
-  State<StatefulWidget> createState() {
+  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart> createChartState() {
     return PieChartState();
   }
 }

@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/bar_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/bar_chart_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/bar_chart_painter.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 
 import 'chart.dart';
 
@@ -159,7 +163,7 @@ class BarChart extends Chart {
   }
 
   @override
-  State<StatefulWidget> createState() {
+  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart> createChartState() {
     return BarChartState();
   }
 }

@@ -5,12 +5,16 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/bubble_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
+import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/bubble_chart_painter.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 
 class BubbleChart extends Chart {
   Color backgroundColor = null;
@@ -154,7 +158,7 @@ class BubbleChart extends Chart {
             unbind: unbind) {}
 
   @override
-  State<StatefulWidget> createState() {
+  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart> createChartState() {
     return BubbleChartState();
   }
 }

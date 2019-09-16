@@ -1,17 +1,25 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:mp_flutter_chart/chart/mp/chart/chart.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
+import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/line_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_line_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_form.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/limite_label_postion.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/mode.dart';
 import 'package:mp_flutter_chart/chart/mp/core/limit_line.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class LineChartBasic extends StatefulWidget {
   @override
@@ -20,7 +28,7 @@ class LineChartBasic extends StatefulWidget {
   }
 }
 
-class LineChartBasicState extends State<LineChartBasic> {
+class LineChartBasicState extends ActionState<LineChartBasic> {
   LineChart _lineChart;
   LineData _lineData;
 
@@ -36,93 +44,212 @@ class LineChartBasicState extends State<LineChartBasic> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void chartInit() {
     _initLineChart();
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Line Chart Basic")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 100,
-              child: _lineChart,
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+  }
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: _lineChart,
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _count.toDouble(),
-                                min: 0,
-                                max: 500,
-                                onChanged: (value) {
-                                  _count = value.toInt();
-                                  _initLineData(_count, _range);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 500,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initLineData(_count, _range);
+                              setState(() {});
+                            })),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _range,
-                                min: 0,
-                                max: 180,
-                                onChanged: (value) {
-                                  _range = value;
-                                  _initLineData(_count, _range);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "${_range.toInt()}",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
-                  )
+                  Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )),
                 ],
               ),
-            )
-          ],
-        ));
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _range,
+                            min: 0,
+                            max: 180,
+                            onChanged: (value) {
+                              _range = value;
+                              _initLineData(_count, _range);
+                              setState(() {});
+                            })),
+                  ),
+                  Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: Text(
+                        "${_range.toInt()}",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  @override
+  void itemClick(String action) {
+    var state = _lineChart?.getState();
+    var painter = state?.painter as LineChartPainter;
+    if (state == null || painter == null) {
+      return;
+    }
+
+    switch (action) {
+      case 'A':
+        break;
+      case 'B':
+        List<ILineDataSet> sets = painter.getData().getDataSets();
+        for (ILineDataSet iSet in sets) {
+          LineDataSet set = iSet as LineDataSet;
+          set.setDrawValues(!set.isDrawValuesEnabled());
+        }
+        state.setState(() {});
+        break;
+      case 'C':
+        // todo icons
+        break;
+      case 'D':
+        List<ILineDataSet> sets = painter.getData().getDataSets();
+
+        for (ILineDataSet iSet in sets) {
+          LineDataSet set = iSet as LineDataSet;
+          if (set.isDrawFilledEnabled())
+            set.setDrawFilled(false);
+          else
+            set.setDrawFilled(true);
+        }
+        state.setState(() {});
+        break;
+      case 'E':
+        List<ILineDataSet> sets = painter.getData().getDataSets();
+
+        for (ILineDataSet iSet in sets) {
+          LineDataSet set = iSet as LineDataSet;
+          if (set.isDrawCirclesEnabled())
+            set.setDrawCircles(false);
+          else
+            set.setDrawCircles(true);
+        }
+        state.setState(() {});
+        break;
+      case 'F':
+        List<ILineDataSet> sets = painter.getData().getDataSets();
+
+        for (ILineDataSet iSet in sets) {
+          LineDataSet set = iSet as LineDataSet;
+          set.setMode(set.getMode() == Mode.CUBIC_BEZIER
+              ? Mode.LINEAR
+              : Mode.CUBIC_BEZIER);
+        }
+        state.setState(() {});
+        break;
+      case 'G':
+        List<ILineDataSet> sets = painter.getData().getDataSets();
+
+        for (ILineDataSet iSet in sets) {
+          LineDataSet set = iSet as LineDataSet;
+          set.setMode(
+              set.getMode() == Mode.STEPPED ? Mode.LINEAR : Mode.STEPPED);
+        }
+        state.setState(() {});
+        break;
+      case 'H':
+        List<ILineDataSet> sets = painter.getData().getDataSets();
+
+        for (ILineDataSet iSet in sets) {
+          LineDataSet set = iSet as LineDataSet;
+          set.setMode(set.getMode() == Mode.HORIZONTAL_BEZIER
+              ? Mode.LINEAR
+              : Mode.HORIZONTAL_BEZIER);
+        }
+        state.setState(() {});
+        break;
+      case 'I':
+        painter.mPinchZoomEnabled = !painter.mPinchZoomEnabled;
+        state.setState(() {});
+        break;
+      case 'J':
+        painter.mAutoScaleMinMaxEnabled = !painter.mAutoScaleMinMaxEnabled;
+        state.setState(() {});
+        break;
+      case 'K':
+        if (painter.getData() != null) {
+          painter
+              .getData()
+              .setHighlightEnabled(!painter.getData().isHighlightEnabled());
+          state.setState(() {});
+        }
+        break;
+      case 'L':
+        painter.mAnimator
+          ..reset()
+          ..animateX1(2000);
+        break;
+      case 'M':
+        painter.mAnimator
+          ..reset()
+          ..animateY2(2000, Easing.EaseInCubic);
+        break;
+      case 'N':
+        painter.mAnimator
+          ..reset()
+          ..animateXY1(2000, 2000);
+        break;
+      case 'O':
+        // todo save
+        break;
+    }
+  }
+
+  @override
+  String getTitle() {
+    return "Line Chart Basic";
   }
 
   void _initLineData(int count, double range) {

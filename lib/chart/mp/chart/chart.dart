@@ -44,6 +44,20 @@ abstract class Chart extends StatefulWidget {
 
   ViewPortHandler viewPortHandler = ViewPortHandler();
 
+  ChartState _state;
+
+  ChartState getState() {
+    return _state;
+  }
+
+  ChartState createChartState();
+
+  @override
+  State createState() {
+    _state = createChartState();
+    return _state;
+  }
+
   Chart(ChartData data, InitPainterCallback initialPainterCallback,
       {Color backgroundColor = null,
       Color borderColor = null,
