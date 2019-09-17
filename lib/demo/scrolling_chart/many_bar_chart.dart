@@ -89,6 +89,12 @@ class ScrollingChartManyBarState
 
   Widget _renderItem(int index) {
     var data = _barDatas[index];
+    if (data == null) {
+      return Container(
+        child: Center(child: Text("no data")),
+        height: 200,
+      );
+    }
 
     var desc = Description();
     desc.setEnabled(false);

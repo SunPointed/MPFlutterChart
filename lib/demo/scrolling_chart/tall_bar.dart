@@ -19,7 +19,8 @@ class ScrollingChartTallBar extends StatefulWidget {
   }
 }
 
-class ScrollingChartTallBarState extends SimpleActionState<ScrollingChartTallBar> {
+class ScrollingChartTallBarState
+    extends SimpleActionState<ScrollingChartTallBar> {
   BarData _barData;
 
   var random = Random(1);
@@ -38,8 +39,7 @@ class ScrollingChartTallBarState extends SimpleActionState<ScrollingChartTallBar
   String getTitle() => "Scrolling Chart Tall Bar";
 
   @override
-  void chartInit() {
-  }
+  void chartInit() {}
 
   @override
   Widget getBody() {
@@ -88,6 +88,13 @@ class ScrollingChartTallBarState extends SimpleActionState<ScrollingChartTallBar
   }
 
   Widget _renderItem() {
+    if (_barData == null) {
+      return Container(
+        child: Center(child: Text("no data")),
+        height: 200,
+      );
+    }
+
     var desc = Description();
     desc.setEnabled(false);
     return Column(

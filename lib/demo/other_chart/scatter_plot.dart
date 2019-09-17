@@ -54,7 +54,7 @@ class OtherChartScatterPlotState extends ScatterActionState<OtherChartScatterPlo
           left: 0,
           top: 0,
           bottom: 100,
-          child: scatterChart,
+          child: scatterChart == null ? Center(child: Text("no data")) : scatterChart,
         ),
         Positioned(
           left: 0,
@@ -177,6 +177,8 @@ class OtherChartScatterPlotState extends ScatterActionState<OtherChartScatterPlo
   }
 
   void _initScatterChart() {
+    if(scatterData == null) return;
+
     var desc = Description();
     desc.setEnabled(false);
     scatterChart = ScatterChart(scatterData, (painter) {

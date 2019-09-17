@@ -50,7 +50,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
           left: 0,
           top: 0,
           bottom: 0,
-          child: _pieChart,
+          child: _pieChart == null ? Center(child: Text("no data")) : _pieChart,
         )
       ],
     );
@@ -113,6 +113,8 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
   }
 
   void _initPieChart() {
+    if (_pieData == null) return;
+
     var desc = Description();
     desc.setEnabled(false);
     _pieChart = PieChart(_pieData, (painter) {

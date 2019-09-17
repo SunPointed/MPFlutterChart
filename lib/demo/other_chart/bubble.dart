@@ -52,7 +52,7 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
           left: 0,
           top: 0,
           bottom: 100,
-          child: bubbleChart,
+          child: bubbleChart == null ? Center(child: Text("no data")): bubbleChart,
         ),
         Positioned(
           left: 0,
@@ -178,6 +178,8 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
   }
 
   void _initBubbleChart() {
+    if(bubbleData == null) return;
+
     var desc = Description();
     desc.setEnabled(false);
     bubbleChart = BubbleChart(bubbleData, (painter) {

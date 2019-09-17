@@ -39,15 +39,15 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
     _initBarData(_count, _range);
     super.initState();
   }
-  
+
   @override
   String getTitle() => "Bar Chart Stacked";
-  
+
   @override
   void chartInit() {
     _initBarChart();
   }
-  
+
   @override
   Widget getBody() {
     return Stack(
@@ -57,7 +57,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
           left: 0,
           top: 0,
           bottom: 100,
-          child: barChart,
+          child: barChart == null ? Center(child: Text("no data")) : barChart,
         ),
         Positioned(
           left: 0,
@@ -169,6 +169,10 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
   }
 
   void _initBarChart() {
+    if (barData == null) {
+      return;
+    }
+
     var desc = Description();
     desc.setEnabled(false);
     barChart = BarChart(barData, (painter) {

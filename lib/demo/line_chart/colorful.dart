@@ -57,10 +57,22 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Expanded(child: _lineCharts[0]),
-              Expanded(child: _lineCharts[1]),
-              Expanded(child: _lineCharts[2]),
-              Expanded(child: _lineCharts[3]),
+              Expanded(
+                  child: _lineCharts[0] == null
+                      ? Center(child: Text("no data"))
+                      : _lineCharts[0]),
+              Expanded(
+                  child: _lineCharts[1] == null
+                      ? Center(child: Text("no data"))
+                      : _lineCharts[1]),
+              Expanded(
+                  child: _lineCharts[2] == null
+                      ? Center(child: Text("no data"))
+                      : _lineCharts[2]),
+              Expanded(
+                  child: _lineCharts[3] == null
+                      ? Center(child: Text("no data"))
+                      : _lineCharts[3]),
             ],
           ),
         )
@@ -104,7 +116,10 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
   void _initLineChart() {
     for (int i = 0; i < _lineDatas.length; i++) {
       // add some transparency to the color with "& 0x90FFFFFF"
-      _lineCharts[i] = _setupChart(_lineDatas[i], _colors[i % _colors.length]);
+      if (_lineDatas[i] != null) {
+        _lineCharts[i] =
+            _setupChart(_lineDatas[i], _colors[i % _colors.length]);
+      }
     }
   }
 

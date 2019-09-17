@@ -55,7 +55,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
           left: 0,
           top: 0,
           bottom: 100,
-          child: pieChart,
+          child: pieChart == null ? Center(child: Text("no data")) : pieChart,
         ),
         Positioned(
           left: 0,
@@ -206,6 +206,8 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
   }
 
   void _initPieChart() {
+    if(pieData == null) return;
+
     var desc = Description();
     desc.setEnabled(false);
     pieChart = PieChart(pieData, (painter) {

@@ -46,7 +46,7 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
           left: 0,
           top: 0,
           bottom: 100,
-          child: barChart,
+          child: barChart == null ? Center(child: Text("no data")) : barChart,
         ),
         Positioned(
           left: 0,
@@ -145,6 +145,10 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
   }
 
   void _initBarChart() {
+    if(barData == null){
+      return;
+    }
+
     var desc = Description();
     desc.setEnabled(false);
     barChart = BarChart(barData, (painter) {

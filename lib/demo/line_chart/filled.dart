@@ -52,7 +52,7 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
           left: 0,
           top: 0,
           bottom: 100,
-          child: _lineChart,
+          child: _lineChart == null ? Center(child: Text("no data")) : _lineChart,
         ),
         Positioned(
           left: 0,
@@ -181,6 +181,8 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
   Color _fillColor = Color.fromARGB(150, 51, 181, 229);
 
   void _initLineChart() {
+    if(_lineData == null) return;
+
     var desc = Description();
     desc.setEnabled(false);
     _lineChart = LineChart(_lineData, (painter) {

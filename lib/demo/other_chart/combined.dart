@@ -63,7 +63,9 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
           left: 0,
           top: 0,
           bottom: 0,
-          child: combinedChart,
+          child: combinedChart == null
+              ? Center(child: Text("no data"))
+              : combinedChart,
         ),
       ],
     );
@@ -80,6 +82,8 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   }
 
   void _initCombinedChart() {
+    if (combinedData == null) return;
+
     var desc = Description();
     desc.setEnabled(false);
     combinedChart = CombinedChart(combinedData, (painter) {

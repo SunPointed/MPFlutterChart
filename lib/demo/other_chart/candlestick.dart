@@ -47,7 +47,7 @@ class OtherChartCandlestickState
           left: 0,
           top: 0,
           bottom: 100,
-          child: candlestickChart,
+          child: candlestickChart == null ? Center(child: Text("no data")) : candlestickChart,
         ),
         Positioned(
           left: 0,
@@ -165,6 +165,8 @@ class OtherChartCandlestickState
   }
 
   void _initCandleChart() {
+    if(candleData == null) return;
+
     var desc = Description();
     desc.setEnabled(false);
     candlestickChart = CandlestickChart(candleData, (painter) {

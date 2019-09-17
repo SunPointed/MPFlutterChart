@@ -54,7 +54,7 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
           left: 0,
           top: 0,
           bottom: 0,
-          child: _barChart,
+          child: _barChart == null ? Center(child: Text("no data")) : _barChart,
         ),
       ],
     );
@@ -93,6 +93,10 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
   }
 
   void _initBarChart() {
+    if(_barData == null){
+      return;
+    }
+
     var desc = Description();
     desc.setEnabled(false);
     _barChart = BarChart(_barData, (painter) {

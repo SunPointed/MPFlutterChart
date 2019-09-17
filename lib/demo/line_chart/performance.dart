@@ -49,7 +49,7 @@ class LineChartPerformanceState
           left: 0,
           top: 0,
           bottom: 100,
-          child: _lineChart,
+          child: _lineChart == null ? Center(child: Text("no data")) : _lineChart,
         ),
         Positioned(
           left: 0,
@@ -120,6 +120,8 @@ class LineChartPerformanceState
   }
 
   void _initLineChart() {
+    if(_lineData == null) return;
+
     var desc = Description();
     desc.setEnabled(false);
     _lineChart = LineChart(_lineData, (painter) {

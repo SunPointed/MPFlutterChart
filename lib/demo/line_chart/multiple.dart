@@ -88,7 +88,7 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
           left: 0,
           top: 0,
           bottom: 100,
-          child: lineChart,
+          child: lineChart == null ? Center(child: Text("no data")) : lineChart,
         ),
         Positioned(
           left: 0,
@@ -194,6 +194,8 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
   }
 
   void _initLineChart() {
+    if(lineData == null) return;
+
     var desc = Description();
     lineChart = LineChart(lineData, (painter) {
       painter.setOnChartValueSelectedListener(this);

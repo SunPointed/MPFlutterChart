@@ -50,7 +50,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
               left: 0,
               top: 0,
               bottom: 0,
-              child: radarChart,
+              child: radarChart == null ? Center(child: Text("no data")) : radarChart,
             ),
           ],
         ));
@@ -104,6 +104,8 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
   }
 
   void _initCandleChart() {
+    if(radarData == null) return;
+
     var desc = Description();
     desc.setEnabled(false);
     radarChart = RadarChart(radarData, (painter) {

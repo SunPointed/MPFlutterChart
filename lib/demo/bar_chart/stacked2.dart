@@ -25,7 +25,6 @@ class BarChartStacked2 extends StatefulWidget {
 
 class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
     implements OnChartValueSelectedListener {
-
   @override
   void initState() {
     _initBarData();
@@ -44,7 +43,7 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
           left: 0,
           top: 0,
           bottom: 0,
-          child: barChart,
+          child: barChart == null ? Center(child: Text("no data")) : barChart,
         ),
       ],
     );
@@ -100,6 +99,10 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
   }
 
   void _initBarChart() {
+    if (barData == null) {
+      return;
+    }
+
     var desc = Description();
     desc.setEnabled(false);
     barChart = HorizontalBarChart(barData, (painter) {
