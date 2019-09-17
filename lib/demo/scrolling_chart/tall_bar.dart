@@ -9,6 +9,7 @@ import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 import 'package:mp_flutter_chart/demo/util.dart';
 
 class ScrollingChartTallBar extends StatefulWidget {
@@ -18,7 +19,7 @@ class ScrollingChartTallBar extends StatefulWidget {
   }
 }
 
-class ScrollingChartTallBarState extends State<ScrollingChartTallBar> {
+class ScrollingChartTallBarState extends SimpleActionState<ScrollingChartTallBar> {
   BarData _barData;
 
   var random = Random(1);
@@ -34,54 +35,56 @@ class ScrollingChartTallBarState extends State<ScrollingChartTallBar> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Scrolling Chart Tall Bar")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 0,
-              child: Listener(
-                onPointerDown: (e) {
-                  _curX = e.localPosition.dx;
-                  _preTime = Util.currentTimeMillis();
-                },
-                onPointerMove: (e) {
-                  if (_preTime + 500 < Util.currentTimeMillis()) {
-                    if ((_curX - e.localPosition.dx) < 5) {
-                      _isParentMove = false;
-                      if (mounted) {
-                        setState(() {});
-                      }
-                    }
+  String getTitle() => "Scrolling Chart Tall Bar";
+
+  @override
+  void chartInit() {
+  }
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 0,
+          child: Listener(
+            onPointerDown: (e) {
+              _curX = e.localPosition.dx;
+              _preTime = Util.currentTimeMillis();
+            },
+            onPointerMove: (e) {
+              if (_preTime + 500 < Util.currentTimeMillis()) {
+                if ((_curX - e.localPosition.dx) < 5) {
+                  _isParentMove = false;
+                  if (mounted) {
+                    setState(() {});
                   }
+                }
+              }
+            },
+            onPointerUp: (e) {
+              if (!_isParentMove) {
+                _isParentMove = true;
+                if (mounted) {
+                  setState(() {});
+                }
+              }
+            },
+            child: ListView.builder(
+                itemCount: 1,
+                itemBuilder: (context, index) {
+                  return _renderItem();
                 },
-                onPointerUp: (e) {
-                  if (!_isParentMove) {
-                    _isParentMove = true;
-                    if (mounted) {
-                      setState(() {});
-                    }
-                  }
-                },
-                child: ListView.builder(
-                    itemCount: 1,
-                    itemBuilder: (context, index) {
-                      return _renderItem();
-                    },
-                    physics: _isParentMove
-                        ? PageScrollPhysics()
-                        : NeverScrollableScrollPhysics()),
-              ),
-            ),
-          ],
-        ));
+                physics: _isParentMove
+                    ? PageScrollPhysics()
+                    : NeverScrollableScrollPhysics()),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _renderItem() {

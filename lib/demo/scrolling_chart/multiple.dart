@@ -23,6 +23,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.d
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/percent_formatter.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 import 'package:mp_flutter_chart/demo/util.dart';
 
 class ScrollingChartMultiple extends StatefulWidget {
@@ -32,7 +33,8 @@ class ScrollingChartMultiple extends StatefulWidget {
   }
 }
 
-class ScrollingChartMultipleState extends State<ScrollingChartMultiple> {
+class ScrollingChartMultipleState
+    extends SimpleActionState<ScrollingChartMultiple> {
   List<ChartData> _chartDatas = List();
 
   var random = Random(1);
@@ -48,54 +50,55 @@ class ScrollingChartMultipleState extends State<ScrollingChartMultiple> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Scrolling Chart Multiple")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 0,
-              child: Listener(
-                onPointerDown: (e) {
-                  _curX = e.localPosition.dx;
-                  _preTime = Util.currentTimeMillis();
-                },
-                onPointerMove: (e) {
-                  if (_preTime + 500 < Util.currentTimeMillis()) {
-                    if ((_curX - e.localPosition.dx) < 5) {
-                      _isParentMove = false;
-                      if (mounted) {
-                        setState(() {});
-                      }
-                    }
+  String getTitle() => "Scrolling Chart Multiple";
+
+  @override
+  void chartInit() {}
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 0,
+          child: Listener(
+            onPointerDown: (e) {
+              _curX = e.localPosition.dx;
+              _preTime = Util.currentTimeMillis();
+            },
+            onPointerMove: (e) {
+              if (_preTime + 500 < Util.currentTimeMillis()) {
+                if ((_curX - e.localPosition.dx) < 5) {
+                  _isParentMove = false;
+                  if (mounted) {
+                    setState(() {});
                   }
+                }
+              }
+            },
+            onPointerUp: (e) {
+              if (!_isParentMove) {
+                _isParentMove = true;
+                if (mounted) {
+                  setState(() {});
+                }
+              }
+            },
+            child: ListView.builder(
+                itemCount: _chartDatas.length,
+                itemBuilder: (context, index) {
+                  return _renderItem(index);
                 },
-                onPointerUp: (e) {
-                  if (!_isParentMove) {
-                    _isParentMove = true;
-                    if (mounted) {
-                      setState(() {});
-                    }
-                  }
-                },
-                child: ListView.builder(
-                    itemCount: _chartDatas.length,
-                    itemBuilder: (context, index) {
-                      return _renderItem(index);
-                    },
-                    physics: _isParentMove
-                        ? PageScrollPhysics()
-                        : NeverScrollableScrollPhysics()),
-              ),
-            ),
-          ],
-        ));
+                physics: _isParentMove
+                    ? PageScrollPhysics()
+                    : NeverScrollableScrollPhysics()),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _renderItem(int index) {
