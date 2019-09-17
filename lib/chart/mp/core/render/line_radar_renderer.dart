@@ -47,7 +47,7 @@ abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
     if (clipPathSupported()) {
       c.save();
       c.clipPath(filledPath);
-      c.drawColor(Color(color), BlendMode.colorDodge);
+      c.drawColor(Color(color), BlendMode.srcOver);
       c.restore();
     } else {
       // save
