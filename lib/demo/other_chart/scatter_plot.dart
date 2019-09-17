@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/scatter_chart.dart';
+import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/scatter_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_scatter_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/scatter_data_set.dart';
@@ -14,9 +15,8 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/scatter_shape.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/i_shape_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
-import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class OtherChartScatterPlot extends StatefulWidget {
   @override
@@ -25,13 +25,9 @@ class OtherChartScatterPlot extends StatefulWidget {
   }
 }
 
-class OtherChartScatterPlotState extends State<OtherChartScatterPlot>
+class OtherChartScatterPlotState extends ScatterActionState<OtherChartScatterPlot>
     implements OnChartValueSelectedListener {
-  ScatterChart _scatterChart;
-  ScatterData _scatterData;
-
   var random = Random(1);
-
   int _count = 45;
   double _range = 100.0;
 
@@ -42,93 +38,95 @@ class OtherChartScatterPlotState extends State<OtherChartScatterPlot>
   }
 
   @override
-  Widget build(BuildContext context) {
+  String getTitle() => "Other Chart Scatter Plot";
+
+  @override
+  void chartInit() {
     _initScatterChart();
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Other Chart Scatter Plot")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 100,
-              child: _scatterChart,
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+  }
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: scatterChart,
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _count.toDouble(),
-                                min: 0,
-                                max: 500,
-                                onChanged: (value) {
-                                  _count = value.toInt();
-                                  _initScatterData(_count, _range);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 500,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initScatterData(_count, _range);
+                              setState(() {});
+                            })),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _range,
-                                min: 0,
-                                max: 200,
-                                onChanged: (value) {
-                                  _range = value;
-                                  _initScatterData(_count, _range);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "${_range.toInt()}",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
-                  )
+                  Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )),
                 ],
               ),
-            )
-          ],
-        ));
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _range,
+                            min: 0,
+                            max: 200,
+                            onChanged: (value) {
+                              _range = value;
+                              _initScatterData(_count, _range);
+                              setState(() {});
+                            })),
+                  ),
+                  Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: Text(
+                        "${_range.toInt()}",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   void _initScatterData(int count, double range) {
@@ -174,14 +172,14 @@ class OtherChartScatterPlotState extends State<OtherChartScatterPlot>
     dataSets.add(set3);
 
     // create a data object with the data sets
-    _scatterData = ScatterData.fromList(dataSets);
-//    _scatterData.setValueTypeface(tfLight);
+    scatterData = ScatterData.fromList(dataSets);
+//    scatterData.setValueTypeface(tfLight);
   }
 
   void _initScatterChart() {
     var desc = Description();
     desc.setEnabled(false);
-    _scatterChart = ScatterChart(_scatterData, (painter) {
+    scatterChart = ScatterChart(scatterData, (painter) {
       painter..setOnChartValueSelectedListener(this);
 
       painter.mLegend

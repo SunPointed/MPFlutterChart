@@ -25,9 +25,9 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.d
 import 'package:mp_flutter_chart/chart/mp/core/enums/mode.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/combined_chart_painter.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class OtherChartCombined extends StatefulWidget {
   @override
@@ -36,9 +36,7 @@ class OtherChartCombined extends StatefulWidget {
   }
 }
 
-class OtherChartCombinedState extends State<OtherChartCombined> {
-  CombinedChart _combinedChart;
-  CombinedData _combinedData;
+class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   int _count = 12;
   var random = Random(1);
 
@@ -49,40 +47,42 @@ class OtherChartCombinedState extends State<OtherChartCombined> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  String getTitle() => "Other Chart Combined";
+
+  @override
+  void chartInit() {
     _initCombinedChart();
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Other Chart Combined")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 0,
-              child: _combinedChart,
-            ),
-          ],
-        ));
+  }
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 0,
+          child: combinedChart,
+        ),
+      ],
+    );
   }
 
   void _initCombinedData() {
-    _combinedData = CombinedData();
-    _combinedData.setData1(generateLineData());
-    _combinedData.setData2(generateBarData());
-    _combinedData.setData5(generateBubbleData());
-    _combinedData.setData3(generateScatterData());
-    _combinedData.setData4(generateCandleData());
+    combinedData = CombinedData();
+    combinedData.setData1(generateLineData());
+    combinedData.setData2(generateBarData());
+    combinedData.setData5(generateBubbleData());
+    combinedData.setData3(generateScatterData());
+    combinedData.setData4(generateCandleData());
 //    data.setValueTypeface(tfLight);
   }
 
   void _initCombinedChart() {
     var desc = Description();
     desc.setEnabled(false);
-    _combinedChart = CombinedChart(_combinedData, (painter) {
+    combinedChart = CombinedChart(combinedData, (painter) {
       painter
         ..setDrawOrder(List()
           ..add(DrawOrder.BAR)
@@ -112,7 +112,7 @@ class OtherChartCombinedState extends State<OtherChartCombined> {
         ..setGranularity(1)
         ..setValueFormatter(A())
         ..setAxisMaximum(
-            _combinedData == null ? 0 : _combinedData.getXMax() + 0.25);
+            combinedData == null ? 0 : combinedData.getXMax() + 0.25);
     },
         drawGridBackground: false,
         drawBarShadow: false,

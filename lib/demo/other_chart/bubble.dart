@@ -16,6 +16,7 @@ import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class OtherChartBubble extends StatefulWidget {
   @override
@@ -24,13 +25,9 @@ class OtherChartBubble extends StatefulWidget {
   }
 }
 
-class OtherChartBubbleState extends State<OtherChartBubble>
+class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
     implements OnChartValueSelectedListener {
-  BubbleChart _bubbleChart;
-  BubbleData _bubbleData;
-
   var random = Random(1);
-
   int _count = 10;
   double _range = 50.0;
 
@@ -41,93 +38,93 @@ class OtherChartBubbleState extends State<OtherChartBubble>
   }
 
   @override
-  Widget build(BuildContext context) {
-    _initBubbleChart();
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Other Chart Bubble")),
-        body: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 100,
-              child: _bubbleChart,
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
+  String getTitle() => "Other Chart Bubble";
+
+  @override
+  void chartInit() {_initBubbleChart();}
+
+  @override
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          right: 0,
+          left: 0,
+          top: 0,
+          bottom: 100,
+          child: bubbleChart,
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _count.toDouble(),
-                                min: 0,
-                                max: 100,
-                                onChanged: (value) {
-                                  _count = value.toInt();
-                                  _initBubbleData(_count, _range);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "$_count",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _count.toDouble(),
+                            min: 0,
+                            max: 100,
+                            onChanged: (value) {
+                              _count = value.toInt();
+                              _initBubbleData(_count, _range);
+                              setState(() {});
+                            })),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                            child: Slider(
-                                value: _range,
-                                min: 0,
-                                max: 200,
-                                onChanged: (value) {
-                                  _range = value;
-                                  _initBubbleData(_count, _range);
-                                  setState(() {});
-                                })),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text(
-                            "${_range.toInt()}",
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorUtils.BLACK,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ],
-                  )
+                  Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: Text(
+                        "$_count",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )),
                 ],
               ),
-            )
-          ],
-        ));
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                        child: Slider(
+                            value: _range,
+                            min: 0,
+                            max: 200,
+                            onChanged: (value) {
+                              _range = value;
+                              _initBubbleData(_count, _range);
+                              setState(() {});
+                            })),
+                  ),
+                  Container(
+                      padding: EdgeInsets.only(right: 15.0),
+                      child: Text(
+                        "${_range.toInt()}",
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColorUtils.BLACK,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   void _initBubbleData(int count, double range) {
@@ -172,18 +169,18 @@ class OtherChartBubbleState extends State<OtherChartBubble>
     dataSets.add(set3);
 
     // create a data object with the data sets
-    _bubbleData = BubbleData.fromList(dataSets);
-    _bubbleData.setDrawValues(false);
-//    _bubbleData.setValueTypeface(tfLight);
-    _bubbleData.setValueTextSize(8);
-    _bubbleData.setValueTextColor(ColorUtils.WHITE);
-    _bubbleData.setHighlightCircleWidth(1.5);
+    bubbleData = BubbleData.fromList(dataSets);
+    bubbleData.setDrawValues(false);
+//    bubbleData.setValueTypeface(tfLight);
+    bubbleData.setValueTextSize(8);
+    bubbleData.setValueTextColor(ColorUtils.WHITE);
+    bubbleData.setHighlightCircleWidth(1.5);
   }
 
   void _initBubbleChart() {
     var desc = Description();
     desc.setEnabled(false);
-    _bubbleChart = BubbleChart(_bubbleData, (painter) {
+    bubbleChart = BubbleChart(bubbleData, (painter) {
       painter..setOnChartValueSelectedListener(this);
 
       painter.mLegend

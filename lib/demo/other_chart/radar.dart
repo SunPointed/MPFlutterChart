@@ -12,8 +12,8 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
+import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class OtherChartRadar extends StatefulWidget {
   @override
@@ -22,10 +22,7 @@ class OtherChartRadar extends StatefulWidget {
   }
 }
 
-class OtherChartRadarState extends State<OtherChartRadar> {
-  RadarChart _radarChart;
-  RadarData _radarData;
-
+class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
   var random = Random(1);
 
   @override
@@ -35,26 +32,28 @@ class OtherChartRadarState extends State<OtherChartRadar> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  String getTitle() => "Other Chart Radar";
+
+  @override
+  void chartInit() {
     _initCandleChart();
-    return Scaffold(
-        appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text("Other Chart Radar")),
-        body: Container(
-            color: Color.fromARGB(255, 60, 65, 82),
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  right: 0,
-                  left: 0,
-                  top: 0,
-                  bottom: 0,
-                  child: _radarChart,
-                ),
-              ],
-            )));
+  }
+
+  @override
+  Widget getBody() {
+    return Container(
+        color: Color.fromARGB(255, 60, 65, 82),
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              right: 0,
+              left: 0,
+              top: 0,
+              bottom: 0,
+              child: radarChart,
+            ),
+          ],
+        ));
   }
 
   void _initRadarData() {
@@ -97,17 +96,17 @@ class OtherChartRadarState extends State<OtherChartRadar> {
     sets.add(set1);
     sets.add(set2);
 
-    _radarData = RadarData.fromList(sets);
-//    _radarData.setValueTypeface(tfLight);
-    _radarData.setValueTextSize(8);
-    _radarData.setDrawValues(false);
-    _radarData.setValueTextColor(ColorUtils.WHITE);
+    radarData = RadarData.fromList(sets);
+//    radarData.setValueTypeface(tfLight);
+    radarData.setValueTextSize(8);
+    radarData.setDrawValues(false);
+    radarData.setValueTextColor(ColorUtils.WHITE);
   }
 
   void _initCandleChart() {
     var desc = Description();
     desc.setEnabled(false);
-    _radarChart = RadarChart(_radarData, (painter) {
+    radarChart = RadarChart(radarData, (painter) {
       painter
         ..setWebColor(ColorUtils.LTGRAY)
         ..setWebColorInner(ColorUtils.LTGRAY);
