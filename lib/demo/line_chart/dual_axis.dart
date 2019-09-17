@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
@@ -13,6 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
 
@@ -138,26 +140,30 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
 //        .getAxisDependency(), 500);
   }
 
-  void _initLineData(int count, double range) {
+  void _initLineData(int count, double range) async {
+    List<ui.Image> imgs = List(3);
+    imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
+    imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
+    imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
     List<Entry> values1 = List();
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * (range / 2.0)) + 50;
-      values1.add(Entry(x: i.toDouble(), y: val));
+      values1.add(Entry(x: i.toDouble(), y: val, icon: imgs[0]));
     }
 
     List<Entry> values2 = List();
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 450;
-      values2.add(new Entry(x: i.toDouble(), y: val));
+      values2.add(new Entry(x: i.toDouble(), y: val, icon: imgs[1]));
     }
 
     List<Entry> values3 = List();
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 500;
-      values3.add(new Entry(x: i.toDouble(), y: val));
+      values3.add(new Entry(x: i.toDouble(), y: val, icon: imgs[2]));
     }
 
     LineDataSet set1, set2, set3;
@@ -208,10 +214,12 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
     lineData = LineData.fromList(List()..add(set1)..add(set2)..add(set3));
     lineData.setValueTextColor(ColorUtils.WHITE);
     lineData.setValueTextSize(9);
+
+    setState(() {});
   }
 
   void _initLineChart() {
-    if(lineData == null) return;
+    if (lineData == null) return;
 
     var desc = Description();
     desc.setEnabled(false);

@@ -47,7 +47,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   bool mDrawValues = true;
 
   /// if true, y-icons are drawn on the chart
-  bool mDrawIcons = true;
+  bool mDrawIcons = false;
 
   /// the offset for drawing icons (in dp)
   MPPointF mIconsOffset = MPPointF(0, 0);

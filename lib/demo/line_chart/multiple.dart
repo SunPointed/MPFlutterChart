@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/line_data.dart';
@@ -11,6 +12,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
@@ -163,7 +165,11 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
     );
   }
 
-  void _initLineData(int count, double range) {
+  void _initLineData(int count, double range) async {
+    List<ui.Image> imgs = List(3);
+    imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
+    imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
+    imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
     List<ILineDataSet> dataSets = List();
 
     for (int z = 0; z < 3; z++) {
@@ -171,7 +177,7 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
 
       for (int i = 0; i < count; i++) {
         double val = (random.nextDouble() * range) + 3;
-        values.add(new Entry(x: i.toDouble(), y: val));
+        values.add(new Entry(x: i.toDouble(), y: val, icon: imgs[z]));
       }
 
       LineDataSet d = new LineDataSet(values, "DataSet ${z + 1}");
@@ -191,10 +197,12 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
     (dataSets[0] as LineDataSet).setCircleColors(ColorUtils.VORDIPLOM_COLORS);
 
     lineData = LineData.fromList(dataSets);
+
+    setState(() {});
   }
 
   void _initLineChart() {
-    if(lineData == null) return;
+    if (lineData == null) return;
 
     var desc = Description();
     lineChart = LineChart(lineData, (painter) {

@@ -148,7 +148,7 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     // create a dataset and give it a type
     set1 = LineDataSet(values, "DataSet 1");
 
-    set1.setDrawIcons(true);
+    set1.setDrawIcons(false);
 
     // draw dashed line
 //      set1.enableDashedLine(10, 5, 0);

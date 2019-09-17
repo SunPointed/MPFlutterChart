@@ -11,6 +11,7 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/mode.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/y_axis_label_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/fill_formatter/i_fill_formatter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
@@ -125,12 +126,13 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
     );
   }
 
-  void _initLineData(int count, double range) {
+  void _initLineData(int count, double range) async {
+    var img = await ImageLoader.loadImage('assets/img/star.png');
     List<Entry> values = List();
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * (range + 1)) + 20;
-      values.add(Entry(x: i.toDouble(), y: val));
+      values.add(Entry(x: i.toDouble(), y: val, icon: img));
     }
 
     LineDataSet set1;
@@ -156,10 +158,12 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
 //    ..setValueTypeface(tfLight)
       ..setValueTextSize(9)
       ..setDrawValues(false);
+
+    setState(() {});
   }
 
   void _initLineChart() {
-    if(lineData == null) return;
+    if (lineData == null) return;
 
     var desc = Description();
     desc.setEnabled(false);

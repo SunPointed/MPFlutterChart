@@ -8,6 +8,7 @@ import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_form.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
@@ -129,13 +130,14 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
   @override
   void onValueSelected(Entry e, Highlight h) {}
 
-  void _initLineData(int count, double range) {
+  void _initLineData(int count, double range) async {
+    var img = await ImageLoader.loadImage('assets/img/star.png');
     List<Entry> entries = List();
 
     for (int i = 0; i < count; i++) {
       double xVal = (random.nextDouble() * range);
       double yVal = (random.nextDouble() * range);
-      entries.add(Entry(x: xVal.toDouble(), y: yVal));
+      entries.add(Entry(x: xVal.toDouble(), y: yVal, icon: img));
     }
 
     // sort by x-value
@@ -159,10 +161,12 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
 
     // create a data object with the data sets
     lineData = LineData.fromList(List()..add(set1));
+
+    setState(() {});
   }
 
   void _initLineChart() {
-    if(lineData == null) return;
+    if (lineData == null) return;
 
     var desc = Description();
     desc.setEnabled(false);
