@@ -151,7 +151,12 @@ abstract class LineActionState<T extends StatefulWidget>
         state.setState(() {});
         break;
       case 'C':
-        // todo icons
+        List<ILineDataSet> sets = painter.getData().getDataSets();
+        for (ILineDataSet iSet in sets) {
+          LineDataSet set = iSet as LineDataSet;
+          set.setDrawIcons(!set.isDrawIconsEnabled());
+        }
+        state.setState(() {});
         break;
       case 'D':
         List<ILineDataSet> sets = painter.getData().getDataSets();

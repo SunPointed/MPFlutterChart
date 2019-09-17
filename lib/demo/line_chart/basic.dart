@@ -14,6 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_form.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/limite_label_postion.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/mode.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/limit_line.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
@@ -133,12 +134,13 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     return "Line Chart Basic";
   }
 
-  void _initLineData(int count, double range) {
+  void _initLineData(int count, double range) async {
+    var img = await ImageLoader.loadImage('assets/img/star.png');
     List<Entry> values = List();
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) - 30;
-      values.add(Entry(x: i.toDouble(), y: val));
+      values.add(Entry(x: i.toDouble(), y: val, icon: img));
     }
 
     LineDataSet set1;
@@ -146,7 +148,7 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     // create a dataset and give it a type
     set1 = LineDataSet(values, "DataSet 1");
 
-    set1.setDrawIcons(false);
+    set1.setDrawIcons(true);
 
     // draw dashed line
 //      set1.enableDashedLine(10, 5, 0);
@@ -181,13 +183,14 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     // set color of filled area
     set1.setFillColor(ColorUtils.FADE_RED_END);
 
-    set1.setDrawIcons(true);
     List<ILineDataSet> dataSets = List();
     dataSets.add(set1); // add the data sets
 
     // create a data object with the data sets
     lineData = LineData.fromList(dataSets);
 //    lineData.setValueTypeface(TextStyle(fontSize: Utils.convertDpToPixel(9)));
+
+    setState(() {});
   }
 
   void _initLineChart() {
