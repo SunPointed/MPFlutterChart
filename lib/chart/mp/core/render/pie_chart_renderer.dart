@@ -11,6 +11,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/value_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/canvas_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
@@ -617,21 +618,14 @@ class PieChartRenderer extends DataRenderer {
           }
         }
 
-//        if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
-//          Image icon = entry.mIcon;
-//
-//          double x = (labelRadius + iconsOffset.y) * sliceXBase + center.x;
-//          double y = (labelRadius + iconsOffset.y) * sliceYBase + center.y;
-//          y += iconsOffset.x;
+        if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
+          double x = (labelRadius + iconsOffset.y) * sliceXBase + center.x;
+          double y = (labelRadius + iconsOffset.y) * sliceYBase + center.y;
+          y += iconsOffset.x;
 
-//          Utils.drawImage( todo
-//              c,
-//              icon,
-//              (int)x,
-//              (int)y,
-//              icon.getIntrinsicWidth(),
-//              icon.getIntrinsicHeight());
-//        }
+          CanvasUtils.drawImage(
+              c, Offset(x, y), entry.mIcon, Size(15, 15), mDrawPaint);
+        }
 
         xIndex++;
       }
