@@ -13,6 +13,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
 
@@ -54,35 +55,36 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
     _initBarChart();
   }
 
-  void _initBarData() {
+  void _initBarData() async {
+    var img = await ImageLoader.loadImage('assets/img/star.png');
     // IMPORTANT: When using negative values in stacked bars, always make sure the negative values are in the array first
     List<BarEntry> values = List();
-    values.add(
-        BarEntry.fromListYVals(x: 5, vals: List<double>()..add(-10)..add(10)));
-    values.add(
-        BarEntry.fromListYVals(x: 15, vals: List<double>()..add(-12)..add(13)));
-    values.add(
-        BarEntry.fromListYVals(x: 25, vals: List<double>()..add(-15)..add(15)));
-    values.add(
-        BarEntry.fromListYVals(x: 35, vals: List<double>()..add(-17)..add(17)));
-    values.add(
-        BarEntry.fromListYVals(x: 45, vals: List<double>()..add(-19)..add(20)));
-    values.add(
-        BarEntry.fromListYVals(x: 45, vals: List<double>()..add(-19)..add(20)
+    values.add(BarEntry.fromListYVals(
+        x: 5, vals: List<double>()..add(-10)..add(10), icon: img));
+    values.add(BarEntry.fromListYVals(
+        x: 15, vals: List<double>()..add(-12)..add(13), icon: img));
+    values.add(BarEntry.fromListYVals(
+        x: 25, vals: List<double>()..add(-15)..add(15), icon: img));
+    values.add(BarEntry.fromListYVals(
+        x: 35, vals: List<double>()..add(-17)..add(17), icon: img));
+    values.add(BarEntry.fromListYVals(
+        x: 45, vals: List<double>()..add(-19)..add(20), icon: img));
+    values.add(BarEntry.fromListYVals(
+        x: 45, vals: List<double>()..add(-19)..add(20), icon: img
 //        getResources().getDrawable(R.drawable.star)
-            ));
-    values.add(
-        BarEntry.fromListYVals(x: 55, vals: List<double>()..add(-19)..add(19)));
-    values.add(
-        BarEntry.fromListYVals(x: 65, vals: List<double>()..add(-16)..add(16)));
-    values.add(
-        BarEntry.fromListYVals(x: 75, vals: List<double>()..add(-13)..add(14)));
-    values.add(
-        BarEntry.fromListYVals(x: 85, vals: List<double>()..add(-10)..add(11)));
-    values.add(
-        BarEntry.fromListYVals(x: 95, vals: List<double>()..add(-5)..add(6)));
-    values.add(
-        BarEntry.fromListYVals(x: 105, vals: List<double>()..add(-1)..add(2)));
+        ));
+    values.add(BarEntry.fromListYVals(
+        x: 55, vals: List<double>()..add(-19)..add(19), icon: img));
+    values.add(BarEntry.fromListYVals(
+        x: 65, vals: List<double>()..add(-16)..add(16), icon: img));
+    values.add(BarEntry.fromListYVals(
+        x: 75, vals: List<double>()..add(-13)..add(14), icon: img));
+    values.add(BarEntry.fromListYVals(
+        x: 85, vals: List<double>()..add(-10)..add(11), icon: img));
+    values.add(BarEntry.fromListYVals(
+        x: 95, vals: List<double>()..add(-5)..add(6), icon: img));
+    values.add(BarEntry.fromListYVals(
+        x: 105, vals: List<double>()..add(-1)..add(2), icon: img));
 
     BarDataSet set = BarDataSet(values, "Age Distribution");
     set.setDrawIcons(false);
@@ -96,6 +98,8 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
 
     barData = BarData(List()..add(set));
     barData.setBarWidth(8.5);
+
+    setState(() {});
   }
 
   void _initBarChart() {

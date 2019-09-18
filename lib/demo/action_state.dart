@@ -297,7 +297,12 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
         state.setState(() {});
         break;
       case 'D':
-        // todo icons
+        List<IBarDataSet> sets = painter.getData().getDataSets();
+        for (IBarDataSet iSet in sets) {
+          BarDataSet set = iSet as BarDataSet;
+          set.setDrawIcons(!set.isDrawIconsEnabled());
+        }
+        state.setState(() {});
         break;
       case 'E':
         if (painter.getData() != null) {
@@ -383,7 +388,12 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
         state.setState(() {});
         break;
       case 'D':
-        // todo icons
+        List<IBarDataSet> sets = painter.getData().getDataSets();
+        for (IBarDataSet iSet in sets) {
+          BarDataSet set = iSet as BarDataSet;
+          set.setDrawIcons(!set.isDrawIconsEnabled());
+        }
+        state.setState(() {});
         break;
       case 'E':
         if (painter.getData() != null) {

@@ -12,6 +12,7 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/bar_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/canvas_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
@@ -207,25 +208,17 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
                 y,
                 dataSet.getValueTextColor2(j ~/ 2));
           }
-//todo
-//            if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
-//              Drawable icon = entry.getIcon();
-//
-//              double px = buffer.buffer[j + 2] +
-//                  (val >= 0 ? posOffset : negOffset);
-//              double py = y;
-//
-//              px += iconsOffset.x;
-//              py += iconsOffset.y;
-//
-//              Utils.drawImage(
-//                  c,
-//                  icon,
-//                  (int)px,
-//                  (int)py,
-//                  icon.getIntrinsicWidth(),
-//                  icon.getIntrinsicHeight());
-//            }
+          if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
+            double px =
+                buffer.buffer[j + 2] + (val >= 0 ? posOffset : negOffset);
+            double py = y;
+
+            px += iconsOffset.x;
+            py += iconsOffset.y;
+
+            CanvasUtils.drawImage(
+                c, Offset(px, py), entry.mIcon, Size(15, 15), mDrawPaint);
+          }
         }
 
         // if each value of a potential stack should be drawn
@@ -280,25 +273,17 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
                   buffer.buffer[bufferIndex + 1],
                   color);
             }
-//todo
-//              if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
-//                Drawable icon = entry.getIcon();
-//
-//                double px = buffer.buffer[bufferIndex + 2]
-//                    + (entry.getY() >= 0 ? posOffset : negOffset);
-//                double py = buffer.buffer[bufferIndex + 1];
-//
-//                px += iconsOffset.x;
-//                py += iconsOffset.y;
-//
-//                Utils.drawImage(
-//                    c,
-//                    icon,
-//                    (int)px,
-//                    (int)py,
-//                    icon.getIntrinsicWidth(),
-//                    icon.getIntrinsicHeight());
-//              }
+            if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
+              double px = buffer.buffer[bufferIndex + 2] +
+                  (entry.y >= 0 ? posOffset : negOffset);
+              double py = buffer.buffer[bufferIndex + 1];
+
+              px += iconsOffset.x;
+              py += iconsOffset.y;
+
+              CanvasUtils.drawImage(
+                  c, Offset(px, py), entry.mIcon, Size(15, 15), mDrawPaint);
+            }
           } else {
             List<double> transformed = List(vals.length * 2);
 
@@ -361,18 +346,15 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
               if (dataSet.isDrawValuesEnabled()) {
                 drawValue(c, formattedValue, x, y, color);
               }
-//todo
-//                if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
-//                  Drawable icon = entry.getIcon();
-//
-//                  Utils.drawImage(
-//                      c,
-//                      icon,
-//                      (int)(x + iconsOffset.x),
-//                      (int)(y + iconsOffset.y),
-//                      icon.getIntrinsicWidth(),
-//                      icon.getIntrinsicHeight());
-//                }
+
+              if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
+                CanvasUtils.drawImage(
+                    c,
+                    Offset(x + iconsOffset.x, y + iconsOffset.y),
+                    entry.mIcon,
+                    Size(15, 15),
+                    mDrawPaint);
+              }
             }
           }
 

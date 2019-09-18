@@ -15,6 +15,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/my_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/stacked_value_formatter.dart';
@@ -132,7 +133,8 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
     );
   }
 
-  void _initBarData(int count, double range) {
+  void _initBarData(int count, double range) async {
+    var img = await ImageLoader.loadImage('assets/img/star.png');
     List<BarEntry> values = List();
 
     for (int i = 0; i < count; i++) {
@@ -142,7 +144,9 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
       double val3 = (random.nextDouble() * mul) + mul / 3;
 
       values.add(BarEntry.fromListYVals(
-          x: i.toDouble(), vals: List()..add(val1)..add(val2)..add(val3)));
+          x: i.toDouble(),
+          vals: List()..add(val1)..add(val2)..add(val3),
+          icon: img));
     }
 
     BarDataSet set1;
@@ -159,6 +163,8 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
     barData = BarData(dataSets);
     barData.setValueFormatter(StackedValueFormatter(false, "", 1));
     barData.setValueTextColor(ColorUtils.WHITE);
+
+    setState(() {});
   }
 
   List<Color> _getColors() {

@@ -1,10 +1,9 @@
 import 'dart:math';
 
-import 'package:mp_flutter_chart/chart/mp/chart/chart.dart';
-import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/bar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/color/gradient_color.dart';
+import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/bar_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_bar_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/bar_data_set.dart';
@@ -17,11 +16,11 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.d
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/y_axis_label_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/day_axis_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/my_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class BarChartBasic extends StatefulWidget {
@@ -137,20 +136,16 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     return "Bar Chart Basic";
   }
 
-  void _initBarData(int count, double range) {
+  void _initBarData(int count, double range) async {
+    var img = await ImageLoader.loadImage('assets/img/star.png');
     double start = 1;
 
     List<BarEntry> values = List();
 
     for (int i = start.toInt(); i < start + count; i++) {
       double val = (random.nextDouble() * (range + 1));
-// todo
-//      if (random.nextDouble() * 100 < 25) {
-//        values.add( BarEntry(x:i.toDouble(), y:val, getResources().getDrawable(R.drawable.star)));
-//      } else {
-//        values.add( BarEntry(x:i.toDouble(), y:val));
-//      }
-      values.add(BarEntry(x: i.toDouble(), y: val));
+
+      values.add(BarEntry(x: i.toDouble(), y: val, icon: img));
     }
 
     BarDataSet set1;
@@ -192,10 +187,12 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     barData.setValueTextSize(10);
 //    barData.setValueTypeface(tfLight);
     barData.setBarWidth(0.9);
+
+    setState(() {});
   }
 
   void _initBarChart() {
-    if(barData == null){
+    if (barData == null) {
       return;
     }
 

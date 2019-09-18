@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui' as ui;
 
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/large_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
@@ -132,7 +134,11 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
   int startYear;
   int endYear;
 
-  void _initBarData(int count, double range) {
+  void _initBarData(int count, double range) async {
+    List<ui.Image> imgs = List(3);
+    imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
+    imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
+    imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
     groupCount = count + 1;
     startYear = 1980;
     endYear = startYear + groupCount;
@@ -148,11 +154,17 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
 
     for (int i = startYear; i < endYear; i++) {
       values1.add(BarEntry(
-          x: i.toDouble(), y: (random.nextDouble() * randomMultiplier)));
+          x: i.toDouble(),
+          y: (random.nextDouble() * randomMultiplier),
+          icon: imgs[0]));
       values2.add(BarEntry(
-          x: i.toDouble(), y: (random.nextDouble() * randomMultiplier)));
+          x: i.toDouble(),
+          y: (random.nextDouble() * randomMultiplier),
+          icon: imgs[1]));
       values3.add(BarEntry(
-          x: i.toDouble(), y: (random.nextDouble() * randomMultiplier)));
+          x: i.toDouble(),
+          y: (random.nextDouble() * randomMultiplier),
+          icon: imgs[2]));
       values4.add(BarEntry(
           x: i.toDouble(), y: (random.nextDouble() * randomMultiplier)));
     }
@@ -175,10 +187,12 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
 
     // specify the width each bar should have
     barData.setBarWidth(0.2);
+
+    setState(() {});
   }
 
   void _initBarChart() {
-    if(barData == null){
+    if (barData == null) {
       return;
     }
 

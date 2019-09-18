@@ -8,6 +8,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data_set/bar_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
 
@@ -121,13 +122,14 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
     );
   }
 
-  void _initBarData(int count, double range) {
+  void _initBarData(int count, double range) async {
+    var img = await ImageLoader.loadImage('assets/img/star.png');
     List<BarEntry> values = List();
 
     for (int i = 0; i < count; i++) {
       double multi = (range + 1);
       double val = (random.nextDouble() * multi) + multi / 3;
-      values.add(new BarEntry(x: i.toDouble(), y: val));
+      values.add(new BarEntry(x: i.toDouble(), y: val, icon: img));
     }
 
     BarDataSet set1;
@@ -142,10 +144,12 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
     barData = BarData(dataSets);
     barData.setValueTextSize(10);
     barData.setBarWidth(0.9);
+
+    setState(() {});
   }
 
   void _initBarChart() {
-    if(barData == null){
+    if (barData == null) {
       return;
     }
 

@@ -14,6 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/range.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/bar_line_scatter_candle_bubble_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/canvas_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
@@ -295,14 +296,11 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
               px += iconsOffset.x;
               py += iconsOffset.y;
-//            todo
-//              Utils.drawImage(
-//                  c,
-//                  icon,
-//                  (int)px,
-//                  (int)py,
-//                  icon.getIntrinsicWidth(),
-//                  icon.getIntrinsicHeight());
+
+              if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
+                CanvasUtils.drawImage(
+                    c, Offset(px, py), entry.mIcon, Size(15, 15), mDrawPaint);
+              }
             }
           }
 
@@ -352,14 +350,11 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
                 px += iconsOffset.x;
                 py += iconsOffset.y;
-//                todo
-//                Utils.drawImage(
-//                    c,
-//                    icon,
-//                    (int)px,
-//                    (int)py,
-//                    icon.getIntrinsicWidth(),
-//                    icon.getIntrinsicHeight());
+
+                if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
+                  CanvasUtils.drawImage(
+                      c, Offset(px, py), entry.mIcon, Size(15, 15), mDrawPaint);
+                }
               }
 
               // draw stack values
@@ -407,15 +402,12 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                 }
 
                 if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
-                  Image icon = entry.mIcon;
-//                  todo
-//                  Utils.drawImage(
-//                      c,
-//                      icon,
-//                      (int)(x + iconsOffset.x),
-//                      (int)(y + iconsOffset.y),
-//                      icon.getIntrinsicWidth(),
-//                      icon.getIntrinsicHeight());
+                  CanvasUtils.drawImage(
+                      c,
+                      Offset(x + iconsOffset.x, y + iconsOffset.y),
+                      entry.mIcon,
+                      Size(15, 15),
+                      mDrawPaint);
                 }
               }
             }

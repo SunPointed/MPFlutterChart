@@ -14,6 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
 
@@ -129,14 +130,15 @@ class BarChartHorizontalState
     );
   }
 
-  void _initBarData(int count, double range) {
+  void _initBarData(int count, double range) async {
+    var img = await ImageLoader.loadImage('assets/img/star.png');
     double barWidth = 9;
     double spaceForBar = 10;
     List<BarEntry> values = List();
 
     for (int i = 0; i < count; i++) {
       double val = random.nextDouble() * range;
-      values.add(BarEntry(x: i * spaceForBar, y: val));
+      values.add(BarEntry(x: i * spaceForBar, y: val, icon: img));
     }
 
     BarDataSet set1;
@@ -152,10 +154,12 @@ class BarChartHorizontalState
     barData.setValueTextSize(10);
 //      data.setValueTypeface(tfLight);
     barData.setBarWidth(barWidth);
+
+    setState(() {});
   }
 
   void _initBarChart() {
-    if(barData == null){
+    if (barData == null) {
       return;
     }
 
