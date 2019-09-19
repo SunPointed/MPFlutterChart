@@ -148,7 +148,7 @@ abstract class LineActionState<T extends StatefulWidget>
           LineDataSet set = iSet as LineDataSet;
           set.setDrawValues(!set.isDrawValuesEnabled());
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'C':
         List<ILineDataSet> sets = painter.getData().getDataSets();
@@ -156,7 +156,7 @@ abstract class LineActionState<T extends StatefulWidget>
           LineDataSet set = iSet as LineDataSet;
           set.setDrawIcons(!set.isDrawIconsEnabled());
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'D':
         List<ILineDataSet> sets = painter.getData().getDataSets();
@@ -168,7 +168,7 @@ abstract class LineActionState<T extends StatefulWidget>
           else
             set.setDrawFilled(true);
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'E':
         List<ILineDataSet> sets = painter.getData().getDataSets();
@@ -180,7 +180,7 @@ abstract class LineActionState<T extends StatefulWidget>
           else
             set.setDrawCircles(true);
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'F':
         List<ILineDataSet> sets = painter.getData().getDataSets();
@@ -191,7 +191,7 @@ abstract class LineActionState<T extends StatefulWidget>
               ? Mode.LINEAR
               : Mode.CUBIC_BEZIER);
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'G':
         List<ILineDataSet> sets = painter.getData().getDataSets();
@@ -201,7 +201,7 @@ abstract class LineActionState<T extends StatefulWidget>
           set.setMode(
               set.getMode() == Mode.STEPPED ? Mode.LINEAR : Mode.STEPPED);
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'H':
         List<ILineDataSet> sets = painter.getData().getDataSets();
@@ -212,23 +212,23 @@ abstract class LineActionState<T extends StatefulWidget>
               ? Mode.LINEAR
               : Mode.HORIZONTAL_BEZIER);
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'I':
         state.widget.pinchZoomEnabled = !state.widget.pinchZoomEnabled;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'J':
         state.widget.autoScaleMinMaxEnabled =
             !state.widget.autoScaleMinMaxEnabled;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'K':
         if (painter.getData() != null) {
           painter
               .getData()
               .setHighlightEnabled(!painter.getData().isHighlightEnabled());
-          state.setState(() {});
+          state.setStateIfNotDispose();
         }
         break;
       case 'L':
@@ -290,12 +290,12 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
         for (IBarDataSet set in painter.getData().getDataSets())
           (set as BarDataSet)
               .setBarBorderWidth(set.getBarBorderWidth() == 1.0 ? 0.0 : 1.0);
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in painter.getData().getDataSets())
           set.setDrawValues(!set.isDrawValuesEnabled());
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'D':
         List<IBarDataSet> sets = painter.getData().getDataSets();
@@ -303,24 +303,24 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
           BarDataSet set = iSet as BarDataSet;
           set.setDrawIcons(!set.isDrawIconsEnabled());
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'E':
         if (painter.getData() != null) {
           painter
               .getData()
               .setHighlightEnabled(!painter.getData().isHighlightEnabled());
-          state.setState(() {});
+          state.setStateIfNotDispose();
         }
         break;
       case 'F':
         state.widget.pinchZoomEnabled = !state.widget.pinchZoomEnabled;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'G':
         state.widget.autoScaleMinMaxEnabled =
             !state.widget.autoScaleMinMaxEnabled;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'H':
         painter.mAnimator
@@ -382,12 +382,12 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
         for (IBarDataSet set in painter.getData().getDataSets())
           (set as BarDataSet)
               .setBarBorderWidth(set.getBarBorderWidth() == 1.0 ? 0.0 : 1.0);
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in painter.getData().getDataSets())
           set.setDrawValues(!set.isDrawValuesEnabled());
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'D':
         List<IBarDataSet> sets = painter.getData().getDataSets();
@@ -395,24 +395,24 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
           BarDataSet set = iSet as BarDataSet;
           set.setDrawIcons(!set.isDrawIconsEnabled());
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'E':
         if (painter.getData() != null) {
           painter
               .getData()
               .setHighlightEnabled(!painter.getData().isHighlightEnabled());
-          state.setState(() {});
+          state.setStateIfNotDispose();
         }
         break;
       case 'F':
         state.widget.pinchZoomEnabled = !state.widget.pinchZoomEnabled;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'G':
         state.widget.autoScaleMinMaxEnabled =
             !state.widget.autoScaleMinMaxEnabled;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'H':
         painter.mAnimator
@@ -475,20 +475,20 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
       case 'B':
         for (IDataSet set in painter.getData().getDataSets())
           set.setDrawValues(!set.isDrawValuesEnabled());
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'C':
         state.widget.drawEntryLabels = !state.widget.drawEntryLabels;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'D':
         for (IDataSet set in painter.getData().getDataSets())
           set.setDrawIcons(!set.isDrawIconsEnabled());
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'E':
         state.widget.usePercentValues = !state.widget.usePercentValues;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'F':
         if (state.widget.minAngleForSlices == 0) {
@@ -496,11 +496,11 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
         } else {
           state.widget.minAngleForSlices = 0;
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'G':
         state.widget.drawHole = !state.widget.drawHole;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'H':
         bool toSet = !painter.isDrawRoundedSlicesEnabled() ||
@@ -512,11 +512,11 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
         if (toSet && painter.isDrawSlicesUnderHoleEnabled()) {
           state.widget.drawSlicesUnderHole = false;
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'I':
         state.widget.drawCenterText = !state.widget.drawCenterText;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'J':
         painter.mAnimator
@@ -577,13 +577,13 @@ abstract class CombinedActionState<T extends StatefulWidget>
         for (IDataSet set in painter.getData().getDataSets()) {
           if (set is LineDataSet) set.setDrawValues(!set.isDrawValuesEnabled());
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in painter.getData().getDataSets()) {
           if (set is BarDataSet) set.setDrawValues(!set.isDrawValuesEnabled());
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'D':
         int rnd = _getRandom(painter.getData().getDataSetCount().toDouble(), 0)
@@ -592,7 +592,7 @@ abstract class CombinedActionState<T extends StatefulWidget>
             .getData()
             .removeDataSet1(painter.getData().getDataSetByIndex(rnd));
         painter.getData().notifyDataChanged();
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
     }
   }
@@ -641,19 +641,19 @@ abstract class ScatterActionState<T extends StatefulWidget>
           ScatterDataSet set = iSet as ScatterDataSet;
           set.setDrawValues(!set.isDrawValuesEnabled());
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in painter.getData().getDataSets())
           set.setDrawIcons(!set.isDrawIconsEnabled());
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'D':
         if (painter.getData() != null) {
           painter
               .getData()
               .setHighlightEnabled(!painter.getData().isHighlightEnabled());
-          state.setState(() {});
+          state.setStateIfNotDispose();
         }
         break;
       case 'E':
@@ -673,11 +673,11 @@ abstract class ScatterActionState<T extends StatefulWidget>
         break;
       case 'H':
         painter.mPinchZoomEnabled = !painter.mPinchZoomEnabled;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'I':
         painter.mAutoScaleMinMaxEnabled = !painter.mAutoScaleMinMaxEnabled;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'J':
         // todo save
@@ -722,19 +722,19 @@ abstract class BubbleActionState<T extends StatefulWidget>
       case 'B':
         for (IDataSet set in painter.getData().getDataSets())
           set.setDrawValues(!set.isDrawValuesEnabled());
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in painter.getData().getDataSets())
           set.setDrawIcons(!set.isDrawIconsEnabled());
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'D':
         if (painter.getData() != null) {
           painter
               .getData()
               .setHighlightEnabled(!painter.getData().isHighlightEnabled());
-          state.setState(() {});
+          state.setStateIfNotDispose();
         }
         break;
       case 'E':
@@ -754,11 +754,11 @@ abstract class BubbleActionState<T extends StatefulWidget>
         break;
       case 'H':
         painter.mPinchZoomEnabled = !painter.mPinchZoomEnabled;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'I':
         painter.mAutoScaleMinMaxEnabled = !painter.mAutoScaleMinMaxEnabled;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'J':
         // todo save
@@ -804,19 +804,19 @@ abstract class CandlestickActionState<T extends StatefulWidget>
       case 'B':
         for (IDataSet set in painter.getData().getDataSets())
           set.setDrawValues(!set.isDrawValuesEnabled());
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in painter.getData().getDataSets())
           set.setDrawIcons(!set.isDrawIconsEnabled());
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'D':
         if (painter.getData() != null) {
           painter
               .getData()
               .setHighlightEnabled(!painter.getData().isHighlightEnabled());
-          state.setState(() {});
+          state.setStateIfNotDispose();
         }
         break;
       case 'E':
@@ -836,11 +836,11 @@ abstract class CandlestickActionState<T extends StatefulWidget>
         break;
       case 'H':
         painter.mPinchZoomEnabled = !painter.mPinchZoomEnabled;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'I':
         painter.mAutoScaleMinMaxEnabled = !painter.mAutoScaleMinMaxEnabled;
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'J':
         // todo save
@@ -850,7 +850,7 @@ abstract class CandlestickActionState<T extends StatefulWidget>
           (set as CandleDataSet)
               .setShadowColorSameAsCandle(!set.getShadowColorSameAsCandle());
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
     }
   }
@@ -896,10 +896,12 @@ abstract class RadarActionState<T extends StatefulWidget>
       case 'B':
         for (IDataSet set in painter.getData().getDataSets())
           set.setDrawValues(!set.isDrawValuesEnabled());
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'C':
-        // todo icons
+        for (IDataSet set in painter.getData().getDataSets())
+          set.setDrawIcons(!set.isDrawIconsEnabled());
+        state.setStateIfNotDispose();
         break;
       case 'D':
         List<IRadarDataSet> sets = painter.getData().getDataSets();
@@ -909,14 +911,14 @@ abstract class RadarActionState<T extends StatefulWidget>
           else
             set.setDrawFilled(true);
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'E':
         if (painter.getData() != null) {
           painter
               .getData()
               .setHighlightEnabled(!painter.getData().isHighlightEnabled());
-          state.setState(() {});
+          state.setStateIfNotDispose();
         }
         break;
       case 'F':
@@ -925,26 +927,28 @@ abstract class RadarActionState<T extends StatefulWidget>
           set.setDrawHighlightCircleEnabled(
               !set.isDrawHighlightCircleEnabled());
         }
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'G':
         if (painter.isRotationEnabled())
           painter.setRotationEnabled(false);
         else
           painter.setRotationEnabled(true);
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'H':
         painter.getYAxis().setEnabled(!painter.getYAxis().isEnabled());
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'I':
         painter.mXAxis.setEnabled(!painter.mXAxis.isEnabled());
-        state.setState(() {});
+        state.setStateIfNotDispose();
         break;
       case 'J':
-        // chart.spin(2000, chart.getRotationAngle(), chart.getRotationAngle() + 360, Easing.EaseInOutCubic);
-        //                todo
+        painter.mAnimator
+          ..reset()
+          ..spin(2000, painter.getRotationAngle(),
+              painter.getRotationAngle() + 360, Easing.EaseInOutCubic);
         break;
       case 'K':
         painter.mAnimator

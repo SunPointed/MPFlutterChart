@@ -120,6 +120,12 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
   void _initPieChart() {
     if (_pieData == null) return;
 
+    if (_pieChart != null) {
+      _pieChart.data = _pieData;
+      _pieChart.getState()?.setStateIfNotDispose();
+      return;
+    }
+
     var desc = Description();
     desc.setEnabled(false);
     _pieChart = PieChart(_pieData, (painter) {

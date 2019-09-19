@@ -462,7 +462,7 @@ class ViewPortHandler {
    */
   /// BELOW METHODS FOR BOUNDS CHECK
 
-  bool isInBoundsX(double x) {
+  bool  isInBoundsX(double x) {
     return isInBoundsLeft(x) && isInBoundsRight(x);
   }
 
@@ -475,19 +475,27 @@ class ViewPortHandler {
   }
 
   bool isInBoundsLeft(double x) {
+    if(x == null)
+      return false;
     return mContentRect.left <= x + 1;
   }
 
   bool isInBoundsRight(double x) {
+    if(x == null)
+      return false;
     x = ((x * 100.0).toInt()) / 100.0;
     return mContentRect.right >= x - 1;
   }
 
   bool isInBoundsTop(double y) {
+    if(y == null)
+      return false;
     return mContentRect.top <= y;
   }
 
   bool isInBoundsBottom(double y) {
+    if(y == null)
+      return false;
     y = ((y * 100.0).toInt()) / 100.0;
     return mContentRect.bottom >= y;
   }

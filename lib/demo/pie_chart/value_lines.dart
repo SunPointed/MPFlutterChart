@@ -78,7 +78,6 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
                             onChanged: (value) {
                               _count = value.toInt();
                               _initPieData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -107,7 +106,6 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
                             onChanged: (value) {
                               _range = value;
                               _initPieData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -209,12 +207,18 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
       ..setValueTextSize(11)
       ..setValueTextColor(ColorUtils.BLACK);
 //    ..setValueTypeface(tf);
-
+    
     setState(() {});
   }
 
   void _initPieChart() {
     if (pieData == null) return;
+
+    if (pieChart != null) {
+      pieChart.data = pieData;
+      pieChart.getState()?.setStateIfNotDispose();
+      return;
+    }
 
     var desc = Description();
     desc.setEnabled(false);

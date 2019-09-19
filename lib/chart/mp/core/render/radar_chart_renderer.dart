@@ -5,6 +5,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_radar_data_set.
 import 'package:mp_flutter_chart/chart/mp/core/entry/radar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/line_radar_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/canvas_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
@@ -177,27 +178,16 @@ class RadarChartRenderer extends LineRadarRenderer {
               dataSet.getValueTextColor2(j));
         }
 
-//        if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) { todo
-//
-//          Drawable icon = entry.getIcon();
-//
-//          Utils.getPosition(
-//              center,
-//              (entry.getY()) * factor * phaseY + iconsOffset.y,
-//              sliceangle * j * phaseX + mChart.getRotationAngle(),
-//              pIcon);
-//
-//          //noinspection SuspiciousNameCombination
-//          pIcon.y += iconsOffset.x;
-//
-//          Utils.drawImage(
-//              c,
-//              icon,
-//              (int)pIcon.x,
-//              (int)pIcon.y,
-//              icon.getIntrinsicWidth(),
-//              icon.getIntrinsicHeight());
-//        }
+        if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
+          Utils.getPosition(center, entry.y * factor * phaseY + iconsOffset.y,
+              sliceangle * j * phaseX + mChart.getRotationAngle(), pIcon);
+
+          //noinspection SuspiciousNameCombination
+          pIcon.y += iconsOffset.x;
+
+          CanvasUtils.drawImage(c, Offset(pIcon.x, pIcon.y), entry.mIcon,
+              Size(15, 15), mDrawPaint);
+        }
       }
 
       MPPointF.recycleInstance(iconsOffset);

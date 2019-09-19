@@ -11,6 +11,7 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/radar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
@@ -50,13 +51,16 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
               left: 0,
               top: 0,
               bottom: 0,
-              child: radarChart == null ? Center(child: Text("no data")) : radarChart,
+              child: radarChart == null
+                  ? Center(child: Text("no data"))
+                  : radarChart,
             ),
           ],
         ));
   }
 
-  void _initRadarData() {
+  void _initRadarData() async {
+    var img = await ImageLoader.loadImage('assets/img/star.png');
     double mul = 80;
     double min = 20;
     int cnt = 5;
@@ -68,10 +72,10 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     // the chart.
     for (int i = 0; i < cnt; i++) {
       double val1 = (random.nextDouble() * mul) + min;
-      entries1.add(RadarEntry(value: val1));
+      entries1.add(RadarEntry(value: val1, icon: img));
 
       double val2 = (random.nextDouble() * mul) + min;
-      entries2.add(RadarEntry(value: val2));
+      entries2.add(RadarEntry(value: val2, icon: img));
     }
 
     RadarDataSet set1 = RadarDataSet(entries1, "Last Week");
@@ -101,10 +105,18 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     radarData.setValueTextSize(8);
     radarData.setDrawValues(false);
     radarData.setValueTextColor(ColorUtils.WHITE);
+
+    setState(() {});
   }
 
   void _initCandleChart() {
-    if(radarData == null) return;
+    if (radarData == null) return;
+
+    if (radarChart != null) {
+      radarChart.data = radarData;
+      radarChart.getState()?.setStateIfNotDispose();
+      return;
+    }
 
     var desc = Description();
     desc.setEnabled(false);
