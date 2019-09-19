@@ -185,7 +185,7 @@ abstract class BarLineChartBasePainter<
             descPainter: descPainter,
             highlighter: highlighter,
             unbind: unbind) {
-    if (data == null) {
+    if (data == null || data.mDataSets == null || data.mDataSets.length == 0) {
       return;
     }
 
@@ -247,7 +247,7 @@ abstract class BarLineChartBasePainter<
   void paint(Canvas canvas, Size size) {
     super.paint(canvas, size);
 
-    if (mData == null) return;
+    if (mData == null|| mData.mDataSets == null || mData.mDataSets.length == 0) return;
 
     // execute all drawing commands
     drawGridBackground(canvas);

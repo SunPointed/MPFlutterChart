@@ -170,7 +170,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   void paint(Canvas canvas, Size size) {
     super.paint(canvas, size);
 
-    if (mData == null) return;
+    if (mData == null || mData.mDataSets == null || mData.mDataSets.length == 0)
+      return;
 
     mRenderer.drawData(canvas);
 

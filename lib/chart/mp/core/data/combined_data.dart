@@ -190,6 +190,14 @@ class CombinedData extends BarLineScatterCandleBubbleData<
     List<BarLineScatterCandleBubbleData> datas = getAllData();
     bool success = false;
     for (ChartData data in datas) {
+      if(data.getDataSets() == null || data.getDataSets().length == 0){
+        continue;
+      }
+
+      if(d.runtimeType != data.getDataSets()[0].runtimeType){
+        continue;
+      }
+
       success = data.removeDataSet1(d);
       if (success) {
         break;

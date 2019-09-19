@@ -32,12 +32,9 @@ import 'package:mp_flutter_chart/chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/scatter_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/mode.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/bar_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/bubble_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/candlestick_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/combined_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/pie_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/radar_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/scatter_chart_painter.dart';
 import 'package:mp_flutter_chart/demo/util.dart';
@@ -586,13 +583,15 @@ abstract class CombinedActionState<T extends StatefulWidget>
         state.setStateIfNotDispose();
         break;
       case 'D':
-        int rnd = _getRandom(painter.getData().getDataSetCount().toDouble(), 0)
-            as int;
-        painter
-            .getData()
-            .removeDataSet1(painter.getData().getDataSetByIndex(rnd));
-        painter.getData().notifyDataChanged();
-        state.setStateIfNotDispose();
+        if (combinedChart.data.getDataSetCount() > 1) {
+          int rnd =
+              _getRandom(combinedChart.data.getDataSetCount().toDouble(), 0)
+                  .toInt();
+          combinedChart.data
+              .removeDataSet1(combinedChart.data.getDataSetByIndex(rnd));
+          combinedChart.data.notifyDataChanged();
+          state.setStateIfNotDispose();
+        }
         break;
     }
   }

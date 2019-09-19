@@ -84,6 +84,12 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   void _initCombinedChart() {
     if (combinedData == null) return;
 
+    if(combinedChart != null){
+      combinedChart.data = combinedData;
+      combinedChart.getState()?.setStateIfNotDispose();
+      return;
+    }
+
     var desc = Description();
     desc.setEnabled(false);
     combinedChart = CombinedChart(combinedData, (painter) {

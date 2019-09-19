@@ -128,7 +128,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
         mHighlighter = highlighter,
         mUnbind = unbind,
         super() {
-    if (data == null) {
+    if (data == null || data.mDataSets == null || data.mDataSets.length == 0) {
       return;
     }
 
@@ -231,16 +231,18 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   void paint(Canvas canvas, Size size) {
     mSize = size;
 
-    if (mData == null) {
-      bool hasText = mNoDataText.isEmpty;
-
-      if (hasText) {
-        MPPointF c = getCenter(size);
-        mInfoPaint ??= PainterUtils.create(
-            mInfoPaint, mNoDataText, ColorUtils.BLACK, null);
-
-        mInfoPaint.paint(canvas, Offset(c.x, c.y));
-      }
+    if (mData == null ||
+        mData.mDataSets == null ||
+        mData.mDataSets.length == 0) {
+      MPPointF c = getCenter(size);
+      mInfoPaint ??= PainterUtils.create(
+          mInfoPaint,
+          mNoDataText.isEmpty ? mNoDataText : "no data",
+          ColorUtils.BLACK,
+          null);
+      mInfoPaint.layout();
+      mInfoPaint.paint(canvas,
+          Offset(c.x - mInfoPaint.width / 2, c.y - mInfoPaint.height / 2));
 
       return;
     }
