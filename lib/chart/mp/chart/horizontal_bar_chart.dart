@@ -223,7 +223,10 @@ class HorizontalBarChartState extends BarLineScatterCandleBubbleState<
         descPainter: widget.descPainter,
         highlighter: widget.highlighter,
         unbind: widget.unbind);
-    painter.highlightValue6(lastHighlighted, false);
+    if (painter.getData() != null &&
+        painter.getData().getDataSets() != null &&
+        painter.getData().getDataSets().length > 0)
+      painter.highlightValue6(lastHighlighted, false);
   }
 }
 

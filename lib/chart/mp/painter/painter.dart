@@ -237,7 +237,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
       MPPointF c = getCenter(size);
       mInfoPaint ??= PainterUtils.create(
           mInfoPaint,
-          mNoDataText.isEmpty ? mNoDataText : "no data",
+          mNoDataText.isEmpty ? "no data" : mNoDataText,
           ColorUtils.BLACK,
           null);
       mInfoPaint.layout();

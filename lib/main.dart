@@ -8,6 +8,7 @@ import 'package:mp_flutter_chart/demo/bar_chart/negative.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/sine.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/stacked.dart';
 import 'package:mp_flutter_chart/demo/bar_chart/stacked2.dart';
+import 'package:mp_flutter_chart/demo/even_more/dynamic.dart';
 import 'package:mp_flutter_chart/demo/line_chart/basic.dart';
 import 'package:mp_flutter_chart/demo/line_chart/colorful.dart';
 import 'package:mp_flutter_chart/demo/line_chart/cubic.dart';
@@ -81,7 +82,7 @@ class MyApp extends StatelessWidget {
         '/scrolling_chart/view_pager': (_) => ScrollingChartViewPager(),
         '/scrolling_chart/tall_bar_chart': (_) => ScrollingChartTallBar(),
         '/scrolling_chart/many_bar_charts': (_) => ScrollingChartManyBar(),
-        '/even_more_line_chart/dynamic': (_) => BarChartBasic2(),
+        '/even_more_line_chart/dynamic': (_) => EvenMoreDynamic(),
         '/even_more_line_chart/realtime': (_) => BarChartBasic2(),
         '/even_more_line_chart/hourly': (_) => BarChartBasic2(),
       },

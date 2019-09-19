@@ -39,7 +39,7 @@ import 'package:mp_flutter_chart/chart/mp/painter/radar_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/scatter_chart_painter.dart';
 import 'package:mp_flutter_chart/demo/util.dart';
 
-PopupMenuItem _item(String text, String id) {
+PopupMenuItem item(String text, String id) {
   return PopupMenuItem<String>(
       value: id,
       child: Container(
@@ -97,7 +97,7 @@ abstract class SimpleActionState<T extends StatefulWidget>
   @override
   getBuilder() {
     return (BuildContext context) =>
-        <PopupMenuItem<String>>[_item('View on GitHub', 'A')];
+        <PopupMenuItem<String>>[item('View on GitHub', 'A')];
   }
 }
 
@@ -109,21 +109,21 @@ abstract class LineActionState<T extends StatefulWidget>
   @override
   getBuilder() {
     return (BuildContext context) => <PopupMenuItem<String>>[
-          _item('View on GitHub', 'A'),
-          _item('Toggle Values', 'B'),
-          _item('Toggle Icons', 'C'),
-          _item('Toggle Filled', 'D'),
-          _item('Toggle Circles', 'E'),
-          _item('Toggle Cubic', 'F'),
-          _item('Toggle Stepped', 'G'),
-          _item('Toggle Horizontal Cubic', 'H'),
-          _item('Toggle PinchZoom', 'I'),
-          _item('Toggle Auto Scale', 'J'),
-          _item('Toggle Highlight', 'K'),
-          _item('Animate X', 'L'),
-          _item('Animate Y', 'M'),
-          _item('Animate XY', 'N'),
-          _item('Save to Gallery', 'O'),
+          item('View on GitHub', 'A'),
+          item('Toggle Values', 'B'),
+          item('Toggle Icons', 'C'),
+          item('Toggle Filled', 'D'),
+          item('Toggle Circles', 'E'),
+          item('Toggle Cubic', 'F'),
+          item('Toggle Stepped', 'G'),
+          item('Toggle Horizontal Cubic', 'H'),
+          item('Toggle PinchZoom', 'I'),
+          item('Toggle Auto Scale', 'J'),
+          item('Toggle Highlight', 'K'),
+          item('Animate X', 'L'),
+          item('Animate Y', 'M'),
+          item('Animate XY', 'N'),
+          item('Save to Gallery', 'O'),
         ];
   }
 
@@ -257,17 +257,17 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
   @override
   getBuilder() {
     return (BuildContext context) => <PopupMenuItem<String>>[
-          _item('View on GitHub', 'A'),
-          _item('Toggle Bar Borders', 'B'),
-          _item('Toggle Values', 'C'),
-          _item('Toggle Icons', 'D'),
-          _item('Toggle Highlight', 'E'),
-          _item('Toggle PinchZoom', 'F'),
-          _item('Toggle Auto Scale', 'G'),
-          _item('Animate X', 'H'),
-          _item('Animate Y', 'I'),
-          _item('Animate XY', 'J'),
-          _item('Save to Gallery', 'K'),
+          item('View on GitHub', 'A'),
+          item('Toggle Bar Borders', 'B'),
+          item('Toggle Values', 'C'),
+          item('Toggle Icons', 'D'),
+          item('Toggle Highlight', 'E'),
+          item('Toggle PinchZoom', 'F'),
+          item('Toggle Auto Scale', 'G'),
+          item('Animate X', 'H'),
+          item('Animate Y', 'I'),
+          item('Animate XY', 'J'),
+          item('Save to Gallery', 'K'),
         ];
   }
 
@@ -349,17 +349,17 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
   @override
   getBuilder() {
     return (BuildContext context) => <PopupMenuItem<String>>[
-          _item('View on GitHub', 'A'),
-          _item('Toggle Bar Borders', 'B'),
-          _item('Toggle Values', 'C'),
-          _item('Toggle Icons', 'D'),
-          _item('Toggle Highlight', 'E'),
-          _item('Toggle PinchZoom', 'F'),
-          _item('Toggle Auto Scale', 'G'),
-          _item('Animate X', 'H'),
-          _item('Animate Y', 'I'),
-          _item('Animate XY', 'J'),
-          _item('Save to Gallery', 'K'),
+          item('View on GitHub', 'A'),
+          item('Toggle Bar Borders', 'B'),
+          item('Toggle Values', 'C'),
+          item('Toggle Icons', 'D'),
+          item('Toggle Highlight', 'E'),
+          item('Toggle PinchZoom', 'F'),
+          item('Toggle Auto Scale', 'G'),
+          item('Animate X', 'H'),
+          item('Animate Y', 'I'),
+          item('Animate XY', 'J'),
+          item('Save to Gallery', 'K'),
         ];
   }
 
@@ -440,20 +440,20 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
   @override
   getBuilder() {
     return (BuildContext context) => <PopupMenuItem<String>>[
-          _item('View on GitHub', 'A'),
-          _item('Toggle Y-Values', 'B'),
-          _item('Toggle X-Values', 'C'),
-          _item('Toggle Icons', 'D'),
-          _item('Toggle Percent', 'E'),
-          _item('Toggle Minimum Angles', 'F'),
-          _item('Toggle Hole', 'G'),
-          _item('Toggle Curved Slices Cubic', 'H'),
-          _item('Draw Center Text', 'I'),
-          _item('Spin Animation', 'J'),
-          _item('Animate X', 'K'),
-          _item('Animate Y', 'L'),
-          _item('Animate XY', 'M'),
-          _item('Save to Gallery', 'N'),
+          item('View on GitHub', 'A'),
+          item('Toggle Y-Values', 'B'),
+          item('Toggle X-Values', 'C'),
+          item('Toggle Icons', 'D'),
+          item('Toggle Percent', 'E'),
+          item('Toggle Minimum Angles', 'F'),
+          item('Toggle Hole', 'G'),
+          item('Toggle Curved Slices Cubic', 'H'),
+          item('Draw Center Text', 'I'),
+          item('Spin Animation', 'J'),
+          item('Animate X', 'K'),
+          item('Animate Y', 'L'),
+          item('Animate XY', 'M'),
+          item('Save to Gallery', 'N'),
         ];
   }
 
@@ -551,10 +551,10 @@ abstract class CombinedActionState<T extends StatefulWidget>
   @override
   getBuilder() {
     return (BuildContext context) => <PopupMenuItem<String>>[
-          _item('View on GitHub', 'A'),
-          _item('Toggle Line Values', 'B'),
-          _item('Toggle Bar Values', 'C'),
-          _item('Remove Data Set', 'D')
+          item('View on GitHub', 'A'),
+          item('Toggle Line Values', 'B'),
+          item('Toggle Bar Values', 'C'),
+          item('Remove Data Set', 'D')
         ];
   }
 
@@ -609,16 +609,16 @@ abstract class ScatterActionState<T extends StatefulWidget>
   @override
   getBuilder() {
     return (BuildContext context) => <PopupMenuItem<String>>[
-          _item('View on GitHub', 'A'),
-          _item('Toggle Values', 'B'),
-          _item('Toggle Icons', 'C'),
-          _item('Toggle Highlight', 'D'),
-          _item('Animate X', 'E'),
-          _item('Animate Y', 'F'),
-          _item('Animate XY', 'G'),
-          _item('Toggle PinchZoom', 'H'),
-          _item('Toggle Auto Scale', 'I'),
-          _item('Save to Gallery', 'J'),
+          item('View on GitHub', 'A'),
+          item('Toggle Values', 'B'),
+          item('Toggle Icons', 'C'),
+          item('Toggle Highlight', 'D'),
+          item('Animate X', 'E'),
+          item('Animate Y', 'F'),
+          item('Animate XY', 'G'),
+          item('Toggle PinchZoom', 'H'),
+          item('Toggle Auto Scale', 'I'),
+          item('Save to Gallery', 'J'),
         ];
   }
 
@@ -693,16 +693,16 @@ abstract class BubbleActionState<T extends StatefulWidget>
   @override
   getBuilder() {
     return (BuildContext context) => <PopupMenuItem<String>>[
-          _item('View on GitHub', 'A'),
-          _item('Toggle Values', 'B'),
-          _item('Toggle Icons', 'C'),
-          _item('Toggle Highlight', 'D'),
-          _item('Toggle PinchZoom', 'H'),
-          _item('Toggle Auto Scale', 'I'),
-          _item('Animate X', 'E'),
-          _item('Animate Y', 'F'),
-          _item('Animate XY', 'G'),
-          _item('Save to Gallery', 'J'),
+          item('View on GitHub', 'A'),
+          item('Toggle Values', 'B'),
+          item('Toggle Icons', 'C'),
+          item('Toggle Highlight', 'D'),
+          item('Toggle PinchZoom', 'H'),
+          item('Toggle Auto Scale', 'I'),
+          item('Animate X', 'E'),
+          item('Animate Y', 'F'),
+          item('Animate XY', 'G'),
+          item('Save to Gallery', 'J'),
         ];
   }
 
@@ -774,17 +774,17 @@ abstract class CandlestickActionState<T extends StatefulWidget>
   @override
   getBuilder() {
     return (BuildContext context) => <PopupMenuItem<String>>[
-          _item('View on GitHub', 'A'),
-          _item('Toggle Values', 'B'),
-          _item('Toggle Icons', 'C'),
-          _item('Toggle Highlight', 'D'),
-          _item('Toggle Shadow Color', 'K'),
-          _item('Toggle PinchZoom', 'H'),
-          _item('Toggle Auto Scale', 'I'),
-          _item('Animate X', 'E'),
-          _item('Animate Y', 'F'),
-          _item('Animate XY', 'G'),
-          _item('Save to Gallery', 'J'),
+          item('View on GitHub', 'A'),
+          item('Toggle Values', 'B'),
+          item('Toggle Icons', 'C'),
+          item('Toggle Highlight', 'D'),
+          item('Toggle Shadow Color', 'K'),
+          item('Toggle PinchZoom', 'H'),
+          item('Toggle Auto Scale', 'I'),
+          item('Animate X', 'E'),
+          item('Animate Y', 'F'),
+          item('Animate XY', 'G'),
+          item('Save to Gallery', 'J'),
         ];
   }
 
@@ -863,20 +863,20 @@ abstract class RadarActionState<T extends StatefulWidget>
   @override
   getBuilder() {
     return (BuildContext context) => <PopupMenuItem<String>>[
-          _item('View on GitHub', 'A'),
-          _item('Toggle Values', 'B'),
-          _item('Toggle Icons', 'C'),
-          _item('Toggle Filled', 'D'),
-          _item('Toggle Highlight', 'E'),
-          _item('Toggle Highlight Circle', 'F'),
-          _item('Toggle Rotation', 'G'),
-          _item('Toggle Y-Values', 'H'),
-          _item('Toggle X-Values', 'I'),
-          _item('Spin Animation', 'J'),
-          _item('Animate X', 'K'),
-          _item('Animate Y', 'L'),
-          _item('Animate XY', 'M'),
-          _item('Save to Gallery', 'N'),
+          item('View on GitHub', 'A'),
+          item('Toggle Values', 'B'),
+          item('Toggle Icons', 'C'),
+          item('Toggle Filled', 'D'),
+          item('Toggle Highlight', 'E'),
+          item('Toggle Highlight Circle', 'F'),
+          item('Toggle Rotation', 'G'),
+          item('Toggle Y-Values', 'H'),
+          item('Toggle X-Values', 'I'),
+          item('Spin Animation', 'J'),
+          item('Animate X', 'K'),
+          item('Animate Y', 'L'),
+          item('Animate XY', 'M'),
+          item('Save to Gallery', 'N'),
         ];
   }
 
