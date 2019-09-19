@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/bubble_chart.dart';
@@ -13,6 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
@@ -41,7 +43,9 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
   String getTitle() => "Other Chart Bubble";
 
   @override
-  void chartInit() {_initBubbleChart();}
+  void chartInit() {
+    _initBubbleChart();
+  }
 
   @override
   Widget getBody() {
@@ -52,7 +56,9 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
           left: 0,
           top: 0,
           bottom: 100,
-          child: bubbleChart == null ? Center(child: Text("no data")): bubbleChart,
+          child: bubbleChart == null
+              ? Center(child: Text("no data"))
+              : bubbleChart,
         ),
         Positioned(
           left: 0,
@@ -75,7 +81,6 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
                             onChanged: (value) {
                               _count = value.toInt();
                               _initBubbleData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -104,7 +109,6 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
                             onChanged: (value) {
                               _range = value;
                               _initBubbleData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -127,7 +131,11 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
     );
   }
 
-  void _initBubbleData(int count, double range) {
+  void _initBubbleData(int count, double range) async {
+    List<ui.Image> imgs = List(3);
+    imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
+    imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
+    imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
     List<BubbleEntry> values1 = List();
     List<BubbleEntry> values2 = List();
     List<BubbleEntry> values3 = List();
@@ -136,15 +144,18 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
       values1.add(BubbleEntry(
           x: i.toDouble(),
           y: (random.nextDouble() * range),
-          size: (random.nextDouble() * range)));
+          size: (random.nextDouble() * range),
+          icon: imgs[0]));
       values2.add(BubbleEntry(
           x: i.toDouble(),
           y: (random.nextDouble() * range),
-          size: (random.nextDouble() * range)));
+          size: (random.nextDouble() * range),
+          icon: imgs[1]));
       values3.add(BubbleEntry(
           x: i.toDouble(),
           y: (random.nextDouble() * range),
-          size: (random.nextDouble() * range)));
+          size: (random.nextDouble() * range),
+          icon: imgs[2]));
     }
 
     // create a dataset and give it a type
@@ -175,10 +186,18 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
     bubbleData.setValueTextSize(8);
     bubbleData.setValueTextColor(ColorUtils.WHITE);
     bubbleData.setHighlightCircleWidth(1.5);
+
+    setState(() {});
   }
 
   void _initBubbleChart() {
-    if(bubbleData == null) return;
+    if (bubbleData == null) return;
+
+    if (bubbleChart != null) {
+      bubbleChart?.data = bubbleData;
+      bubbleChart?.getState()?.setStateIfNotDispose();
+      return;
+    }
 
     var desc = Description();
     desc.setEnabled(false);

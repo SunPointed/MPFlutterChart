@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/bar_chart.dart';
@@ -79,7 +80,6 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
                             onChanged: (value) {
                               _count = value.toInt();
                               _initBarData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -108,7 +108,6 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
                             onChanged: (value) {
                               _range = value;
                               _initBarData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -136,8 +135,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     return "Bar Chart Basic";
   }
 
-  void _initBarData(int count, double range) async {
-    var img = await ImageLoader.loadImage('assets/img/star.png');
+  void _initData(int count, double range, ui.Image img) {
     double start = 1;
 
     List<BarEntry> values = List();
@@ -187,12 +185,22 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     barData.setValueTextSize(10);
 //    barData.setValueTypeface(tfLight);
     barData.setBarWidth(0.9);
+  }
 
+  void _initBarData(int count, double range) async {
+    var img = await ImageLoader.loadImage('assets/img/star.png');
+    _initData(count, range, img);
     setState(() {});
   }
 
   void _initBarChart() {
     if (barData == null) {
+      return;
+    }
+
+    if(barChart != null){
+      barChart?.data = barData;
+      barChart?.getState()?.setStateIfNotDispose();
       return;
     }
 
@@ -238,6 +246,8 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
         ..setFormSize(9)
         ..setTextSize(11)
         ..setXEntrySpace(4);
+
+      painter.mAnimator.animateY1(3000);
     },
         touchEnabled: true,
         drawGridBackground: false,

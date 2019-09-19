@@ -38,10 +38,8 @@ class BarChartSineState extends BarActionState<BarChartSine> {
         _data.add(BarEntry(x: x, y: y));
       }
       _initBarData(_count);
-      setState(() {});
     });
 
-    _initBarData(_count);
     super.initState();
   }
 
@@ -62,9 +60,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
           left: 0,
           top: 0,
           bottom: 100,
-          child: barChart == null
-              ? Center(child: Text("no data"))
-              : barChart,
+          child: barChart == null ? Center(child: Text("no data")) : barChart,
         ),
         Positioned(
           left: 0,
@@ -87,7 +83,6 @@ class BarChartSineState extends BarActionState<BarChartSine> {
                             onChanged: (value) {
                               _count = value.toInt();
                               _initBarData(_count);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -126,10 +121,18 @@ class BarChartSineState extends BarActionState<BarChartSine> {
 //    barData.setValueTypeface(tfLight);
     barData.setDrawValues(false);
     barData.setBarWidth(0.8);
+
+    setState(() {});
   }
 
   void _initBarChart() {
     if (barData == null) return;
+
+    if (barChart != null) {
+      barChart?.data = barData;
+      barChart?.getState()?.setStateIfNotDispose();
+      return;
+    }
 
     var desc = Description();
     desc.setEnabled(false);

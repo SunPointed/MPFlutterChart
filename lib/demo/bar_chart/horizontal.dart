@@ -78,7 +78,6 @@ class BarChartHorizontalState
                             onChanged: (value) {
                               _count = value.toInt();
                               _initBarData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -107,7 +106,6 @@ class BarChartHorizontalState
                             onChanged: (value) {
                               _range = value;
                               _initBarData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -160,6 +158,12 @@ class BarChartHorizontalState
 
   void _initBarChart() {
     if (barData == null) {
+      return;
+    }
+
+    if(barChart != null){
+      barChart?.data = barData;
+      barChart?.getState()?.setStateIfNotDispose();
       return;
     }
 

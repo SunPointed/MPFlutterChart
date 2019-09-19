@@ -77,7 +77,6 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
                             onChanged: (value) {
                               _count = value.toInt();
                               _initLineData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -106,7 +105,6 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
                             onChanged: (value) {
                               _range = value;
                               _initLineData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -195,6 +193,12 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
 
   void _initLineChart() {
     if (lineData == null) {
+      return;
+    }
+
+    if(lineChart != null){
+      lineChart?.data = lineData;
+      lineChart?.getState()?.setStateIfNotDispose();
       return;
     }
 

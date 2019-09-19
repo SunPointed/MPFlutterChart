@@ -97,6 +97,12 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
       return;
     }
 
+    if(_barChart != null){
+      _barChart?.data = _barData;
+      _barChart?.getState()?.setStateIfNotDispose();
+      return;
+    }
+
     var desc = Description();
     desc.setEnabled(false);
     _barChart = BarChart(_barData, (painter) {

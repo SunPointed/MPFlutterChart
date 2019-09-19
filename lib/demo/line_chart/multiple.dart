@@ -113,7 +113,6 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
                             onChanged: (value) {
                               _count = value.toInt();
                               _initLineData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -142,7 +141,6 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
                             onChanged: (value) {
                               _range = value;
                               _initLineData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -203,7 +201,11 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
 
   void _initLineChart() {
     if (lineData == null) return;
-
+    if (lineChart != null) {
+      lineChart?.data = lineData;
+      lineChart?.getState()?.setStateIfNotDispose();
+      return;
+    }
     var desc = Description();
     lineChart = LineChart(lineData, (painter) {
       painter.setOnChartValueSelectedListener(this);

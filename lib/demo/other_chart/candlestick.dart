@@ -8,6 +8,7 @@ import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/candle_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
 
@@ -47,7 +48,9 @@ class OtherChartCandlestickState
           left: 0,
           top: 0,
           bottom: 100,
-          child: candlestickChart == null ? Center(child: Text("no data")) : candlestickChart,
+          child: candlestickChart == null
+              ? Center(child: Text("no data"))
+              : candlestickChart,
         ),
         Positioned(
           left: 0,
@@ -70,7 +73,6 @@ class OtherChartCandlestickState
                             onChanged: (value) {
                               _count = value.toInt();
                               _initCandleData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -99,7 +101,6 @@ class OtherChartCandlestickState
                             onChanged: (value) {
                               _range = value;
                               _initCandleData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -122,7 +123,8 @@ class OtherChartCandlestickState
     );
   }
 
-  void _initCandleData(int count, double range) {
+  void _initCandleData(int count, double range) async {
+    var img = await ImageLoader.loadImage('assets/img/star.png');
 //    chart.resetTracking();
 
     List<CandleEntry> values = List();
@@ -143,6 +145,7 @@ class OtherChartCandlestickState
           x: i.toDouble(),
           shadowH: val + high,
           shadowL: val - low,
+          icon: img,
           open: even ? val + open : val - open,
           close: even ? val - close : val + close));
     }
@@ -162,10 +165,18 @@ class OtherChartCandlestickState
     //set1.setHighlightLineWidth(1f);
 
     candleData = CandleData.fromList(List()..add(set1));
+
+    setState(() {});
   }
 
   void _initCandleChart() {
-    if(candleData == null) return;
+    if (candleData == null) return;
+
+    if(candlestickChart != null){
+      candlestickChart.data = candleData;
+      candlestickChart.getState()?.setStateIfNotDispose();
+      return;
+    }
 
     var desc = Description();
     desc.setEnabled(false);

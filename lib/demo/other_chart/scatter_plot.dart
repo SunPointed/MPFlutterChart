@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/scatter_chart.dart';
@@ -13,6 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/scatter_shape.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/i_shape_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
@@ -25,7 +27,8 @@ class OtherChartScatterPlot extends StatefulWidget {
   }
 }
 
-class OtherChartScatterPlotState extends ScatterActionState<OtherChartScatterPlot>
+class OtherChartScatterPlotState
+    extends ScatterActionState<OtherChartScatterPlot>
     implements OnChartValueSelectedListener {
   var random = Random(1);
   int _count = 45;
@@ -54,7 +57,9 @@ class OtherChartScatterPlotState extends ScatterActionState<OtherChartScatterPlo
           left: 0,
           top: 0,
           bottom: 100,
-          child: scatterChart == null ? Center(child: Text("no data")) : scatterChart,
+          child: scatterChart == null
+              ? Center(child: Text("no data"))
+              : scatterChart,
         ),
         Positioned(
           left: 0,
@@ -77,7 +82,6 @@ class OtherChartScatterPlotState extends ScatterActionState<OtherChartScatterPlo
                             onChanged: (value) {
                               _count = value.toInt();
                               _initScatterData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -106,7 +110,6 @@ class OtherChartScatterPlotState extends ScatterActionState<OtherChartScatterPlo
                             onChanged: (value) {
                               _range = value;
                               _initScatterData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -129,24 +132,29 @@ class OtherChartScatterPlotState extends ScatterActionState<OtherChartScatterPlo
     );
   }
 
-  void _initScatterData(int count, double range) {
+  void _initScatterData(int count, double range) async {
+    List<ui.Image> imgs = List(3);
+    imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
+    imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
+    imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
+
     List<Entry> values1 = List();
     List<Entry> values2 = List();
     List<Entry> values3 = List();
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 3;
-      values1.add(Entry(x: i.toDouble(), y: val));
+      values1.add(Entry(x: i.toDouble(), y: val, icon: imgs[0]));
     }
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 3;
-      values2.add(Entry(x: i + 0.33, y: val));
+      values2.add(Entry(x: i + 0.33, y: val, icon: imgs[0]));
     }
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 3;
-      values3.add(Entry(x: i + 0.66, y: val));
+      values3.add(Entry(x: i + 0.66, y: val, icon: imgs[0]));
     }
 
     // create a dataset and give it a type
@@ -174,10 +182,18 @@ class OtherChartScatterPlotState extends ScatterActionState<OtherChartScatterPlo
     // create a data object with the data sets
     scatterData = ScatterData.fromList(dataSets);
 //    scatterData.setValueTypeface(tfLight);
+
+    setState(() {});
   }
 
   void _initScatterChart() {
-    if(scatterData == null) return;
+    if (scatterData == null) return;
+
+    if (scatterChart != null) {
+      scatterChart.data = scatterData;
+      scatterChart.getState()?.setStateIfNotDispose();
+      return;
+    }
 
     var desc = Description();
     desc.setEnabled(false);

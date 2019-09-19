@@ -70,7 +70,6 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
                             onChanged: (value) {
                               _count = value.toInt();
                               _initBarData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -99,7 +98,6 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
                             onChanged: (value) {
                               _range = value;
                               _initBarData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -150,6 +148,12 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
 
   void _initBarChart() {
     if (barData == null) {
+      return;
+    }
+
+    if(barChart != null){
+      barChart?.data = barData;
+      barChart?.getState()?.setStateIfNotDispose();
       return;
     }
 

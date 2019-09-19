@@ -72,7 +72,6 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
                             onChanged: (value) {
                               _count = value.toInt();
                               _initLineData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -101,7 +100,6 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
                             onChanged: (value) {
                               _range = value;
                               _initLineData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -167,6 +165,12 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
 
   void _initLineChart() {
     if (lineData == null) return;
+
+    if(lineChart != null){
+      lineChart?.data = lineData;
+      lineChart?.getState()?.setStateIfNotDispose();
+      return;
+    }
 
     var desc = Description();
     desc.setEnabled(false);

@@ -49,7 +49,8 @@ class LineChartPerformanceState
           left: 0,
           top: 0,
           bottom: 100,
-          child: _lineChart == null ? Center(child: Text("no data")) : _lineChart,
+          child:
+              _lineChart == null ? Center(child: Text("no data")) : _lineChart,
         ),
         Positioned(
           left: 0,
@@ -72,7 +73,6 @@ class LineChartPerformanceState
                             onChanged: (value) {
                               _range = value;
                               _initLineData(_range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -117,10 +117,18 @@ class LineChartPerformanceState
 
     // create a data object with the data sets
     _lineData = LineData.fromList(List()..add(set1));
+
+    setState(() {});
   }
 
   void _initLineChart() {
-    if(_lineData == null) return;
+    if (_lineData == null) return;
+
+    if(_lineChart != null){
+      _lineChart?.data = _lineData;
+      _lineChart?.getState()?.setStateIfNotDispose();
+      return;
+    }
 
     var desc = Description();
     desc.setEnabled(false);

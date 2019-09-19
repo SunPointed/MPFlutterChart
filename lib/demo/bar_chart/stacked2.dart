@@ -107,6 +107,12 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
       return;
     }
 
+    if(barChart != null){
+      barChart?.data = barData;
+      barChart?.getState()?.setStateIfNotDispose();
+      return;
+    }
+
     var desc = Description();
     desc.setEnabled(false);
     barChart = HorizontalBarChart(barData, (painter) {

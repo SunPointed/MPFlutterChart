@@ -10,6 +10,7 @@ import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/i_shape_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/line_scatter_candle_radar_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/canvas_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
@@ -123,17 +124,15 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                 dataSet.getValueTextColor2(j ~/ 2 + mXBounds.min));
           }
 
-//          if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
-//            Drawable icon = entry.getIcon();
-//
-//            Utils.drawImage(
-//                c,
-//                icon,
-//                (int)(positions[j] + iconsOffset.x),
-//                (int)(positions[j + 1] + iconsOffset.y),
-//                icon.getIntrinsicWidth(),
-//                icon.getIntrinsicHeight());
-//          }
+          if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
+            CanvasUtils.drawImage(
+                c,
+                Offset(positions[j] + iconsOffset.x,
+                    positions[j + 1] + iconsOffset.y),
+                entry.mIcon,
+                Size(15, 15),
+                mDrawPaint);
+          }
         }
 
         MPPointF.recycleInstance(iconsOffset);

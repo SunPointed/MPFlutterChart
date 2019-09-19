@@ -81,7 +81,6 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
                             onChanged: (value) {
                               _count = value.toInt();
                               _initBarData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -110,7 +109,6 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
                             onChanged: (value) {
                               _range = value;
                               _initBarData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -176,6 +174,12 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
 
   void _initBarChart() {
     if (barData == null) {
+      return;
+    }
+
+    if(barChart != null){
+      barChart?.data = barData;
+      barChart?.getState()?.setStateIfNotDispose();
       return;
     }
 

@@ -52,7 +52,8 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
           left: 0,
           top: 0,
           bottom: 100,
-          child: _lineChart == null ? Center(child: Text("no data")) : _lineChart,
+          child:
+              _lineChart == null ? Center(child: Text("no data")) : _lineChart,
         ),
         Positioned(
           left: 0,
@@ -75,7 +76,6 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
                             onChanged: (value) {
                               _count = value.toInt();
                               _initLineData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -104,7 +104,6 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
                             onChanged: (value) {
                               _range = value;
                               _initLineData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -176,12 +175,20 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
     // create a data object with the data sets
     _lineData = LineData.fromList(List()..add(set1)..add(set2));
     _lineData.setDrawValues(false);
+
+    setState(() {});
   }
 
   Color _fillColor = Color.fromARGB(150, 51, 181, 229);
 
   void _initLineChart() {
-    if(_lineData == null) return;
+    if (_lineData == null) return;
+
+    if (_lineChart != null) {
+      _lineChart?.data = _lineData;
+      _lineChart?.getState()?.setStateIfNotDispose();
+      return;
+    }
 
     var desc = Description();
     desc.setEnabled(false);

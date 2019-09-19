@@ -9,6 +9,7 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/bubble_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/bar_line_scatter_candle_bubble_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/canvas_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
@@ -164,18 +165,14 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
                 y + (0.5 * lineHeight), valueTextColor);
           }
 
-//          if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
-//
-//            Drawable icon = entry.getIcon();
-//
-//            Utils.drawImage(
-//                c,
-//                icon,
-//                (int)(x + iconsOffset.x),
-//                (int)(y + iconsOffset.y),
-//                icon.getIntrinsicWidth(),
-//                icon.getIntrinsicHeight());
-//          }
+          if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
+            CanvasUtils.drawImage(
+                c,
+                Offset(x + iconsOffset.x, y + iconsOffset.y),
+                entry.mIcon,
+                Size(15, 15),
+                mDrawPaint);
+          }
         }
 
         MPPointF.recycleInstance(iconsOffset);

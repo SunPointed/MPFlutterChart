@@ -74,7 +74,6 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
                             onChanged: (value) {
                               _count = value.toInt();
                               _initLineData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -103,7 +102,6 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
                             onChanged: (value) {
                               _range = value;
                               _initLineData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -164,6 +162,12 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
 
   void _initLineChart() {
     if (lineData == null) return;
+
+    if(lineChart != null){
+      lineChart?.data = lineData;
+      lineChart?.getState()?.setStateIfNotDispose();
+      return;
+    }
 
     var desc = Description();
     desc.setEnabled(false);

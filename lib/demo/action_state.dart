@@ -368,7 +368,7 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
 
   @override
   void itemClick(String action) {
-    var state = barChart?.getState() as BarChartState;
+    var state = barChart?.getState() as HorizontalBarChartState;
     var painter = state?.painter;
     if (state == null || painter == null) {
       return;
@@ -644,7 +644,9 @@ abstract class ScatterActionState<T extends StatefulWidget>
         state.setState(() {});
         break;
       case 'C':
-        // todo icons
+        for (IDataSet set in painter.getData().getDataSets())
+          set.setDrawIcons(!set.isDrawIconsEnabled());
+        state.setState(() {});
         break;
       case 'D':
         if (painter.getData() != null) {
@@ -723,7 +725,9 @@ abstract class BubbleActionState<T extends StatefulWidget>
         state.setState(() {});
         break;
       case 'C':
-        // todo icons
+        for (IDataSet set in painter.getData().getDataSets())
+          set.setDrawIcons(!set.isDrawIconsEnabled());
+        state.setState(() {});
         break;
       case 'D':
         if (painter.getData() != null) {
@@ -803,7 +807,9 @@ abstract class CandlestickActionState<T extends StatefulWidget>
         state.setState(() {});
         break;
       case 'C':
-        // todo icons
+        for (IDataSet set in painter.getData().getDataSets())
+          set.setDrawIcons(!set.isDrawIconsEnabled());
+        state.setState(() {});
         break;
       case 'D':
         if (painter.getData() != null) {

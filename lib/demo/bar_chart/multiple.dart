@@ -78,7 +78,6 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
                             onChanged: (value) {
                               _count = value.toInt();
                               _initBarData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -107,7 +106,6 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
                             onChanged: (value) {
                               _range = value;
                               _initBarData(_count, _range);
-                              setState(() {});
                             })),
                   ),
                   Container(
@@ -193,6 +191,12 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
 
   void _initBarChart() {
     if (barData == null) {
+      return;
+    }
+
+    if(barChart != null){
+      barChart?.data = barData;
+      barChart?.getState()?.setStateIfNotDispose();
       return;
     }
 

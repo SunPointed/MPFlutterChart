@@ -269,18 +269,14 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                 dataSet.getValueTextColor2(j ~/ 2));
           }
 
-//          if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
-//
-//            Drawable icon = entry.getIcon();
-//
-//            Utils.drawImage(
-//                c,
-//                icon,
-//                (int)(x + iconsOffset.x),
-//                (int)(y + iconsOffset.y),
-//                icon.getIntrinsicWidth(),
-//                icon.getIntrinsicHeight());
-//          }
+          if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
+            CanvasUtils.drawImage(
+                c,
+                Offset(x + iconsOffset.x, y + iconsOffset.y),
+                entry.mIcon,
+                Size(15, 15),
+                mDrawPaint);
+          }
         }
 
         MPPointF.recycleInstance(iconsOffset);
