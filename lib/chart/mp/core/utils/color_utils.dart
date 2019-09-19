@@ -71,4 +71,8 @@ abstract class ColorUtils {
     return Color.fromARGB(
         alpha, strokeColor.red, strokeColor.green, strokeColor.blue);
   }
+
+  static Color getHoloBlue() {
+    return Color.fromARGB(255, 51, 181, 229);
+  }
 }
