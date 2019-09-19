@@ -41,12 +41,11 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
 
   List<DrawOrder> mDrawOrder;
 
-  CombinedChartPainter(CombinedData data,
+  CombinedChartPainter(CombinedData data, ChartAnimator animator,
       {bool drawValueAboveBar = true,
       bool highlightFullBarEnabled = false,
       bool drawBarShadow = false,
       ViewPortHandler viewPortHandler = null,
-      ChartAnimator animator = null,
       Transformer leftAxisTransformer = null,
       Transformer rightAxisTransformer = null,
       Matrix4 zoomMatrixBuffer = null,
@@ -95,9 +94,8 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       : mDrawBarShadow = drawBarShadow,
         mHighlightFullBarEnabled = highlightFullBarEnabled,
         mDrawValueAboveBar = drawValueAboveBar,
-        super(data,
+        super(data, animator,
             viewPortHandler: viewPortHandler,
-            animator: animator,
             leftAxisTransformer: leftAxisTransformer,
             rightAxisTransformer: rightAxisTransformer,
             zoomMatrixBuffer: zoomMatrixBuffer,

@@ -46,7 +46,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
   YAxisRendererRadarChart mYAxisRenderer;
   XAxisRendererRadarChart mXAxisRenderer;
 
-  RadarChartPainter(RadarData data,
+  RadarChartPainter(RadarData data, ChartAnimator animator,
       {double webLineWidth = 2.5,
       double innerWebLineWidth = 1.5,
       int webAlpha = 150,
@@ -57,7 +57,6 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
       bool rotateEnabled = true,
       double minOffset = 0.0,
       ViewPortHandler viewPortHandler = null,
-      ChartAnimator animator = null,
       double maxHighlightDistance = 0.0,
       bool highLightPerTapEnabled = true,
       bool dragDecelerationEnabled = true,
@@ -80,13 +79,12 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
         mWebAlpha = webAlpha,
         mDrawWeb = drawWeb,
         mSkipWebLineCount = skipWebLineCount,
-        super(data,
+        super(data, animator,
             rotationAngle: rotationAngle,
             rawRotationAngle: rawRotationAngle,
             rotateEnabled: rotateEnabled,
             minOffset: minOffset,
             viewPortHandler: viewPortHandler,
-            animator: animator,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
             dragDecelerationEnabled: dragDecelerationEnabled,

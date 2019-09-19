@@ -158,7 +158,8 @@ class BubbleChart extends Chart {
             unbind: unbind) {}
 
   @override
-  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart> createChartState() {
+  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart>
+      createChartState() {
     return BubbleChartState();
   }
 }
@@ -167,9 +168,8 @@ class BubbleChartState
     extends BarLineScatterCandleBubbleState<BubbleChartPainter, BubbleChart> {
   @override
   void initialPainter() {
-    painter = BubbleChartPainter(widget.data,
+    painter = BubbleChartPainter(widget.data, animator,
         viewPortHandler: widget.viewPortHandler,
-        animator: animator,
         backgroundColor: widget.backgroundColor,
         borderColor: widget.borderColor,
         borderStrokeWidth: widget.borderStrokeWidth,

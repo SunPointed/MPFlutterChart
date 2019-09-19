@@ -158,7 +158,8 @@ class CandlestickChart extends Chart {
             unbind: unbind) {}
 
   @override
-  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart> createChartState() {
+  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart>
+      createChartState() {
     return CandlestickChartState();
   }
 }
@@ -167,9 +168,8 @@ class CandlestickChartState extends BarLineScatterCandleBubbleState<
     CandlestickChartPainter, CandlestickChart> {
   @override
   void initialPainter() {
-    painter = CandlestickChartPainter(widget.data,
+    painter = CandlestickChartPainter(widget.data, animator,
         viewPortHandler: widget.viewPortHandler,
-        animator: animator,
         backgroundColor: widget.backgroundColor,
         borderColor: widget.borderColor,
         borderStrokeWidth: widget.borderStrokeWidth,

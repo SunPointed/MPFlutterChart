@@ -16,9 +16,8 @@ import 'package:mp_flutter_chart/chart/mp/painter/bar_line_chart_painter.dart';
 
 class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
     implements CandleDataProvider {
-  CandlestickChartPainter(CandleData data,
+  CandlestickChartPainter(CandleData data, ChartAnimator animator,
       {ViewPortHandler viewPortHandler = null,
-      ChartAnimator animator = null,
       Transformer leftAxisTransformer = null,
       Transformer rightAxisTransformer = null,
       Matrix4 zoomMatrixBuffer = null,
@@ -64,9 +63,8 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
       TextPainter descPainter = null,
       IHighlighter highlighter = null,
       bool unbind = false})
-      : super(data,
+      : super(data, animator,
             viewPortHandler: viewPortHandler,
-            animator: animator,
             leftAxisTransformer: leftAxisTransformer,
             rightAxisTransformer: rightAxisTransformer,
             zoomMatrixBuffer: zoomMatrixBuffer,

@@ -169,7 +169,8 @@ class HorizontalBarChart extends Chart {
   }
 
   @override
-  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart> createChartState() {
+  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart>
+      createChartState() {
     return HorizontalBarChartState();
   }
 }
@@ -178,9 +179,8 @@ class HorizontalBarChartState extends BarLineScatterCandleBubbleState<
     BarChartPainter, HorizontalBarChart> {
   @override
   void initialPainter() {
-    painter = HorizontalBarChartPainter(widget.data,
+    painter = HorizontalBarChartPainter(widget.data, animator,
         viewPortHandler: widget.viewPortHandler,
-        animator: animator,
         backgroundColor: widget.backgroundColor,
         borderColor: widget.borderColor,
         borderStrokeWidth: widget.borderStrokeWidth,

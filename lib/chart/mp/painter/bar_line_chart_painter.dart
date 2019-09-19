@@ -98,9 +98,8 @@ abstract class BarLineChartBasePainter<
   /// flag that indicates if a custom viewport offset has been set
   bool mCustomViewPortEnabled = false;
 
-  BarLineChartBasePainter(T data,
+  BarLineChartBasePainter(T data, ChartAnimator animator,
       {ViewPortHandler viewPortHandler = null,
-      ChartAnimator animator = null,
       Transformer leftAxisTransformer = null,
       Transformer rightAxisTransformer = null,
       Matrix4 zoomMatrixBuffer = null,
@@ -167,9 +166,8 @@ abstract class BarLineChartBasePainter<
         mHighlightPerDragEnabled = highlightPerDragEnabled,
         mMaxVisibleCount = maxVisibleCount,
         mDrawListener = drawListener,
-        super(data,
+        super(data, animator,
             viewPortHandler: viewPortHandler,
-            animator: animator,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
             dragDecelerationEnabled: dragDecelerationEnabled,
@@ -562,6 +560,7 @@ abstract class BarLineChartBasePainter<
   /**
    * ################ ################ ################ ################
    */
+
   /// CODE BELOW THIS RELATED TO SCALING AND GESTURES AND MODIFICATION OF THE
   /// VIEWPORT
   Matrix4 mZoomMatrixBuffer;

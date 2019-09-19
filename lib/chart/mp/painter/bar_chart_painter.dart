@@ -33,13 +33,12 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
 
   bool mFitBars = false;
 
-  BarChartPainter(BarData data,
+  BarChartPainter(BarData data, ChartAnimator animator,
       {bool highlightFullBarEnabled = false,
       bool drawValueAboveBar = false,
       bool drawBarShadow = false,
       bool fitBars = false,
       ViewPortHandler viewPortHandler = null,
-      ChartAnimator animator = null,
       Transformer leftAxisTransformer = null,
       Transformer rightAxisTransformer = null,
       Matrix4 zoomMatrixBuffer = null,
@@ -89,9 +88,8 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
         mDrawValueAboveBar = drawValueAboveBar,
         mDrawBarShadow = drawBarShadow,
         mFitBars = fitBars,
-        super(data,
+        super(data, animator,
             viewPortHandler: viewPortHandler,
-            animator: animator,
             leftAxisTransformer: leftAxisTransformer,
             rightAxisTransformer: rightAxisTransformer,
             zoomMatrixBuffer: zoomMatrixBuffer,

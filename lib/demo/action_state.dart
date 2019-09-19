@@ -132,8 +132,8 @@ abstract class LineActionState<T extends StatefulWidget>
 
   @override
   void itemClick(String action) {
-    var state = lineChart?.getState();
-    var painter = state?.painter as LineChartPainter;
+    var state = lineChart?.getState() as LineChartState;
+    var painter = state?.painter;
     if (state == null || painter == null) {
       return;
     }
@@ -215,11 +215,12 @@ abstract class LineActionState<T extends StatefulWidget>
         state.setState(() {});
         break;
       case 'I':
-        painter.mPinchZoomEnabled = !painter.mPinchZoomEnabled;
+        state.widget.pinchZoomEnabled = !state.widget.pinchZoomEnabled;
         state.setState(() {});
         break;
       case 'J':
-        painter.mAutoScaleMinMaxEnabled = !painter.mAutoScaleMinMaxEnabled;
+        state.widget.autoScaleMinMaxEnabled =
+            !state.widget.autoScaleMinMaxEnabled;
         state.setState(() {});
         break;
       case 'K':
@@ -275,8 +276,8 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
 
   @override
   void itemClick(String action) {
-    var state = barChart?.getState();
-    var painter = state?.painter as BarChartPainter;
+    var state = barChart?.getState() as BarChartState;
+    var painter = state?.painter;
     if (state == null || painter == null) {
       return;
     }
@@ -313,11 +314,12 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
         }
         break;
       case 'F':
-        painter.mPinchZoomEnabled = !painter.mPinchZoomEnabled;
+        state.widget.pinchZoomEnabled = !state.widget.pinchZoomEnabled;
         state.setState(() {});
         break;
       case 'G':
-        painter.mAutoScaleMinMaxEnabled = !painter.mAutoScaleMinMaxEnabled;
+        state.widget.autoScaleMinMaxEnabled =
+            !state.widget.autoScaleMinMaxEnabled;
         state.setState(() {});
         break;
       case 'H':
@@ -366,8 +368,8 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
 
   @override
   void itemClick(String action) {
-    var state = barChart?.getState();
-    var painter = state?.painter as BarChartPainter;
+    var state = barChart?.getState() as BarChartState;
+    var painter = state?.painter;
     if (state == null || painter == null) {
       return;
     }
@@ -404,11 +406,12 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
         }
         break;
       case 'F':
-        painter.mPinchZoomEnabled = !painter.mPinchZoomEnabled;
+        state.widget.pinchZoomEnabled = !state.widget.pinchZoomEnabled;
         state.setState(() {});
         break;
       case 'G':
-        painter.mAutoScaleMinMaxEnabled = !painter.mAutoScaleMinMaxEnabled;
+        state.widget.autoScaleMinMaxEnabled =
+            !state.widget.autoScaleMinMaxEnabled;
         state.setState(() {});
         break;
       case 'H':
@@ -459,8 +462,8 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
 
   @override
   void itemClick(String action) {
-    var state = pieChart?.getState();
-    var painter = state?.painter as PieChartPainter;
+    var state = pieChart?.getState() as PieChartState;
+    var painter = state?.painter;
     if (state == null || painter == null) {
       return;
     }
@@ -475,49 +478,51 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
         state.setState(() {});
         break;
       case 'C':
-        painter.mDrawEntryLabels = !painter.mDrawEntryLabels;
+        state.widget.drawEntryLabels = !state.widget.drawEntryLabels;
         state.setState(() {});
         break;
       case 'D':
-        // todo icons
+        for (IDataSet set in painter.getData().getDataSets())
+          set.setDrawIcons(!set.isDrawIconsEnabled());
+        state.setState(() {});
         break;
       case 'E':
-        painter.setUsePercentValues(!painter.isUsePercentValuesEnabled());
+        state.widget.usePercentValues = !state.widget.usePercentValues;
         state.setState(() {});
         break;
       case 'F':
-        if (painter.mMinAngleForSlices == 0)
-          painter.mMinAngleForSlices = 36;
-        else
-          painter.mMinAngleForSlices = 0;
+        if (state.widget.minAngleForSlices == 0) {
+          state.widget.minAngleForSlices = 36;
+        } else {
+          state.widget.minAngleForSlices = 0;
+        }
         state.setState(() {});
         break;
       case 'G':
-        if (painter.isDrawHoleEnabled())
-          painter.setDrawHoleEnabled(false);
-        else
-          painter.setDrawHoleEnabled(true);
+        state.widget.drawHole = !state.widget.drawHole;
         state.setState(() {});
         break;
       case 'H':
         bool toSet = !painter.isDrawRoundedSlicesEnabled() ||
             !painter.isDrawHoleEnabled();
-        painter.mDrawRoundedSlices = toSet;
+        state.widget.drawRoundedSlices = toSet;
         if (toSet && !painter.isDrawHoleEnabled()) {
-          painter.setDrawHoleEnabled(true);
+          state.widget.drawHole = true;
         }
         if (toSet && painter.isDrawSlicesUnderHoleEnabled()) {
-          painter.setDrawSlicesUnderHole(false);
+          state.widget.drawSlicesUnderHole = false;
         }
         state.setState(() {});
         break;
       case 'I':
-        painter.mDrawCenterText = !painter.mDrawCenterText;
+        state.widget.drawCenterText = !state.widget.drawCenterText;
         state.setState(() {});
         break;
       case 'J':
-        //        painter.spin(1000, chart.getRotationAngle(), chart.getRotationAngle() + 360, Easing.EaseInOutCubic);
-        // todo
+        painter.mAnimator
+          ..reset()
+          ..spin(2000, painter.getRotationAngle(),
+              painter.getRotationAngle() + 360, Easing.EaseInOutCubic);
         break;
       case 'K':
         painter.mAnimator

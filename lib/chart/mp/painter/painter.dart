@@ -23,7 +23,7 @@ import 'package:mp_flutter_chart/chart/mp/core/value_formatter/default_value_for
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 
 abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
-    extends CustomPainter implements ChartInterface, AnimatorUpdateListener {
+    extends CustomPainter implements ChartInterface {
   /// object that holds all data that was originally set for the chart, before
   /// it was modified or any filtering algorithms had been applied
   T mData = null;
@@ -89,9 +89,8 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   /// unbind flag
   bool mUnbind = false;
 
-  ChartPainter(T data,
+  ChartPainter(T data, ChartAnimator animator,
       {ViewPortHandler viewPortHandler = null,
-      ChartAnimator animator = null,
       double maxHighlightDistance = 0.0,
       bool highLightPerTapEnabled = true,
       bool dragDecelerationEnabled = true,
@@ -153,7 +152,6 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   }
 
   void init() {
-    mAnimator ??= ChartAnimator(this);
     mViewPortHandler ??= ViewPortHandler();
     mMaxHighlightDistance = Utils.convertDpToPixel(500);
     mDescription ??= Description();
@@ -163,9 +161,6 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
     mDescPaint ??=
         PainterUtils.create(mDescPaint, null, ColorUtils.BLACK, null);
   }
-
-  @override
-  void onAnimationUpdate(double x, double y) {}
 
   /// Clears the chart from all data (sets it to null) and refreshes it (by
   /// calling invalidate()).

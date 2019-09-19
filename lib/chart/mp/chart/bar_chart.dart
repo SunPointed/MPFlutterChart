@@ -173,9 +173,8 @@ class BarChartState
     extends BarLineScatterCandleBubbleState<BarChartPainter, BarChart> {
   @override
   void initialPainter() {
-    painter = BarChartPainter(widget.data,
+    painter = BarChartPainter(widget.data, animator,
         viewPortHandler: widget.viewPortHandler,
-        animator: animator,
         backgroundColor: widget.backgroundColor,
         borderColor: widget.borderColor,
         borderStrokeWidth: widget.borderStrokeWidth,

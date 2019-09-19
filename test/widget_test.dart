@@ -5,6 +5,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:math';
+
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -94,7 +96,7 @@ void main() {
 //    print(list2);
 //    Matrix4Utils.mapPoints(N, list2);
 //    print(list2);
-    
+
 //    Matrix4 X = Matrix4(
 //        22.142046, 0.0, 0.0, 0.0,
 //        0.0, -5.2080936, 0.0, 0.0,
@@ -124,9 +126,9 @@ void main() {
 //    var format = NumberFormat("###,###,###,##0" + b.toString());
 //    print(format.format(242432.854850));
 
-      print(double.parse("0.09983341664682815"));
-      print(double.parse("0"));
-      print(double.parse("0.0"));
+    print(double.parse("0.09983341664682815"));
+    print(double.parse("0"));
+    print(double.parse("0.0"));
 //    Util.loadAsset("othersine.txt").then((value) {
 ////      _data = List();
 //      List<String> lines = value.split("\\n");
@@ -143,5 +145,7 @@ void main() {
 ////      _initLineData(_count);
 ////      setState(() {});
 //    });
+
+    print(sin(90 / 180 * pi));
   });
 }

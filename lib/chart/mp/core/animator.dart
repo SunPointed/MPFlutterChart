@@ -17,6 +17,8 @@ class ChartAnimator {
   /// The phase of drawn values on the x-axis. 0 - 1
   double mPhaseX = MAX;
 
+  double mAngle;
+
   Timer _countdownTimer;
 
   bool _isShowed = false;
@@ -31,21 +33,35 @@ class ChartAnimator {
 
   bool get needReset => _isShowed;
 
-//  ObjectAnimator xAnimator(int duration, EasingFunction easing) {
-//    ObjectAnimator animatorX = ObjectAnimator.ofFloat(this, "phaseX", 0, 1);
-//    animatorX.setInterpolator(easing);
-//    animatorX.setDuration(duration);
-//
-//    return animatorX;
-//  }
-//
-//  ObjectAnimator yAnimator(int duration, EasingFunction easing) {
-//    ObjectAnimator animatorY = ObjectAnimator.ofFloat(this, "phaseY", 0, 1);
-//    animatorY.setInterpolator(easing);
-//    animatorY.setDuration(duration);
-//
-//    return animatorY;
-//  }
+  void spin(int durationMillis, double fromAngle, double toAngle,
+      EasingFunction easing) {
+    if (_isShowed ||
+        _countdownTimer != null ||
+        durationMillis < 0 ||
+        fromAngle >= toAngle) {
+      return;
+    }
+
+    _isShowed = true;
+    final double totalTime = durationMillis.toDouble();
+    mAngle = fromAngle;
+    _countdownTimer =
+        Timer.periodic(Duration(milliseconds: REFRESH_RATE), (timer) {
+      if (durationMillis < 0) {
+        mAngle = toAngle;
+        _countdownTimer?.cancel();
+        _countdownTimer = null;
+      } else {
+        mAngle += toAngle *
+            (1.0 - easing.getInterpolation(durationMillis / totalTime));
+        if (mAngle >= toAngle) {
+          mAngle = toAngle;
+        }
+        durationMillis -= REFRESH_RATE;
+      }
+      mListener?.onRotateUpdate(mAngle);
+    });
+  }
 
   /// Animates values along the X axis, in a linear fashion.
   ///
@@ -59,9 +75,6 @@ class ChartAnimator {
   /// @param durationMillis animation duration
   /// @param easing EasingFunction
   void animateX2(int durationMillis, EasingFunction easing) {
-//    ObjectAnimator animatorX = xAnimator(durationMillis, easing);
-//    animatorX.addUpdateListener(mListener);
-//    animatorX.start();
     if (_isShowed || _countdownTimer != null || durationMillis < 0) {
       return;
     }
@@ -101,18 +114,6 @@ class ChartAnimator {
   /// @param easing EasingFunction for both axes
   void animateXY2(
       int durationMillisX, int durationMillisY, EasingFunction easing) {
-//    ObjectAnimator xAnimator = xAnimator(durationMillisX, easing);
-//    ObjectAnimator yAnimator = yAnimator(durationMillisY, easing);
-//
-//    if (durationMillisX > durationMillisY) {
-//      xAnimator.addUpdateListener(mListener);
-//    } else {
-//      yAnimator.addUpdateListener(mListener);
-//    }
-//
-//    xAnimator.start();
-//    yAnimator.start();
-
     if (_isShowed ||
         _countdownTimer != null ||
         durationMillisX < 0 ||
@@ -158,17 +159,6 @@ class ChartAnimator {
   /// @param easingY EasingFunction for the Y axis
   void animateXY3(int durationMillisX, int durationMillisY,
       EasingFunction easingX, EasingFunction easingY) {
-//    ObjectAnimator xAnimator = xAnimator(durationMillisX, easingX);
-//    ObjectAnimator yAnimator = yAnimator(durationMillisY, easingY);
-//
-//    if (durationMillisX > durationMillisY) {
-//      xAnimator.addUpdateListener(mListener);
-//    } else {
-//      yAnimator.addUpdateListener(mListener);
-//    }
-//
-//    xAnimator.start();
-//    yAnimator.start();
     if (_isShowed ||
         _countdownTimer != null ||
         durationMillisX < 0 ||
@@ -218,9 +208,6 @@ class ChartAnimator {
   /// @param durationMillis animation duration
   /// @param easing EasingFunction
   void animateY2(int durationMillis, EasingFunction easing) {
-//    ObjectAnimator animatorY = yAnimator(durationMillis, easing);
-//    animatorY.addUpdateListener(mListener);
-//    animatorY.start();
     if (_isShowed || _countdownTimer != null || durationMillis < 0) {
       return;
     }

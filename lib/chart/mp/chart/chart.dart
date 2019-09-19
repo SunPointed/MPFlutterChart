@@ -136,6 +136,9 @@ abstract class ChartState<P extends ChartPainter, T extends Chart>
     setStateIfNotDispose();
   }
 
+  @override
+  void onRotateUpdate(double angle) {}
+
   void setStateIfNotDispose() {
     if (mounted) {
       setState(() {});
@@ -280,6 +283,13 @@ abstract class PieRadarChartState<P extends PieRadarChartPainter,
     double angle = painter.getAngleForPoint(x, y) - _startAngle;
     widget.rawRotationAngle = angle;
     widget.rotationAngle = Utils.getNormalizedAngle(widget.rawRotationAngle);
+  }
+
+  @override
+  void onRotateUpdate(double angle) {
+    widget.rawRotationAngle = angle;
+    widget.rotationAngle = Utils.getNormalizedAngle(widget.rawRotationAngle);
+    setState(() {});
   }
 
   @override

@@ -29,13 +29,12 @@ import 'package:mp_flutter_chart/chart/mp/painter/bar_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class HorizontalBarChartPainter extends BarChartPainter {
-  HorizontalBarChartPainter(BarData data,
+  HorizontalBarChartPainter(BarData data, ChartAnimator animator,
       {bool highlightFullBarEnabled = false,
       bool drawValueAboveBar = false,
       bool drawBarShadow = false,
       bool fitBars = false,
       ViewPortHandler viewPortHandler = null,
-      ChartAnimator animator = null,
       Transformer leftAxisTransformer = null,
       Transformer rightAxisTransformer = null,
       Matrix4 zoomMatrixBuffer = null,
@@ -81,13 +80,12 @@ class HorizontalBarChartPainter extends BarChartPainter {
       TextPainter descPainter = null,
       IHighlighter highlighter = null,
       bool unbind = false})
-      : super(data,
+      : super(data, animator,
             highlightFullBarEnabled: highlightFullBarEnabled,
             drawValueAboveBar: drawValueAboveBar,
             drawBarShadow: drawBarShadow,
             fitBars: fitBars,
             viewPortHandler: viewPortHandler,
-            animator: animator,
             leftAxisTransformer: leftAxisTransformer,
             rightAxisTransformer: rightAxisTransformer,
             zoomMatrixBuffer: zoomMatrixBuffer,
@@ -282,7 +280,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
   @override
   Highlight getHighlightByTouchPoint(double x, double y) {
     if (mData != null) {
-      return mHighlighter.getHighlight(y, x);// switch x and y
+      return mHighlighter.getHighlight(y, x); // switch x and y
     }
     return null;
   }

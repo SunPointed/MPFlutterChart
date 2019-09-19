@@ -70,7 +70,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   /// the minimum angle, default 0f.
   double mMinAngleForSlices = 0;
 
-  PieChartPainter(PieData data,
+  PieChartPainter(PieData data, ChartAnimator animator,
       {Rect circleBox = Rect.zero,
       bool drawEntryLabels = true,
       bool drawHole = true,
@@ -89,7 +89,6 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
       bool rotateEnabled = true,
       double minOffset = 0.0,
       ViewPortHandler viewPortHandler = null,
-      ChartAnimator animator = null,
       double maxHighlightDistance = 0.0,
       bool highLightPerTapEnabled = true,
       bool dragDecelerationEnabled = true,
@@ -120,13 +119,12 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
         mCenterTextRadiusPercent = centerTextRadiusPercent,
         mMaxAngle = maxAngle,
         mMinAngleForSlices = minAngleForSlices,
-        super(data,
+        super(data, animator,
             rotationAngle: rotationAngle,
             rawRotationAngle: rawRotationAngle,
             rotateEnabled: rotateEnabled,
             minOffset: minOffset,
             viewPortHandler: viewPortHandler,
-            animator: animator,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
             dragDecelerationEnabled: dragDecelerationEnabled,
@@ -467,14 +465,6 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   /// @return
   String getCenterText() {
     return mCenterText;
-  }
-
-  /// set this to true to draw the text that is displayed in the center of the
-  /// pie chart
-  ///
-  /// @param enabled
-  void setDrawCenterText(bool enabled) {
-    this.mDrawCenterText = enabled;
   }
 
   /// returns true if drawing the center text is enabled

@@ -84,7 +84,8 @@ class RadarChart extends PieRadarChart {
   }
 
   @override
-  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart> createChartState() {
+  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart>
+      createChartState() {
     return RadarChartState();
   }
 }
@@ -93,9 +94,8 @@ class RadarChartState
     extends PieRadarChartState<RadarChartPainter, RadarChart> {
   @override
   void initialPainter() {
-    painter = RadarChartPainter(widget.data,
+    painter = RadarChartPainter(widget.data, animator,
         viewPortHandler: widget.viewPortHandler,
-        animator: animator,
         webLineWidth: widget.webLineWidth,
         innerWebLineWidth: widget.innerWebLineWidth,
         webAlpha: widget.webAlpha,

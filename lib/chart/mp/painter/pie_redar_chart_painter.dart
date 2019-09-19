@@ -33,13 +33,12 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
   /// Sets the minimum offset (padding) around the chart, defaults to 0.f
   double mMinOffset = 0.0;
 
-  PieRadarChartPainter(T data,
+  PieRadarChartPainter(T data, ChartAnimator animator,
       {double rotationAngle = 270,
       double rawRotationAngle = 270,
       bool rotateEnabled = true,
       double minOffset = 0.0,
       ViewPortHandler viewPortHandler = null,
-      ChartAnimator animator = null,
       double maxHighlightDistance = 0.0,
       bool highLightPerTapEnabled = true,
       bool dragDecelerationEnabled = true,
@@ -61,9 +60,8 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
         mRawRotationAngle = rawRotationAngle,
         mRotateEnabled = rotateEnabled,
         mMinOffset = minOffset,
-        super(data,
+        super(data, animator,
             viewPortHandler: viewPortHandler,
-            animator: animator,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
             dragDecelerationEnabled: dragDecelerationEnabled,

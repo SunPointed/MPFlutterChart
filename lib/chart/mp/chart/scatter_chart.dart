@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
@@ -158,7 +157,8 @@ class ScatterChart extends Chart {
             unbind: unbind) {}
 
   @override
-  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart> createChartState() {
+  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart>
+      createChartState() {
     return ScatterChartState();
   }
 }
@@ -167,9 +167,8 @@ class ScatterChartState
     extends BarLineScatterCandleBubbleState<ScatterChartPainter, ScatterChart> {
   @override
   void initialPainter() {
-    painter = ScatterChartPainter(widget.data,
+    painter = ScatterChartPainter(widget.data, animator,
         viewPortHandler: widget.viewPortHandler,
-        animator: animator,
         backgroundColor: widget.backgroundColor,
         borderColor: widget.borderColor,
         borderStrokeWidth: widget.borderStrokeWidth,

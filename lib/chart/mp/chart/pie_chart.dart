@@ -67,6 +67,7 @@ class PieChart extends PieRadarChart {
       IHighlighter highlighter = null,
       bool unbind = false})
       : circleBox = circleBox,
+        drawCenterText = drawCenterText,
         drawEntryLabels = drawEntryLabels,
         drawHole = drawHole,
         drawSlicesUnderHole = drawSlicesUnderHole,
@@ -101,7 +102,8 @@ class PieChart extends PieRadarChart {
   }
 
   @override
-  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart> createChartState() {
+  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart>
+      createChartState() {
     return PieChartState();
   }
 }
@@ -109,10 +111,10 @@ class PieChart extends PieRadarChart {
 class PieChartState extends PieRadarChartState<PieChartPainter, PieChart> {
   @override
   void initialPainter() {
-    painter = PieChartPainter(widget.data,
+    painter = PieChartPainter(widget.data, animator,
         viewPortHandler: widget.viewPortHandler,
-        animator: animator,
         circleBox: widget.circleBox,
+        drawCenterText: widget.drawCenterText,
         drawEntryLabels: widget.drawEntryLabels,
         drawHole: widget.drawHole,
         drawSlicesUnderHole: widget.drawSlicesUnderHole,

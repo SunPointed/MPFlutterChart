@@ -280,12 +280,15 @@ class PieChartRenderer extends DataRenderer {
             center.x + radius, center.y + radius));
       } else {
         if (drawRoundedSlices) {
-          mPathBuffer.addArc(roundedCircleBox,
-              (startAngleOuter + 180) * Utils.FDEG2RAD, -180 * Utils.FDEG2RAD);
+          mPathBuffer.arcTo(
+              roundedCircleBox,
+              (startAngleOuter + 180) * Utils.FDEG2RAD,
+              -180 * Utils.FDEG2RAD,
+              false);
         }
 
-        mPathBuffer.addArc(circleBox, startAngleOuter * Utils.FDEG2RAD,
-            sweepAngleOuter * Utils.FDEG2RAD);
+        mPathBuffer.arcTo(circleBox, startAngleOuter * Utils.FDEG2RAD,
+            sweepAngleOuter * Utils.FDEG2RAD, false);
       }
 
       // API < 21 does not receive doubles in addArc, but a RectF
@@ -339,8 +342,8 @@ class PieChartRenderer extends DataRenderer {
                 (radius - roundedRadius) * sin(endAngleInner * Utils.FDEG2RAD);
             roundedCircleBox = Rect.fromLTRB(x - roundedRadius,
                 y - roundedRadius, x + roundedRadius, y + roundedRadius);
-            mPathBuffer.addArc(roundedCircleBox, endAngleInner * Utils.FDEG2RAD,
-                180 * Utils.FDEG2RAD);
+            mPathBuffer.arcTo(roundedCircleBox, endAngleInner * Utils.FDEG2RAD,
+                180 * Utils.FDEG2RAD, false);
           } else {
 //            mPathBuffer.lineTo(
 //                center.x + innerRadius * cos(endAngleInner * Utils.FDEG2RAD),
@@ -360,8 +363,8 @@ class PieChartRenderer extends DataRenderer {
                     sliceSpaceOffset * sin(angleMiddle * Utils.FDEG2RAD));
           }
 
-          mPathBuffer.addArc(mInnerRectBuffer, endAngleInner * Utils.FDEG2RAD,
-              -sweepAngleInner * Utils.FDEG2RAD);
+          mPathBuffer.arcTo(mInnerRectBuffer, endAngleInner * Utils.FDEG2RAD,
+              -sweepAngleInner * Utils.FDEG2RAD, false);
         }
       } else {
         if (sweepAngleOuter % 360 > Utils.FLOAT_EPSILON) {
@@ -926,10 +929,11 @@ class PieChartRenderer extends DataRenderer {
             center.y +
                 highlightedRadius * sin(startAngleShifted * Utils.FDEG2RAD));
 
-        mPathBuffer.addArc(
+        mPathBuffer.arcTo(
             mDrawHighlightedRectF,
             startAngleShifted * Utils.FDEG2RAD,
-            sweepAngleShifted * Utils.FDEG2RAD);
+            sweepAngleShifted * Utils.FDEG2RAD,
+            false);
       }
 
       double sliceSpaceRadius = 0.0;
@@ -992,8 +996,8 @@ class PieChartRenderer extends DataRenderer {
 //              center.x + innerRadius * cos(endAngleInner * Utils.FDEG2RAD),
 //              center.y + innerRadius * sin(endAngleInner * Utils.FDEG2RAD));
 
-          mPathBuffer.addArc(mInnerRectBuffer, endAngleInner * Utils.FDEG2RAD,
-              -sweepAngleInner * Utils.FDEG2RAD);
+          mPathBuffer.arcTo(mInnerRectBuffer, endAngleInner * Utils.FDEG2RAD,
+              -sweepAngleInner * Utils.FDEG2RAD, false);
         }
       } else {
         if (sweepAngleOuter % 360 > Utils.FLOAT_EPSILON) {

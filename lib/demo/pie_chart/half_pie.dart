@@ -10,6 +10,7 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/pie_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/percent_formatter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
@@ -86,7 +87,8 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
 
   PercentFormatter _formatter = PercentFormatter();
 
-  void _initPieData() {
+  void _initPieData() async {
+    var img = await ImageLoader.loadImage('assets/img/star.png');
     var count = 4;
     var range = 100;
 
@@ -94,6 +96,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
 
     for (int i = 0; i < count; i++) {
       values.add(new PieEntry(
+          icon: img,
           value: ((random.nextDouble() * range) + range / 5),
           label: PARTIES[i % PARTIES.length]));
     }
@@ -110,6 +113,8 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
 //      ..setValueTextSize(11)
       ..setValueTextColor(ColorUtils.WHITE);
 //    data.setValueTypeface(tfLight);
+
+    setState(() {});
   }
 
   void _initPieChart() {
@@ -131,8 +136,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
         ..setCenterTextOffset(0, -20)
         ..setEntryLabelColor(ColorUtils.WHITE)
         ..setEntryLabelTextSize(12)
-        ..setRotationAngle(180)
-        ..setDrawCenterText(true);
+        ..setRotationAngle(180);
 
       painter.mLegend
         ..setVerticalAlignment(LegendVerticalAlignment.TOP)
@@ -148,6 +152,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
         rotateEnabled: false,
         drawHole: true,
         usePercentValues: true,
+        drawCenterText: true,
         touchEnabled: true,
         highLightPerTapEnabled: true,
         dragDecelerationFrictionCoef: 0.95,

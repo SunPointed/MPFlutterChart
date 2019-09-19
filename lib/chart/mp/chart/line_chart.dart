@@ -163,17 +163,18 @@ class LineChart extends Chart {
   }
 
   @override
-  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart> createChartState() {
+  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart>
+      createChartState() {
     return LineChartState();
   }
 }
 
-class LineChartState extends BarLineScatterCandleBubbleState<LineChartPainter, LineChart> {
+class LineChartState
+    extends BarLineScatterCandleBubbleState<LineChartPainter, LineChart> {
   @override
   void initialPainter() {
-    painter = LineChartPainter(widget.data,
+    painter = LineChartPainter(widget.data, animator,
         viewPortHandler: widget.viewPortHandler,
-        animator: animator,
         backgroundColor: widget.backgroundColor,
         borderColor: widget.borderColor,
         borderStrokeWidth: widget.borderStrokeWidth,

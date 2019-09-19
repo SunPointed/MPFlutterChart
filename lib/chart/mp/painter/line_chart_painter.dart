@@ -18,9 +18,8 @@ import 'package:mp_flutter_chart/chart/mp/painter/bar_line_chart_painter.dart';
 
 class LineChartPainter extends BarLineChartBasePainter<LineData>
     implements LineDataProvider {
-  LineChartPainter(LineData data,
+  LineChartPainter(LineData data, ChartAnimator animator,
       {ViewPortHandler viewPortHandler = null,
-      ChartAnimator animator = null,
       Transformer leftAxisTransformer = null,
       Transformer rightAxisTransformer = null,
       Matrix4 zoomMatrixBuffer = null,
@@ -66,9 +65,8 @@ class LineChartPainter extends BarLineChartBasePainter<LineData>
       TextPainter descPainter = null,
       IHighlighter highlighter = null,
       bool unbind = false})
-      : super(data,
+      : super(data, animator,
             viewPortHandler: viewPortHandler,
-            animator: animator,
             leftAxisTransformer: leftAxisTransformer,
             rightAxisTransformer: rightAxisTransformer,
             zoomMatrixBuffer: zoomMatrixBuffer,

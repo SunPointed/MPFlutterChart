@@ -14,6 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/value_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
+import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/percent_formatter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
@@ -159,13 +160,15 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
 
   PercentFormatter _formatter = PercentFormatter();
 
-  void _initPieData(int count, double range) {
+  void _initPieData(int count, double range) async {
+    var img = await ImageLoader.loadImage('assets/img/star.png');
     List<PieEntry> entries = List();
 
     // NOTE: The order of the entries when being added to the entries array determines their position around the center of
     // the chart.
     for (int i = 0; i < count; i++) {
       entries.add(PieEntry(
+          icon: img,
           value: (random.nextDouble() * range) + range / 5,
           label: PARTIES[i % PARTIES.length]));
     }
@@ -206,11 +209,13 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
       ..setValueTextSize(11)
       ..setValueTextColor(ColorUtils.BLACK);
 //    ..setValueTypeface(tf);
+
+    setState(() {});
   }
 
   void _initPieChart() {
-    if(pieData == null) return;
-    
+    if (pieData == null) return;
+
     var desc = Description();
     desc.setEnabled(false);
     pieChart = PieChart(pieData, (painter) {
@@ -231,7 +236,6 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
         ..setTransparentCircleAlpha(110)
         ..setHoleRadius(58)
         ..setTransparentCircleRadius(61)
-        ..setDrawCenterText(true)
         ..setRotationEnabled(true)
         ..mHighLightPerTapEnabled = true
         ..highlightValues(null)
@@ -248,6 +252,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
     },
         rotateEnabled: true,
         drawHole: true,
+        drawCenterText: true,
         extraLeftOffset: 5,
         extraTopOffset: 10,
         extraRightOffset: 5,
