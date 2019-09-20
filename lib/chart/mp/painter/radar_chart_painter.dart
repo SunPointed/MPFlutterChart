@@ -1,177 +1,191 @@
 import 'dart:math';
 
 import 'package:flutter/rendering.dart';
-import 'package:flutter/src/rendering/custom_paint.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
+import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/radar_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/radar_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/radar_chart_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer_radar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer_radar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_redar_chart_painter.dart';
 
 class RadarChartPainter extends PieRadarChartPainter<RadarData> {
   /// width of the main web lines
-  double mWebLineWidth;
+  final double _webLineWidth;
 
   /// width of the inner web lines
-  double mInnerWebLineWidth;
+  final double _innerWebLineWidth;
 
   /// color for the main web lines
-  Color mWebColor = Color.fromARGB(255, 122, 122, 122);
+  final Color _webColor; // = Color.fromARGB(255, 122, 122, 122)
 
   /// color for the inner web
-  Color mWebColorInner = Color.fromARGB(255, 122, 122, 122);
+  final Color _webColorInner; // = Color.fromARGB(255, 122, 122, 122)
 
   /// transparency the grid is drawn with (0-255)
-  int mWebAlpha;
+  final int _webAlpha;
 
   /// flag indicating if the web lines should be drawn or not
-  bool mDrawWeb;
+  final bool _drawWeb;
 
   /// modulus that determines how many labels and web-lines are skipped before the next is drawn
-  int mSkipWebLineCount;
+  final int _skipWebLineCount;
 
   /// the object reprsenting the y-axis labels
-  YAxis mYAxis;
+  final YAxis _yAxis;
 
-  YAxisRendererRadarChart mYAxisRenderer;
-  XAxisRendererRadarChart mXAxisRenderer;
+  final YAxisRendererRadarChart _yAxisRenderer;
+  final XAxisRendererRadarChart _xAxisRenderer;
 
-  RadarChartPainter(RadarData data, ChartAnimator animator,
-      {double webLineWidth = 2.5,
-      double innerWebLineWidth = 1.5,
-      int webAlpha = 150,
-      bool drawWeb = true,
-      int skipWebLineCount = 0,
-      double rotationAngle = 270,
-      double rawRotationAngle = 270,
-      bool rotateEnabled = true,
-      double minOffset = 0.0,
-      ViewPortHandler viewPortHandler = null,
-      double maxHighlightDistance = 0.0,
-      bool highLightPerTapEnabled = true,
-      bool dragDecelerationEnabled = true,
-      double dragDecelerationFrictionCoef = 0.9,
-      double extraLeftOffset = 0.0,
-      double extraTopOffset = 0.0,
-      double extraRightOffset = 0.0,
-      double extraBottomOffset = 0.0,
-      String noDataText = "No chart data available.",
-      bool touchEnabled = true,
-      IMarker marker = null,
-      Description desc = null,
-      bool drawMarkers = true,
-      TextPainter infoPainter = null,
-      TextPainter descPainter = null,
-      IHighlighter highlighter = null,
-      bool unbind = false})
-      : mWebLineWidth = webLineWidth,
-        mInnerWebLineWidth = innerWebLineWidth,
-        mWebAlpha = webAlpha,
-        mDrawWeb = drawWeb,
-        mSkipWebLineCount = skipWebLineCount,
-        super(data, animator,
-            rotationAngle: rotationAngle,
-            rawRotationAngle: rawRotationAngle,
-            rotateEnabled: rotateEnabled,
-            minOffset: minOffset,
-            viewPortHandler: viewPortHandler,
-            maxHighlightDistance: maxHighlightDistance,
-            highLightPerTapEnabled: highLightPerTapEnabled,
-            dragDecelerationEnabled: dragDecelerationEnabled,
-            dragDecelerationFrictionCoef: dragDecelerationFrictionCoef,
-            extraLeftOffset: extraLeftOffset,
-            extraTopOffset: extraTopOffset,
-            extraRightOffset: extraRightOffset,
-            extraBottomOffset: extraBottomOffset,
-            noDataText: noDataText,
-            touchEnabled: touchEnabled,
-            marker: marker,
-            desc: desc,
-            drawMarkers: drawMarkers,
-            infoPainter: infoPainter,
-            descPainter: descPainter,
-            highlighter: highlighter,
-            unbind: unbind);
+  RadarChartPainter(
+    RadarData data,
+    ChartAnimator animator,
+    ViewPortHandler viewPortHandler,
+    double maxHighlightDistance,
+    bool highLightPerTapEnabled,
+    bool dragDecelerationEnabled,
+    double dragDecelerationFrictionCoef,
+    double extraLeftOffset,
+    double extraTopOffset,
+    double extraRightOffset,
+    double extraBottomOffset,
+    String noDataText,
+    bool touchEnabled,
+    IMarker marker,
+    Description desc,
+    bool drawMarkers,
+    TextPainter infoPainter,
+    TextPainter descPainter,
+    IHighlighter highlighter,
+    XAxis xAxis,
+    Legend legend,
+    LegendRenderer legendRenderer,
+    DataRenderer renderer,
+    OnChartValueSelectedListener selectedListener,
+    double rotationAngle,
+    double rawRotationAngle,
+    bool rotateEnabled,
+    double minOffset,
+    double webLineWidth,
+    double innerWebLineWidth,
+    Color webColor,
+    Color webColorInner,
+    int webAlpha,
+    bool drawWeb,
+    int skipWebLineCount,
+    YAxis yAxis,
+    YAxisRendererRadarChart yAxisRenderer,
+    XAxisRendererRadarChart xAxisRenderer,
+  )   : _webLineWidth = webLineWidth,
+        _innerWebLineWidth = innerWebLineWidth,
+        _webColor = webColor,
+        _webColorInner = webColorInner,
+        _webAlpha = webAlpha,
+        _drawWeb = drawWeb,
+        _skipWebLineCount = skipWebLineCount,
+        _yAxis = yAxis,
+        _yAxisRenderer = yAxisRenderer,
+        _xAxisRenderer = xAxisRenderer,
+        super(
+          data,
+          animator,
+          viewPortHandler,
+          maxHighlightDistance,
+          highLightPerTapEnabled,
+          dragDecelerationEnabled,
+          dragDecelerationFrictionCoef,
+          extraLeftOffset,
+          extraTopOffset,
+          extraRightOffset,
+          extraBottomOffset,
+          noDataText,
+          touchEnabled,
+          marker,
+          desc,
+          drawMarkers,
+          infoPainter,
+          descPainter,
+          highlighter,
+          xAxis,
+          legend,
+          legendRenderer,
+          renderer,
+          selectedListener,
+          rotationAngle,
+          rawRotationAngle,
+          rotateEnabled,
+          minOffset,
+        );
 
-  @override
-  void init() {
-    super.init();
-
-    mYAxis = YAxis(position: AxisDependency.LEFT);
-
-    mWebLineWidth = Utils.convertDpToPixel(1.5);
-    mInnerWebLineWidth = Utils.convertDpToPixel(0.75);
-
-    mRenderer = RadarChartRenderer(this, mAnimator, mViewPortHandler);
-    mYAxisRenderer = YAxisRendererRadarChart(mViewPortHandler, mYAxis, this);
-    mXAxisRenderer = XAxisRendererRadarChart(mViewPortHandler, mXAxis, this);
-
-    mHighlighter = RadarHighlighter(this);
-  }
+//  @override
+//  void init() {
+//    _yAxis = YAxis(position: AxisDependency.LEFT);
+//
+//    _webLineWidth = Utils.convertDpToPixel(1.5);
+//    _innerWebLineWidth = Utils.convertDpToPixel(0.75);
+//
+//    renderer = RadarChartRenderer(this, mAnimator, viewPortHandler);
+//    _yAxisRenderer = YAxisRendererRadarChart(viewPortHandler, _yAxis, this);
+//    _xAxisRenderer = XAxisRendererRadarChart(viewPortHandler, xAxis, this);
+//
+//    mHighlighter = RadarHighlighter(this);
+//  }
 
   @override
   void calcMinMax() {
     super.calcMinMax();
-
-    mYAxis.calculate(mData.getYMin2(AxisDependency.LEFT),
-        mData.getYMax2(AxisDependency.LEFT));
-    mXAxis.calculate(0, mData.getMaxEntryCountSet().getEntryCount().toDouble());
+    _yAxis.calculate(getData().getYMin2(AxisDependency.LEFT),
+        getData().getYMax2(AxisDependency.LEFT));
+    xAxis.calculate(
+        0, getData().getMaxEntryCountSet().getEntryCount().toDouble());
   }
 
   @override
   void calculateOffsets() {
     super.calculateOffsets();
     calcMinMax();
-
-    mYAxisRenderer.computeAxis(
-        mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
-    mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
-
-    if (mLegend != null && !mLegend.isLegendCustom())
-      mLegendRenderer.computeLegend(mData);
+    _yAxisRenderer.computeAxis(
+        _yAxis.mAxisMinimum, _yAxis.mAxisMaximum, _yAxis.isInverted());
+    _xAxisRenderer.computeAxis(xAxis.mAxisMinimum, xAxis.mAxisMaximum, false);
+    if (legend != null && !legend.isLegendCustom())
+      legendRenderer.computeLegend(getData());
   }
 
   @override
-  void paint(Canvas canvas, Size size) {
-    super.paint(canvas, size);
+  void onPaint(Canvas canvas, Size size) {
+    if (xAxis.isEnabled())
+      _xAxisRenderer.computeAxis(xAxis.mAxisMinimum, xAxis.mAxisMaximum, false);
 
-    if (mData == null || mData.mDataSets == null || mData.mDataSets.length == 0)
-      return;
+    _xAxisRenderer.renderAxisLabels(canvas);
 
-    if (mXAxis.isEnabled())
-      mXAxisRenderer.computeAxis(
-          mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
+    if (_drawWeb) renderer.drawExtras(canvas);
 
-    mXAxisRenderer.renderAxisLabels(canvas);
+    if (_yAxis.isEnabled() && _yAxis.isDrawLimitLinesBehindDataEnabled())
+      _yAxisRenderer.renderLimitLines(canvas);
 
-    if (mDrawWeb) mRenderer.drawExtras(canvas);
-
-    if (mYAxis.isEnabled() && mYAxis.isDrawLimitLinesBehindDataEnabled())
-      mYAxisRenderer.renderLimitLines(canvas);
-
-    mRenderer.drawData(canvas);
+    renderer.drawData(canvas);
 
     if (valuesToHighlight())
-      mRenderer.drawHighlighted(canvas, mIndicesToHighlight);
+      renderer.drawHighlighted(canvas, indicesToHighlight);
 
-    if (mYAxis.isEnabled() && !mYAxis.isDrawLimitLinesBehindDataEnabled())
-      mYAxisRenderer.renderLimitLines(canvas);
+    if (_yAxis.isEnabled() && !_yAxis.isDrawLimitLinesBehindDataEnabled())
+      _yAxisRenderer.renderLimitLines(canvas);
 
-    mYAxisRenderer.renderAxisLabels(canvas);
+    _yAxisRenderer.renderAxisLabels(canvas);
 
-    mRenderer.drawValues(canvas);
+    renderer.drawValues(canvas);
 
-    mLegendRenderer.renderLegend(canvas);
+    legendRenderer.renderLegend(canvas);
 
     drawDescription(canvas, size);
 
@@ -184,8 +198,8 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
    * @return
    */
   double getFactor() {
-    Rect content = mViewPortHandler.getContentRect();
-    return min(content.width / 2, content.height / 2) / mYAxis.mAxisRange;
+    Rect content = viewPortHandler.getContentRect();
+    return min(content.width / 2, content.height / 2) / _yAxis.mAxisRange;
   }
 
   /**
@@ -194,7 +208,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
    * @return
    */
   double getSliceAngle() {
-    return 360 / mData.getMaxEntryCountSet().getEntryCount();
+    return 360 / getData().getMaxEntryCountSet().getEntryCount();
   }
 
   @override
@@ -204,7 +218,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
 
     double sliceangle = getSliceAngle();
 
-    int max = mData.getMaxEntryCountSet().getEntryCount();
+    int max = getData().getMaxEntryCountSet().getEntryCount();
 
     int index = 0;
 
@@ -220,136 +234,22 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
     return index;
   }
 
-  /**
-   * Returns the object that represents all y-labels of the RadarChart.
-   *
-   * @return
-   */
-  YAxis getYAxis() {
-    return mYAxis;
-  }
-
-  /**
-   * Sets the width of the web lines that come from the center.
-   *
-   * @param width
-   */
-  void setWebLineWidth(double width) {
-    mWebLineWidth = Utils.convertDpToPixel(width);
-  }
-
-  double getWebLineWidth() {
-    return mWebLineWidth;
-  }
-
-  /**
-   * Sets the width of the web lines that are in between the lines coming from
-   * the center.
-   *
-   * @param width
-   */
-  void setWebLineWidthInner(double width) {
-    mInnerWebLineWidth = Utils.convertDpToPixel(width);
-  }
-
-  double getWebLineWidthInner() {
-    return mInnerWebLineWidth;
-  }
-
-  /**
-   * Sets the transparency (alpha) value for all web lines, default: 150, 255
-   * = 100% opaque, 0 = 100% transparent
-   *
-   * @param alpha
-   */
-  void setWebAlpha(int alpha) {
-    mWebAlpha = alpha;
-  }
-
-  /**
-   * Returns the alpha value for all web lines.
-   *
-   * @return
-   */
-  int getWebAlpha() {
-    return mWebAlpha;
-  }
-
-  /**
-   * Sets the color for the web lines that come from the center. Don't forget
-   * to use getResources().getColor(...) when loading a color from the
-   * resources. Default: Color.rgb(122, 122, 122)
-   *
-   * @param color
-   */
-  void setWebColor(Color color) {
-    mWebColor = color;
-  }
-
-  Color getWebColor() {
-    return mWebColor;
-  }
-
-  /**
-   * Sets the color for the web lines in between the lines that come from the
-   * center. Don't forget to use getResources().getColor(...) when loading a
-   * color from the resources. Default: Color.rgb(122, 122, 122)
-   *
-   * @param color
-   */
-  void setWebColorInner(Color color) {
-    mWebColorInner = color;
-  }
-
-  Color getWebColorInner() {
-    return mWebColorInner;
-  }
-
-  /**
-   * If set to true, drawing the web is enabled, if set to false, drawing the
-   * whole web is disabled. Default: true
-   *
-   * @param enabled
-   */
-  void setDrawWeb(bool enabled) {
-    mDrawWeb = enabled;
-  }
-
-  /**
-   * Sets the number of web-lines that should be skipped on chart web before the
-   * next one is drawn. This targets the lines that come from the center of the RadarChart.
-   *
-   * @param count if count = 1 -> 1 line is skipped in between
-   */
-  void setSkipWebLineCount(int count) {
-    mSkipWebLineCount = max(0, count);
-  }
-
-  /**
-   * Returns the modulus that is used for skipping web-lines.
-   *
-   * @return
-   */
-  int getSkipWebLineCount() {
-    return mSkipWebLineCount;
-  }
-
   @override
   double getRequiredLegendOffset() {
-    var size = mLegendRenderer.getLabelPaint().text.style.fontSize;
+    var size = legendRenderer.getLabelPaint().text.style.fontSize;
     return (size == null ? Utils.convertDpToPixel(9) : size) * 4.0;
   }
 
   @override
   double getRequiredBaseOffset() {
-    return mXAxis.isEnabled() && mXAxis.isDrawLabelsEnabled()
-        ? mXAxis.mLabelRotatedWidth.toDouble()
+    return xAxis.isEnabled() && xAxis.isDrawLabelsEnabled()
+        ? xAxis.mLabelRotatedWidth.toDouble()
         : Utils.convertDpToPixel(10);
   }
 
   @override
   double getRadius() {
-    Rect content = mViewPortHandler.getContentRect();
+    Rect content = viewPortHandler.getContentRect();
     return min(content.width / 2, content.height / 2);
   }
 
@@ -357,35 +257,13 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
    * Returns the maximum value this chart can display on it's y-axis.
    */
   double getYChartMax() {
-    return mYAxis.mAxisMaximum;
+    return _yAxis.mAxisMaximum;
   }
 
   /**
    * Returns the minimum value this chart can display on it's y-axis.
    */
   double getYChartMin() {
-    return mYAxis.mAxisMinimum;
-  }
-
-  /**
-   * Returns the range of y-values this chart can display.
-   *
-   * @return
-   */
-  double getYRange() {
-    return mYAxis.mAxisRange;
-  }
-
-  @override
-  ValueFormatter getDefaultValueFormatter() {
-    return mDefaultValueFormatter;
-  }
-
-  @override
-  void reassemble() {}
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
+    return _yAxis.mAxisMinimum;
   }
 }

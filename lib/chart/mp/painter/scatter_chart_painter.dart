@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/rendering/custom_paint.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/scatter_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_provider/scatter_data_provider.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/scatter_chart_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
@@ -16,118 +20,135 @@ import 'package:mp_flutter_chart/chart/mp/painter/bar_line_chart_painter.dart';
 
 class ScatterChartPainter extends BarLineChartBasePainter<ScatterData>
     implements ScatterDataProvider {
-  ScatterChartPainter(ScatterData data, ChartAnimator animator,
-      {ViewPortHandler viewPortHandler = null,
-      Transformer leftAxisTransformer = null,
-      Transformer rightAxisTransformer = null,
-      Matrix4 zoomMatrixBuffer = null,
-      Color backgroundColor = null,
-      Color borderColor = null,
-      double borderStrokeWidth = 1.0,
-      bool keepPositionOnRotation = false,
-      bool pinchZoomEnabled = false,
-      XAxisRenderer xAxisRenderer = null,
-      YAxisRenderer rendererLeftYAxis = null,
-      YAxisRenderer rendererRightYAxis = null,
-      bool autoScaleMinMaxEnabled = false,
-      double minOffset = 15,
-      bool clipValuesToContent = false,
-      bool drawBorders = false,
-      bool drawGridBackground = false,
-      bool doubleTapToZoomEnabled = true,
-      bool scaleXEnabled = true,
-      bool scaleYEnabled = true,
-      bool dragXEnabled = true,
-      bool dragYEnabled = true,
-      bool highlightPerDragEnabled = true,
-      int maxVisibleCount = 100,
-      OnDrawListener drawListener = null,
-      double minXRange = 1.0,
-      double maxXRange = 1.0,
-      double minimumScaleX = 1.0,
-      double minimumScaleY = 1.0,
-      double maxHighlightDistance = 0.0,
-      bool highLightPerTapEnabled = true,
-      bool dragDecelerationEnabled = true,
-      double dragDecelerationFrictionCoef = 0.9,
-      double extraLeftOffset = 0.0,
-      double extraTopOffset = 0.0,
-      double extraRightOffset = 0.0,
-      double extraBottomOffset = 0.0,
-      String noDataText = "No chart data available.",
-      bool touchEnabled = true,
-      IMarker marker = null,
-      Description desc = null,
-      bool drawMarkers = true,
-      TextPainter infoPainter = null,
-      TextPainter descPainter = null,
-      IHighlighter highlighter = null,
-      bool unbind = false})
-      : super(data, animator,
-            viewPortHandler: viewPortHandler,
-            leftAxisTransformer: leftAxisTransformer,
-            rightAxisTransformer: rightAxisTransformer,
-            zoomMatrixBuffer: zoomMatrixBuffer,
-            backgroundColor: backgroundColor,
-            borderColor: borderColor,
-            borderStrokeWidth: borderStrokeWidth,
-            keepPositionOnRotation: keepPositionOnRotation,
-            pinchZoomEnabled: pinchZoomEnabled,
-            xAxisRenderer: xAxisRenderer,
-            rendererLeftYAxis: rendererLeftYAxis,
-            rendererRightYAxis: rendererRightYAxis,
-            autoScaleMinMaxEnabled: autoScaleMinMaxEnabled,
-            minOffset: minOffset,
-            clipValuesToContent: clipValuesToContent,
-            drawBorders: drawBorders,
-            drawGridBackground: drawGridBackground,
-            doubleTapToZoomEnabled: doubleTapToZoomEnabled,
-            scaleXEnabled: scaleXEnabled,
-            scaleYEnabled: scaleYEnabled,
-            dragXEnabled: dragXEnabled,
-            dragYEnabled: dragYEnabled,
-            highlightPerDragEnabled: highlightPerDragEnabled,
-            maxVisibleCount: maxVisibleCount,
-            drawListener: drawListener,
-            minXRange: minXRange,
-            maxXRange: maxXRange,
-            minimumScaleX: minimumScaleX,
-            minimumScaleY: minimumScaleY,
-            maxHighlightDistance: maxHighlightDistance,
-            highLightPerTapEnabled: highLightPerTapEnabled,
-            dragDecelerationEnabled: dragDecelerationEnabled,
-            dragDecelerationFrictionCoef: dragDecelerationFrictionCoef,
-            extraLeftOffset: extraLeftOffset,
-            extraTopOffset: extraTopOffset,
-            extraRightOffset: extraRightOffset,
-            extraBottomOffset: extraBottomOffset,
-            noDataText: noDataText,
-            touchEnabled: touchEnabled,
-            marker: marker,
-            desc: desc,
-            drawMarkers: drawMarkers,
-            infoPainter: infoPainter,
-            descPainter: descPainter,
-            highlighter: highlighter,
-            unbind: unbind);
+  ScatterChartPainter(
+    ScatterData data,
+    ChartAnimator animator,
+    ViewPortHandler viewPortHandler,
+    double maxHighlightDistance,
+    bool highLightPerTapEnabled,
+    bool dragDecelerationEnabled,
+    double dragDecelerationFrictionCoef,
+    double extraLeftOffset,
+    double extraTopOffset,
+    double extraRightOffset,
+    double extraBottomOffset,
+    String noDataText,
+    bool touchEnabled,
+    IMarker marker,
+    Description desc,
+    bool drawMarkers,
+    TextPainter infoPainter,
+    TextPainter descPainter,
+    IHighlighter highlighter,
+    XAxis xAxis,
+    Legend legend,
+    LegendRenderer legendRenderer,
+    DataRenderer renderer,
+    OnChartValueSelectedListener selectedListener,
+    int maxVisibleCount,
+    bool autoScaleMinMaxEnabled,
+    bool pinchZoomEnabled,
+    bool doubleTapToZoomEnabled,
+    bool highlightPerDragEnabled,
+    bool dragXEnabled,
+    bool dragYEnabled,
+    bool scaleXEnabled,
+    bool scaleYEnabled,
+    Paint gridBackgroundPaint,
+    Paint borderPaint,
+    bool drawGridBackground,
+    bool drawBorders,
+    bool clipValuesToContent,
+    double minOffset,
+    bool keepPositionOnRotation,
+    OnDrawListener drawListener,
+    YAxis axisLeft,
+    YAxis axisRight,
+    YAxisRenderer axisRendererLeft,
+    YAxisRenderer axisRendererRight,
+    Transformer leftAxisTransformer,
+    Transformer rightAxisTransformer,
+    XAxisRenderer xAxisRenderer,
+    Matrix4 zoomMatrixBuffer,
+    bool customViewPortEnabled,
+    double minXRange,
+    double maxXRange,
+    double minimumScaleX,
+    double minimumScaleY,
+    Color backgroundColor,
+    Color borderColor,
+    double borderStrokeWidth,
+  ) : super(
+            data,
+            animator,
+            viewPortHandler,
+            maxHighlightDistance,
+            highLightPerTapEnabled,
+            dragDecelerationEnabled,
+            dragDecelerationFrictionCoef,
+            extraLeftOffset,
+            extraTopOffset,
+            extraRightOffset,
+            extraBottomOffset,
+            noDataText,
+            touchEnabled,
+            marker,
+            desc,
+            drawMarkers,
+            infoPainter,
+            descPainter,
+            highlighter,
+            xAxis,
+            legend,
+            legendRenderer,
+            renderer,
+            selectedListener,
+            maxVisibleCount,
+            autoScaleMinMaxEnabled,
+            pinchZoomEnabled,
+            doubleTapToZoomEnabled,
+            highlightPerDragEnabled,
+            dragXEnabled,
+            dragYEnabled,
+            scaleXEnabled,
+            scaleYEnabled,
+            gridBackgroundPaint,
+            borderPaint,
+            drawGridBackground,
+            drawBorders,
+            clipValuesToContent,
+            minOffset,
+            keepPositionOnRotation,
+            drawListener,
+            axisLeft,
+            axisRight,
+            axisRendererLeft,
+            axisRendererRight,
+            leftAxisTransformer,
+            rightAxisTransformer,
+            xAxisRenderer,
+            zoomMatrixBuffer,
+            customViewPortEnabled,
+            minXRange,
+            maxXRange,
+            minimumScaleX,
+            minimumScaleY,
+            backgroundColor,
+            borderColor,
+            borderStrokeWidth);
 
-  @override
-  void init() {
-    super.init();
-
-    mRenderer = ScatterChartRenderer(this, mAnimator, mViewPortHandler);
-
-    mXAxis.setSpaceMin(0.5);
-    mXAxis.setSpaceMax(0.5);
-  }
+//  @override
+//  void init() {
+//    super.init();
+//
+//    mRenderer = ScatterChartRenderer(this, mAnimator, mViewPortHandler);
+//
+//    mXAxis.setSpaceMin(0.5);
+//    mXAxis.setSpaceMax(0.5);
+//  }
 
   @override
   ScatterData getScatterData() {
-    return mData;
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
+    return getData();
   }
 }

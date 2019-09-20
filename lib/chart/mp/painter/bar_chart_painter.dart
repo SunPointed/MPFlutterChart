@@ -2,6 +2,8 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/rendering/custom_paint.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/bar_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_bar_data_set.dart';
@@ -9,11 +11,12 @@ import 'package:mp_flutter_chart/chart/mp/core/data_provider/bar_data_provider.d
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
-import 'package:mp_flutter_chart/chart/mp/core/fill_formatter/bar_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/bar_chart_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
@@ -23,144 +26,165 @@ import 'package:mp_flutter_chart/chart/mp/painter/bar_line_chart_painter.dart';
 class BarChartPainter extends BarLineChartBasePainter<BarData>
     implements BarDataProvider {
   /// flag that indicates whether the highlight should be full-bar oriented, or single-value?
-  bool mHighlightFullBarEnabled = false;
+  final bool _highlightFullBarEnabled;
 
   /// if set to true, all values are drawn above their bars, instead of below their top
-  bool mDrawValueAboveBar = true;
+  final bool _drawValueAboveBar;
 
   /// if set to true, a grey area is drawn behind each bar that indicates the maximum value
-  bool mDrawBarShadow = false;
+  final bool _drawBarShadow;
 
-  bool mFitBars = false;
+  final bool _fitBars;
 
-  BarChartPainter(BarData data, ChartAnimator animator,
-      {bool highlightFullBarEnabled = false,
-      bool drawValueAboveBar = false,
-      bool drawBarShadow = false,
-      bool fitBars = false,
-      ViewPortHandler viewPortHandler = null,
-      Transformer leftAxisTransformer = null,
-      Transformer rightAxisTransformer = null,
-      Matrix4 zoomMatrixBuffer = null,
-      Color backgroundColor = null,
-      Color borderColor = null,
-      double borderStrokeWidth = 1.0,
-      bool keepPositionOnRotation = false,
-      bool pinchZoomEnabled = false,
-      XAxisRenderer xAxisRenderer = null,
-      YAxisRenderer rendererLeftYAxis = null,
-      YAxisRenderer rendererRightYAxis = null,
-      bool autoScaleMinMaxEnabled = false,
-      double minOffset = 15,
-      bool clipValuesToContent = false,
-      bool drawBorders = false,
-      bool drawGridBackground = false,
-      bool doubleTapToZoomEnabled = true,
-      bool scaleXEnabled = true,
-      bool scaleYEnabled = true,
-      bool dragXEnabled = true,
-      bool dragYEnabled = true,
-      bool highlightPerDragEnabled = true,
-      int maxVisibleCount = 100,
-      OnDrawListener drawListener = null,
-      double minXRange = 1.0,
-      double maxXRange = 1.0,
-      double minimumScaleX = 1.0,
-      double minimumScaleY = 1.0,
-      double maxHighlightDistance = 0.0,
-      bool highLightPerTapEnabled = true,
-      bool dragDecelerationEnabled = true,
-      double dragDecelerationFrictionCoef = 0.9,
-      double extraLeftOffset = 0.0,
-      double extraTopOffset = 0.0,
-      double extraRightOffset = 0.0,
-      double extraBottomOffset = 0.0,
-      String noDataText = "No chart data available.",
-      bool touchEnabled = true,
-      IMarker marker = null,
-      Description desc = null,
-      bool drawMarkers = true,
-      TextPainter infoPainter = null,
-      TextPainter descPainter = null,
-      IHighlighter highlighter = null,
-      bool unbind = false})
-      : mHighlightFullBarEnabled = highlightFullBarEnabled,
-        mDrawValueAboveBar = drawValueAboveBar,
-        mDrawBarShadow = drawBarShadow,
-        mFitBars = fitBars,
-        super(data, animator,
-            viewPortHandler: viewPortHandler,
-            leftAxisTransformer: leftAxisTransformer,
-            rightAxisTransformer: rightAxisTransformer,
-            zoomMatrixBuffer: zoomMatrixBuffer,
-            backgroundColor: backgroundColor,
-            borderColor: borderColor,
-            borderStrokeWidth: borderStrokeWidth,
-            keepPositionOnRotation: keepPositionOnRotation,
-            pinchZoomEnabled: pinchZoomEnabled,
-            xAxisRenderer: xAxisRenderer,
-            rendererLeftYAxis: rendererLeftYAxis,
-            rendererRightYAxis: rendererRightYAxis,
-            autoScaleMinMaxEnabled: autoScaleMinMaxEnabled,
-            minOffset: minOffset,
-            clipValuesToContent: clipValuesToContent,
-            drawBorders: drawBorders,
-            drawGridBackground: drawGridBackground,
-            doubleTapToZoomEnabled: doubleTapToZoomEnabled,
-            scaleXEnabled: scaleXEnabled,
-            scaleYEnabled: scaleYEnabled,
-            dragXEnabled: dragXEnabled,
-            dragYEnabled: dragYEnabled,
-            highlightPerDragEnabled: highlightPerDragEnabled,
-            maxVisibleCount: maxVisibleCount,
-            drawListener: drawListener,
-            minXRange: minXRange,
-            maxXRange: maxXRange,
-            minimumScaleX: minimumScaleX,
-            minimumScaleY: minimumScaleY,
-            maxHighlightDistance: maxHighlightDistance,
-            highLightPerTapEnabled: highLightPerTapEnabled,
-            dragDecelerationEnabled: dragDecelerationEnabled,
-            dragDecelerationFrictionCoef: dragDecelerationFrictionCoef,
-            extraLeftOffset: extraLeftOffset,
-            extraTopOffset: extraTopOffset,
-            extraRightOffset: extraRightOffset,
-            extraBottomOffset: extraBottomOffset,
-            noDataText: noDataText,
-            touchEnabled: touchEnabled,
-            marker: marker,
-            desc: desc,
-            drawMarkers: drawMarkers,
-            infoPainter: infoPainter,
-            descPainter: descPainter,
-            highlighter: highlighter,
-            unbind: unbind);
+  BarChartPainter(
+      BarData data,
+      ChartAnimator animator,
+      ViewPortHandler viewPortHandler,
+      double maxHighlightDistance,
+      bool highLightPerTapEnabled,
+      bool dragDecelerationEnabled,
+      double dragDecelerationFrictionCoef,
+      double extraLeftOffset,
+      double extraTopOffset,
+      double extraRightOffset,
+      double extraBottomOffset,
+      String noDataText,
+      bool touchEnabled,
+      IMarker marker,
+      Description desc,
+      bool drawMarkers,
+      TextPainter infoPainter,
+      TextPainter descPainter,
+      IHighlighter highlighter,
+      XAxis xAxis,
+      Legend legend,
+      LegendRenderer legendRenderer,
+      DataRenderer renderer,
+      OnChartValueSelectedListener selectedListener,
+      int maxVisibleCount,
+      bool autoScaleMinMaxEnabled,
+      bool pinchZoomEnabled,
+      bool doubleTapToZoomEnabled,
+      bool highlightPerDragEnabled,
+      bool dragXEnabled,
+      bool dragYEnabled,
+      bool scaleXEnabled,
+      bool scaleYEnabled,
+      Paint gridBackgroundPaint,
+      Paint borderPaint,
+      bool drawGridBackground,
+      bool drawBorders,
+      bool clipValuesToContent,
+      double minOffset,
+      bool keepPositionOnRotation,
+      OnDrawListener drawListener,
+      YAxis axisLeft,
+      YAxis axisRight,
+      YAxisRenderer axisRendererLeft,
+      YAxisRenderer axisRendererRight,
+      Transformer leftAxisTransformer,
+      Transformer rightAxisTransformer,
+      XAxisRenderer xAxisRenderer,
+      Matrix4 zoomMatrixBuffer,
+      bool customViewPortEnabled,
+      double minXRange,
+      double maxXRange,
+      double minimumScaleX,
+      double minimumScaleY,
+      Color backgroundColor,
+      Color borderColor,
+      double borderStrokeWidth,
+      bool highlightFullBarEnabled,
+      bool drawValueAboveBar,
+      bool drawBarShadow,
+      bool fitBars)
+      : _highlightFullBarEnabled = highlightFullBarEnabled,
+        _drawValueAboveBar = drawValueAboveBar,
+        _drawBarShadow = drawBarShadow,
+        _fitBars = fitBars,
+        super(
+            data,
+            animator,
+            viewPortHandler,
+            maxHighlightDistance,
+            highLightPerTapEnabled,
+            dragDecelerationEnabled,
+            dragDecelerationFrictionCoef,
+            extraLeftOffset,
+            extraTopOffset,
+            extraRightOffset,
+            extraBottomOffset,
+            noDataText,
+            touchEnabled,
+            marker,
+            desc,
+            drawMarkers,
+            infoPainter,
+            descPainter,
+            highlighter,
+            xAxis,
+            legend,
+            legendRenderer,
+            renderer,
+            selectedListener,
+            maxVisibleCount,
+            autoScaleMinMaxEnabled,
+            pinchZoomEnabled,
+            doubleTapToZoomEnabled,
+            highlightPerDragEnabled,
+            dragXEnabled,
+            dragYEnabled,
+            scaleXEnabled,
+            scaleYEnabled,
+            gridBackgroundPaint,
+            borderPaint,
+            drawGridBackground,
+            drawBorders,
+            clipValuesToContent,
+            minOffset,
+            keepPositionOnRotation,
+            drawListener,
+            axisLeft,
+            axisRight,
+            axisRendererLeft,
+            axisRendererRight,
+            leftAxisTransformer,
+            rightAxisTransformer,
+            xAxisRenderer,
+            zoomMatrixBuffer,
+            customViewPortEnabled,
+            minXRange,
+            maxXRange,
+            minimumScaleX,
+            minimumScaleY,
+            backgroundColor,
+            borderColor,
+            borderStrokeWidth);
 
-  @override
-  void init() {
-    super.init();
-    mRenderer = BarChartRenderer(this, mAnimator, mViewPortHandler);
-
-    mHighlighter = BarHighlighter(this);
-
-    mXAxis.setSpaceMin(0.5);
-    mXAxis.setSpaceMax(0.5);
-  }
+//  @override
+//  void init() {
+//    mRenderer = BarChartRenderer(this, mAnimator, mViewPortHandler);
+//
+//    mHighlighter = BarHighlighter(this);
+//
+//    xAxis.setSpaceMin(0.5);
+//    xAxis.setSpaceMax(0.5);
+//  }
 
   @override
   void calcMinMax() {
-    if (mFitBars) {
-      mXAxis.calculate(mData.getXMin() - mData.getBarWidth() / 2.0,
-          mData.getXMax() + mData.getBarWidth() / 2.0);
+    if (_fitBars) {
+      xAxis.calculate(getBarData().getXMin() - getBarData().getBarWidth() / 2.0,
+          getBarData().getXMax() + getBarData().getBarWidth() / 2.0);
     } else {
-      mXAxis.calculate(mData.getXMin(), mData.getXMax());
+      xAxis.calculate(getBarData().getXMin(), getBarData().getXMax());
     }
 
     // calculate axis range (min / max) according to provided data
-    mAxisLeft.calculate(mData.getYMin2(AxisDependency.LEFT),
-        mData.getYMax2(AxisDependency.LEFT));
-    mAxisRight.calculate(mData.getYMin2(AxisDependency.RIGHT),
-        mData.getYMax2(AxisDependency.RIGHT));
+    axisLeft.calculate(getBarData().getYMin2(AxisDependency.LEFT),
+        getBarData().getYMax2(AxisDependency.LEFT));
+    axisRight.calculate(getBarData().getYMin2(AxisDependency.RIGHT),
+        getBarData().getYMax2(AxisDependency.RIGHT));
   }
 
   /// Returns the Highlight object (contains x-index and DataSet index) of the selected value at the given touch
@@ -172,10 +196,10 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
   /// @return
   @override
   Highlight getHighlightByTouchPoint(double x, double y) {
-    if (mData == null) {
+    if (getBarData() == null) {
       return null;
     } else {
-      Highlight h = mHighlighter.getHighlight(x, y);
+      Highlight h = highlighter.getHighlight(x, y);
       if (h == null || !isHighlightFullBarEnabled()) return h;
 
       // For isHighlightFullBarEnabled, remove stackIndex
@@ -198,7 +222,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
   Rect getBarBounds(BarEntry e) {
     Rect bounds = Rect.zero;
 
-    IBarDataSet set = mData.getDataSetForEntry(e);
+    IBarDataSet set = getBarData().getDataSetForEntry(e);
 
     if (set == null) {
       bounds = Rect.fromLTRB(double.minPositive, double.minPositive,
@@ -209,7 +233,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
     double y = e.y;
     double x = e.x;
 
-    double barWidth = mData.getBarWidth();
+    double barWidth = getBarData().getBarWidth();
 
     double left = x - barWidth / 2.0;
     double right = x + barWidth / 2.0;
@@ -221,49 +245,24 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
     return getTransformer(set.getAxisDependency()).rectValueToPixel(bounds);
   }
 
-  /// If set to true, all values are drawn above their bars, instead of below their top.
-  ///
-  /// @param enabled
-  void setDrawValueAboveBar(bool enabled) {
-    mDrawValueAboveBar = enabled;
-  }
-
   /// returns true if drawing values above bars is enabled, false if not
   ///
   /// @return
   bool isDrawValueAboveBarEnabled() {
-    return mDrawValueAboveBar;
-  }
-
-  /// If set to true, a grey area is drawn behind each bar that indicates the maximum value. Enabling his will reduce
-  /// performance by about 50%.
-  ///
-  /// @param enabled
-  void setDrawBarShadow(bool enabled) {
-    mDrawBarShadow = enabled;
+    return _drawValueAboveBar;
   }
 
   /// returns true if drawing shadows (maxvalue) for each bar is enabled, false if not
   ///
   /// @return
   bool isDrawBarShadowEnabled() {
-    return mDrawBarShadow;
-  }
-
-  /// Set this to true to make the highlight operation full-bar oriented, false to make it highlight single values (relevant
-  /// only for stacked). If enabled, highlighting operations will highlight the whole bar, even if only a single stack entry
-  /// was tapped.
-  /// Default: false
-  ///
-  /// @param enabled
-  void setHighlightFullBarEnabled(bool enabled) {
-    mHighlightFullBarEnabled = enabled;
+    return _drawBarShadow;
   }
 
   /// @return true the highlight operation is be full-bar oriented, false if single-value
   @override
   bool isHighlightFullBarEnabled() {
-    return mHighlightFullBarEnabled;
+    return _highlightFullBarEnabled;
   }
 
   /// Highlights the value at the given x-value in the given DataSet. Provide
@@ -276,20 +275,6 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
     highlightValue6(
         Highlight(x: x, dataSetIndex: dataSetIndex, stackIndex: stackIndex),
         false);
-  }
-
-  @override
-  BarData getBarData() {
-    return mData;
-  }
-
-  /// Adds half of the bar width to each side of the x-axis range in order to allow the bars of the barchart to be
-  /// fully displayed.
-  /// Default: false
-  ///
-  /// @param enabled
-  void setFitBars(bool enabled) {
-    mFitBars = enabled;
   }
 
   /// Groups all BarDataSet objects this data object holds together by modifying the x-value of their entries.
@@ -310,7 +295,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
+  BarData getBarData() {
+    return getData();
   }
 }

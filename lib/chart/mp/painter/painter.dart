@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
+import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_provider/chart_interface.dart';
@@ -20,176 +20,232 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/default_value_formatter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 
 abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
     extends CustomPainter implements ChartInterface {
   /// object that holds all data that was originally set for the chart, before
   /// it was modified or any filtering algorithms had been applied
-  T mData = null;
+  final T _data;
+
+  /// object responsible for animations
+  final ChartAnimator _animator;
+
+  /// object that manages the bounds and drawing constraints of the chart
+  final ViewPortHandler _viewPortHandler;
+
+  /// The maximum distance in dp away from an entry causing it to highlight.
+  final double _maxHighlightDistance;
 
   /// Flag that indicates if highlighting per tap (touch) is enabled
-  bool mHighLightPerTapEnabled = true;
+  final bool _highLightPerTapEnabled;
 
   /// If set to true, chart continues to scroll after touch up
-  bool mDragDecelerationEnabled = true;
+  final bool _dragDecelerationEnabled;
 
   /// Deceleration friction coefficient in [0 ; 1] interval, higher values
   /// indicate that speed will decrease slowly, for example if it set to 0, it
   /// will stop immediately. 1 is an invalid value, and will be converted to
   /// 0.999f automatically.
-  double mDragDecelerationFrictionCoef = 0.9;
+  final double _dragDecelerationFrictionCoef;
+  final double _extraTopOffset,
+      _extraRightOffset,
+      _extraBottomOffset,
+      _extraLeftOffset;
 
-  /// default value-formatter, number of digits depends on provided chart-data
-  DefaultValueFormatter mDefaultValueFormatter = new DefaultValueFormatter(0);
+  /// text that is displayed when the chart is empty
+  final String _noDataText;
+
+  /// if true, touch gestures are enabled on the chart
+  final bool _touchEnabled;
+
+  /// the view that represents the marker
+  final IMarker _marker;
+
+  /// the object responsible for representing the description text
+  final Description _description;
+
+  /// if set to true, the marker view is drawn when a value is clicked
+  final bool _drawMarkers;
 
   /// paint object used for drawing the description text in the bottom right
   /// corner of the chart
-  TextPainter mDescPaint;
+  final TextPainter _descPaint;
 
   /// paint object for drawing the information text when there are no values in
   /// the chart
-  TextPainter mInfoPaint;
+  final TextPainter _infoPaint;
+  final IHighlighter _highlighter;
 
   /// the object representing the labels on the x-axis
-  XAxis mXAxis;
-
-  /// if true, touch gestures are enabled on the chart
-  bool mTouchEnabled = true;
-
-  /// the object responsible for representing the description text
-  Description mDescription;
+  final XAxis _xAxis;
 
   /// the legend object containing all data associated with the legend
-  Legend mLegend;
-
-  /// text that is displayed when the chart is empty
-  String mNoDataText;
-
-  LegendRenderer mLegendRenderer;
+  final Legend _legend;
+  final LegendRenderer _legendRenderer;
 
   /// object responsible for rendering the data
-  DataRenderer mRenderer;
+  final DataRenderer _renderer;
+  final OnChartValueSelectedListener _selectionListener;
 
-  Size mSize;
+  ///////////////////////////////////////////////////
 
-  IHighlighter mHighlighter;
+  /// array of Highlight objects that reference the highlighted slices in the
+  /// chart
+  List<Highlight> _indicesToHighlight;
 
-  /// object that manages the bounds and drawing constraints of the chart
-  ViewPortHandler mViewPortHandler;
+  Size _size;
 
-  /// object responsible for animations
-  ChartAnimator mAnimator;
+  /// flag that indicates if offsets calculation has already been done or not
+  bool _offsetsCalculated = false;
 
-  double mExtraTopOffset = 0,
-      mExtraRightOffset = 0,
-      mExtraBottomOffset = 0,
-      mExtraLeftOffset = 0;
+  /// default value-formatter, number of digits depends on provided chart-data
+  DefaultValueFormatter _defaultValueFormatter = DefaultValueFormatter(0);
 
-  /// unbind flag
-  bool mUnbind = false;
+  bool isInit = false;
 
-  ChartPainter(T data, ChartAnimator animator,
-      {ViewPortHandler viewPortHandler = null,
-      double maxHighlightDistance = 0.0,
-      bool highLightPerTapEnabled = true,
-      bool dragDecelerationEnabled = true,
-      double dragDecelerationFrictionCoef = 0.9,
-      double extraLeftOffset = 0.0,
-      double extraTopOffset = 0.0,
-      double extraRightOffset = 0.0,
-      double extraBottomOffset = 0.0,
-      String noDataText = "No chart data available.",
-      bool touchEnabled = true,
-      IMarker marker = null,
-      Description desc = null,
-      bool drawMarkers = true,
-      TextPainter infoPainter = null,
-      TextPainter descPainter = null,
-      IHighlighter highlighter = null,
-      bool unbind = false})
-      : mData = data,
-        mViewPortHandler = viewPortHandler,
-        mAnimator = animator,
-        mMaxHighlightDistance = maxHighlightDistance,
-        mHighLightPerTapEnabled = highLightPerTapEnabled,
-        mDragDecelerationEnabled = dragDecelerationEnabled,
-        mExtraLeftOffset = extraLeftOffset,
-        mExtraTopOffset = extraTopOffset,
-        mExtraRightOffset = extraRightOffset,
-        mExtraBottomOffset = extraBottomOffset,
-        mNoDataText = noDataText,
-        mTouchEnabled = touchEnabled,
-        mMarker = marker,
-        mDescription = desc,
-        mDrawMarkers = drawMarkers,
-        mInfoPaint = infoPainter,
-        mDescPaint = descPainter,
-        mHighlighter = highlighter,
-        mUnbind = unbind,
+  XAxis get xAxis => _xAxis;
+
+  Legend get legend => _legend;
+
+  ViewPortHandler get viewPortHandler => _viewPortHandler;
+
+  DataRenderer get renderer => _renderer;
+
+  LegendRenderer get legendRenderer => _legendRenderer;
+
+  double get extraLeftOffset => _extraLeftOffset;
+
+  double get extraRightOffset => _extraRightOffset;
+
+  double get extraTopOffset => _extraTopOffset;
+
+  double get extraBottomOffset => _extraBottomOffset;
+
+  IHighlighter get highlighter => _highlighter;
+
+  IMarker get marker => _marker;
+
+  bool get isDrawMarkers => _drawMarkers;
+
+  ChartAnimator get animator => _animator;
+
+  Size get size => _size;
+
+  List<Highlight> get indicesToHighlight => _indicesToHighlight;
+
+  ChartPainter(
+      T data,
+      ChartAnimator animator,
+      ViewPortHandler viewPortHandler,
+      double maxHighlightDistance,
+      bool highLightPerTapEnabled,
+      bool dragDecelerationEnabled,
+      double dragDecelerationFrictionCoef,
+      double extraLeftOffset,
+      double extraTopOffset,
+      double extraRightOffset,
+      double extraBottomOffset,
+      String noDataText,
+      bool touchEnabled,
+      IMarker marker,
+      Description desc,
+      bool drawMarkers,
+      TextPainter infoPainter,
+      TextPainter descPainter,
+      IHighlighter highlighter,
+      XAxis xAxis,
+      Legend legend,
+      LegendRenderer legendRenderer,
+      DataRenderer renderer,
+      OnChartValueSelectedListener selectedListener)
+      : _data = data,
+        _viewPortHandler = viewPortHandler,
+        _animator = animator,
+        _maxHighlightDistance = maxHighlightDistance,
+        _highLightPerTapEnabled = highLightPerTapEnabled,
+        _dragDecelerationEnabled = dragDecelerationEnabled,
+        _dragDecelerationFrictionCoef = dragDecelerationFrictionCoef,
+        _extraLeftOffset = extraLeftOffset,
+        _extraTopOffset = extraTopOffset,
+        _extraRightOffset = extraRightOffset,
+        _extraBottomOffset = extraBottomOffset,
+        _noDataText = noDataText,
+        _touchEnabled = touchEnabled,
+        _marker = marker,
+        _description = desc,
+        _drawMarkers = drawMarkers,
+        _infoPaint = infoPainter,
+        _descPaint = descPainter,
+        _highlighter = highlighter,
+        _xAxis = xAxis,
+        _legend = legend,
+        _legendRenderer = legendRenderer,
+        _renderer = renderer,
+        _selectionListener = selectedListener,
         super() {
-    if (data == null || data.mDataSets == null || data.mDataSets.length == 0) {
+    initDefaultNormal();
+    if (data == null ||
+        data.getDataSets() == null ||
+        data.getDataSets().length == 0) {
       return;
     }
-
-    if (dragDecelerationFrictionCoef < 0) dragDecelerationFrictionCoef = 0;
-
-    if (dragDecelerationFrictionCoef >= 1) dragDecelerationFrictionCoef = 0.999;
-    mDragDecelerationFrictionCoef = dragDecelerationFrictionCoef;
-
-    mOffsetsCalculated = false;
-
-    // calculate how many digits are needed
-    setupDefaultFormatter(data.getYMin1(), data.getYMax1());
-
-    for (IDataSet set in mData.getDataSets()) {
-      if (set.needsFormatter() ||
-          set.getValueFormatter() == mDefaultValueFormatter)
-        set.setValueFormatter(mDefaultValueFormatter);
-    }
-
+    initDefaultWithData();
     init();
+    isInit = true;
   }
 
-  void init() {
-    mViewPortHandler ??= ViewPortHandler();
-    mMaxHighlightDistance = Utils.convertDpToPixel(500);
-    mDescription ??= Description();
-    mLegend = Legend();
-    mLegendRenderer = LegendRenderer(mViewPortHandler, mLegend);
-    mXAxis ??= XAxis();
-    mDescPaint ??=
-        PainterUtils.create(mDescPaint, null, ColorUtils.BLACK, null);
-  }
+  void initDefaultWithData() {
+    // calculate how many digits are needed
+    _setupDefaultFormatter(_data.getYMin1(), _data.getYMax1());
 
-  /// Clears the chart from all data (sets it to null) and refreshes it (by
-  /// calling invalidate()).
-  void clear() {
-    mData = null;
-    mOffsetsCalculated = false;
-    mIndicesToHighlight = null;
-  }
-
-  /// Removes all DataSets (and thereby Entries) from the chart. Does not set the data object to null. Also refreshes the
-  /// chart by calling invalidate().
-  void clearValues() {
-    mData.clearValues();
-  }
-
-  /// Returns true if the chart is empty (meaning it's data object is either
-  /// null or contains no entries).
-  ///
-  /// @return
-  bool isEmpty() {
-    if (mData == null)
-      return true;
-    else {
-      if (mData.getEntryCount() <= 0)
-        return true;
-      else
-        return false;
+    for (IDataSet set in _data.getDataSets()) {
+      if (set.needsFormatter() ||
+          set.getValueFormatter() == _defaultValueFormatter)
+        set.setValueFormatter(_defaultValueFormatter);
     }
   }
+
+  void initDefaultNormal() {
+//    if (_dragDecelerationFrictionCoef == null) {
+//      _dragDecelerationFrictionCoef = 0.9;
+//    } else {
+//      if (_dragDecelerationFrictionCoef < 0) _dragDecelerationFrictionCoef = 0;
+//
+//      if (_dragDecelerationFrictionCoef >= 1)
+//        _dragDecelerationFrictionCoef = 0.999;
+//    }
+//
+//    _maxHighlightDistance ??= Utils.convertDpToPixel(500);
+//    _description ??= Description();
+//    _descPaint ??=
+//        PainterUtils.create(_descPaint, null, ColorUtils.BLACK, null);
+//    _infoPaint ??= PainterUtils.create(_infoPaint,
+//        _noDataText.isEmpty ? "no data" : _noDataText, ColorUtils.BLACK, null);
+//    _descPaint = PainterUtils.create(
+//        _descPaint,
+//        _description.text,
+//        _description.getTextColor(),
+//        Utils.convertDpToPixel(_description.getTextSize()));
+  }
+
+  void init() {}
+
+//  /// Returns true if the chart is empty (meaning it's data object is either
+//  /// null or contains no entries).
+//  ///
+//  /// @return
+//  bool isEmpty() {
+//    if (_data == null)
+//      return true;
+//    else {
+//      if (_data.getEntryCount() <= 0)
+//        return true;
+//      else
+//        return false;
+//    }
+//  }
 
   /// Calculates the offsets of the chart to the border depending on the
   /// position of an eventual legend or depending on the length of the y-axis
@@ -201,10 +257,10 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
 
   /// Calculates the required number of digits for the values that might be
   /// drawn in the chart (if enabled), and creates the default-value-formatter
-  void setupDefaultFormatter(double min1, double max1) {
+  void _setupDefaultFormatter(double min1, double max1) {
     double reference = 0;
 
-    if (mData == null || mData.getEntryCount() < 2) {
+    if (_data == null || _data.getEntryCount() < 2) {
       reference = max(min1.abs(), max1.abs());
     } else {
       reference = (max1 - min1).abs();
@@ -213,94 +269,61 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
     int digits = Utils.getDecimals(reference);
 
     // setup the formatter with a new number of digits
-    mDefaultValueFormatter.setup(digits);
+    _defaultValueFormatter.setup(digits);
   }
 
   double getMeasuredHeight() {
-    return mSize == null ? 0.0 : mSize.height;
+    return _size == null ? 0.0 : _size.height;
   }
 
   double getMeasuredWidth() {
-    return mSize == null ? 0.0 : mSize.width;
+    return _size == null ? 0.0 : _size.width;
   }
-
-  /// flag that indicates if offsets calculation has already been done or not
-  bool mOffsetsCalculated = false;
 
   @override
   void paint(Canvas canvas, Size size) {
-    mSize = size;
+    _size = size;
 
-    if (mData == null ||
-        mData.mDataSets == null ||
-        mData.mDataSets.length == 0) {
+    if (!isInit) {
       MPPointF c = getCenter(size);
-      mInfoPaint ??= PainterUtils.create(
-          mInfoPaint,
-          mNoDataText.isEmpty ? "no data" : mNoDataText,
-          ColorUtils.BLACK,
-          null);
-      mInfoPaint.layout();
-      mInfoPaint.paint(canvas,
-          Offset(c.x - mInfoPaint.width / 2, c.y - mInfoPaint.height / 2));
-
+      _infoPaint.layout();
+      _infoPaint.paint(canvas,
+          Offset(c.x - _infoPaint.width / 2, c.y - _infoPaint.height / 2));
       return;
     }
 
-    mViewPortHandler.setChartDimens(size.width, size.height);
+    _viewPortHandler?.setChartDimens(size.width, size.height);
 
-    if (!mOffsetsCalculated) {
+    if (!_offsetsCalculated) {
       calculateOffsets();
-      mOffsetsCalculated = true;
+      _offsetsCalculated = true;
     }
+
+    onPaint(canvas, size);
   }
+
+  void onPaint(Canvas canvas, Size size);
 
   /// Draws the description text in the bottom right corner of the chart (per default)
   void drawDescription(Canvas c, Size size) {
     // check if description should be drawn
-    if (mDescription != null && mDescription.isEnabled()) {
-      MPPointF position = mDescription.getPosition();
-
-      mDescPaint = PainterUtils.create(
-          mDescPaint,
-          mDescription.text,
-          mDescription.getTextColor(),
-          Utils.convertDpToPixel(mDescription.getTextSize()));
-
+    if (_description != null && _description.isEnabled()) {
+      MPPointF position = _description.getPosition();
       double x, y;
-
       // if no position specified, draw on default position
       if (position == null) {
         x = size.width -
-            mViewPortHandler.offsetRight() -
-            mDescription.getXOffset();
+            _viewPortHandler.offsetRight() -
+            _description.getXOffset();
         y = size.height -
-            mViewPortHandler.offsetBottom() -
-            mDescription.getYOffset();
+            _viewPortHandler.offsetBottom() -
+            _description.getYOffset();
       } else {
         x = position.x;
         y = position.y;
       }
-
-      mDescPaint.paint(c, Offset(x, y));
+      _descPaint.paint(c, Offset(x, y));
     }
-  }
-
-  /**
-   * ################ ################ ################ ################
-   */
-  /** BELOW THIS CODE FOR HIGHLIGHTING */
-
-  /// array of Highlight objects that reference the highlighted slices in the
-  /// chart
-  List<Highlight> mIndicesToHighlight;
-
-  /// The maximum distance in dp away from an entry causing it to highlight.
-  double mMaxHighlightDistance = 0;
-
-  @override
-  double getMaxHighlightDistance() {
-    return mMaxHighlightDistance;
   }
 
   /// Returns true if there are values to highlight, false if there are no
@@ -309,9 +332,9 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   ///
   /// @return
   bool valuesToHighlight() {
-    var res = mIndicesToHighlight == null ||
-            mIndicesToHighlight.length <= 0 ||
-            mIndicesToHighlight[0] == null
+    var res = _indicesToHighlight == null ||
+            _indicesToHighlight.length <= 0 ||
+            _indicesToHighlight[0] == null
         ? false
         : true;
     return res;
@@ -325,7 +348,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   /// @param highs
   void highlightValues(List<Highlight> highs) {
     // set the indices to highlight
-    mIndicesToHighlight = highs;
+    _indicesToHighlight = highs;
   }
 
   /// Highlights any y-value at the given x-value in the given DataSet.
@@ -364,7 +387,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   /// @param callListener Should the listener be called for this change
   void highlightValue4(
       double x, double y, int dataSetIndex, bool callListener) {
-    if (dataSetIndex < 0 || dataSetIndex >= mData.getDataSetCount()) {
+    if (dataSetIndex < 0 || dataSetIndex >= _data.getDataSetCount()) {
       highlightValue6(null, callListener);
     } else {
       highlightValue6(
@@ -390,43 +413,41 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
     Entry e = null;
 
     if (high == null) {
-      mIndicesToHighlight = null;
+      _indicesToHighlight = null;
     } else {
-      e = mData.getEntryForHighlight(high);
+      e = _data.getEntryForHighlight(high);
       if (e == null) {
-        mIndicesToHighlight = null;
+        _indicesToHighlight = null;
         high = null;
       } else {
         // set the indices to highlight
-        mIndicesToHighlight = List()..add(high);
+        _indicesToHighlight = List()..add(high);
       }
     }
 
     if (callListener && _selectionListener != null) {
       if (!valuesToHighlight())
-        _selectionListener.onNothingSelected();
+        _selectionListener?.onNothingSelected();
       else {
         // notify the listener
-        _selectionListener.onValueSelected(e, high);
+        _selectionListener?.onValueSelected(e, high);
       }
     }
   }
 
-  OnChartValueSelectedListener _selectionListener;
+//  void setOnChartValueSelectedListener(OnChartValueSelectedListener l) {
+//    this._selectionListener = l;
+//  }
 
-  void setOnChartValueSelectedListener(OnChartValueSelectedListener l) {
-    this._selectionListener = l;
-  }
+//  OnChartGestureListener _gestureListener;
 
-  OnChartGestureListener _gestureListener;
-
-  void setOnChartGestureListener(OnChartGestureListener l) {
-    this._gestureListener = l;
-  }
-
-  OnChartGestureListener getOnChartGestureListener() {
-    return _gestureListener;
-  }
+//  void setOnChartGestureListener(OnChartGestureListener l) {
+//    this._gestureListener = l;
+//  }
+//
+//  OnChartGestureListener getOnChartGestureListener() {
+//    return _gestureListener;
+//  }
 
   /// Returns the Highlight object (contains x-index and DataSet index) of the
   /// selected value at the given touch point inside the Line-, Scatter-, or
@@ -436,47 +457,38 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   /// @param y
   /// @return
   Highlight getHighlightByTouchPoint(double x, double y) {
-    if (mData == null) {
+    if (_data == null) {
       return null;
     } else {
-      return mHighlighter.getHighlight(x, y);
+      return _highlighter.getHighlight(x, y);
     }
   }
 
-  /** BELOW CODE IS FOR THE MARKER VIEW */
-
-  /// if set to true, the marker view is drawn when a value is clicked
-  bool mDrawMarkers = true;
-
-  /// the view that represents the marker
-  IMarker mMarker;
-
   /// draws all MarkerViews on the highlighted positions
   void drawMarkers(Canvas canvas) {
-    if (mMarker == null || !isDrawMarkersEnabled() || !valuesToHighlight())
-      return;
+    if (_marker == null || !_drawMarkers || !valuesToHighlight()) return;
 
-    for (int i = 0; i < mIndicesToHighlight.length; i++) {
-      Highlight highlight = mIndicesToHighlight[i];
+    for (int i = 0; i < _indicesToHighlight.length; i++) {
+      Highlight highlight = _indicesToHighlight[i];
 
-      IDataSet set = mData.getDataSetByIndex(highlight.getDataSetIndex());
+      IDataSet set = _data.getDataSetByIndex(highlight.getDataSetIndex());
 
-      Entry e = mData.getEntryForHighlight(mIndicesToHighlight[i]);
+      Entry e = _data.getEntryForHighlight(_indicesToHighlight[i]);
       int entryIndex = set.getEntryIndex2(e);
       // make sure entry not null
-      if (e == null || entryIndex > set.getEntryCount() * mAnimator.getPhaseX())
+      if (e == null || entryIndex > set.getEntryCount() * _animator.getPhaseX())
         continue;
 
       List<double> pos = getMarkerPosition(highlight);
 
       // check bounds
-      if (!mViewPortHandler.isInBounds(pos[0], pos[1])) continue;
+      if (!_viewPortHandler.isInBounds(pos[0], pos[1])) continue;
 
       // callbacks to update the content
-      mMarker.refreshContent(e, highlight);
+      _marker.refreshContent(e, highlight);
 
       // draw the marker
-      mMarker.draw(canvas, pos[0], pos[1]);
+      _marker.draw(canvas, pos[0], pos[1]);
     }
   }
 
@@ -489,33 +501,33 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
     return List<double>()..add(high.getDrawX())..add(high.getDrawY());
   }
 
-  /// returns the current y-max value across all DataSets
-  ///
-  /// @return
-  double getYMax() {
-    return mData.getYMax1();
-  }
+//  /// returns the current y-max value across all DataSets
+//  ///
+//  /// @return
+//  double getYMax() {
+//    return _data.getYMax1();
+//  }
+//
+//  /// returns the current y-min value across all DataSets
+//  ///
+//  /// @return
+//  double getYMin() {
+//    return _data.getYMin1();
+//  }
 
-  /// returns the current y-min value across all DataSets
-  ///
-  /// @return
-  double getYMin() {
-    return mData.getYMin1();
+  @override
+  ChartData<IDataSet<Entry>> getData() {
+    return _data;
   }
 
   @override
-  double getXChartMax() {
-    return mXAxis.mAxisMaximum;
+  ValueFormatter getDefaultValueFormatter() {
+    return _defaultValueFormatter;
   }
 
   @override
-  double getXChartMin() {
-    return mXAxis.mAxisMinimum;
-  }
-
-  @override
-  double getXRange() {
-    return mXAxis.mAxisRange;
+  double getMaxHighlightDistance() {
+    return _maxHighlightDistance;
   }
 
   /// Returns a recyclable MPPointF instance.
@@ -533,23 +545,15 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   /// @return
   @override
   MPPointF getCenterOffsets() {
-    return mViewPortHandler.getContentCenter();
+    return _viewPortHandler.getContentCenter();
   }
 
-  /// returns true if drawing the marker is enabled when tapping on values
-  /// (use the setMarker(IMarker marker) method to specify a marker)
-  ///
-  /// @return
-  bool isDrawMarkersEnabled() {
-    return mDrawMarkers;
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
   }
 
-  /// Returns the ChartData object that has been set for the chart.
-  ///
-  /// @return
-  T getData() {
-    return mData;
+  void reassemble() {
+    _offsetsCalculated = false;
   }
-
-  void reassemble();
 }
