@@ -1,18 +1,26 @@
 import 'package:flutter/widgets.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/horizontal_bar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/highlight_utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/bar_line_chart_painter.dart';
@@ -20,29 +28,29 @@ import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_redar_chart_painter.dart';
 
 abstract class Chart extends StatefulWidget {
-  InitPainterCallback _initialPainterCallback;
-
+  ////// needed
   ChartData data;
-  double minOffset = 15;
-  double maxHighlightDistance = 0.0;
-  bool highLightPerTapEnabled = true;
-  bool dragDecelerationEnabled = true;
-  double dragDecelerationFrictionCoef = 0.9;
-  double extraLeftOffset = 0.0;
-  double extraTopOffset = 0.0;
-  double extraRightOffset = 0.0;
-  double extraBottomOffset = 0.0;
-  String noDataText = "No chart data available.";
-  bool touchEnabled = true;
-  IMarker marker = null;
-  Description desc = null;
-  bool drawMarkers = true;
-  TextPainter infoPainter = null;
-  TextPainter descPainter = null;
-  IHighlighter highlighter = null;
-  bool unbind = false;
+  IMarker marker;
+  Description description;
+  ViewPortHandler viewPortHandler;
+  XAxis xAxis;
+  Legend legend;
+  LegendRenderer legendRenderer;
+  OnChartValueSelectedListener selectionListener;
 
-  ViewPortHandler viewPortHandler = ViewPortHandler();
+  ////// option
+  double maxHighlightDistance;
+  bool highLightPerTapEnabled;
+  bool dragDecelerationEnabled;
+  double dragDecelerationFrictionCoef;
+  double extraTopOffset, extraRightOffset, extraBottomOffset, extraLeftOffset;
+  String noDataText;
+  bool touchEnabled;
+  bool drawMarkers;
+
+  ////// split child property
+  TextPainter descPaint;
+  TextPainter infoPaint;
 
   ChartState _state;
 
@@ -58,52 +66,30 @@ abstract class Chart extends StatefulWidget {
     return _state;
   }
 
-  Chart(ChartData data, InitPainterCallback initialPainterCallback,
-      {Color backgroundColor = null,
-      Color borderColor = null,
-      double borderStrokeWidth = 1.0,
-      bool keepPositionOnRotation = false,
-      bool pinchZoomEnabled = false,
-      XAxisRenderer xAxisRenderer = null,
-      YAxisRenderer rendererLeftYAxis = null,
-      YAxisRenderer rendererRightYAxis = null,
-      bool autoScaleMinMaxEnabled = false,
-      double minOffset = 30,
-      bool clipValuesToContent = false,
-      bool drawBorders = false,
-      bool drawGridBackground = false,
-      bool doubleTapToZoomEnabled = true,
-      bool scaleXEnabled = true,
-      bool scaleYEnabled = true,
-      bool dragXEnabled = true,
-      bool dragYEnabled = true,
-      bool highlightPerDragEnabled = true,
-      int maxVisibleCount = 100,
-      OnDrawListener drawListener = null,
-      double minXRange = 1.0,
-      double maxXRange = 1.0,
-      double minimumScaleX = 1.0,
-      double minimumScaleY = 1.0,
+  Chart(ChartData data,
+      {IMarker marker,
+      Description description,
+      ViewPortHandler viewPortHandler,
+      XAxis xAxis,
+      Legend legend,
+      LegendRenderer legendRenderer,
+      OnChartValueSelectedListener selectionListener,
       double maxHighlightDistance = 0.0,
       bool highLightPerTapEnabled = true,
       bool dragDecelerationEnabled = true,
       double dragDecelerationFrictionCoef = 0.9,
-      double extraLeftOffset = 0.0,
       double extraTopOffset = 0.0,
       double extraRightOffset = 0.0,
       double extraBottomOffset = 0.0,
+      double extraLeftOffset = 0.0,
       String noDataText = "No chart data available.",
       bool touchEnabled = true,
-      IMarker marker = null,
-      Description desc = null,
       bool drawMarkers = true,
-      TextPainter infoPainter = null,
-      TextPainter descPainter = null,
-      IHighlighter highlighter = null,
-      bool unbind = false})
-      : _initialPainterCallback = initialPainterCallback,
-        data = data,
-        minOffset = minOffset,
+      double descTextSize = 12,
+      double infoTextSize = 12,
+      Color descTextColor,
+      Color infoTextColor})
+      : data = data,
         maxHighlightDistance = maxHighlightDistance,
         highLightPerTapEnabled = highLightPerTapEnabled,
         dragDecelerationEnabled = dragDecelerationEnabled,
@@ -114,20 +100,57 @@ abstract class Chart extends StatefulWidget {
         extraBottomOffset = extraBottomOffset,
         noDataText = noDataText,
         touchEnabled = touchEnabled,
-        marker = marker,
-        desc = desc,
         drawMarkers = drawMarkers,
-        infoPainter = infoPainter,
-        descPainter = descPainter,
-        highlighter = highlighter,
-        unbind = unbind;
+        marker = marker,
+        description = description,
+        viewPortHandler = viewPortHandler,
+        xAxis = xAxis,
+        legend = legend,
+        legendRenderer = legendRenderer,
+        selectionListener = selectionListener {
+    if (descTextColor == null) {
+      descTextColor = ColorUtils.BLACK;
+    }
+    descPaint = PainterUtils.create(null, null, descTextColor, descTextSize);
+    if (infoTextColor == null) {
+      infoTextColor = ColorUtils.BLACK;
+    }
+    infoPaint = PainterUtils.create(null, null, infoTextColor, infoTextSize);
+
+    if (maxHighlightDistance == 0.0) {
+      maxHighlightDistance = Utils.convertDpToPixel(500);
+    }
+
+    this.viewPortHandler ??= initViewPortHandler();
+    this.legend ??= initLegend();
+    this.marker ??= initMarker();
+    this.description ??= initDescription();
+    this.xAxis ??= initXAxis();
+    this.legendRenderer ??= initLegendRenderer();
+    this.selectionListener ??= initSelectionListener();
+  }
+
+  IMarker initMarker() => null;
+
+  Description initDescription() => Description();
+
+  ViewPortHandler initViewPortHandler() => ViewPortHandler();
+
+  XAxis initXAxis() => XAxis();
+
+  Legend initLegend() => Legend();
+
+  LegendRenderer initLegendRenderer() =>
+      LegendRenderer(viewPortHandler, legend);
+
+  OnChartValueSelectedListener initSelectionListener() => null;
 }
 
 abstract class ChartState<P extends ChartPainter, T extends Chart>
     extends State<T> implements AnimatorUpdateListener {
   P painter;
   bool _singleTap = false;
-  ChartAnimator animator = null;
+  ChartAnimator animator;
 
   void initialPainter();
 
@@ -146,11 +169,6 @@ abstract class ChartState<P extends ChartPainter, T extends Chart>
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   void initState() {
     animator = ChartAnimator(this);
     super.initState();
@@ -159,9 +177,6 @@ abstract class ChartState<P extends ChartPainter, T extends Chart>
   @override
   Widget build(BuildContext context) {
     initialPainter();
-    if (painter.mData != null) {
-      widget._initialPainterCallback(painter);
-    }
     return Stack(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -201,7 +216,7 @@ abstract class ChartState<P extends ChartPainter, T extends Chart>
   @override
   void reassemble() {
     super.reassemble();
-    animator.reset();
+    animator?.reset();
     painter?.reassemble();
   }
 
@@ -218,54 +233,67 @@ abstract class ChartState<P extends ChartPainter, T extends Chart>
   void onSingleTapUp(TapUpDetails detail);
 }
 
-typedef InitPainterCallback = void Function(ChartPainter painter);
-
 abstract class PieRadarChart extends Chart {
   double rotationAngle;
   double rawRotationAngle;
+  bool rotateEnabled;
+  double minOffset;
 
-  PieRadarChart(
-      ChartData<IDataSet<Entry>> data, InitPainterCallback initPainterCallback,
-      {double rotationAngle = 270,
+  PieRadarChart(ChartData<IDataSet<Entry>> data,
+      {IMarker marker,
+      Description description,
+      ViewPortHandler viewPortHandler,
+      XAxis xAxis,
+      Legend legend,
+      LegendRenderer legendRenderer,
+      DataRenderer renderer,
+      OnChartValueSelectedListener selectionListener,
+      double rotationAngle = 270,
       double rawRotationAngle = 270,
-      double minOffset = 30,
+      bool rotateEnabled = true,
+      double minOffset = 30.0,
       double maxHighlightDistance = 0.0,
       bool highLightPerTapEnabled = true,
       bool dragDecelerationEnabled = true,
       double dragDecelerationFrictionCoef = 0.9,
-      double extraLeftOffset = 0.0,
       double extraTopOffset = 0.0,
       double extraRightOffset = 0.0,
       double extraBottomOffset = 0.0,
+      double extraLeftOffset = 0.0,
       String noDataText = "No chart data available.",
       bool touchEnabled = true,
-      IMarker marker = null,
-      Description desc = null,
       bool drawMarkers = true,
-      TextPainter infoPainter = null,
-      TextPainter descPainter = null,
-      IHighlighter highlighter = null,
-      bool unbind = false})
+      double descTextSize = 12,
+      double infoTextSize = 12,
+      Color descTextColor,
+      Color infoTextColor})
       : rotationAngle = rotationAngle,
         rawRotationAngle = rawRotationAngle,
-        super(data, initPainterCallback,
+        rotateEnabled = rotateEnabled,
+        minOffset = minOffset,
+        super(data,
+            marker: marker,
+            description: description,
+            viewPortHandler: viewPortHandler,
+            xAxis: xAxis,
+            legend: legend,
+            legendRenderer: legendRenderer,
+            selectionListener: selectionListener,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
             dragDecelerationEnabled: dragDecelerationEnabled,
             dragDecelerationFrictionCoef: dragDecelerationFrictionCoef,
-            extraLeftOffset: extraLeftOffset,
             extraTopOffset: extraTopOffset,
             extraRightOffset: extraRightOffset,
             extraBottomOffset: extraBottomOffset,
-            touchEnabled: touchEnabled,
+            extraLeftOffset: extraLeftOffset,
             noDataText: noDataText,
-            marker: marker,
-            desc: desc,
+            touchEnabled: touchEnabled,
             drawMarkers: drawMarkers,
-            infoPainter: infoPainter,
-            descPainter: descPainter,
-            highlighter: highlighter,
-            unbind: unbind);
+            descTextSize: descTextSize,
+            infoTextSize: infoTextSize,
+            descTextColor: descTextColor,
+            infoTextColor: infoTextColor);
 }
 
 abstract class PieRadarChartState<P extends PieRadarChartPainter,
@@ -315,13 +343,13 @@ abstract class PieRadarChartState<P extends PieRadarChartPainter,
 
   @override
   void onSingleTapUp(TapUpDetails detail) {
-    if (painter.mHighLightPerTapEnabled) {
+    if (painter.highLightPerTapEnabled) {
       Highlight h = painter.getHighlightByTouchPoint(
           detail.localPosition.dx, detail.localPosition.dy);
       lastHighlighted =
           HighlightUtils.performHighlight(painter, h, lastHighlighted);
-      painter.getOnChartGestureListener()?.onChartSingleTapped(
-          detail.localPosition.dx, detail.localPosition.dy);
+//      painter.getOnChartGestureListener()?.onChartSingleTapped(
+//          detail.localPosition.dx, detail.localPosition.dy);
       setStateIfNotDispose();
     } else {
       lastHighlighted = null;
@@ -330,6 +358,193 @@ abstract class PieRadarChartState<P extends PieRadarChartPainter,
 
   @override
   void onTapDown(TapDownDetails detail) {}
+}
+
+abstract class BarLineScatterCandleBubbleChart extends Chart {
+  int maxVisibleCount;
+  bool autoScaleMinMaxEnabled;
+  bool pinchZoomEnabled;
+  bool doubleTapToZoomEnabled;
+  bool highlightPerDragEnabled;
+  bool dragXEnabled;
+  bool dragYEnabled;
+  bool scaleXEnabled;
+  bool scaleYEnabled;
+  bool drawGridBackground;
+  bool drawBorders;
+  bool clipValuesToContent;
+  double minOffset;
+  bool keepPositionOnRotation;
+  OnDrawListener drawListener;
+  YAxis axisLeft;
+  YAxis axisRight;
+  YAxisRenderer axisRendererLeft;
+  YAxisRenderer axisRendererRight;
+  Transformer leftAxisTransformer;
+  Transformer rightAxisTransformer;
+  XAxisRenderer xAxisRenderer;
+  bool customViewPortEnabled;
+  Matrix4 zoomMatrixBuffer;
+  double minXRange;
+  double maxXRange;
+  double minimumScaleX;
+  double minimumScaleY;
+
+  //////
+  Paint gridBackgroundPaint;
+  Paint borderPaint;
+
+  BarLineScatterCandleBubbleChart(
+    ChartData<IDataSet<Entry>> data, {
+    IMarker marker,
+    Description description,
+    ViewPortHandler viewPortHandler,
+    XAxis xAxis,
+    Legend legend,
+    LegendRenderer legendRenderer,
+    DataRenderer renderer,
+    OnChartValueSelectedListener selectionListener,
+    Color backgroundColor,
+    Color borderColor,
+    double borderStrokeWidth = 1.0,
+    int maxVisibleCount = 100,
+    bool autoScaleMinMaxEnabled = true,
+    bool pinchZoomEnabled = true,
+    bool doubleTapToZoomEnabled = true,
+    bool highlightPerDragEnabled = true,
+    bool dragXEnabled = true,
+    bool dragYEnabled = true,
+    bool scaleXEnabled = true,
+    bool scaleYEnabled = true,
+    bool drawGridBackground = false,
+    bool drawBorders = false,
+    bool clipValuesToContent = false,
+    double minOffset = 30,
+    bool keepPositionOnRotation = false,
+    bool customViewPortEnabled = false,
+    double minXRange = 1.0,
+    double maxXRange = 1.0,
+    double minimumScaleX = 1.0,
+    double minimumScaleY = 1.0,
+    double maxHighlightDistance = 0.0,
+    bool highLightPerTapEnabled = true,
+    bool dragDecelerationEnabled = true,
+    double dragDecelerationFrictionCoef = 0.9,
+    double extraTopOffset = 0.0,
+    double extraRightOffset = 0.0,
+    double extraBottomOffset = 0.0,
+    double extraLeftOffset = 0.0,
+    String noDataText = "No chart data available.",
+    bool touchEnabled = true,
+    bool drawMarkers = true,
+    double descTextSize = 12,
+    double infoTextSize = 12,
+    Color descTextColor,
+    Color infoTextColor,
+    OnDrawListener drawListener,
+    YAxis axisLeft,
+    YAxis axisRight,
+    YAxisRenderer axisRendererLeft,
+    YAxisRenderer axisRendererRight,
+    Transformer leftAxisTransformer,
+    Transformer rightAxisTransformer,
+    XAxisRenderer xAxisRenderer,
+    Matrix4 zoomMatrixBuffer,
+  })  : maxVisibleCount = maxVisibleCount,
+        autoScaleMinMaxEnabled = autoScaleMinMaxEnabled,
+        pinchZoomEnabled = pinchZoomEnabled,
+        doubleTapToZoomEnabled = doubleTapToZoomEnabled,
+        highlightPerDragEnabled = highlightPerDragEnabled,
+        dragXEnabled = dragXEnabled,
+        dragYEnabled = dragYEnabled,
+        scaleXEnabled = scaleXEnabled,
+        scaleYEnabled = scaleYEnabled,
+        drawGridBackground = drawGridBackground,
+        drawBorders = drawBorders,
+        clipValuesToContent = clipValuesToContent,
+        minOffset = minOffset,
+        keepPositionOnRotation = keepPositionOnRotation,
+        drawListener = drawListener,
+        axisLeft = axisLeft,
+        axisRight = axisRight,
+        axisRendererLeft = axisRendererLeft,
+        axisRendererRight = axisRendererRight,
+        leftAxisTransformer = leftAxisTransformer,
+        rightAxisTransformer = rightAxisTransformer,
+        xAxisRenderer = xAxisRenderer,
+        customViewPortEnabled = customViewPortEnabled,
+        zoomMatrixBuffer = zoomMatrixBuffer,
+        minXRange = minXRange,
+        maxXRange = maxXRange,
+        minimumScaleX = minimumScaleX,
+        minimumScaleY = minimumScaleY,
+        super(data,
+            marker: marker,
+            description: description,
+            viewPortHandler: viewPortHandler,
+            xAxis: xAxis,
+            legend: legend,
+            legendRenderer: legendRenderer,
+            selectionListener: selectionListener,
+            maxHighlightDistance: maxHighlightDistance,
+            highLightPerTapEnabled: highLightPerTapEnabled,
+            dragDecelerationEnabled: dragDecelerationEnabled,
+            dragDecelerationFrictionCoef: dragDecelerationFrictionCoef,
+            extraTopOffset: extraTopOffset,
+            extraRightOffset: extraRightOffset,
+            extraBottomOffset: extraBottomOffset,
+            extraLeftOffset: extraLeftOffset,
+            noDataText: noDataText,
+            touchEnabled: touchEnabled,
+            drawMarkers: drawMarkers,
+            descTextSize: descTextSize,
+            infoTextSize: infoTextSize,
+            descTextColor: descTextColor,
+            infoTextColor: infoTextColor) {
+    gridBackgroundPaint = Paint()
+      ..color = backgroundColor == null
+          ? Color.fromARGB(255, 240, 240, 240)
+          : backgroundColor
+      ..style = PaintingStyle.fill;
+
+    borderPaint = Paint()
+      ..color = borderColor == null ? ColorUtils.BLACK : borderColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = Utils.convertDpToPixel(borderStrokeWidth);
+
+    this.drawListener ??= initDrawListener();
+    this.axisLeft ??= initAxisLeft();
+    this.axisRight ??= initAxisRight();
+    this.leftAxisTransformer ??= initLeftAxisTransformer();
+    this.rightAxisTransformer ??= initRightAxisTransformer();
+    this.zoomMatrixBuffer ??= initZoomMatrixBuffer();
+    this.axisRendererLeft ??= initAxisRendererLeft();
+    this.axisRendererRight ??= initAxisRendererRight();
+    this.xAxisRenderer ??= initXAxisRenderer();
+  }
+
+  OnDrawListener initDrawListener() {
+    return null;
+  }
+
+  YAxis initAxisLeft() => YAxis(position: AxisDependency.LEFT);
+
+  YAxis initAxisRight() => YAxis(position: AxisDependency.RIGHT);
+
+  Transformer initLeftAxisTransformer() => Transformer(viewPortHandler);
+
+  Transformer initRightAxisTransformer() => Transformer(viewPortHandler);
+
+  YAxisRenderer initAxisRendererLeft() =>
+      YAxisRenderer(viewPortHandler, axisLeft, leftAxisTransformer);
+
+  YAxisRenderer initAxisRendererRight() =>
+      YAxisRenderer(viewPortHandler, axisRight, rightAxisTransformer);
+
+  XAxisRenderer initXAxisRenderer() =>
+      XAxisRenderer(viewPortHandler, xAxis, leftAxisTransformer);
+
+  Matrix4 initZoomMatrixBuffer() => Matrix4.identity();
 }
 
 abstract class BarLineScatterCandleBubbleState<
@@ -345,7 +560,7 @@ abstract class BarLineScatterCandleBubbleState<
   bool _isZoom = false;
 
   MPPointF _getTrans(double x, double y) {
-    ViewPortHandler vph = painter.mViewPortHandler;
+    ViewPortHandler vph = painter.viewPortHandler;
 
     double xTrans = x - vph.offsetLeft();
     double yTrans = 0.0;
@@ -376,11 +591,12 @@ abstract class BarLineScatterCandleBubbleState<
 
   @override
   void onDoubleTap() {
-    if (painter.mDoubleTapToZoomEnabled && painter.mData.getEntryCount() > 0) {
+    if (painter.doubleTapToZoomEnabled &&
+        painter.getData().getEntryCount() > 0) {
       MPPointF trans = _getTrans(_curX, _curY);
-      painter.zoom(painter.mScaleXEnabled ? 1.4 : 1,
-          painter.mScaleYEnabled ? 1.4 : 1, trans.x, trans.y);
-      painter.getOnChartGestureListener()?.onChartDoubleTapped(_curX, _curY);
+      painter.zoom(painter.scaleXEnabled ? 1.4 : 1,
+          painter.scaleYEnabled ? 1.4 : 1, trans.x, trans.y);
+//      painter.getOnChartGestureListener()?.onChartDoubleTapped(_curX, _curY);
       setStateIfNotDispose();
       MPPointF.recycleInstance(trans);
     }
@@ -409,7 +625,7 @@ abstract class BarLineScatterCandleBubbleState<
       return;
     }
 
-    OnChartGestureListener listener = painter.getOnChartGestureListener();
+//    OnChartGestureListener listener = painter.getOnChartGestureListener();
     if (_scaleX == detail.horizontalScale && _scaleY == detail.verticalScale) {
       if (_isZoom) {
         return;
@@ -417,21 +633,21 @@ abstract class BarLineScatterCandleBubbleState<
 
       var dx = detail.localFocalPoint.dx - _curX;
       var dy = detail.localFocalPoint.dy - _curY;
-      if (painter.mDragYEnabled && painter.mDragXEnabled) {
+      if (painter.dragYEnabled && painter.dragXEnabled) {
         painter.translate(dx, dy);
         _dragHighlight(
             Offset(detail.localFocalPoint.dx, detail.localFocalPoint.dy));
-        listener?.onChartTranslate(
-            detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
+//        listener?.onChartTranslate(
+//            detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
         setStateIfNotDispose();
       } else {
-        if (painter.mDragXEnabled) {
+        if (painter.dragXEnabled) {
           painter.translate(dx, 0.0);
           _dragHighlight(Offset(detail.localFocalPoint.dx, 0.0));
-          listener?.onChartTranslate(
-              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
+//          listener?.onChartTranslate(
+//              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
           setStateIfNotDispose();
-        } else if (painter.mDragYEnabled) {
+        } else if (painter.dragYEnabled) {
           if (_inverted()) {
             // if there is an inverted horizontalbarchart
             if (widget is HorizontalBarChart) {
@@ -442,8 +658,8 @@ abstract class BarLineScatterCandleBubbleState<
           }
           painter.translate(0.0, dy);
           _dragHighlight(Offset(0.0, detail.localFocalPoint.dy));
-          listener?.onChartTranslate(
-              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
+//          listener?.onChartTranslate(
+//              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
           setStateIfNotDispose();
         }
       }
@@ -461,11 +677,11 @@ abstract class BarLineScatterCandleBubbleState<
 
       MPPointF trans = _getTrans(_curX, _curY);
 
-      scaleX = painter.mScaleXEnabled ? scaleX : 1.0;
-      scaleY = painter.mScaleYEnabled ? scaleY : 1.0;
+      scaleX = painter.scaleXEnabled ? scaleX : 1.0;
+      scaleY = painter.scaleYEnabled ? scaleY : 1.0;
       painter.zoom(scaleX, scaleY, trans.x, trans.y);
-      listener?.onChartScale(
-          detail.localFocalPoint.dx, detail.localFocalPoint.dy, scaleX, scaleY);
+//      listener?.onChartScale(
+//          detail.localFocalPoint.dx, detail.localFocalPoint.dy, scaleX, scaleY);
       setStateIfNotDispose();
       MPPointF.recycleInstance(trans);
     }
@@ -476,7 +692,7 @@ abstract class BarLineScatterCandleBubbleState<
   }
 
   void _dragHighlight(Offset offset) {
-    if (painter.mHighlightPerDragEnabled) {
+    if (painter.highlightPerDragEnabled) {
       Highlight h = painter.getHighlightByTouchPoint(offset.dx, offset.dy);
       if (h != null && !h.equalTo(lastHighlighted)) {
         lastHighlighted = h;
@@ -489,13 +705,13 @@ abstract class BarLineScatterCandleBubbleState<
 
   @override
   void onSingleTapUp(TapUpDetails detail) {
-    if (painter.mHighLightPerTapEnabled) {
+    if (painter.highLightPerTapEnabled) {
       Highlight h = painter.getHighlightByTouchPoint(
           detail.localPosition.dx, detail.localPosition.dy);
       lastHighlighted =
           HighlightUtils.performHighlight(painter, h, lastHighlighted);
-      painter.getOnChartGestureListener()?.onChartSingleTapped(
-          detail.localPosition.dx, detail.localPosition.dy);
+//      painter.getOnChartGestureListener()?.onChartSingleTapped(
+//          detail.localPosition.dx, detail.localPosition.dy);
       setStateIfNotDispose();
     } else {
       lastHighlighted = null;

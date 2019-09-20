@@ -1,6 +1,5 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/src/rendering/custom_paint.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
@@ -15,13 +14,10 @@ import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_provider/combined_data_provider.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/combined_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/combined_chart_renderer.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
@@ -70,11 +66,9 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       bool drawMarkers,
       TextPainter infoPainter,
       TextPainter descPainter,
-      IHighlighter highlighter,
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
-      DataRenderer renderer,
       OnChartValueSelectedListener selectedListener,
       int maxVisibleCount,
       bool autoScaleMinMaxEnabled,
@@ -106,9 +100,6 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       double maxXRange,
       double minimumScaleX,
       double minimumScaleY,
-      Color backgroundColor,
-      Color borderColor,
-      double borderStrokeWidth,
       bool highlightFullBarEnabled,
       bool drawValueAboveBar,
       bool drawBarShadow,
@@ -135,11 +126,9 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
             drawMarkers,
             infoPainter,
             descPainter,
-            highlighter,
             xAxis,
             legend,
             legendRenderer,
-            renderer,
             selectedListener,
             maxVisibleCount,
             autoScaleMinMaxEnabled,
@@ -170,20 +159,15 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
             minXRange,
             maxXRange,
             minimumScaleX,
-            minimumScaleY,
-            backgroundColor,
-            borderColor,
-            borderStrokeWidth);
+            minimumScaleY);
 
-//  @override
-//  void init() {
-//    super.init();
-//
-//    mRenderer = CombinedChartRenderer(this, mAnimator, mViewPortHandler);
-//
-//    (mRenderer as CombinedChartRenderer).createRenderers();
-//    mRenderer.initBuffers();
-//  }
+  @override
+  void initDefaultWithData() {
+    renderer = CombinedChartRenderer(this, animator, viewPortHandler);
+    super.initDefaultWithData();
+    (renderer as CombinedChartRenderer).createRenderers();
+    renderer.initBuffers();
+  }
 
   @override
   CombinedData getCombinedData() {

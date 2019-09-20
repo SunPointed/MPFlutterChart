@@ -17,7 +17,6 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
@@ -26,7 +25,6 @@ import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/matrix4_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
@@ -108,9 +106,6 @@ abstract class BarLineChartBasePainter<
   double _maxXRange;
   double _minimumScaleX;
   double _minimumScaleY;
-  Color _backgroundColor;
-  Color _borderColor;
-  double _borderStrokeWidth;
 
   /////////////////////////////////
 
@@ -129,6 +124,18 @@ abstract class BarLineChartBasePainter<
   Transformer get leftAxisTransformer => _leftAxisTransformer;
 
   Transformer get rightAxisTransformer => _rightAxisTransformer;
+
+  bool get highlightPerDragEnabled => _highlightPerDragEnabled;
+
+  bool get dragXEnabled => _dragXEnabled;
+
+  bool get dragYEnabled => _dragYEnabled;
+
+  bool get scaleXEnabled => _scaleXEnabled;
+
+  bool get scaleYEnabled => _scaleYEnabled;
+
+  bool get doubleTapToZoomEnabled => _doubleTapToZoomEnabled;
 
   BarLineChartBasePainter(
     T data,
@@ -149,11 +156,9 @@ abstract class BarLineChartBasePainter<
     bool drawMarkers,
     TextPainter infoPainter,
     TextPainter descPainter,
-    IHighlighter highlighter,
     XAxis xAxis,
     Legend legend,
     LegendRenderer legendRenderer,
-    DataRenderer renderer,
     OnChartValueSelectedListener selectedListener,
     int maxVisibleCount,
     bool autoScaleMinMaxEnabled,
@@ -185,9 +190,6 @@ abstract class BarLineChartBasePainter<
     double maxXRange,
     double minimumScaleX,
     double minimumScaleY,
-    Color backgroundColor,
-    Color borderColor,
-    double borderStrokeWidth,
   )   : _keepPositionOnRotation = keepPositionOnRotation,
         _leftAxisTransformer = leftAxisTransformer,
         _rightAxisTransformer = rightAxisTransformer,
@@ -218,9 +220,6 @@ abstract class BarLineChartBasePainter<
         _maxXRange = maxXRange,
         _minimumScaleX = minimumScaleX,
         _minimumScaleY = minimumScaleY,
-        _backgroundColor = backgroundColor,
-        _borderColor = borderColor,
-        _borderStrokeWidth = borderStrokeWidth,
         super(
             data,
             animator,
@@ -240,27 +239,10 @@ abstract class BarLineChartBasePainter<
             drawMarkers,
             infoPainter,
             descPainter,
-            highlighter,
             xAxis,
             legend,
             legendRenderer,
-            renderer,
-            selectedListener) {}
-
-//  @override
-//  void initDefaultNormal() {
-//    super.initDefaultNormal();
-//    _gridBackgroundPaint = Paint()
-//      ..color = _backgroundColor == null
-//          ? Color.fromARGB(255, 240, 240, 240)
-//          : _backgroundColor
-//      ..style = PaintingStyle.fill;
-//
-//    _borderPaint = Paint()
-//      ..color = _borderColor == null ? ColorUtils.BLACK : _borderColor
-//      ..style = PaintingStyle.stroke
-//      ..strokeWidth = Utils.convertDpToPixel(_borderStrokeWidth);
-//  }
+            selectedListener);
 
   @override
   void initDefaultWithData() {

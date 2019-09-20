@@ -1,38 +1,65 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'dart:ui';
+
+import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
+import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
+import 'package:mp_flutter_chart/chart/mp/core/data/pie_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
+import 'package:mp_flutter_chart/chart/mp/core/marker/bar_chart_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_chart_painter.dart';
 
 import 'chart.dart';
 
 class PieChart extends PieRadarChart {
-  Rect circleBox = Rect.zero;
-  bool drawEntryLabels = true;
-  bool drawHole = true;
-  bool drawSlicesUnderHole = false;
-  bool usePercentValues = false;
-  bool drawRoundedSlices = false;
-  String centerText = "";
-  double holeRadiusPercent = 50;
-  double transparentCircleRadiusPercent = 55;
-  bool drawCenterText = true;
-  double centerTextRadiusPercent = 100.0;
-  double maxAngle = 360;
-  double minAngleForSlices = 0;
-  double rotationAngle = 270;
-  double rawRotationAngle = 270;
-  bool rotateEnabled = true;
+  bool drawEntryLabels;
+  bool drawHole;
+  bool drawSlicesUnderHole;
+  bool usePercentValues;
+  bool drawRoundedSlices;
+  String centerText;
+  double holeRadiusPercent; // = 50
+  double transparentCircleRadiusPercent; //= 55
+  bool drawCenterText; // = true
+  double centerTextRadiusPercent; // = 100.0
+  double maxAngle; // = 360
+  double minAngleForSlices; // = 0
 
-  PieChart(ChartData<IDataSet<Entry>> data,
-      InitPieChartPainterCallback initPieChartPainterCallback,
-      {Rect circleBox = Rect.zero,
+  PieChart(PieData data,
+      {IMarker marker,
+      Description description,
+      ViewPortHandler viewPortHandler,
+      XAxis xAxis,
+      Legend legend,
+      LegendRenderer legendRenderer,
+      DataRenderer renderer,
+      OnChartValueSelectedListener selectionListener,
+      double rotationAngle = 270,
+      double rawRotationAngle = 270,
+      bool rotateEnabled = true,
+      double minOffset = 30.0,
+      double maxHighlightDistance = 0.0,
+      bool highLightPerTapEnabled = true,
+      bool dragDecelerationEnabled = true,
+      double dragDecelerationFrictionCoef = 0.9,
+      double extraTopOffset = 0.0,
+      double extraRightOffset = 0.0,
+      double extraBottomOffset = 0.0,
+      double extraLeftOffset = 0.0,
+      String noDataText = "No chart data available.",
+      bool touchEnabled = true,
+      bool drawMarkers = true,
+      double descTextSize = 12,
+      double infoTextSize = 12,
+      Color descTextColor,
+      Color infoTextColor,
       bool drawEntryLabels = true,
       bool drawHole = true,
       bool drawSlicesUnderHole = false,
@@ -44,62 +71,49 @@ class PieChart extends PieRadarChart {
       bool drawCenterText = true,
       double centerTextRadiusPercent = 100.0,
       double maxAngle = 360,
-      double minAngleForSlices = 0,
-      double rotationAngle = 270,
-      double rawRotationAngle = 270,
-      bool rotateEnabled = true,
-      double minOffset = 30,
-      double maxHighlightDistance = 0.0,
-      bool highLightPerTapEnabled = true,
-      bool dragDecelerationEnabled = true,
-      double dragDecelerationFrictionCoef = 0.9,
-      double extraLeftOffset = 0.0,
-      double extraTopOffset = 0.0,
-      double extraRightOffset = 0.0,
-      double extraBottomOffset = 0.0,
-      String noDataText = "No chart data available.",
-      bool touchEnabled = true,
-      IMarker marker = null,
-      Description desc = null,
-      bool drawMarkers = true,
-      TextPainter infoPainter = null,
-      TextPainter descPainter = null,
-      IHighlighter highlighter = null,
-      bool unbind = false})
-      : circleBox = circleBox,
-        drawCenterText = drawCenterText,
+      double minAngleForSlices = 0})
+      : drawCenterText = drawCenterText,
         drawEntryLabels = drawEntryLabels,
         drawHole = drawHole,
         drawSlicesUnderHole = drawSlicesUnderHole,
         usePercentValues = usePercentValues,
         drawRoundedSlices = drawRoundedSlices,
+        holeRadiusPercent = holeRadiusPercent,
+        transparentCircleRadiusPercent = transparentCircleRadiusPercent,
+        centerTextRadiusPercent = centerTextRadiusPercent,
         centerText = centerText,
         maxAngle = maxAngle,
         minAngleForSlices = minAngleForSlices,
-        super(data, (painter) {
-          if (painter is PieChartPainter) {
-            initPieChartPainterCallback(painter);
-          }
-        },
+        super(data,
+            marker: marker,
+            description: description,
+            viewPortHandler: viewPortHandler,
+            xAxis: xAxis,
+            legend: legend,
+            legendRenderer: legendRenderer,
+            selectionListener: selectionListener,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
             dragDecelerationEnabled: dragDecelerationEnabled,
             dragDecelerationFrictionCoef: dragDecelerationFrictionCoef,
-            extraLeftOffset: extraLeftOffset,
             extraTopOffset: extraTopOffset,
             extraRightOffset: extraRightOffset,
             extraBottomOffset: extraBottomOffset,
-            touchEnabled: touchEnabled,
+            extraLeftOffset: extraLeftOffset,
             noDataText: noDataText,
-            marker: marker,
-            desc: desc,
+            touchEnabled: touchEnabled,
             drawMarkers: drawMarkers,
-            infoPainter: infoPainter,
-            descPainter: descPainter,
-            highlighter: highlighter,
-            unbind: unbind) {
-    // this.marker = BarChartMarker(); pie chart don't need mark for now
-  }
+            descTextSize: descTextSize,
+            infoTextSize: infoTextSize,
+            descTextColor: descTextColor,
+            infoTextColor: infoTextColor,
+            rotationAngle: rotationAngle,
+            rawRotationAngle: rawRotationAngle,
+            rotateEnabled: rotateEnabled,
+            minOffset: minOffset);
+
+  @override
+  IMarker initMarker() => BarChartMarker();
 
   @override
   ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart>
@@ -111,44 +125,49 @@ class PieChart extends PieRadarChart {
 class PieChartState extends PieRadarChartState<PieChartPainter, PieChart> {
   @override
   void initialPainter() {
-    painter = PieChartPainter(widget.data, animator,
-        viewPortHandler: widget.viewPortHandler,
-        circleBox: widget.circleBox,
-        drawCenterText: widget.drawCenterText,
-        drawEntryLabels: widget.drawEntryLabels,
-        drawHole: widget.drawHole,
-        drawSlicesUnderHole: widget.drawSlicesUnderHole,
-        usePercentValues: widget.usePercentValues,
-        drawRoundedSlices: widget.drawRoundedSlices,
-        centerText: widget.centerText,
-        maxAngle: widget.maxAngle,
-        minAngleForSlices: widget.minAngleForSlices,
-        rotationAngle: widget.rotationAngle,
-        rawRotationAngle: widget.rawRotationAngle,
-        rotateEnabled: widget.rotateEnabled,
-        minOffset: widget.minOffset,
-        maxHighlightDistance: widget.maxHighlightDistance,
-        highLightPerTapEnabled: widget.highLightPerTapEnabled,
-        dragDecelerationEnabled: widget.dragDecelerationEnabled,
-        dragDecelerationFrictionCoef: widget.dragDecelerationFrictionCoef,
-        extraLeftOffset: widget.extraLeftOffset,
-        extraTopOffset: widget.extraTopOffset,
-        extraRightOffset: widget.extraRightOffset,
-        extraBottomOffset: widget.extraBottomOffset,
-        noDataText: widget.noDataText,
-        touchEnabled: widget.touchEnabled,
-        marker: widget.marker,
-        desc: widget.desc,
-        drawMarkers: widget.drawMarkers,
-        infoPainter: widget.infoPainter,
-        descPainter: widget.descPainter,
-        highlighter: widget.highlighter,
-        unbind: widget.unbind);
+    painter = PieChartPainter(
+      widget.data,
+      animator,
+      widget.viewPortHandler,
+      widget.maxHighlightDistance,
+      widget.highLightPerTapEnabled,
+      widget.dragDecelerationEnabled,
+      widget.dragDecelerationFrictionCoef,
+      widget.extraLeftOffset,
+      widget.extraTopOffset,
+      widget.extraRightOffset,
+      widget.extraBottomOffset,
+      widget.noDataText,
+      widget.touchEnabled,
+      widget.marker,
+      widget.description,
+      widget.drawMarkers,
+      widget.infoPaint,
+      widget.descPaint,
+      widget.xAxis,
+      widget.legend,
+      widget.legendRenderer,
+      widget.selectionListener,
+      widget.rotationAngle,
+      widget.rawRotationAngle,
+      widget.rotateEnabled,
+      widget.minOffset,
+      widget.drawEntryLabels,
+      widget.drawHole,
+      widget.drawSlicesUnderHole,
+      widget.usePercentValues,
+      widget.drawRoundedSlices,
+      widget.centerText,
+      widget.holeRadiusPercent,
+      widget.transparentCircleRadiusPercent,
+      widget.drawCenterText,
+      widget.centerTextRadiusPercent,
+      widget.maxAngle,
+      widget.minAngleForSlices,
+    );
     if (painter.getData() != null &&
         painter.getData().getDataSets() != null &&
         painter.getData().getDataSets().length > 0)
       painter.highlightValue6(lastHighlighted, false);
   }
 }
-
-typedef InitPieChartPainterCallback = void Function(PieChartPainter painter);

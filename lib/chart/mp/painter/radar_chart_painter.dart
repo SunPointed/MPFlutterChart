@@ -8,11 +8,12 @@ import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/radar_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/radar_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/radar_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer_radar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer_radar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
@@ -44,49 +45,46 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
   /// the object reprsenting the y-axis labels
   final YAxis _yAxis;
 
-  final YAxisRendererRadarChart _yAxisRenderer;
-  final XAxisRendererRadarChart _xAxisRenderer;
+  ////////////
+  YAxisRendererRadarChart _yAxisRenderer;
+  XAxisRendererRadarChart _xAxisRenderer;
 
   RadarChartPainter(
-    RadarData data,
-    ChartAnimator animator,
-    ViewPortHandler viewPortHandler,
-    double maxHighlightDistance,
-    bool highLightPerTapEnabled,
-    bool dragDecelerationEnabled,
-    double dragDecelerationFrictionCoef,
-    double extraLeftOffset,
-    double extraTopOffset,
-    double extraRightOffset,
-    double extraBottomOffset,
-    String noDataText,
-    bool touchEnabled,
-    IMarker marker,
-    Description desc,
-    bool drawMarkers,
-    TextPainter infoPainter,
-    TextPainter descPainter,
-    IHighlighter highlighter,
-    XAxis xAxis,
-    Legend legend,
-    LegendRenderer legendRenderer,
-    DataRenderer renderer,
-    OnChartValueSelectedListener selectedListener,
-    double rotationAngle,
-    double rawRotationAngle,
-    bool rotateEnabled,
-    double minOffset,
-    double webLineWidth,
-    double innerWebLineWidth,
-    Color webColor,
-    Color webColorInner,
-    int webAlpha,
-    bool drawWeb,
-    int skipWebLineCount,
-    YAxis yAxis,
-    YAxisRendererRadarChart yAxisRenderer,
-    XAxisRendererRadarChart xAxisRenderer,
-  )   : _webLineWidth = webLineWidth,
+      RadarData data,
+      ChartAnimator animator,
+      ViewPortHandler viewPortHandler,
+      double maxHighlightDistance,
+      bool highLightPerTapEnabled,
+      bool dragDecelerationEnabled,
+      double dragDecelerationFrictionCoef,
+      double extraLeftOffset,
+      double extraTopOffset,
+      double extraRightOffset,
+      double extraBottomOffset,
+      String noDataText,
+      bool touchEnabled,
+      IMarker marker,
+      Description desc,
+      bool drawMarkers,
+      TextPainter infoPainter,
+      TextPainter descPainter,
+      XAxis xAxis,
+      Legend legend,
+      LegendRenderer legendRenderer,
+      OnChartValueSelectedListener selectedListener,
+      double rotationAngle,
+      double rawRotationAngle,
+      bool rotateEnabled,
+      double minOffset,
+      double webLineWidth,
+      double innerWebLineWidth,
+      Color webColor,
+      Color webColorInner,
+      int webAlpha,
+      bool drawWeb,
+      int skipWebLineCount,
+      YAxis yAxis)
+      : _webLineWidth = webLineWidth,
         _innerWebLineWidth = innerWebLineWidth,
         _webColor = webColor,
         _webColorInner = webColorInner,
@@ -94,8 +92,6 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
         _drawWeb = drawWeb,
         _skipWebLineCount = skipWebLineCount,
         _yAxis = yAxis,
-        _yAxisRenderer = yAxisRenderer,
-        _xAxisRenderer = xAxisRenderer,
         super(
           data,
           animator,
@@ -115,11 +111,9 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
           drawMarkers,
           infoPainter,
           descPainter,
-          highlighter,
           xAxis,
           legend,
           legendRenderer,
-          renderer,
           selectedListener,
           rotationAngle,
           rawRotationAngle,
@@ -127,19 +121,14 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
           minOffset,
         );
 
-//  @override
-//  void init() {
-//    _yAxis = YAxis(position: AxisDependency.LEFT);
-//
-//    _webLineWidth = Utils.convertDpToPixel(1.5);
-//    _innerWebLineWidth = Utils.convertDpToPixel(0.75);
-//
-//    renderer = RadarChartRenderer(this, mAnimator, viewPortHandler);
-//    _yAxisRenderer = YAxisRendererRadarChart(viewPortHandler, _yAxis, this);
-//    _xAxisRenderer = XAxisRendererRadarChart(viewPortHandler, xAxis, this);
-//
-//    mHighlighter = RadarHighlighter(this);
-//  }
+  @override
+  void initDefaultWithData() {
+    _yAxisRenderer ??= YAxisRendererRadarChart(viewPortHandler, _yAxis, this);
+    _xAxisRenderer ??= XAxisRendererRadarChart(viewPortHandler, xAxis, this);
+    renderer = RadarChartRenderer(this, animator, viewPortHandler);
+    highlighter = RadarHighlighter(this);
+    super.initDefaultWithData();
+  }
 
   @override
   void calcMinMax() {

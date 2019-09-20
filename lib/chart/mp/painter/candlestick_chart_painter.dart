@@ -1,5 +1,4 @@
 import 'package:flutter/rendering.dart';
-import 'package:flutter/src/rendering/custom_paint.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
@@ -7,9 +6,9 @@ import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/candle_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_provider/candle_data_provider.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/candle_stick_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
@@ -39,11 +38,9 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
     bool drawMarkers,
     TextPainter infoPainter,
     TextPainter descPainter,
-    IHighlighter highlighter,
     XAxis xAxis,
     Legend legend,
     LegendRenderer legendRenderer,
-    DataRenderer renderer,
     OnChartValueSelectedListener selectedListener,
     int maxVisibleCount,
     bool autoScaleMinMaxEnabled,
@@ -75,9 +72,6 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
     double maxXRange,
     double minimumScaleX,
     double minimumScaleY,
-    Color backgroundColor,
-    Color borderColor,
-    double borderStrokeWidth,
   ) : super(
             data,
             animator,
@@ -97,11 +91,9 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
             drawMarkers,
             infoPainter,
             descPainter,
-            highlighter,
             xAxis,
             legend,
             legendRenderer,
-            renderer,
             selectedListener,
             maxVisibleCount,
             autoScaleMinMaxEnabled,
@@ -132,18 +124,15 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
             minXRange,
             maxXRange,
             minimumScaleX,
-            minimumScaleY,
-            backgroundColor,
-            borderColor,
-            borderStrokeWidth);
+            minimumScaleY);
 
-//  @override
-//  void init() {
-//    super.init();
-//    mRenderer = CandleStickChartRenderer(this, mAnimator, mViewPortHandler);
-//    mXAxis.setSpaceMin(0.5);
-//    mXAxis.setSpaceMax(0.5);
-//  }
+  @override
+  void initDefaultWithData() {
+    renderer = CandleStickChartRenderer(this, animator, viewPortHandler);
+    super.initDefaultWithData();
+    xAxis.setSpaceMin(0.5);
+    xAxis.setSpaceMax(0.5);
+  }
 
   @override
   CandleData getCandleData() {

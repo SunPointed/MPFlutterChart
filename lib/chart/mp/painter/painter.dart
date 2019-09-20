@@ -16,8 +16,6 @@ import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/default_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
@@ -76,7 +74,6 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   /// paint object for drawing the information text when there are no values in
   /// the chart
   final TextPainter _infoPaint;
-  final IHighlighter _highlighter;
 
   /// the object representing the labels on the x-axis
   final XAxis _xAxis;
@@ -85,12 +82,13 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   final Legend _legend;
   final LegendRenderer _legendRenderer;
 
-  /// object responsible for rendering the data
-  final DataRenderer _renderer;
+
   final OnChartValueSelectedListener _selectionListener;
 
   ///////////////////////////////////////////////////
-
+  /// object responsible for rendering the data
+  DataRenderer renderer;
+  IHighlighter highlighter;
   /// array of Highlight objects that reference the highlighted slices in the
   /// chart
   List<Highlight> _indicesToHighlight;
@@ -111,8 +109,6 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
 
   ViewPortHandler get viewPortHandler => _viewPortHandler;
 
-  DataRenderer get renderer => _renderer;
-
   LegendRenderer get legendRenderer => _legendRenderer;
 
   double get extraLeftOffset => _extraLeftOffset;
@@ -123,8 +119,6 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
 
   double get extraBottomOffset => _extraBottomOffset;
 
-  IHighlighter get highlighter => _highlighter;
-
   IMarker get marker => _marker;
 
   bool get isDrawMarkers => _drawMarkers;
@@ -134,6 +128,8 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   Size get size => _size;
 
   List<Highlight> get indicesToHighlight => _indicesToHighlight;
+
+  bool get highLightPerTapEnabled => _highLightPerTapEnabled;
 
   ChartPainter(
       T data,
@@ -154,11 +150,9 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
       bool drawMarkers,
       TextPainter infoPainter,
       TextPainter descPainter,
-      IHighlighter highlighter,
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
-      DataRenderer renderer,
       OnChartValueSelectedListener selectedListener)
       : _data = data,
         _viewPortHandler = viewPortHandler,
@@ -178,11 +172,9 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
         _drawMarkers = drawMarkers,
         _infoPaint = infoPainter,
         _descPaint = descPainter,
-        _highlighter = highlighter,
         _xAxis = xAxis,
         _legend = legend,
         _legendRenderer = legendRenderer,
-        _renderer = renderer,
         _selectionListener = selectedListener,
         super() {
     initDefaultNormal();
@@ -207,28 +199,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
     }
   }
 
-  void initDefaultNormal() {
-//    if (_dragDecelerationFrictionCoef == null) {
-//      _dragDecelerationFrictionCoef = 0.9;
-//    } else {
-//      if (_dragDecelerationFrictionCoef < 0) _dragDecelerationFrictionCoef = 0;
-//
-//      if (_dragDecelerationFrictionCoef >= 1)
-//        _dragDecelerationFrictionCoef = 0.999;
-//    }
-//
-//    _maxHighlightDistance ??= Utils.convertDpToPixel(500);
-//    _description ??= Description();
-//    _descPaint ??=
-//        PainterUtils.create(_descPaint, null, ColorUtils.BLACK, null);
-//    _infoPaint ??= PainterUtils.create(_infoPaint,
-//        _noDataText.isEmpty ? "no data" : _noDataText, ColorUtils.BLACK, null);
-//    _descPaint = PainterUtils.create(
-//        _descPaint,
-//        _description.text,
-//        _description.getTextColor(),
-//        Utils.convertDpToPixel(_description.getTextSize()));
-  }
+  void initDefaultNormal() {}
 
   void init() {}
 
@@ -460,7 +431,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
     if (_data == null) {
       return null;
     } else {
-      return _highlighter.getHighlight(x, y);
+      return highlighter.getHighlight(x, y);
     }
   }
 

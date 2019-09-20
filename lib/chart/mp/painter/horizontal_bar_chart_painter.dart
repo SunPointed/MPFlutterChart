@@ -15,11 +15,11 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/horizontal_bar_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/horizontal_bar_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
@@ -48,11 +48,9 @@ class HorizontalBarChartPainter extends BarChartPainter {
       bool drawMarkers,
       TextPainter infoPainter,
       TextPainter descPainter,
-      IHighlighter highlighter,
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
-      DataRenderer renderer,
       OnChartValueSelectedListener selectedListener,
       int maxVisibleCount,
       bool autoScaleMinMaxEnabled,
@@ -84,9 +82,6 @@ class HorizontalBarChartPainter extends BarChartPainter {
       double maxXRange,
       double minimumScaleX,
       double minimumScaleY,
-      Color backgroundColor,
-      Color borderColor,
-      double borderStrokeWidth,
       bool highlightFullBarEnabled,
       bool drawValueAboveBar,
       bool drawBarShadow,
@@ -110,11 +105,9 @@ class HorizontalBarChartPainter extends BarChartPainter {
             drawMarkers,
             infoPainter,
             descPainter,
-            highlighter,
             xAxis,
             legend,
             legendRenderer,
-            renderer,
             selectedListener,
             maxVisibleCount,
             autoScaleMinMaxEnabled,
@@ -146,34 +139,17 @@ class HorizontalBarChartPainter extends BarChartPainter {
             maxXRange,
             minimumScaleX,
             minimumScaleY,
-            backgroundColor,
-            borderColor,
-            borderStrokeWidth,
             highlightFullBarEnabled,
             drawValueAboveBar,
             drawBarShadow,
             fitBars);
 
-//  @override
-//  void init() {
-//    if (viewPortHandler == null ||
-//        !(viewPortHandler is HorizontalViewPortHandler)) {
-//      viewPortHandler = HorizontalViewPortHandler();
-//    }
-//    super.init();
-//    mLeftAxisTransformer = TransformerHorizontalBarChart(viewPortHandler);
-//    mRightAxisTransformer = TransformerHorizontalBarChart(viewPortHandler);
-//
-//    renderer = HorizontalBarChartRenderer(this, mAnimator, viewPortHandler);
-//    mHighlighter = HorizontalBarHighlighter(this);
-//
-//    axisRendererLeft = YAxisRendererHorizontalBarChart(
-//        viewPortHandler, axisLeft, mLeftAxisTransformer);
-//    mAxisRendererRight = YAxisRendererHorizontalBarChart(
-//        viewPortHandler, axisRight, mRightAxisTransformer);
-//    xAxisRenderer = XAxisRendererHorizontalBarChart(
-//        viewPortHandler, xAxis, mLeftAxisTransformer);
-//  }
+  @override
+  void initDefaultWithData() {
+    highlighter = HorizontalBarHighlighter(this);
+    renderer = HorizontalBarChartRenderer(this, animator, viewPortHandler);
+    super.initDefaultWithData();
+  }
 
   Rect _offsetsBuffer = Rect.zero;
 

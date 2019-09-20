@@ -10,7 +10,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data/pie_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_pie_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/pie_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
@@ -93,11 +93,9 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
     bool drawMarkers,
     TextPainter infoPainter,
     TextPainter descPainter,
-    IHighlighter highlighter,
     XAxis xAxis,
     Legend legend,
     LegendRenderer legendRenderer,
-    DataRenderer renderer,
     OnChartValueSelectedListener selectedListener,
     double rotationAngle,
     double rawRotationAngle,
@@ -146,11 +144,9 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
           drawMarkers,
           infoPainter,
           descPainter,
-          highlighter,
           xAxis,
           legend,
           legendRenderer,
-          renderer,
           selectedListener,
           rotationAngle,
           rawRotationAngle,
@@ -158,15 +154,12 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
           minOffset,
         );
 
-//  @override
-//  void init() {
-//    super.init();
-//
-//    renderer = PieChartRenderer(this, mAnimator, mViewPortHandler);
-//    mXAxis = null;
-//
-//    mHighlighter = PieHighlighter(this);
-//  }
+  @override
+  void initDefaultWithData() {
+    renderer = PieChartRenderer(this, animator, viewPortHandler);
+    super.initDefaultWithData();
+    highlighter = PieHighlighter(this);
+  }
 
   @override
   void onPaint(Canvas canvas, Size size) {
