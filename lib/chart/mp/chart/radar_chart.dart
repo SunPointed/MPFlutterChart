@@ -19,7 +19,7 @@ import 'package:mp_flutter_chart/chart/mp/painter/radar_chart_painter.dart';
 
 import 'chart.dart';
 
-class RadarChart extends PieRadarChart {
+class RadarChart extends PieRadarChart<RadarChartPainter> {
   double webLineWidth;
   double innerWebLineWidth;
   Color webColor; // = Color.fromARGB(255, 122, 122, 122)
@@ -98,7 +98,11 @@ class RadarChart extends PieRadarChart {
             rotationAngle: rotationAngle,
             rawRotationAngle: rawRotationAngle,
             rotateEnabled: rotateEnabled,
-            minOffset: minOffset) {
+            minOffset: minOffset);
+
+  @override
+  void doneBeforePainterInit() {
+    super.doneBeforePainterInit();
     this.webColor ??= Color.fromARGB(255, 122, 122, 122);
     this.webColorInner ??= Color.fromARGB(255, 122, 122, 122);
     this.yAxis ??= YAxis(position: AxisDependency.LEFT);
@@ -108,56 +112,59 @@ class RadarChart extends PieRadarChart {
   IMarker initMarker() => RadarChartMarker();
 
   @override
-  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart>
-      createChartState() {
+  RadarChartState createChartState() {
     return RadarChartState();
   }
 
   RadarChartPainter get painter => super.painter;
-}
 
-class RadarChartState
-    extends PieRadarChartState<RadarChartPainter, RadarChart> {
   @override
   void initialPainter() {
     painter = RadarChartPainter(
-        widget.data,
+        data,
         animator,
-        widget.viewPortHandler,
-        widget.maxHighlightDistance,
-        widget.highLightPerTapEnabled,
-        widget.dragDecelerationEnabled,
-        widget.dragDecelerationFrictionCoef,
-        widget.extraLeftOffset,
-        widget.extraTopOffset,
-        widget.extraRightOffset,
-        widget.extraBottomOffset,
-        widget.noDataText,
-        widget.touchEnabled,
-        widget.marker,
-        widget.description,
-        widget.drawMarkers,
-        widget.infoPaint,
-        widget.descPaint,
-        widget.xAxis,
-        widget.legend,
-        widget.legendRenderer,
-        widget.selectionListener,
-        widget.rotationAngle,
-        widget.rawRotationAngle,
-        widget.rotateEnabled,
-        widget.minOffset,
-        widget.webLineWidth,
-        widget.innerWebLineWidth,
-        widget.webColor,
-        widget.webColorInner,
-        widget.webAlpha,
-        widget.drawWeb,
-        widget.skipWebLineCount,
-        widget.yAxis);
-    if (painter.getData() != null &&
-        painter.getData().dataSets != null &&
-        painter.getData().dataSets.length > 0)
-      painter.highlightValue6(lastHighlighted, false);
+        viewPortHandler,
+        maxHighlightDistance,
+        highLightPerTapEnabled,
+        dragDecelerationEnabled,
+        dragDecelerationFrictionCoef,
+        extraLeftOffset,
+        extraTopOffset,
+        extraRightOffset,
+        extraBottomOffset,
+        noDataText,
+        touchEnabled,
+        marker,
+        description,
+        drawMarkers,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
+        selectionListener,
+        rotationAngle,
+        rawRotationAngle,
+        rotateEnabled,
+        minOffset,
+        webLineWidth,
+        innerWebLineWidth,
+        webColor,
+        webColorInner,
+        webAlpha,
+        drawWeb,
+        skipWebLineCount,
+        yAxis);
+  }
+}
+
+class RadarChartState extends PieRadarChartState<RadarChart> {
+  @override
+  void updatePainter() {
+    // todo
+    if (widget.painter.getData() != null &&
+        widget.painter.getData().dataSets != null &&
+        widget.painter.getData().dataSets.length > 0)
+      widget.painter.highlightValue6(lastHighlighted, false);
   }
 }

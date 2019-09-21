@@ -2,23 +2,19 @@ import 'dart:ui';
 
 import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/pie_data.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/bar_chart_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_chart_painter.dart';
 
 import 'chart.dart';
 
-class PieChart extends PieRadarChart {
+class PieChart extends PieRadarChart<PieChartPainter> {
   bool drawEntryLabels;
   bool drawHole;
   bool drawSlicesUnderHole;
@@ -116,60 +112,64 @@ class PieChart extends PieRadarChart {
   IMarker initMarker() => BarChartMarker();
 
   @override
-  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart>
-      createChartState() {
+  PieChartState createChartState() {
     return PieChartState();
   }
 
   PieChartPainter get painter => super.painter;
-}
 
-class PieChartState extends PieRadarChartState<PieChartPainter, PieChart> {
   @override
   void initialPainter() {
     painter = PieChartPainter(
-      widget.data,
+      data,
       animator,
-      widget.viewPortHandler,
-      widget.maxHighlightDistance,
-      widget.highLightPerTapEnabled,
-      widget.dragDecelerationEnabled,
-      widget.dragDecelerationFrictionCoef,
-      widget.extraLeftOffset,
-      widget.extraTopOffset,
-      widget.extraRightOffset,
-      widget.extraBottomOffset,
-      widget.noDataText,
-      widget.touchEnabled,
-      widget.marker,
-      widget.description,
-      widget.drawMarkers,
-      widget.infoPaint,
-      widget.descPaint,
-      widget.xAxis,
-      widget.legend,
-      widget.legendRenderer,
-      widget.selectionListener,
-      widget.rotationAngle,
-      widget.rawRotationAngle,
-      widget.rotateEnabled,
-      widget.minOffset,
-      widget.drawEntryLabels,
-      widget.drawHole,
-      widget.drawSlicesUnderHole,
-      widget.usePercentValues,
-      widget.drawRoundedSlices,
-      widget.centerText,
-      widget.holeRadiusPercent,
-      widget.transparentCircleRadiusPercent,
-      widget.drawCenterText,
-      widget.centerTextRadiusPercent,
-      widget.maxAngle,
-      widget.minAngleForSlices,
+      viewPortHandler,
+      maxHighlightDistance,
+      highLightPerTapEnabled,
+      dragDecelerationEnabled,
+      dragDecelerationFrictionCoef,
+      extraLeftOffset,
+      extraTopOffset,
+      extraRightOffset,
+      extraBottomOffset,
+      noDataText,
+      touchEnabled,
+      marker,
+      description,
+      drawMarkers,
+      infoPaint,
+      descPaint,
+      xAxis,
+      legend,
+      legendRenderer,
+      selectionListener,
+      rotationAngle,
+      rawRotationAngle,
+      rotateEnabled,
+      minOffset,
+      drawEntryLabels,
+      drawHole,
+      drawSlicesUnderHole,
+      usePercentValues,
+      drawRoundedSlices,
+      centerText,
+      holeRadiusPercent,
+      transparentCircleRadiusPercent,
+      drawCenterText,
+      centerTextRadiusPercent,
+      maxAngle,
+      minAngleForSlices,
     );
-    if (painter.getData() != null &&
-        painter.getData().dataSets != null &&
-        painter.getData().dataSets.length > 0)
-      painter.highlightValue6(lastHighlighted, false);
+  }
+}
+
+class PieChartState extends PieRadarChartState<PieChart> {
+  @override
+  void updatePainter() {
+    // todo
+    if (widget.painter.getData() != null &&
+        widget.painter.getData().dataSets != null &&
+        widget.painter.getData().dataSets.length > 0)
+      widget.painter.highlightValue6(lastHighlighted, false);
   }
 }

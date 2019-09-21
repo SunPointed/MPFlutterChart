@@ -72,8 +72,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   @override
   void itemClick(String action) {
     var state = lineChart?.getState() as LineChartState;
-    var painter = state?.painter;
-    if (state == null || painter == null) {
+    if (state == null) {
       return;
     }
 

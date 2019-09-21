@@ -27,7 +27,8 @@ import 'package:mp_flutter_chart/chart/mp/painter/bar_line_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_redar_chart_painter.dart';
 
-abstract class Chart extends StatefulWidget {
+abstract class Chart<P extends ChartPainter> extends StatefulWidget
+    implements AnimatorUpdateListener {
   ////// needed
   ChartData data;
   IMarker marker;
@@ -53,6 +54,9 @@ abstract class Chart extends StatefulWidget {
   TextPainter infoPaint;
 
   ChartState _state;
+
+  P _painter;
+  ChartAnimator animator;
 
   ChartState getState() {
     return _state;
@@ -128,7 +132,20 @@ abstract class Chart extends StatefulWidget {
     this.xAxis ??= initXAxis();
     this.legendRenderer ??= initLegendRenderer();
     this.selectionListener ??= initSelectionListener();
+
+    this.animator = ChartAnimator(this);
+
+    doneBeforePainterInit();
+    initialPainter();
   }
+
+  @override
+  void onAnimationUpdate(double x, double y) {
+    _state?.setStateIfNotDispose();
+  }
+
+  @override
+  void onRotateUpdate(double angle) {}
 
   IMarker initMarker() => null;
 
@@ -145,21 +162,19 @@ abstract class Chart extends StatefulWidget {
 
   OnChartValueSelectedListener initSelectionListener() => null;
 
-  ChartAnimator get animator => _state?.animator;
-}
+  ChartPainter get painter => _painter;
 
-abstract class ChartState<P extends ChartPainter, T extends Chart>
-    extends State<T> implements AnimatorUpdateListener {
-  P painter;
-  bool _singleTap = false;
-  ChartAnimator animator;
+  set painter(P value) {
+    _painter = value;
+  }
+
+  void doneBeforePainterInit();
 
   void initialPainter();
+}
 
-  @override
-  void onAnimationUpdate(double x, double y) {
-    setStateIfNotDispose();
-  }
+abstract class ChartState<T extends Chart> extends State<T> {
+  bool _singleTap = false;
 
   @override
   void onRotateUpdate(double angle) {}
@@ -170,15 +185,10 @@ abstract class ChartState<P extends ChartPainter, T extends Chart>
     }
   }
 
-  @override
-  void initState() {
-    animator = ChartAnimator(this);
-    super.initState();
-  }
+  void updatePainter();
 
   @override
   Widget build(BuildContext context) {
-    initialPainter();
     return Stack(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -211,15 +221,15 @@ abstract class ChartState<P extends ChartPainter, T extends Chart>
                   onScaleEnd: (detail) {
                     onScaleEnd(detail);
                   },
-                  child: CustomPaint(painter: painter))),
+                  child: CustomPaint(painter: widget.painter))),
         ]);
   }
 
   @override
   void reassemble() {
     super.reassemble();
-    animator?.reset();
-    painter?.reassemble();
+    widget.animator?.reset();
+    widget.painter?.reassemble();
   }
 
   void onDoubleTap();
@@ -235,7 +245,7 @@ abstract class ChartState<P extends ChartPainter, T extends Chart>
   void onSingleTapUp(TapUpDetails detail);
 }
 
-abstract class PieRadarChart extends Chart {
+abstract class PieRadarChart<P extends PieRadarChartPainter> extends Chart<P> {
   double rotationAngle;
   double rawRotationAngle;
   bool rotateEnabled;
@@ -297,22 +307,25 @@ abstract class PieRadarChart extends Chart {
             descTextColor: descTextColor,
             infoTextColor: infoTextColor);
 
-  PieRadarChartPainter get painter => _state?.painter;
+  @override
+  void doneBeforePainterInit() {}
+
+  PieRadarChartPainter get painter => super.painter;
 }
 
-abstract class PieRadarChartState<P extends PieRadarChartPainter,
-    T extends PieRadarChart> extends ChartState<P, T> {
+abstract class PieRadarChartState<T extends PieRadarChart>
+    extends ChartState<T> {
   Highlight lastHighlighted;
   MPPointF _touchStartPoint = MPPointF.getInstance1(0, 0);
   double _startAngle = 0.0;
 
   void _setGestureStartAngle(double x, double y) {
-    _startAngle =
-        painter.getAngleForPoint(x, y) - painter.getRawRotationAngle();
+    _startAngle = widget.painter.getAngleForPoint(x, y) -
+        widget.painter.getRawRotationAngle();
   }
 
   void _updateGestureRotation(double x, double y) {
-    double angle = painter.getAngleForPoint(x, y) - _startAngle;
+    double angle = widget.painter.getAngleForPoint(x, y) - _startAngle;
     widget.rawRotationAngle = angle;
     widget.rotationAngle = Utils.getNormalizedAngle(widget.rawRotationAngle);
   }
@@ -347,11 +360,11 @@ abstract class PieRadarChartState<P extends PieRadarChartPainter,
 
   @override
   void onSingleTapUp(TapUpDetails detail) {
-    if (painter.highLightPerTapEnabled) {
-      Highlight h = painter.getHighlightByTouchPoint(
+    if (widget.painter.highLightPerTapEnabled) {
+      Highlight h = widget.painter.getHighlightByTouchPoint(
           detail.localPosition.dx, detail.localPosition.dy);
       lastHighlighted =
-          HighlightUtils.performHighlight(painter, h, lastHighlighted);
+          HighlightUtils.performHighlight(widget.painter, h, lastHighlighted);
 //      painter.getOnChartGestureListener()?.onChartSingleTapped(
 //          detail.localPosition.dx, detail.localPosition.dy);
       setStateIfNotDispose();
@@ -364,7 +377,8 @@ abstract class PieRadarChartState<P extends PieRadarChartPainter,
   void onTapDown(TapDownDetails detail) {}
 }
 
-abstract class BarLineScatterCandleBubbleChart extends Chart {
+abstract class BarLineScatterCandleBubbleChart<
+    P extends BarLineChartBasePainter> extends Chart<P> {
   int maxVisibleCount;
   bool autoScaleMinMaxEnabled;
   bool pinchZoomEnabled;
@@ -397,6 +411,10 @@ abstract class BarLineScatterCandleBubbleChart extends Chart {
   //////
   Paint gridBackgroundPaint;
   Paint borderPaint;
+
+  Color backgroundColor;
+  Color borderColor;
+  double borderStrokeWidth;
 
   BarLineScatterCandleBubbleChart(
     ChartData<IDataSet<Entry>> data, {
@@ -482,6 +500,9 @@ abstract class BarLineScatterCandleBubbleChart extends Chart {
         maxXRange = maxXRange,
         minimumScaleX = minimumScaleX,
         minimumScaleY = minimumScaleY,
+        backgroundColor = backgroundColor,
+        borderColor = borderColor,
+        borderStrokeWidth = borderStrokeWidth,
         super(data,
             marker: marker,
             description: description,
@@ -504,7 +525,10 @@ abstract class BarLineScatterCandleBubbleChart extends Chart {
             descTextSize: descTextSize,
             infoTextSize: infoTextSize,
             descTextColor: descTextColor,
-            infoTextColor: infoTextColor) {
+            infoTextColor: infoTextColor);
+
+  @override
+  void doneBeforePainterInit() {
     gridBackgroundPaint = Paint()
       ..color = backgroundColor == null
           ? Color.fromARGB(255, 240, 240, 240)
@@ -550,12 +574,11 @@ abstract class BarLineScatterCandleBubbleChart extends Chart {
 
   Matrix4 initZoomMatrixBuffer() => Matrix4.identity();
 
-  BarLineChartBasePainter get painter => _state?.painter;
+  BarLineChartBasePainter get painter => super.painter;
 }
 
 abstract class BarLineScatterCandleBubbleState<
-    P extends BarLineChartBasePainter,
-    T extends Chart> extends ChartState<P, T> {
+    T extends BarLineScatterCandleBubbleChart> extends ChartState<T> {
   IDataSet _closestDataSetToTouch;
 
   Highlight lastHighlighted;
@@ -566,7 +589,7 @@ abstract class BarLineScatterCandleBubbleState<
   bool _isZoom = false;
 
   MPPointF _getTrans(double x, double y) {
-    ViewPortHandler vph = painter.viewPortHandler;
+    ViewPortHandler vph = widget.painter.viewPortHandler;
 
     double xTrans = x - vph.offsetLeft();
     double yTrans = 0.0;
@@ -575,33 +598,35 @@ abstract class BarLineScatterCandleBubbleState<
     if (_inverted()) {
       yTrans = -(y - vph.offsetTop());
     } else {
-      yTrans = -(painter.getMeasuredHeight() - y - vph.offsetBottom());
+      yTrans = -(widget.painter.getMeasuredHeight() - y - vph.offsetBottom());
     }
 
     return MPPointF.getInstance1(xTrans, yTrans);
   }
 
   bool _inverted() {
-    return (_closestDataSetToTouch == null && painter.isAnyAxisInverted()) ||
+    return (_closestDataSetToTouch == null &&
+            widget.painter.isAnyAxisInverted()) ||
         (_closestDataSetToTouch != null &&
-            painter.isInverted(_closestDataSetToTouch.getAxisDependency()));
+            widget.painter
+                .isInverted(_closestDataSetToTouch.getAxisDependency()));
   }
 
   @override
   void onTapDown(TapDownDetails detail) {
     _curX = detail.localPosition.dx;
     _curY = detail.localPosition.dy;
-    _closestDataSetToTouch = painter.getDataSetByTouchPoint(
+    _closestDataSetToTouch = widget.painter.getDataSetByTouchPoint(
         detail.localPosition.dx, detail.localPosition.dy);
   }
 
   @override
   void onDoubleTap() {
-    if (painter.doubleTapToZoomEnabled &&
-        painter.getData().getEntryCount() > 0) {
+    if (widget.painter.doubleTapToZoomEnabled &&
+        widget.painter.getData().getEntryCount() > 0) {
       MPPointF trans = _getTrans(_curX, _curY);
-      painter.zoom(painter.scaleXEnabled ? 1.4 : 1,
-          painter.scaleYEnabled ? 1.4 : 1, trans.x, trans.y);
+      widget.painter.zoom(widget.painter.scaleXEnabled ? 1.4 : 1,
+          widget.painter.scaleYEnabled ? 1.4 : 1, trans.x, trans.y);
 //      painter.getOnChartGestureListener()?.onChartDoubleTapped(_curX, _curY);
       setStateIfNotDispose();
       MPPointF.recycleInstance(trans);
@@ -639,21 +664,21 @@ abstract class BarLineScatterCandleBubbleState<
 
       var dx = detail.localFocalPoint.dx - _curX;
       var dy = detail.localFocalPoint.dy - _curY;
-      if (painter.dragYEnabled && painter.dragXEnabled) {
-        painter.translate(dx, dy);
+      if (widget.painter.dragYEnabled && widget.painter.dragXEnabled) {
+        widget.painter.translate(dx, dy);
         _dragHighlight(
             Offset(detail.localFocalPoint.dx, detail.localFocalPoint.dy));
 //        listener?.onChartTranslate(
 //            detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
         setStateIfNotDispose();
       } else {
-        if (painter.dragXEnabled) {
-          painter.translate(dx, 0.0);
+        if (widget.painter.dragXEnabled) {
+          widget.painter.translate(dx, 0.0);
           _dragHighlight(Offset(detail.localFocalPoint.dx, 0.0));
 //          listener?.onChartTranslate(
 //              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
           setStateIfNotDispose();
-        } else if (painter.dragYEnabled) {
+        } else if (widget.painter.dragYEnabled) {
           if (_inverted()) {
             // if there is an inverted horizontalbarchart
             if (widget is HorizontalBarChart) {
@@ -662,7 +687,7 @@ abstract class BarLineScatterCandleBubbleState<
               dy = -dy;
             }
           }
-          painter.translate(0.0, dy);
+          widget.painter.translate(0.0, dy);
           _dragHighlight(Offset(0.0, detail.localFocalPoint.dy));
 //          listener?.onChartTranslate(
 //              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
@@ -683,9 +708,9 @@ abstract class BarLineScatterCandleBubbleState<
 
       MPPointF trans = _getTrans(_curX, _curY);
 
-      scaleX = painter.scaleXEnabled ? scaleX : 1.0;
-      scaleY = painter.scaleYEnabled ? scaleY : 1.0;
-      painter.zoom(scaleX, scaleY, trans.x, trans.y);
+      scaleX = widget.painter.scaleXEnabled ? scaleX : 1.0;
+      scaleY = widget.painter.scaleYEnabled ? scaleY : 1.0;
+      widget.painter.zoom(scaleX, scaleY, trans.x, trans.y);
 //      listener?.onChartScale(
 //          detail.localFocalPoint.dx, detail.localFocalPoint.dy, scaleX, scaleY);
       setStateIfNotDispose();
@@ -698,11 +723,12 @@ abstract class BarLineScatterCandleBubbleState<
   }
 
   void _dragHighlight(Offset offset) {
-    if (painter.highlightPerDragEnabled) {
-      Highlight h = painter.getHighlightByTouchPoint(offset.dx, offset.dy);
+    if (widget.painter.highlightPerDragEnabled) {
+      Highlight h =
+          widget.painter.getHighlightByTouchPoint(offset.dx, offset.dy);
       if (h != null && !h.equalTo(lastHighlighted)) {
         lastHighlighted = h;
-        painter.highlightValue6(h, true);
+        widget.painter.highlightValue6(h, true);
       }
     } else {
       lastHighlighted = null;
@@ -711,11 +737,11 @@ abstract class BarLineScatterCandleBubbleState<
 
   @override
   void onSingleTapUp(TapUpDetails detail) {
-    if (painter.highLightPerTapEnabled) {
-      Highlight h = painter.getHighlightByTouchPoint(
+    if (widget.painter.highLightPerTapEnabled) {
+      Highlight h = widget.painter.getHighlightByTouchPoint(
           detail.localPosition.dx, detail.localPosition.dy);
       lastHighlighted =
-          HighlightUtils.performHighlight(painter, h, lastHighlighted);
+          HighlightUtils.performHighlight(widget.painter, h, lastHighlighted);
 //      painter.getOnChartGestureListener()?.onChartSingleTapped(
 //          detail.localPosition.dx, detail.localPosition.dy);
       setStateIfNotDispose();

@@ -5,10 +5,7 @@ import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/bar_data.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/horizontal_bar_chart_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
@@ -21,11 +18,6 @@ import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer_horizontal
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer_horizontal_bar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/bar_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/horizontal_bar_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
-
-import 'chart.dart';
 
 class HorizontalBarChart extends BarChart {
   HorizontalBarChart(BarData data,
@@ -171,76 +163,18 @@ class HorizontalBarChart extends BarChart {
   ViewPortHandler initViewPortHandler() => HorizontalViewPortHandler();
 
   @override
-  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart>
-      createChartState() {
+  HorizontalBarChartState createChartState() {
     return HorizontalBarChartState();
   }
 }
 
-class HorizontalBarChartState extends BarLineScatterCandleBubbleState<
-    BarChartPainter, HorizontalBarChart> {
+class HorizontalBarChartState extends BarChartState<HorizontalBarChart> {
   @override
-  void initialPainter() {
-    painter = HorizontalBarChartPainter(
-        widget.data,
-        animator,
-        widget.viewPortHandler,
-        widget.maxHighlightDistance,
-        widget.highLightPerTapEnabled,
-        widget.dragDecelerationEnabled,
-        widget.dragDecelerationFrictionCoef,
-        widget.extraLeftOffset,
-        widget.extraTopOffset,
-        widget.extraRightOffset,
-        widget.extraBottomOffset,
-        widget.noDataText,
-        widget.touchEnabled,
-        widget.marker,
-        widget.description,
-        widget.drawMarkers,
-        widget.infoPaint,
-        widget.descPaint,
-        widget.xAxis,
-        widget.legend,
-        widget.legendRenderer,
-        widget.selectionListener,
-        widget.maxVisibleCount,
-        widget.autoScaleMinMaxEnabled,
-        widget.pinchZoomEnabled,
-        widget.doubleTapToZoomEnabled,
-        widget.highlightPerDragEnabled,
-        widget.dragXEnabled,
-        widget.dragYEnabled,
-        widget.scaleXEnabled,
-        widget.scaleYEnabled,
-        widget.gridBackgroundPaint,
-        widget.borderPaint,
-        widget.drawGridBackground,
-        widget.drawBorders,
-        widget.clipValuesToContent,
-        widget.minOffset,
-        widget.keepPositionOnRotation,
-        widget.drawListener,
-        widget.axisLeft,
-        widget.axisRight,
-        widget.axisRendererLeft,
-        widget.axisRendererRight,
-        widget.leftAxisTransformer,
-        widget.rightAxisTransformer,
-        widget.xAxisRenderer,
-        widget.zoomMatrixBuffer,
-        widget.customViewPortEnabled,
-        widget.minXRange,
-        widget.maxXRange,
-        widget.minimumScaleX,
-        widget.minimumScaleY,
-        widget.highlightFullBarEnabled,
-        widget.drawValueAboveBar,
-        widget.drawBarShadow,
-        widget.fitBars);
-    if (painter.getData() != null &&
-        painter.getData().dataSets != null &&
-        painter.getData().dataSets.length > 0)
-      painter.highlightValue6(lastHighlighted, false);
+  void updatePainter() {
+    // todo
+    if (widget.painter.getData() != null &&
+        widget.painter.getData().dataSets != null &&
+        widget.painter.getData().dataSets.length > 0)
+      widget.painter.highlightValue6(lastHighlighted, false);
   }
 }

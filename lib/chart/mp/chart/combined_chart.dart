@@ -25,7 +25,8 @@ import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/combined_chart_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 
-class CombinedChart extends BarLineScatterCandleBubbleChart {
+class CombinedChart
+    extends BarLineScatterCandleBubbleChart<CombinedChartPainter> {
   bool drawValueAboveBar;
   bool highlightFullBarEnabled;
   bool drawBarShadow;
@@ -148,76 +149,79 @@ class CombinedChart extends BarLineScatterCandleBubbleChart {
             minimumScaleY: minimumScaleY);
 
   @override
-  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart>
-      createChartState() {
+  CombinedChartState createChartState() {
     return CombinedChartState();
   }
 
   CombinedChartPainter get painter => super.painter;
-}
 
-class CombinedChartState
-    extends ChartState<CombinedChartPainter, CombinedChart> {
   @override
   void initialPainter() {
     painter = CombinedChartPainter(
-        widget.data,
+        data,
         animator,
-        widget.viewPortHandler,
-        widget.maxHighlightDistance,
-        widget.highLightPerTapEnabled,
-        widget.dragDecelerationEnabled,
-        widget.dragDecelerationFrictionCoef,
-        widget.extraLeftOffset,
-        widget.extraTopOffset,
-        widget.extraRightOffset,
-        widget.extraBottomOffset,
-        widget.noDataText,
-        widget.touchEnabled,
-        widget.marker,
-        widget.description,
-        widget.drawMarkers,
-        widget.infoPaint,
-        widget.descPaint,
-        widget.xAxis,
-        widget.legend,
-        widget.legendRenderer,
-        widget.selectionListener,
-        widget.maxVisibleCount,
-        widget.autoScaleMinMaxEnabled,
-        widget.pinchZoomEnabled,
-        widget.doubleTapToZoomEnabled,
-        widget.highlightPerDragEnabled,
-        widget.dragXEnabled,
-        widget.dragYEnabled,
-        widget.scaleXEnabled,
-        widget.scaleYEnabled,
-        widget.gridBackgroundPaint,
-        widget.borderPaint,
-        widget.drawGridBackground,
-        widget.drawBorders,
-        widget.clipValuesToContent,
-        widget.minOffset,
-        widget.keepPositionOnRotation,
-        widget.drawListener,
-        widget.axisLeft,
-        widget.axisRight,
-        widget.axisRendererLeft,
-        widget.axisRendererRight,
-        widget.leftAxisTransformer,
-        widget.rightAxisTransformer,
-        widget.xAxisRenderer,
-        widget.zoomMatrixBuffer,
-        widget.customViewPortEnabled,
-        widget.minXRange,
-        widget.maxXRange,
-        widget.minimumScaleX,
-        widget.minimumScaleY,
-        widget.highlightFullBarEnabled,
-        widget.drawValueAboveBar,
-        widget.drawBarShadow,
-        widget.fitBars);
-    painter.highlightValue6(_lastHighlighted, false);
+        viewPortHandler,
+        maxHighlightDistance,
+        highLightPerTapEnabled,
+        dragDecelerationEnabled,
+        dragDecelerationFrictionCoef,
+        extraLeftOffset,
+        extraTopOffset,
+        extraRightOffset,
+        extraBottomOffset,
+        noDataText,
+        touchEnabled,
+        marker,
+        description,
+        drawMarkers,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
+        selectionListener,
+        maxVisibleCount,
+        autoScaleMinMaxEnabled,
+        pinchZoomEnabled,
+        doubleTapToZoomEnabled,
+        highlightPerDragEnabled,
+        dragXEnabled,
+        dragYEnabled,
+        scaleXEnabled,
+        scaleYEnabled,
+        gridBackgroundPaint,
+        borderPaint,
+        drawGridBackground,
+        drawBorders,
+        clipValuesToContent,
+        minOffset,
+        keepPositionOnRotation,
+        drawListener,
+        axisLeft,
+        axisRight,
+        axisRendererLeft,
+        axisRendererRight,
+        leftAxisTransformer,
+        rightAxisTransformer,
+        xAxisRenderer,
+        zoomMatrixBuffer,
+        customViewPortEnabled,
+        minXRange,
+        maxXRange,
+        minimumScaleX,
+        minimumScaleY,
+        highlightFullBarEnabled,
+        drawValueAboveBar,
+        drawBarShadow,
+        fitBars);
+  }
+}
+
+class CombinedChartState extends ChartState<CombinedChart> {
+  @override
+  void updatePainter() {
+    // todo
+    widget.painter.highlightValue6(_lastHighlighted, false);
   }
 
   IDataSet _closestDataSetToTouch;
@@ -229,7 +233,7 @@ class CombinedChartState
   bool _isZoom = false;
 
   MPPointF _getTrans(double x, double y) {
-    ViewPortHandler vph = painter.viewPortHandler;
+    ViewPortHandler vph = widget.painter.viewPortHandler;
 
     double xTrans = x - vph.offsetLeft();
     double yTrans = 0.0;
@@ -238,33 +242,35 @@ class CombinedChartState
     if (_inverted()) {
       yTrans = -(y - vph.offsetTop());
     } else {
-      yTrans = -(painter.getMeasuredHeight() - y - vph.offsetBottom());
+      yTrans = -(widget.painter.getMeasuredHeight() - y - vph.offsetBottom());
     }
 
     return MPPointF.getInstance1(xTrans, yTrans);
   }
 
   bool _inverted() {
-    return (_closestDataSetToTouch == null && painter.isAnyAxisInverted()) ||
+    return (_closestDataSetToTouch == null &&
+            widget.painter.isAnyAxisInverted()) ||
         (_closestDataSetToTouch != null &&
-            painter.isInverted(_closestDataSetToTouch.getAxisDependency()));
+            widget.painter
+                .isInverted(_closestDataSetToTouch.getAxisDependency()));
   }
 
   @override
   void onTapDown(TapDownDetails detail) {
     _curX = detail.localPosition.dx;
     _curY = detail.localPosition.dy;
-    _closestDataSetToTouch = painter.getDataSetByTouchPoint(
+    _closestDataSetToTouch = widget.painter.getDataSetByTouchPoint(
         detail.localPosition.dx, detail.localPosition.dy);
   }
 
   @override
   void onDoubleTap() {
-    if (painter.doubleTapToZoomEnabled &&
-        painter.getData().getEntryCount() > 0) {
+    if (widget.painter.doubleTapToZoomEnabled &&
+        widget.painter.getData().getEntryCount() > 0) {
       MPPointF trans = _getTrans(_curX, _curY);
-      painter.zoom(painter.scaleXEnabled ? 1.4 : 1,
-          painter.scaleYEnabled ? 1.4 : 1, trans.x, trans.y);
+      widget.painter.zoom(widget.painter.scaleXEnabled ? 1.4 : 1,
+          widget.painter.scaleYEnabled ? 1.4 : 1, trans.x, trans.y);
 //      painter.getOnChartGestureListener()?.onChartDoubleTapped(_curX, _curY);
       setState(() {});
       MPPointF.recycleInstance(trans);
@@ -302,21 +308,21 @@ class CombinedChartState
 
       var dx = detail.localFocalPoint.dx - _curX;
       var dy = detail.localFocalPoint.dy - _curY;
-      if (painter.dragYEnabled && painter.dragXEnabled) {
-        painter.translate(dx, dy);
+      if (widget.painter.dragYEnabled && widget.painter.dragXEnabled) {
+        widget.painter.translate(dx, dy);
         _dragHighlight(
             Offset(detail.localFocalPoint.dx, detail.localFocalPoint.dy));
 //        listener?.onChartTranslate(
 //            detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
         setState(() {});
       } else {
-        if (painter.dragXEnabled) {
-          painter.translate(dx, 0.0);
+        if (widget.painter.dragXEnabled) {
+          widget.painter.translate(dx, 0.0);
           _dragHighlight(Offset(detail.localFocalPoint.dx, 0.0));
 //          listener?.onChartTranslate(
 //              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
           setState(() {});
-        } else if (painter.dragYEnabled) {
+        } else if (widget.painter.dragYEnabled) {
           if (_inverted()) {
             // if there is an inverted horizontalbarchart
 //      if (mChart instanceof HorizontalBarChart) {
@@ -325,7 +331,7 @@ class CombinedChartState
             dy = -dy;
 //      }
           }
-          painter.translate(0.0, dy);
+          widget.painter.translate(0.0, dy);
           _dragHighlight(Offset(0.0, detail.localFocalPoint.dy));
 //          listener?.onChartTranslate(
 //              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
@@ -346,9 +352,9 @@ class CombinedChartState
 
       MPPointF trans = _getTrans(_curX, _curY);
 
-      scaleX = painter.scaleXEnabled ? scaleX : 1.0;
-      scaleY = painter.scaleYEnabled ? scaleY : 1.0;
-      painter.zoom(scaleX, scaleY, trans.x, trans.y);
+      scaleX = widget.painter.scaleXEnabled ? scaleX : 1.0;
+      scaleY = widget.painter.scaleYEnabled ? scaleY : 1.0;
+      widget.painter.zoom(scaleX, scaleY, trans.x, trans.y);
 //      listener?.onChartScale(
 //          detail.localFocalPoint.dx, detail.localFocalPoint.dy, scaleX, scaleY);
       setState(() {});
@@ -361,11 +367,12 @@ class CombinedChartState
   }
 
   void _dragHighlight(Offset offset) {
-    if (painter.highlightPerDragEnabled) {
-      Highlight h = painter.getHighlightByTouchPoint(offset.dx, offset.dy);
+    if (widget.painter.highlightPerDragEnabled) {
+      Highlight h =
+          widget.painter.getHighlightByTouchPoint(offset.dx, offset.dy);
       if (h != null && !h.equalTo(_lastHighlighted)) {
         _lastHighlighted = h;
-        painter.highlightValue6(h, true);
+        widget.painter.highlightValue6(h, true);
       }
     } else {
       _lastHighlighted = null;
@@ -376,11 +383,11 @@ class CombinedChartState
 
   @override
   void onSingleTapUp(TapUpDetails detail) {
-    if (painter.highlightPerDragEnabled) {
-      Highlight h = painter.getHighlightByTouchPoint(
+    if (widget.painter.highlightPerDragEnabled) {
+      Highlight h = widget.painter.getHighlightByTouchPoint(
           detail.localPosition.dx, detail.localPosition.dy);
       _lastHighlighted =
-          HighlightUtils.performHighlight(painter, h, _lastHighlighted);
+          HighlightUtils.performHighlight(widget.painter, h, _lastHighlighted);
 //      painter.getOnChartGestureListener()?.onChartSingleTapped(
 //          detail.localPosition.dx, detail.localPosition.dy);
       setState(() {});

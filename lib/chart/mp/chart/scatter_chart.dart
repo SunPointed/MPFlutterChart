@@ -21,7 +21,8 @@ import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/scatter_chart_painter.dart';
 
-class ScatterChart extends BarLineScatterCandleBubbleChart {
+class ScatterChart
+    extends BarLineScatterCandleBubbleChart<ScatterChartPainter> {
   ScatterChart(ScatterData data,
       {IMarker marker,
       Description description,
@@ -131,74 +132,77 @@ class ScatterChart extends BarLineScatterCandleBubbleChart {
             minimumScaleY: minimumScaleY);
 
   @override
-  ChartState<ChartPainter<ChartData<IDataSet<Entry>>>, Chart>
-      createChartState() {
+  ScatterChartState createChartState() {
     return ScatterChartState();
   }
 
   ScatterChartPainter get painter => super.painter;
-}
 
-class ScatterChartState
-    extends BarLineScatterCandleBubbleState<ScatterChartPainter, ScatterChart> {
   @override
   void initialPainter() {
     painter = ScatterChartPainter(
-        widget.data,
+        data,
         animator,
-        widget.viewPortHandler,
-        widget.maxHighlightDistance,
-        widget.highLightPerTapEnabled,
-        widget.dragDecelerationEnabled,
-        widget.dragDecelerationFrictionCoef,
-        widget.extraLeftOffset,
-        widget.extraTopOffset,
-        widget.extraRightOffset,
-        widget.extraBottomOffset,
-        widget.noDataText,
-        widget.touchEnabled,
-        widget.marker,
-        widget.description,
-        widget.drawMarkers,
-        widget.infoPaint,
-        widget.descPaint,
-        widget.xAxis,
-        widget.legend,
-        widget.legendRenderer,
-        widget.selectionListener,
-        widget.maxVisibleCount,
-        widget.autoScaleMinMaxEnabled,
-        widget.pinchZoomEnabled,
-        widget.doubleTapToZoomEnabled,
-        widget.highlightPerDragEnabled,
-        widget.dragXEnabled,
-        widget.dragYEnabled,
-        widget.scaleXEnabled,
-        widget.scaleYEnabled,
-        widget.gridBackgroundPaint,
-        widget.borderPaint,
-        widget.drawGridBackground,
-        widget.drawBorders,
-        widget.clipValuesToContent,
-        widget.minOffset,
-        widget.keepPositionOnRotation,
-        widget.drawListener,
-        widget.axisLeft,
-        widget.axisRight,
-        widget.axisRendererLeft,
-        widget.axisRendererRight,
-        widget.leftAxisTransformer,
-        widget.rightAxisTransformer,
-        widget.xAxisRenderer,
-        widget.zoomMatrixBuffer,
-        widget.customViewPortEnabled,
-        widget.minXRange,
-        widget.maxXRange,
-        widget.minimumScaleX,
-        widget.minimumScaleY);
-    if (painter.getData() != null &&
-        painter.getData().dataSets != null &&
-        painter.getData().dataSets.length > 0)
-      painter.highlightValue6(lastHighlighted, false);
+        viewPortHandler,
+        maxHighlightDistance,
+        highLightPerTapEnabled,
+        dragDecelerationEnabled,
+        dragDecelerationFrictionCoef,
+        extraLeftOffset,
+        extraTopOffset,
+        extraRightOffset,
+        extraBottomOffset,
+        noDataText,
+        touchEnabled,
+        marker,
+        description,
+        drawMarkers,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
+        selectionListener,
+        maxVisibleCount,
+        autoScaleMinMaxEnabled,
+        pinchZoomEnabled,
+        doubleTapToZoomEnabled,
+        highlightPerDragEnabled,
+        dragXEnabled,
+        dragYEnabled,
+        scaleXEnabled,
+        scaleYEnabled,
+        gridBackgroundPaint,
+        borderPaint,
+        drawGridBackground,
+        drawBorders,
+        clipValuesToContent,
+        minOffset,
+        keepPositionOnRotation,
+        drawListener,
+        axisLeft,
+        axisRight,
+        axisRendererLeft,
+        axisRendererRight,
+        leftAxisTransformer,
+        rightAxisTransformer,
+        xAxisRenderer,
+        zoomMatrixBuffer,
+        customViewPortEnabled,
+        minXRange,
+        maxXRange,
+        minimumScaleX,
+        minimumScaleY);
+  }
+}
+
+class ScatterChartState extends BarLineScatterCandleBubbleState<ScatterChart> {
+  @override
+  void updatePainter() {
+    // todos
+    if (widget.painter.getData() != null &&
+        widget.painter.getData().dataSets != null &&
+        widget.painter.getData().dataSets.length > 0)
+      widget.painter.highlightValue6(lastHighlighted, false);
   }
 }
