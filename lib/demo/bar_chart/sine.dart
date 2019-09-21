@@ -120,7 +120,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
     barData.setValueTextSize(10);
 //    barData.setValueTypeface(tfLight);
     barData.setDrawValues(false);
-    barData.setBarWidth(0.8);
+    barData.barWidth = (0.8);
 
     setState(() {});
   }
@@ -134,43 +134,8 @@ class BarChartSineState extends BarActionState<BarChartSine> {
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    barChart = BarChart(barData, (painter) {
-      painter
-        ..setDrawBarShadow(false)
-        ..setDrawValueAboveBar(true);
-
-      painter.mXAxis.setEnabled(false);
-
-      painter.mAxisLeft
-        ..setLabelCount2(6, false)
-//        ..setTypeface(tf)
-        ..setAxisMaximum(2.5)
-        ..setAxisMinimum(-2.5)
-        ..setGranularityEnabled(true)
-        ..setGranularity(0.1);
-
-      painter.mAxisRight
-        ..setDrawGridLines(false)
-//      ..setTypeface(tf)
-        ..setLabelCount2(6, false)
-        ..setAxisMinimum(-2.5)
-        ..setAxisMaximum(2.5)
-        ..setGranularity(0.1);
-
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.BOTTOM)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.LEFT)
-        ..setOrientation(LegendOrientation.HORIZONTAL)
-        ..setDrawInside(false)
-        ..setForm(LegendForm.SQUARE)
-        ..setFormSize(9)
-        ..setTextSize(11)
-        ..setXEntrySpace(4);
-
-      painter.mAnimator.animateXY1(1500, 1500);
-    },
+    var desc = Description()..enabled = false;
+    barChart = BarChart(barData,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -179,6 +144,33 @@ class BarChartSineState extends BarActionState<BarChartSine> {
         scaleYEnabled: true,
         pinchZoomEnabled: false,
         maxVisibleCount: 60,
-        desc: desc);
+        drawBarShadow: false,
+        drawValueAboveBar: true,
+        description: desc);
+    barChart.xAxis.enabled = (false);
+    barChart.axisLeft
+      ..setLabelCount2(6, false)
+//        ..setTypeface(tf)
+      ..setAxisMaximum(2.5)
+      ..setAxisMinimum(-2.5)
+      ..granularityEnabled = (true)
+      ..setGranularity(0.1);
+    barChart.axisRight
+      ..drawGridLines = (false)
+//      ..setTypeface(tf)
+      ..setLabelCount2(6, false)
+      ..setAxisMinimum(-2.5)
+      ..setAxisMaximum(2.5)
+      ..setGranularity(0.1);
+    barChart.legend
+      ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+      ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
+      ..orientation = (LegendOrientation.HORIZONTAL)
+      ..drawInside = (false)
+      ..shape = (LegendForm.SQUARE)
+      ..formSize = (9)
+      ..textSize = (11)
+      ..xEntrySpace = (4);
+    barChart.animator.animateXY1(1500, 1500);
   }
 }

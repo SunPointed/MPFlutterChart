@@ -367,26 +367,21 @@ class ScrollingChartViewPagerState
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    _lineChart1 = LineChart(_lineData1, (painter) {
-      painter.mAxisLeft
-        ..setAxisMaximum(1.2)
-        ..setAxisMinimum(-1.2);
-
-      painter.mAxisRight.setEnabled(false);
-
-      painter.mXAxis.setEnabled(false);
-
-      painter.mAnimator.animateX1(3000);
-    },
+    var desc = Description()..enabled = false;
+    _lineChart1 = LineChart(_lineData1,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        desc: desc);
+        description: desc);
+    _lineChart1.axisLeft
+      ..setAxisMaximum(1.2)
+      ..setAxisMinimum(-1.2);
+    _lineChart1.axisRight.enabled = (false);
+    _lineChart1.xAxis.enabled = (false);
+    _lineChart1.animator.animateX1(3000);
   }
 
   void _initLineChart2() {
@@ -394,22 +389,18 @@ class ScrollingChartViewPagerState
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    _lineChart2 = LineChart(_lineData2, (painter) {
-      painter.mAxisRight.setEnabled(false);
-
-      painter.mXAxis.setEnabled(false);
-
-      painter.mAnimator.animateX1(3000);
-    },
+    var desc = Description()..enabled = false;
+    _lineChart2 = LineChart(_lineData2,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        desc: desc);
+        description: desc);
+    _lineChart2.axisRight.enabled = (false);
+    _lineChart2.xAxis.enabled = (false);
+    _lineChart2.animator.animateX1(3000);
   }
 
   void _initBarChart() {
@@ -417,22 +408,19 @@ class ScrollingChartViewPagerState
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    _barChart = BarChart(_barData, (painter) {
-      painter..mDrawBarShadow = false;
-      painter.mAxisLeft..setAxisMinimum(0);
-      painter.mAxisRight.setEnabled(false);
-
-      painter.mXAxis.setEnabled(false);
-    },
+    var desc = Description()..enabled = false;
+    _barChart = BarChart(_barData,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        desc: desc);
+        drawBarShadow: false,
+        description: desc);
+    _barChart.axisLeft.setAxisMinimum(0);
+    _barChart.axisRight.enabled = (false);
+    _barChart.xAxis.enabled = (false);
   }
 
   void _initScatterChart() {
@@ -440,26 +428,23 @@ class ScrollingChartViewPagerState
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    _scatterChart = ScatterChart(_scatterData, (painter) {
-      painter.mAxisRight.setDrawGridLines(false);
-      painter.mXAxis..setPosition(XAxisPosition.BOTTOM);
-      painter.mLegend
-        ..setWordWrapEnabled(true)
-        ..setFormSize(14)
-        ..setTextSize(9)
-        ..setYOffset(13);
-
-      painter.mExtraBottomOffset = 16;
-    },
+    var desc = Description()..enabled = false;
+    _scatterChart = ScatterChart(_scatterData,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        desc: desc);
+        extraBottomOffset: 16,
+        description: desc);
+    _scatterChart.axisRight.drawGridLines = (false);
+    _scatterChart.xAxis.position = (XAxisPosition.BOTTOM);
+    _scatterChart.legend
+      ..wordWrapEnabled = (true)
+      ..formSize = (14)
+      ..textSize = (9)
+      ..yOffset = (13);
   }
 
   void _initPieChart() {
@@ -467,19 +452,18 @@ class ScrollingChartViewPagerState
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    _pieChart = PieChart(_pieData, (painter) {
-      painter
-        ..setHoleRadius(45)
-        ..setTransparentCircleRadius(50);
-
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.TOP)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
-        ..setOrientation(LegendOrientation.VERTICAL)
-        ..setDrawInside(false);
-    }, touchEnabled: true, centerText: _generateCenterText(), desc: desc);
+    var desc = Description()..enabled = false;
+    _pieChart = PieChart(_pieData,
+        touchEnabled: true,
+        centerText: _generateCenterText(),
+        holeRadiusPercent: 45,
+        transparentCircleRadiusPercent: 50,
+        description: desc);
+    _pieChart.legend
+      ..verticalAlignment = (LegendVerticalAlignment.TOP)
+      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+      ..orientation = (LegendOrientation.VERTICAL)
+      ..drawInside = (false);
   }
 
   String _generateCenterText() {

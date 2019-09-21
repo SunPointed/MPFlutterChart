@@ -3,9 +3,9 @@ import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.d
 
 class DefaultValueFormatter extends ValueFormatter {
   /// DecimalFormat for formatting
-  NumberFormat mFormat;
+  NumberFormat _format;
 
-  int mDecimalDigits;
+  int _decimalDigits;
 
   /// Constructor that specifies to how many digits the value should be
   /// formatted.
@@ -19,7 +19,7 @@ class DefaultValueFormatter extends ValueFormatter {
   ///
   /// @param digits
   void setup(int digits) {
-    this.mDecimalDigits = digits;
+    this._decimalDigits = digits;
 
     if (digits < 1) {
       digits = 1;
@@ -30,7 +30,7 @@ class DefaultValueFormatter extends ValueFormatter {
     for (int i = 0; i < digits; i++) {
       b.write("0");
     }
-    mFormat = NumberFormat("###,###,###,##0" + b.toString());
+    _format = NumberFormat("###,###,###,##0" + b.toString());
   }
 
   @override
@@ -38,18 +38,13 @@ class DefaultValueFormatter extends ValueFormatter {
     // put more logic here ...
     // avoid memory allocations here (for performance reasons)
 
-    return mFormat.format(value);
+    return _format.format(value);
   }
 
   @override
   String toString() {
-    return mFormat.toString();
+    return _format.toString();
   }
 
-  /// Returns the number of decimal digits this formatter uses.
-  ///
-  /// @return
-  int getDecimalDigits() {
-    return mDecimalDigits;
-  }
+  int get decimalDigits => _decimalDigits;
 }

@@ -1,52 +1,52 @@
 abstract class AbstractBuffer<T> {
   /// index in the buffer
-  int index = 0;
+  int _index = 0;
 
   /// double-buffer that holds the data points to draw, order: x,y,x,y,...
-  List<double> buffer;
+  List<double> _buffer;
 
   /// animation phase x-axis
-  double phaseX = 1.0;
+  double _phaseX = 1.0;
 
   /// animation phase y-axis
-  double phaseY = 1.0;
+  double _phaseY = 1.0;
 
   /// indicates from which x-index the visible data begins
-  int mFrom = 0;
+  int _mFrom = 0;
 
   /// indicates to which x-index the visible data ranges
-  int mTo = 0;
+  int _mTo = 0;
 
   /// Initialization with buffer-size.
   ///
   /// @param size
   AbstractBuffer(int size) {
-    index = 0;
-    buffer = List(size);
+    _index = 0;
+    _buffer = List(size);
   }
 
   /// limits the drawing on the x-axis
   void limitFrom(int from) {
     if (from < 0) from = 0;
-    mFrom = from;
+    _mFrom = from;
   }
 
   /// limits the drawing on the x-axis
   void limitTo(int to) {
     if (to < 0) to = 0;
-    mTo = to;
+    _mTo = to;
   }
 
   /// Resets the buffer index to 0 and makes the buffer reusable.
   void reset() {
-    index = 0;
+    _index = 0;
   }
 
   /// Returns the size (length) of the buffer array.
   ///
   /// @return
   int size() {
-    return buffer.length;
+    return _buffer.length;
   }
 
   /// Set the phases used for animations.
@@ -54,8 +54,8 @@ abstract class AbstractBuffer<T> {
   /// @param phaseX
   /// @param phaseY
   void setPhases(double phaseX, double phaseY) {
-    this.phaseX = phaseX;
-    this.phaseY = phaseY;
+    this._phaseX = phaseX;
+    this._phaseY = phaseY;
   }
 
   /// Builds up the buffer with the provided data and resets the buffer-index
@@ -63,4 +63,16 @@ abstract class AbstractBuffer<T> {
   ///
   /// @param data
   void feed(T data);
+
+  List<double> get buffer => _buffer;
+
+  int get index => _index;
+
+  set index(int value) {
+    _index = value;
+  }
+
+  double get phaseX => _phaseX;
+
+  double get phaseY => _phaseY;
 }

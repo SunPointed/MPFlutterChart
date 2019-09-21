@@ -15,86 +15,98 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class Legend extends ComponentBase {
   /// The legend entries array
-  List<LegendEntry> mEntries = List();
+  List<LegendEntry> _entries = List();
 
   /// Entries that will be appended to the end of the auto calculated entries after calculating the legend.
   /// (if the legend has already been calculated, you will need to call notifyDataSetChanged() to let the changes take effect)
-  List<LegendEntry> mExtraEntries;
+  List<LegendEntry> _extraEntries;
 
   /// Are the legend labels/colors a custom value or auto calculated? If false,
   /// then it's auto, if true, then custom. default false (automatic legend)
-  bool mIsLegendCustom = false;
+  bool _isLegendCustom = false;
 
-  LegendHorizontalAlignment mHorizontalAlignment =
+  LegendHorizontalAlignment _horizontalAlignment =
       LegendHorizontalAlignment.LEFT;
-  LegendVerticalAlignment mVerticalAlignment = LegendVerticalAlignment.BOTTOM;
-  LegendOrientation mOrientation = LegendOrientation.HORIZONTAL;
-  bool mDrawInside = false;
+  LegendVerticalAlignment _verticalAlignment = LegendVerticalAlignment.BOTTOM;
+  LegendOrientation _orientation = LegendOrientation.HORIZONTAL;
+  bool _drawInside = false;
 
   /// the text direction for the legend
-  LegendDirection mDirection = LegendDirection.LEFT_TO_RIGHT;
+  LegendDirection _direction = LegendDirection.LEFT_TO_RIGHT;
 
   /// the shape/form the legend colors are drawn in
-  LegendForm mShape = LegendForm.SQUARE;
+  LegendForm _shape = LegendForm.SQUARE;
 
   /// the size of the legend forms/shapes
-  double mFormSize = 8;
+  double _formSize = 8;
 
   /// the size of the legend forms/shapes
-  double mFormLineWidth = 3;
+  double _formLineWidth = 3;
 
   /**
    * Line dash path effect used for shapes that consist of lines.
    */
-//   DashPathEffect mFormLineDashEffect = null;
+//   DashPathEffect _formLineDashEffect = null;
 
   /// the space between the legend entries on a horizontal axis, default 6f
-  double mXEntrySpace = 6;
+  double _xEntrySpace = 6;
 
   /// the space between the legend entries on a vertical axis, default 5f
-  double mYEntrySpace = 0;
+  double _yEntrySpace = 0;
 
   /// the space between the legend entries on a vertical axis, default 2f
-  ///  double mYEntrySpace = 2f;  the space between the form and the
+  ///  double _yEntrySpace = 2f;  the space between the form and the
   /// actual label/text
-  double mFormToTextSpace = 5;
+  double _formToTextSpace = 5;
 
   /// the space that should be left between stacked forms
-  double mStackSpace = 3;
+  double _stackSpace = 3;
 
   /// the maximum relative size out of the whole chart view in percent
-  double mMaxSizePercent = 0.95;
+  double _maxSizePercent = 0.95;
+
+  /// the total width of the legend (needed width space)
+  double _neededWidth = 0;
+
+  /// the total height of the legend (needed height space)
+  double _neededHeight = 0;
+
+  double _textHeightMax = 0;
+
+  double _textWidthMax = 0;
+
+  /// flag that indicates if word wrapping is enabled
+  bool _wordWrapEnabled = false;
+
+  List<FSize> _calculatedLabelSizes = List(16);
+  List<bool> _calculatedLabelBreakPoints = List(16);
+  List<FSize> _calculatedLineSizes = List(16);
 
   /// default constructor
   Legend() {
-    this.mTextSize = Utils.convertDpToPixel(10);
-    this.mXOffset = Utils.convertDpToPixel(5);
-    this.mYOffset = Utils.convertDpToPixel(3); // 2
+    this.textSize = Utils.convertDpToPixel(10);
+    this.xOffset = Utils.convertDpToPixel(5);
+    this.yOffset = Utils.convertDpToPixel(3); // 2
   }
 
   /// Constructor. Provide entries for the legend.
   ///
   /// @param entries
   Legend.fromList(List<LegendEntry> entries) {
-    this.mTextSize = Utils.convertDpToPixel(10);
-    this.mXOffset = Utils.convertDpToPixel(5);
-    this.mYOffset = Utils.convertDpToPixel(3);
+    this.textSize = Utils.convertDpToPixel(10);
+    this.xOffset = Utils.convertDpToPixel(5);
+    this.yOffset = Utils.convertDpToPixel(3);
     if (entries == null) {
       throw new Exception("entries array is NULL");
     }
 
-    this.mEntries = entries;
+    this._entries = entries;
   }
 
-  /// This method sets the automatically computed colors for the legend. Use setCustom(...) to set custom colors.
-  ///
-  /// @param entries
-  void setEntries(List<LegendEntry> entries) {
-    mEntries = entries;
-  }
+  List<LegendEntry> get entries => _entries;
 
-  List<LegendEntry> getEntries() {
-    return mEntries;
+  set entries(List<LegendEntry> value) {
+    _entries = value;
   }
 
   /// returns the maximum length in pixels across all legend labels + formsize
@@ -105,10 +117,10 @@ class Legend extends ComponentBase {
   double getMaximumEntryWidth(TextPainter p) {
     double max = 0;
     double maxFormSize = 0;
-    double formToTextSpace = Utils.convertDpToPixel(mFormToTextSpace);
-    for (LegendEntry entry in mEntries) {
+    double formToTextSpace = Utils.convertDpToPixel(_formToTextSpace);
+    for (LegendEntry entry in _entries) {
       final double formSize = Utils.convertDpToPixel(
-          double.nan == entry.formSize ? mFormSize : entry.formSize);
+          double.nan == entry.formSize ? _formSize : entry.formSize);
       if (formSize > maxFormSize) maxFormSize = formSize;
 
       String label = entry.label;
@@ -128,7 +140,7 @@ class Legend extends ComponentBase {
   /// @return
   double getMaximumEntryHeight(TextPainter p) {
     double max = 0;
-    for (LegendEntry entry in mEntries) {
+    for (LegendEntry entry in _entries) {
       String label = entry.label;
       if (label == null) continue;
 
@@ -140,12 +152,10 @@ class Legend extends ComponentBase {
     return max;
   }
 
-  List<LegendEntry> getExtraEntries() {
-    return mExtraEntries;
-  }
+  List<LegendEntry> get extraEntries => _extraEntries;
 
   void setExtra1(List<LegendEntry> entries) {
-    mExtraEntries = entries;
+    _extraEntries = entries;
   }
 
   /// Entries that will be appended to the end of the auto calculated
@@ -167,8 +177,12 @@ class Legend extends ComponentBase {
       entries.add(entry);
     }
 
-    mExtraEntries = entries;
+    _extraEntries = entries;
   }
+
+  double get textHeightMax => _textHeightMax;
+
+  double get textWidthMax => _textWidthMax;
 
   /// Sets a custom legend's entries array.
   /// * A null label will start a group.
@@ -177,133 +191,65 @@ class Legend extends ComponentBase {
   /// Call resetCustom() to re-enable automatic calculation (and then
   ///   notifyDataSetChanged() is needed to auto-calculate the legend again)
   void setCustom(List<LegendEntry> entries) {
-    mEntries = entries;
-    mIsLegendCustom = true;
+    _entries = entries;
+    _isLegendCustom = true;
   }
 
   /// Calling this will disable the custom legend entries (set by
   /// setCustom(...)). Instead, the entries will again be calculated
   /// automatically (after notifyDataSetChanged() is called).
   void resetCustom() {
-    mIsLegendCustom = false;
+    _isLegendCustom = false;
   }
 
-  /// @return true if a custom legend entries has been set default
-  /// false (automatic legend)
-  bool isLegendCustom() {
-    return mIsLegendCustom;
+  bool get isLegendCustom => _isLegendCustom;
+
+  LegendHorizontalAlignment get horizontalAlignment => _horizontalAlignment;
+
+  set horizontalAlignment(LegendHorizontalAlignment value) {
+    _horizontalAlignment = value;
   }
 
-  /// returns the horizontal alignment of the legend
-  ///
-  /// @return
-  LegendHorizontalAlignment getHorizontalAlignment() {
-    return mHorizontalAlignment;
+  LegendVerticalAlignment get verticalAlignment => _verticalAlignment;
+
+  set verticalAlignment(LegendVerticalAlignment value) {
+    _verticalAlignment = value;
   }
 
-  /// sets the horizontal alignment of the legend
-  ///
-  /// @param value
-  void setHorizontalAlignment(LegendHorizontalAlignment value) {
-    mHorizontalAlignment = value;
+  LegendOrientation get orientation => _orientation;
+
+  set orientation(LegendOrientation value) {
+    _orientation = value;
   }
 
-  /// returns the vertical alignment of the legend
-  ///
-  /// @return
-  LegendVerticalAlignment getVerticalAlignment() {
-    return mVerticalAlignment;
+  bool get drawInside => _drawInside;
+
+  set drawInside(bool value) {
+    _drawInside = value;
   }
 
-  /// sets the vertical alignment of the legend
-  ///
-  /// @param value
-  void setVerticalAlignment(LegendVerticalAlignment value) {
-    mVerticalAlignment = value;
+  LegendDirection get direction => _direction;
+
+  set direction(LegendDirection value) {
+    _direction = value;
   }
 
-  /// returns the orientation of the legend
-  ///
-  /// @return
-  LegendOrientation getOrientation() {
-    return mOrientation;
+  LegendForm get shape => _shape;
+
+  set shape(LegendForm value) {
+    _shape = value;
   }
 
-  /// sets the orientation of the legend
-  ///
-  /// @param value
-  void setOrientation(LegendOrientation value) {
-    mOrientation = value;
+  double get formSize => _formSize;
+
+  set formSize(double value) {
+    _formSize = value;
   }
 
-  /// returns whether the legend will draw inside the chart or outside
-  ///
-  /// @return
-  bool isDrawInsideEnabled() {
-    return mDrawInside;
-  }
+  double get formLineWidth => _formLineWidth;
 
-  /// sets whether the legend will draw inside the chart or outside
-  ///
-  /// @param value
-  void setDrawInside(bool value) {
-    mDrawInside = value;
-  }
-
-  /// returns the text direction of the legend
-  ///
-  /// @return
-  LegendDirection getDirection() {
-    return mDirection;
-  }
-
-  /// sets the text direction of the legend
-  ///
-  /// @param pos
-  void setDirection(LegendDirection pos) {
-    mDirection = pos;
-  }
-
-  /// returns the current form/shape that is set for the legend
-  ///
-  /// @return
-  LegendForm getForm() {
-    return mShape;
-  }
-
-  /// sets the form/shape of the legend forms
-  ///
-  /// @param shape
-  void setForm(LegendForm shape) {
-    mShape = shape;
-  }
-
-  /// sets the size in dp of the legend forms, default 8f
-  ///
-  /// @param size
-  void setFormSize(double size) {
-    mFormSize = size;
-  }
-
-  /// returns the size in dp of the legend forms
-  ///
-  /// @return
-  double getFormSize() {
-    return mFormSize;
-  }
-
-  /// sets the line width in dp for forms that consist of lines, default 3f
-  ///
-  /// @param size
-  void setFormLineWidth(double size) {
-    mFormLineWidth = size;
-  }
-
-  /// returns the line width in dp for drawing forms that consist of lines
-  ///
-  /// @return
-  double getFormLineWidth() {
-    return mFormLineWidth;
+  set formLineWidth(double value) {
+    _formLineWidth = value;
   }
 
   /**
@@ -312,145 +258,61 @@ class Legend extends ComponentBase {
    * @param dashPathEffect
    */
 //   void setFormLineDashEffect(DashPathEffect dashPathEffect) {
-//    mFormLineDashEffect = dashPathEffect;
+//    _formLineDashEffect = dashPathEffect;
 //  }
 
   /**
    * @return The line dash path effect used for shapes that consist of lines.
    */
 //   DashPathEffect getFormLineDashEffect() {
-//    return mFormLineDashEffect;
+//    return _formLineDashEffect;
 //  }
 
-  /// returns the space between the legend entries on a horizontal axis in
-  /// pixels
-  ///
-  /// @return
-  double getXEntrySpace() {
-    return mXEntrySpace;
+  double get yEntrySpace => _yEntrySpace;
+
+  set yEntrySpace(double value) {
+    _yEntrySpace = value;
   }
 
-  /// sets the space between the legend entries on a horizontal axis in pixels,
-  /// converts to dp internally
-  ///
-  /// @param space
-  void setXEntrySpace(double space) {
-    mXEntrySpace = space;
+  double get xEntrySpace => _xEntrySpace;
+
+  set xEntrySpace(double value) {
+    _xEntrySpace = value;
   }
 
-  /// returns the space between the legend entries on a vertical axis in pixels
-  ///
-  /// @return
-  double getYEntrySpace() {
-    return mYEntrySpace;
+  double get formToTextSpace => _formToTextSpace;
+
+  set formToTextSpace(double value) {
+    _formToTextSpace = value;
   }
 
-  /// sets the space between the legend entries on a vertical axis in pixels,
-  /// converts to dp internally
-  ///
-  /// @param space
-  void setYEntrySpace(double space) {
-    mYEntrySpace = space;
+  double get stackSpace => _stackSpace;
+
+  set stackSpace(double value) {
+    _stackSpace = value;
   }
 
-  /// returns the space between the form and the actual label/text
-  ///
-  /// @return
-  double getFormToTextSpace() {
-    return mFormToTextSpace;
+  double get maxSizePercent => _maxSizePercent;
+
+  set maxSizePercent(double value) {
+    _maxSizePercent = value;
   }
 
-  /// sets the space between the form and the actual label/text, converts to dp
-  /// internally
-  ///
-  /// @param space
-  void setFormToTextSpace(double space) {
-    this.mFormToTextSpace = space;
+  bool get wordWrapEnabled => _wordWrapEnabled;
+
+  set wordWrapEnabled(bool value) {
+    _wordWrapEnabled = value;
   }
 
-  /// returns the space that is left out between stacked forms (with no label)
-  ///
-  /// @return
-  double getStackSpace() {
-    return mStackSpace;
-  }
+  double get neededWidth => _neededWidth;
 
-  /// sets the space that is left out between stacked forms (with no label)
-  ///
-  /// @param space
-  void setStackSpace(double space) {
-    mStackSpace = space;
-  }
+  double get neededHeight => _neededHeight;
 
-  /// the total width of the legend (needed width space)
-  double mNeededWidth = 0;
+  List<FSize> get calculatedLineSizes => _calculatedLineSizes;
 
-  /// the total height of the legend (needed height space)
-  double mNeededHeight = 0;
+  List<FSize> get calculatedLabelSizes => _calculatedLabelSizes;
 
-  double mTextHeightMax = 0;
-
-  double mTextWidthMax = 0;
-
-  /// flag that indicates if word wrapping is enabled
-  bool mWordWrapEnabled = false;
-
-  /// Should the legend word wrap? / this is currently supported only for:
-  /// BelowChartLeft, BelowChartRight, BelowChartCenter. / note that word
-  /// wrapping a legend takes a toll on performance. / you may want to set
-  /// maxSizePercent when word wrapping, to set the point where the text wraps.
-  /// / default: false
-  ///
-  /// @param enabled
-  void setWordWrapEnabled(bool enabled) {
-    mWordWrapEnabled = enabled;
-  }
-
-  /// If this is set, then word wrapping the legend is enabled. This means the
-  /// legend will not be cut off if too long.
-  ///
-  /// @return
-  bool isWordWrapEnabled() {
-    return mWordWrapEnabled;
-  }
-
-  /// The maximum relative size out of the whole chart view. / If the legend is
-  /// to the right/left of the chart, then this affects the width of the
-  /// legend. / If the legend is to the top/bottom of the chart, then this
-  /// affects the height of the legend. / If the legend is the center of the
-  /// piechart, then this defines the size of the rectangular bounds out of the
-  /// size of the "hole". / default: 0.95f (95%)
-  ///
-  /// @return
-  double getMaxSizePercent() {
-    return mMaxSizePercent;
-  }
-
-  /// The maximum relative size out of the whole chart view. / If
-  /// the legend is to the right/left of the chart, then this affects the width
-  /// of the legend. / If the legend is to the top/bottom of the chart, then
-  /// this affects the height of the legend. / default: 0.95f (95%)
-  ///
-  /// @param maxSize
-  void setMaxSizePercent(double maxSize) {
-    mMaxSizePercent = maxSize;
-  }
-
-  List<FSize> mCalculatedLabelSizes = List(16);
-  List<bool> mCalculatedLabelBreakPoints = List(16);
-  List<FSize> mCalculatedLineSizes = List(16);
-
-  List<FSize> getCalculatedLabelSizes() {
-    return mCalculatedLabelSizes;
-  }
-
-  List<bool> getCalculatedLabelBreakPoints() {
-    return mCalculatedLabelBreakPoints;
-  }
-
-  List<FSize> getCalculatedLineSizes() {
-    return mCalculatedLineSizes;
-  }
+  List<bool> get calculatedLabelBreakPoints => _calculatedLabelBreakPoints;
 
   /// Calculates the dimensions of the Legend. This includes the maximum width
   /// and height of a single entry, as well as the total width and height of
@@ -459,19 +321,19 @@ class Legend extends ComponentBase {
   /// @param labelpaint
   void calculateDimensions(
       TextPainter labelpainter, ViewPortHandler viewPortHandler) {
-    double defaultFormSize = Utils.convertDpToPixel(mFormSize);
-    double stackSpace = Utils.convertDpToPixel(mStackSpace);
-    double formToTextSpace = Utils.convertDpToPixel(mFormToTextSpace);
-    double xEntrySpace = Utils.convertDpToPixel(mXEntrySpace);
-    double yEntrySpace = Utils.convertDpToPixel(mYEntrySpace);
-    bool wordWrapEnabled = mWordWrapEnabled;
-    List<LegendEntry> entries = mEntries;
+    double defaultFormSize = Utils.convertDpToPixel(_formSize);
+    double stackSpace = Utils.convertDpToPixel(_stackSpace);
+    double formToTextSpace = Utils.convertDpToPixel(_formToTextSpace);
+    double xEntrySpace = Utils.convertDpToPixel(_xEntrySpace);
+    double yEntrySpace = Utils.convertDpToPixel(_yEntrySpace);
+    bool wordWrapEnabled = _wordWrapEnabled;
+    List<LegendEntry> entries = _entries;
     int entryCount = entries.length;
 
-    mTextWidthMax = getMaximumEntryWidth(labelpainter);
-    mTextHeightMax = getMaximumEntryHeight(labelpainter);
+    _textWidthMax = getMaximumEntryWidth(labelpainter);
+    _textHeightMax = getMaximumEntryHeight(labelpainter);
 
-    switch (mOrientation) {
+    switch (_orientation) {
       case LegendOrientation.VERTICAL:
         {
           double maxWidth = 0, maxHeight = 0, width = 0;
@@ -518,8 +380,8 @@ class Legend extends ComponentBase {
             maxWidth = max(maxWidth, width);
           }
 
-          mNeededWidth = maxWidth;
-          mNeededHeight = maxHeight;
+          _neededWidth = maxWidth;
+          _neededHeight = maxHeight;
 
           break;
         }
@@ -529,7 +391,7 @@ class Legend extends ComponentBase {
           double labelLineSpacing =
               Utils.getLineSpacing1(labelpainter) + yEntrySpace;
           double contentWidth =
-              viewPortHandler.contentWidth() * mMaxSizePercent;
+              viewPortHandler.contentWidth() * _maxSizePercent;
 
           // Start calculating layout
           double maxLineWidth = 0;
@@ -537,9 +399,9 @@ class Legend extends ComponentBase {
           double requiredWidth = 0;
           int stackedStartIndex = -1;
 
-          mCalculatedLabelBreakPoints = List();
-          mCalculatedLabelSizes = List();
-          mCalculatedLineSizes = List();
+          _calculatedLabelBreakPoints = List();
+          _calculatedLabelSizes = List();
+          _calculatedLineSizes = List();
 
           for (int i = 0; i < entryCount; i++) {
             LegendEntry e = entries[i];
@@ -549,7 +411,7 @@ class Legend extends ComponentBase {
                 : Utils.convertDpToPixel(e.formSize);
             String label = e.label;
 
-            mCalculatedLabelBreakPoints.add(false);
+            _calculatedLabelBreakPoints.add(false);
 
             if (stackedStartIndex == -1) {
               // we are not stacking, so required width is for this label
@@ -562,12 +424,12 @@ class Legend extends ComponentBase {
 
             // grouped forms have null labels
             if (label != null) {
-              mCalculatedLabelSizes
+              _calculatedLabelSizes
                   .add(Utils.calcTextSize1(labelpainter, label));
               requiredWidth += drawingForm ? formToTextSpace + formSize : 0;
-              requiredWidth += mCalculatedLabelSizes[i].width;
+              requiredWidth += _calculatedLabelSizes[i].width;
             } else {
-              mCalculatedLabelSizes.add(FSize.getInstance(0, 0));
+              _calculatedLabelSizes.add(FSize.getInstance(0, 0));
               requiredWidth += drawingForm ? formSize : 0;
 
               if (stackedStartIndex == -1) {
@@ -593,19 +455,19 @@ class Legend extends ComponentBase {
                 // It doesn't fit, we need to wrap a line
 
                 // Add current line size to array
-                mCalculatedLineSizes
+                _calculatedLineSizes
                     .add(FSize.getInstance(currentLineWidth, labelLineHeight));
                 maxLineWidth = max(maxLineWidth, currentLineWidth);
 
                 // Start a new line
-                mCalculatedLabelBreakPoints.insert(
+                _calculatedLabelBreakPoints.insert(
                     stackedStartIndex > -1 ? stackedStartIndex : i, true);
                 currentLineWidth = requiredWidth;
               }
 
               if (i == entryCount - 1) {
                 // Add last line size to array
-                mCalculatedLineSizes
+                _calculatedLineSizes
                     .add(FSize.getInstance(currentLineWidth, labelLineHeight));
                 maxLineWidth = max(maxLineWidth, currentLineWidth);
               }
@@ -614,19 +476,19 @@ class Legend extends ComponentBase {
             stackedStartIndex = label != null ? -1 : stackedStartIndex;
           }
 
-          mNeededWidth = maxLineWidth;
-          mNeededHeight =
-              labelLineHeight * (mCalculatedLineSizes.length).toDouble() +
+          _neededWidth = maxLineWidth;
+          _neededHeight =
+              labelLineHeight * (_calculatedLineSizes.length).toDouble() +
                   labelLineSpacing *
-                      (mCalculatedLineSizes.length == 0
+                      (_calculatedLineSizes.length == 0
                           ? 0
-                          : (mCalculatedLineSizes.length - 1));
+                          : (_calculatedLineSizes.length - 1));
 
           break;
         }
     }
 
-    mNeededHeight += mYOffset;
-    mNeededWidth += mXOffset;
+    _neededHeight += yOffset;
+    _neededWidth += xOffset;
   }
 }

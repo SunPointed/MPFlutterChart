@@ -216,37 +216,8 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    pieChart = PieChart(pieData, (painter) {
-      _formatter.setPieChartPainter(painter);
-
-      painter
-        ..setCenterText(_generateCenterSpannableText())
-//            ..setCenterTextTypeface(tf)
-        ..setHoleColor(ColorUtils.WHITE)
-        ..setTransparentCircleColor(ColorUtils.WHITE)
-        ..setTransparentCircleAlpha(110)
-        ..setHoleRadius(58.0)
-        ..setTransparentCircleRadius(61)
-        ..mHighLightPerTapEnabled = true
-        ..setOnChartValueSelectedListener(this)
-        ..setEntryLabelColor(ColorUtils.WHITE)
-        ..setEntryLabelTextSize(12);
-//        ..highlightValues(null);
-//          ..setEntryLabelTypeface(tf)
-
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.TOP)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
-        ..setOrientation(LegendOrientation.VERTICAL)
-        ..setDrawInside(false)
-        ..setXEntrySpace(7)
-        ..setYEntrySpace(0)
-        ..setYOffset(0);
-
-//      painter.mAnimator.animateY2(1400, Easing.EaseInOutQuad);
-    },
+    var desc = Description()..enabled = false;
+    pieChart = PieChart(pieData,
         rotateEnabled: true,
         drawHole: true,
         drawCenterText: true,
@@ -257,7 +228,27 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
         usePercentValues: true,
         touchEnabled: true,
         dragDecelerationFrictionCoef: 0.95,
-        desc: desc);
+        centerText: _generateCenterSpannableText(),
+        highLightPerTapEnabled: true,
+        selectionListener: this,
+        holeRadiusPercent: 58.0,
+        transparentCircleRadiusPercent: 61,
+        description: desc);
+    _formatter.setPieChartPainter(pieChart.painter);
+    pieChart.painter
+      ..setHoleColor(ColorUtils.WHITE)
+      ..setTransparentCircleColor(ColorUtils.WHITE)
+      ..setTransparentCircleAlpha(110)
+      ..setEntryLabelColor(ColorUtils.WHITE)
+      ..setEntryLabelTextSize(12);
+    pieChart.legend
+      ..verticalAlignment = (LegendVerticalAlignment.TOP)
+      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+      ..orientation = (LegendOrientation.VERTICAL)
+      ..drawInside = (false)
+      ..xEntrySpace = (7)
+      ..yEntrySpace = (0)
+      ..yOffset = (0);
   }
 
   @override

@@ -166,29 +166,14 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
   void _initLineChart() {
     if (lineData == null) return;
 
-    if(lineChart != null){
+    if (lineChart != null) {
       lineChart?.data = lineData;
       lineChart?.getState()?.setStateIfNotDispose();
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    lineChart = LineChart(lineData, (painter) {
-      painter..setOnChartValueSelectedListener(this);
-
-      painter.mXAxis
-        ..setAvoidFirstLastClipping(true)
-        ..setAxisMinimum(0);
-
-      painter.mAxisLeft
-        ..setAxisMinimum(0)
-        ..setInverted(true);
-
-      painter.mAxisRight.setEnabled(false);
-
-      painter.mLegend.setForm(LegendForm.LINE);
-    },
+    var desc = Description()..enabled = false;
+    lineChart = LineChart(lineData,
         touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
@@ -196,6 +181,15 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
         scaleXEnabled: true,
         scaleYEnabled: true,
         pinchZoomEnabled: true,
-        desc: desc);
+        selectionListener: this,
+        description: desc);
+    lineChart.xAxis
+      ..avoidFirstLastClipping = (true)
+      ..setAxisMinimum(0);
+    lineChart.axisLeft
+      ..setAxisMinimum(0)
+      ..inverted = (true);
+    lineChart.axisRight.enabled = (false);
+    lineChart.legend.shape = (LegendForm.LINE);
   }
 }

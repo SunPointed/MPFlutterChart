@@ -2,19 +2,30 @@ class MPPointF extends Poolable {
   static ObjectPool<Poolable> pool = ObjectPool.create(32, MPPointF(0, 0))
     ..setReplenishPercentage(0.5);
 
-  double x;
-  double y;
+  double _x;
+  double _y;
 
+  double get y => _y;
+
+  set y(double value) {
+    _y = value;
+  }
+
+  double get x => _x;
+
+  set x(double value) {
+    _x = value;
+  }
 
   @override
   String toString() {
-    return "x:$x y:$y";
+    return "x:$_x y:$_y";
   }
 
   static MPPointF getInstance1(double x, double y) {
     MPPointF result = pool.get();
-    result.x = x;
-    result.y = y;
+    result._x = x;
+    result._y = y;
     return result;
   }
 
@@ -24,12 +35,12 @@ class MPPointF extends Poolable {
 
   static MPPointF getInstance3(MPPointF copy) {
     MPPointF result = pool.get();
-    result.x = copy.x;
-    result.y = copy.y;
+    result._x = copy._x;
+    result._y = copy._y;
     return result;
   }
 
-  MPPointF(this.x, this.y);
+  MPPointF(this._x, this._y);
 
   static void recycleInstance(MPPointF instance) {
     pool.recycle1(instance);

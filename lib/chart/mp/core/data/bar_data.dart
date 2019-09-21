@@ -4,20 +4,14 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 
 class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
   /// the width of the bars on the x-axis, in values (not pixels)
-  double mBarWidth = 0.85;
+  double _barWidth = 0.85;
 
   BarData(List<IBarDataSet> dataSets) : super.fromList(dataSets);
 
-  /// Sets the width each bar should have on the x-axis (in values, not pixels).
-  /// Default 0.85f
-  ///
-  /// @param mBarWidth
-  void setBarWidth(double mBarWidth) {
-    this.mBarWidth = mBarWidth;
-  }
+  double get barWidth => _barWidth;
 
-  double getBarWidth() {
-    return mBarWidth;
+  set barWidth(double value) {
+    _barWidth = value;
   }
 
   /// Groups all BarDataSet objects this data object holds together by modifying the x-value of their entries.
@@ -29,7 +23,7 @@ class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
   /// @param groupSpace the space between groups of bars in values (not pixels) e.g. 0.8f for bar width 1f
   /// @param barSpace   the space between individual bars in values (not pixels) e.g. 0.1f for bar width 1f
   void groupBars(double fromX, double groupSpace, double barSpace) {
-    int setCount = mDataSets.length;
+    int setCount = dataSets.length;
     if (setCount <= 1) {
       throw Exception(
           "BarData needs to hold at least 2 BarDataSets to allow grouping.");
@@ -40,7 +34,7 @@ class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
 
     double groupSpaceWidthHalf = groupSpace / 2.0;
     double barSpaceHalf = barSpace / 2.0;
-    double barWidthHalf = mBarWidth / 2.0;
+    double barWidthHalf = _barWidth / 2.0;
 
     double interval = getGroupWidth(groupSpace, barSpace);
 
@@ -48,7 +42,7 @@ class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
       double start = fromX;
       fromX += groupSpaceWidthHalf;
 
-      for (IBarDataSet set in mDataSets) {
+      for (IBarDataSet set in dataSets) {
         fromX += barSpaceHalf;
         fromX += barWidthHalf;
 
@@ -85,6 +79,6 @@ class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
   /// @param barSpace
   /// @return
   double getGroupWidth(double groupSpace, double barSpace) {
-    return mDataSets.length * (mBarWidth + barSpace) + groupSpace;
+    return dataSets.length * (_barWidth + barSpace) + groupSpace;
   }
 }

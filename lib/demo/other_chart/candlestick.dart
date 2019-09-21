@@ -172,28 +172,14 @@ class OtherChartCandlestickState
   void _initCandleChart() {
     if (candleData == null) return;
 
-    if(candlestickChart != null){
+    if (candlestickChart != null) {
       candlestickChart.data = candleData;
       candlestickChart.getState()?.setStateIfNotDispose();
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    candlestickChart = CandlestickChart(candleData, (painter) {
-      painter.mLegend.setEnabled(false);
-
-      painter.mAxisLeft
-        ..setLabelCount2(7, false)
-        ..setDrawGridLines(false)
-        ..setDrawAxisLine(false);
-
-      painter.mAxisRight.setEnabled(false);
-
-      painter.mXAxis
-        ..setPosition(XAxisPosition.BOTTOM)
-        ..setDrawGridLines(true);
-    },
+    var desc = Description()..enabled = false;
+    candlestickChart = CandlestickChart(candleData,
         touchEnabled: true,
         drawGridBackground: false,
         backgroundColor: ColorUtils.WHITE,
@@ -203,6 +189,15 @@ class OtherChartCandlestickState
         scaleYEnabled: true,
         pinchZoomEnabled: false,
         maxVisibleCount: 60,
-        desc: desc);
+        description: desc);
+    candlestickChart.legend.enabled = (false);
+    candlestickChart.axisLeft
+      ..setLabelCount2(7, false)
+      ..drawGridLines = (false)
+      ..drawAxisLine = (false);
+    candlestickChart.axisRight.enabled = (false);
+    candlestickChart.xAxis
+      ..position = (XAxisPosition.BOTTOM)
+      ..drawGridLines = (true);
   }
 }

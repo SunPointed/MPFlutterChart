@@ -177,43 +177,14 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
       return;
     }
 
-    if(barChart != null){
+    if (barChart != null) {
       barChart?.data = barData;
       barChart?.getState()?.setStateIfNotDispose();
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    barChart = BarChart(barData, (painter) {
-      painter
-        ..mMarker = null
-        ..setFitBars(true)
-        ..setOnChartValueSelectedListener(this)
-        ..mMaxVisibleCount = 60
-        ..setDrawBarShadow(false)
-        ..setHighlightFullBarEnabled(false)
-        ..setDrawValueAboveBar(false);
-
-      painter.mXAxis.setPosition(XAxisPosition.TOP);
-
-      ValueFormatter custom = MyValueFormatter("K");
-      painter.mAxisLeft
-        ..setValueFormatter(custom)
-        ..setAxisMinimum(0);
-
-      painter.mAxisRight.setEnabled(false);
-
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.BOTTOM)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
-        ..setOrientation(LegendOrientation.HORIZONTAL)
-        ..setDrawInside(false)
-        ..setForm(LegendForm.SQUARE)
-        ..setFormSize(8)
-        ..setFormToTextSpace(4)
-        ..setXEntrySpace(6);
-    },
+    var desc = Description()..enabled = false;
+    barChart = BarChart(barData,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -222,7 +193,26 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
         scaleYEnabled: true,
         pinchZoomEnabled: false,
         maxVisibleCount: 60,
-        desc: desc);
+        fitBars: true,
+        selectionListener: this,
+        drawBarShadow: false,
+        highlightFullBarEnabled: false,
+        drawValueAboveBar: false,
+        description: desc);
+    barChart.xAxis.position = (XAxisPosition.TOP);
+    barChart.axisLeft
+      ..setValueFormatter(MyValueFormatter("K"))
+      ..setAxisMinimum(0);
+    barChart.axisRight.enabled = (false);
+    barChart.legend
+      ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+      ..orientation = (LegendOrientation.HORIZONTAL)
+      ..drawInside = (false)
+      ..shape = (LegendForm.SQUARE)
+      ..formSize = (8)
+      ..formToTextSpace = (4)
+      ..xEntrySpace = (6);
   }
 
   @override

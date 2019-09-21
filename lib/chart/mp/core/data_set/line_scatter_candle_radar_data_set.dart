@@ -7,30 +7,30 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 abstract class LineScatterCandleRadarDataSet<T extends Entry>
     extends BarLineScatterCandleBubbleDataSet<T>
     implements ILineScatterCandleRadarDataSet<T> {
-  bool mDrawVerticalHighlightIndicator = true;
-  bool mDrawHorizontalHighlightIndicator = true;
+  bool _drawVerticalHighlightIndicator = true;
+  bool _drawHorizontalHighlightIndicator = true;
 
   /// the width of the highlight indicator lines
-  double mHighlightLineWidth = 0.5;
+  double _highlightLineWidth = 0.5;
 
   /// the path effect for dashed highlight-lines
 //   DashPathEffect mHighlightDashPathEffect = null;
 
   LineScatterCandleRadarDataSet(List<T> yVals, String label)
       : super(yVals, label) {
-    mHighlightLineWidth = Utils.convertDpToPixel(0.5);
+    _highlightLineWidth = Utils.convertDpToPixel(0.5);
   }
 
   /// Enables / disables the horizontal highlight-indicator. If disabled, the indicator is not drawn.
   /// @param enabled
   void setDrawHorizontalHighlightIndicator(bool enabled) {
-    this.mDrawHorizontalHighlightIndicator = enabled;
+    this._drawHorizontalHighlightIndicator = enabled;
   }
 
   /// Enables / disables the vertical highlight-indicator. If disabled, the indicator is not drawn.
   /// @param enabled
   void setDrawVerticalHighlightIndicator(bool enabled) {
-    this.mDrawVerticalHighlightIndicator = enabled;
+    this._drawVerticalHighlightIndicator = enabled;
   }
 
   /// Enables / disables both vertical and horizontal highlight-indicators.
@@ -42,23 +42,23 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
 
   @override
   bool isVerticalHighlightIndicatorEnabled() {
-    return mDrawVerticalHighlightIndicator;
+    return _drawVerticalHighlightIndicator;
   }
 
   @override
   bool isHorizontalHighlightIndicatorEnabled() {
-    return mDrawHorizontalHighlightIndicator;
+    return _drawHorizontalHighlightIndicator;
   }
 
   /// Sets the width of the highlight line in dp.
   /// @param width
   void setHighlightLineWidth(double width) {
-    mHighlightLineWidth = Utils.convertDpToPixel(width);
+    _highlightLineWidth = Utils.convertDpToPixel(width);
   }
 
   @override
   double getHighlightLineWidth() {
-    return mHighlightLineWidth;
+    return _highlightLineWidth;
   }
 
   /**
@@ -100,11 +100,11 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
     super.copy(baseDataSet);
     if (baseDataSet is LineScatterCandleRadarDataSet) {
       var lineScatterCandleRadarDataSet = baseDataSet;
-      lineScatterCandleRadarDataSet.mDrawHorizontalHighlightIndicator =
-          mDrawHorizontalHighlightIndicator;
-      lineScatterCandleRadarDataSet.mDrawVerticalHighlightIndicator =
-          mDrawVerticalHighlightIndicator;
-      lineScatterCandleRadarDataSet.mHighlightLineWidth = mHighlightLineWidth;
+      lineScatterCandleRadarDataSet._drawHorizontalHighlightIndicator =
+          _drawHorizontalHighlightIndicator;
+      lineScatterCandleRadarDataSet._drawVerticalHighlightIndicator =
+          _drawVerticalHighlightIndicator;
+      lineScatterCandleRadarDataSet._highlightLineWidth = _highlightLineWidth;
 //    lineScatterCandleRadarDataSet.mHighlightDashPathEffect = mHighlightDashPathEffect;
     }
   }

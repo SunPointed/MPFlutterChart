@@ -9,7 +9,7 @@ class HorizontalBarBuffer extends BarBuffer {
   @override
   void feed(IBarDataSet data) {
     double size = data.getEntryCount() * phaseX;
-    double barWidthHalf = mBarWidth / 2;
+    double barWidthHalf = barWidth / 2;
 
     for (int i = 0; i < size; i++) {
       BarEntry e = data.getEntryForIndex(i);
@@ -18,13 +18,13 @@ class HorizontalBarBuffer extends BarBuffer {
 
       double x = e.x;
       double y = e.y;
-      List<double> vals = e.getYVals();
+      List<double> vals = e.yVals;
 
-      if (!mContainsStacks || vals == null) {
+      if (!containsStacks || vals == null) {
         double bottom = x - barWidthHalf;
         double top = x + barWidthHalf;
         double left, right;
-        if (mInverted) {
+        if (inverted) {
           left = y >= 0 ? y : 0;
           right = y <= 0 ? y : 0;
         } else {
@@ -41,7 +41,7 @@ class HorizontalBarBuffer extends BarBuffer {
         addBar(left, top, right, bottom);
       } else {
         double posY = 0;
-        double negY = -e.getNegativeSum();
+        double negY = -e.negativeSum;
         double yStart = 0;
 
         // fill the stack
@@ -61,7 +61,7 @@ class HorizontalBarBuffer extends BarBuffer {
           double bottom = x - barWidthHalf;
           double top = x + barWidthHalf;
           double left, right;
-          if (mInverted) {
+          if (inverted) {
             left = y >= yStart ? y : yStart;
             right = y <= yStart ? y : yStart;
           } else {

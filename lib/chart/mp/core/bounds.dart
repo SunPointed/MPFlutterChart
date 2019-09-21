@@ -8,17 +8,35 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/rounding.dart';
 
 class XBounds {
   /// minimum visible entry index
-  int min;
+  int _min;
 
   /// maximum visible entry index
-  int max;
+  int _max;
 
   /// range of visible entry indices
-  int range;
+  int _range;
 
-  ChartAnimator animator;
+  ChartAnimator _animator;
 
-  XBounds(this.animator);
+  XBounds(this._animator);
+
+  int get range => _range;
+
+  set range(int value) {
+    _range = value;
+  }
+
+  int get max => _max;
+
+  set max(int value) {
+    _max = value;
+  }
+
+  int get min => _min;
+
+  set min(int value) {
+    _min = value;
+  }
 
   /// Calculates the minimum and maximum x values as well as the range between them.
   ///
@@ -26,7 +44,7 @@ class XBounds {
   /// @param dataSet
   void set(BarLineScatterCandleBubbleDataProvider chart,
       IBarLineScatterCandleBubbleDataSet dataSet) {
-    double phaseX = math.max(0.0, math.min(1.0, animator.getPhaseX()));
+    double phaseX = math.max(0.0, math.min(1.0, _animator.getPhaseX()));
 
     double low = chart.getLowestVisibleX();
     double high = chart.getHighestVisibleX();
@@ -34,15 +52,15 @@ class XBounds {
         dataSet.getEntryForXValue1(low, double.nan, Rounding.DOWN);
     Entry entryTo = dataSet.getEntryForXValue1(high, double.nan, Rounding.UP);
 
-    min = entryFrom == null ? 0 : dataSet.getEntryIndex2(entryFrom);
-    max = entryTo == null ? 0 : dataSet.getEntryIndex2(entryTo);
+    _min = entryFrom == null ? 0 : dataSet.getEntryIndex2(entryFrom);
+    _max = entryTo == null ? 0 : dataSet.getEntryIndex2(entryTo);
 
-    if (min > max) {
-      var t = min;
-      min = max;
-      max = t;
+    if (_min > _max) {
+      var t = _min;
+      _min = _max;
+      _max = t;
     }
 
-    range = ((max - min) * phaseX).toInt();
+    _range = ((_max - _min) * phaseX).toInt();
   }
 }

@@ -219,60 +219,14 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
   void _initLineChart() {
     if (lineData == null) return;
 
-    if(lineChart != null){
+    if (lineChart != null) {
       lineChart?.data = lineData;
       lineChart?.getState()?.setStateIfNotDispose();
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    lineChart = LineChart(lineData, (painter) {
-      painter
-        ..setOnChartValueSelectedListener(this)
-        ..mDragDecelerationFrictionCoef = 0.9
-        ..mHighlightPerDragEnabled = true
-        ..setGridBackgroundColor(ColorUtils.LTGRAY);
-
-//      chart.animateX(1500); todo
-
-      painter.mLegend
-        ..setForm(LegendForm.LINE)
-        ..setTextSize(11)
-        ..setTextColor(ColorUtils.WHITE)
-        ..setVerticalAlignment(LegendVerticalAlignment.BOTTOM)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.LEFT)
-        ..setOrientation(LegendOrientation.HORIZONTAL)
-        ..setDrawInside(false);
-//      ..setTypeface(tf)
-
-      painter.mXAxis
-        ..setTextColor(ColorUtils.WHITE)
-        ..setTextSize(11)
-        ..setDrawGridLines(false)
-        ..setDrawAxisLine(false);
-//    ..setTypeface(tf)
-
-      painter.mAxisLeft
-        ..setTextColor(ColorUtils.HOLO_BLUE)
-        ..setAxisMaximum(200.0)
-        ..setAxisMinimum(0.0)
-        ..setDrawGridLines(true)
-        ..setDrawAxisLine(true)
-        ..setGranularityEnabled(true);
-//    ..setTypeface(tf)
-
-      painter.mAxisRight
-        ..setTextColor(ColorUtils.RED)
-        ..setAxisMaximum(900.0)
-        ..setAxisMinimum(-200)
-        ..setDrawGridLines(false)
-        ..setDrawZeroLine(false)
-        ..setGranularityEnabled(false);
-//    ..setTypeface(tf)
-
-      painter.mAnimator.animateX1(1500);
-    },
+    var desc = Description()..enabled = false;
+    lineChart = LineChart(lineData,
         touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
@@ -280,6 +234,42 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
         scaleXEnabled: true,
         scaleYEnabled: true,
         pinchZoomEnabled: true,
-        desc: desc);
+        selectionListener: this,
+        dragDecelerationFrictionCoef: 0.9,
+        highLightPerTapEnabled: true,
+        backgroundColor: ColorUtils.LTGRAY,
+        description: desc);
+    lineChart.legend
+      ..shape = (LegendForm.LINE)
+      ..textSize = (11)
+      ..textColor = (ColorUtils.WHITE)
+      ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+      ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
+      ..orientation = (LegendOrientation.HORIZONTAL)
+      ..drawInside = (false);
+//      ..setTypeface(tf)
+    lineChart.xAxis
+      ..textColor = (ColorUtils.WHITE)
+      ..textSize = (11)
+      ..drawGridLines = (false)
+      ..drawAxisLine = (false);
+//    ..setTypeface(tf)
+    lineChart.axisLeft
+      ..textColor = (ColorUtils.HOLO_BLUE)
+      ..setAxisMaximum(200.0)
+      ..setAxisMinimum(0.0)
+      ..drawGridLines = (true)
+      ..drawAxisLine = (true)
+      ..granularityEnabled = (true);
+//    ..setTypeface(tf)
+    lineChart.axisRight
+      ..textColor = (ColorUtils.RED)
+      ..setAxisMaximum(900.0)
+      ..setAxisMinimum(-200)
+      ..drawGridLines = (false)
+      ..setDrawZeroLine(false)
+      ..granularityEnabled = (false);
+//    ..setTypeface(tf)
+    lineChart.animator.animateX1(1500);
   }
 }

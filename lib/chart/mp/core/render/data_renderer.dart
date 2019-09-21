@@ -12,32 +12,32 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 abstract class DataRenderer extends Renderer {
   /// the animator object used to perform animations on the chart data
-  ChartAnimator mAnimator;
+  ChartAnimator _animator;
 
   /// main paint object used for rendering
-  Paint mRenderPaint;
+  Paint _renderPaint;
 
   /// paint used for highlighting values
-  Paint mHighlightPaint;
+  Paint _highlightPaint;
 
-  Paint mDrawPaint;
+  Paint _drawPaint;
 
-  TextPainter mValuePaint;
+  TextPainter _valuePaint;
 
   DataRenderer(ChartAnimator animator, ViewPortHandler viewPortHandler)
       : super(viewPortHandler) {
-    this.mAnimator = animator;
+    this._animator = animator;
 
-    mRenderPaint = Paint()
+    _renderPaint = Paint()
       ..isAntiAlias = true
       ..style = PaintingStyle.fill;
 
-    mDrawPaint = Paint();
+    _drawPaint = Paint();
 
-    mValuePaint = PainterUtils.create(mValuePaint, null,
+    _valuePaint = PainterUtils.create(_valuePaint, null,
         Color.fromARGB(255, 63, 63, 63), Utils.convertDpToPixel(9));
 
-    mHighlightPaint = Paint()
+    _highlightPaint = Paint()
       ..isAntiAlias = true
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke
@@ -46,30 +46,25 @@ abstract class DataRenderer extends Renderer {
 
   bool isDrawingValuesAllowed(ChartInterface chart) {
     return chart.getData().getEntryCount() <
-        chart.getMaxVisibleCount() * mViewPortHandler.getScaleX();
+        chart.getMaxVisibleCount() * viewPortHandler.getScaleX();
   }
 
-  /// Returns the Paint object this renderer uses for drawing the values
-  /// (value-text).
-  ///
-  /// @return
-  TextPainter getPaintValues() {
-    return mValuePaint;
+  TextPainter get valuePaint => _valuePaint;
+
+  set valuePaint(TextPainter value) {
+    _valuePaint = value;
   }
 
-  /// Returns the Paint object this renderer uses for drawing highlight
-  /// indicators.
-  ///
-  /// @return
-  Paint getPaintHighlight() {
-    return mHighlightPaint;
-  }
+  Paint get highlightPaint => _highlightPaint;
 
-  /// Returns the Paint object used for rendering.
-  ///
-  /// @return
-  Paint getPaintRender() {
-    return mRenderPaint;
+  Paint get renderPaint => _renderPaint;
+
+  ChartAnimator get animator => _animator;
+
+  Paint get drawPaint => _drawPaint;
+
+  set highlightPaint(Paint value) {
+    _highlightPaint = value;
   }
 
   /// Applies the required styling (provided by the DataSet) to the value-paint
@@ -77,7 +72,7 @@ abstract class DataRenderer extends Renderer {
   ///
   /// @param set
   void applyValueTextStyle(IDataSet set) {
-    mValuePaint = PainterUtils.create(mValuePaint, null,
+    _valuePaint = PainterUtils.create(_valuePaint, null,
         Color.fromARGB(255, 63, 63, 63), Utils.convertDpToPixel(9));
   }
 

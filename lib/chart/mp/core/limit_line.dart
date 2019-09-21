@@ -6,34 +6,29 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class LimitLine extends ComponentBase {
   /// limit / maximum (the y-value or xIndex)
-  double mLimit = 0;
+  double _limit = 0;
 
   /// the width of the limit line
-  double mLineWidth = 2;
+  double _lineWidth = 2;
 
   /// the color of the limit line
-  Color mLineColor = Color.fromARGB(255, 237, 91, 91);
+  Color _lineColor = Color.fromARGB(255, 237, 91, 91);
 
   /// the style of the label text
-  PaintingStyle mTextStyle = PaintingStyle.fill;
+  PaintingStyle _textStyle = PaintingStyle.fill;
 
   /// label string that is drawn next to the limit line
-  String mLabel = "";
+  String _label = "";
 
   /// the path effect of this LimitLine that makes dashed lines possible
-  DashPathEffect mDashPathEffect = null;
+  DashPathEffect _dashPathEffect = null;
 
   /// indicates the position of the LimitLine label
-  LimitLabelPosition mLabelPosition = LimitLabelPosition.RIGHT_TOP;
+  LimitLabelPosition _labelPosition = LimitLabelPosition.RIGHT_TOP;
 
-  LimitLine(this.mLimit, [this.mLabel]);
+  LimitLine(this._limit, [this._label]);
 
-  /// Returns the limit that is set for this line.
-  ///
-  /// @return
-  double getLimit() {
-    return mLimit;
-  }
+  double get limit => _limit;
 
   /// set the line width of the chart (min = 0.2f, max = 12f); default 2f NOTE:
   /// thinner line == better performance, thicker line == worse performance
@@ -42,29 +37,15 @@ class LimitLine extends ComponentBase {
   void setLineWidth(double width) {
     if (width < 0.2) width = 0.2;
     if (width > 12.0) width = 12.0;
-    mLineWidth = Utils.convertDpToPixel(width);
+    _lineWidth = Utils.convertDpToPixel(width);
   }
 
-  /// returns the width of limit line
-  ///
-  /// @return
-  double getLineWidth() {
-    return mLineWidth;
-  }
+  double get lineWidth => _lineWidth;
 
-  /// Sets the linecolor for this LimitLine. Make sure to use
-  /// getResources().getColor(...)
-  ///
-  /// @param color
-  void setLineColor(Color color) {
-    mLineColor = color;
-  }
+  Color get lineColor => _lineColor;
 
-  /// Returns the color that is used for this LimitLine
-  ///
-  /// @return
-  Color getLineColor() {
-    return mLineColor;
+  set lineColor(Color value) {
+    _lineColor = value;
   }
 
   /// Enables the line to be drawn in dashed mode, e.g. like this "- - - - - -"
@@ -73,14 +54,14 @@ class LimitLine extends ComponentBase {
   /// @param spaceLength the length of space inbetween the pieces
   /// @param phase offset, in degrees (normally, use 0)
   void enableDashedLine(double lineLength, double spaceLength, double phase) {
-//    mDashPathEffect = new DashPathEffect(new float[] { todo
+//    _dashPathEffect = new DashPathEffect(new float[] { todo
 //    lineLength, spaceLength
 //    }, phase);
   }
 
   /// Disables the line to be drawn in dashed mode.
   void disableDashedLine() {
-    mDashPathEffect = null;
+    _dashPathEffect = null;
   }
 
   /// Returns true if the dashed-line effect is enabled, false if not. Default:
@@ -88,58 +69,31 @@ class LimitLine extends ComponentBase {
   ///
   /// @return
   bool isDashedLineEnabled() {
-    return mDashPathEffect == null ? false : true;
+    return _dashPathEffect == null ? false : true;
   }
 
   /// returns the DashPathEffect that is set for this LimitLine
   ///
   /// @return
   DashPathEffect getDashPathEffect() {
-    return mDashPathEffect;
+    return _dashPathEffect;
   }
 
-  /// Sets the color of the value-text that is drawn next to the LimitLine.
-  /// Default: Paint.Style.FILL_AND_STROKE
-  ///
-  /// @param style
-  void setTextStyle(PaintingStyle style) {
-    this.mTextStyle = style;
+  PaintingStyle get textStyle => _textStyle;
+
+  set textStyle(PaintingStyle value) {
+    _textStyle = value;
   }
 
-  /// Returns the color of the value-text that is drawn next to the LimitLine.
-  ///
-  /// @return
-  PaintingStyle getTextStyle() {
-    return mTextStyle;
+  LimitLabelPosition get labelPosition => _labelPosition;
+
+  set labelPosition(LimitLabelPosition value) {
+    _labelPosition = value;
   }
 
-  /// Sets the position of the LimitLine value label (either on the right or on
-  /// the left edge of the chart). Not supported for RadarChart.
-  ///
-  /// @param pos
-  void setLabelPosition(LimitLabelPosition pos) {
-    mLabelPosition = pos;
-  }
+  String get label => _label;
 
-  /// Returns the position of the LimitLine label (value).
-  ///
-  /// @return
-  LimitLabelPosition getLabelPosition() {
-    return mLabelPosition;
-  }
-
-  /// Sets the label that is drawn next to the limit line. Provide "" if no
-  /// label is required.
-  ///
-  /// @param label
-  void setLabel(String label) {
-    mLabel = label;
-  }
-
-  /// Returns the label that is drawn next to the limit line.
-  ///
-  /// @return
-  String getLabel() {
-    return mLabel;
+  set label(String value) {
+    _label = value;
   }
 }

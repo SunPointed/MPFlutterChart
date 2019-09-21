@@ -9,38 +9,38 @@ import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.d
 
 class ChartData<T extends IDataSet<Entry>> {
   /// maximum y-value in the value array across all axes
-  double mYMax = -double.infinity;
+  double _yMax = -double.infinity;
 
   /// the minimum y-value in the value array across all axes
-  double mYMin = double.infinity;
+  double _yMin = double.infinity;
 
   /// maximum x-value in the value array
-  double mXMax = -double.infinity;
+  double _xMax = -double.infinity;
 
   /// minimum x-value in the value array
-  double mXMin = double.infinity;
+  double _xMin = double.infinity;
 
-  double mLeftAxisMax = -double.infinity;
+  double _leftAxisMax = -double.infinity;
 
-  double mLeftAxisMin = double.infinity;
+  double _leftAxisMin = double.infinity;
 
-  double mRightAxisMax = -double.infinity;
+  double _rightAxisMax = -double.infinity;
 
-  double mRightAxisMin = double.infinity;
+  double _rightAxisMin = double.infinity;
 
   /// array that holds all DataSets the ChartData object represents
-  List<T> mDataSets;
+  List<T> _dataSets;
 
   /// Default constructor.
   ChartData() {
-    mDataSets = List<T>();
+    _dataSets = List<T>();
   }
 
   /// Constructor taking single or multiple DataSet objects.
   ///
   /// @param dataSets
   ChartData.fromList(List<T> dataSets) {
-    mDataSets = dataSets;
+    _dataSets = dataSets;
     notifyDataChanged();
   }
 
@@ -57,7 +57,7 @@ class ChartData<T extends IDataSet<Entry>> {
   /// @param fromX the x-value to start the calculation from
   /// @param toX   the x-value to which the calculation should be performed
   void calcMinMaxY(double fromX, double toX) {
-    for (T set in mDataSets) {
+    for (T set in _dataSets) {
       set.calcMinMaxY(fromX, toX);
     }
 
@@ -67,54 +67,54 @@ class ChartData<T extends IDataSet<Entry>> {
 
   /// Calc minimum and maximum values (both x and y) over all DataSets.
   void calcMinMax1() {
-    if (mDataSets == null) return;
+    if (_dataSets == null) return;
 
-    mYMax = -double.infinity;
-    mYMin = double.infinity;
-    mXMax = -double.infinity;
-    mXMin = double.infinity;
+    _yMax = -double.infinity;
+    _yMin = double.infinity;
+    _xMax = -double.infinity;
+    _xMin = double.infinity;
 
-    for (T set in mDataSets) {
+    for (T set in _dataSets) {
       calcMinMax3(set);
     }
 
-    mLeftAxisMax = -double.infinity;
-    mLeftAxisMin = double.infinity;
-    mRightAxisMax = -double.infinity;
-    mRightAxisMin = double.infinity;
+    _leftAxisMax = -double.infinity;
+    _leftAxisMin = double.infinity;
+    _rightAxisMax = -double.infinity;
+    _rightAxisMin = double.infinity;
 
     // left axis
-    T firstLeft = getFirstLeft(mDataSets);
+    T firstLeft = getFirstLeft(_dataSets);
 
     if (firstLeft != null) {
-      mLeftAxisMax = firstLeft.getYMax();
-      mLeftAxisMin = firstLeft.getYMin();
+      _leftAxisMax = firstLeft.getYMax();
+      _leftAxisMin = firstLeft.getYMin();
 
-      for (T dataSet in mDataSets) {
+      for (T dataSet in _dataSets) {
         if (dataSet.getAxisDependency() == AxisDependency.LEFT) {
-          if (dataSet.getYMin() < mLeftAxisMin)
-            mLeftAxisMin = dataSet.getYMin();
+          if (dataSet.getYMin() < _leftAxisMin)
+            _leftAxisMin = dataSet.getYMin();
 
-          if (dataSet.getYMax() > mLeftAxisMax)
-            mLeftAxisMax = dataSet.getYMax();
+          if (dataSet.getYMax() > _leftAxisMax)
+            _leftAxisMax = dataSet.getYMax();
         }
       }
     }
 
     // right axis
-    T firstRight = getFirstRight(mDataSets);
+    T firstRight = getFirstRight(_dataSets);
 
     if (firstRight != null) {
-      mRightAxisMax = firstRight.getYMax();
-      mRightAxisMin = firstRight.getYMin();
+      _rightAxisMax = firstRight.getYMax();
+      _rightAxisMin = firstRight.getYMin();
 
-      for (T dataSet in mDataSets) {
+      for (T dataSet in _dataSets) {
         if (dataSet.getAxisDependency() == AxisDependency.RIGHT) {
-          if (dataSet.getYMin() < mRightAxisMin)
-            mRightAxisMin = dataSet.getYMin();
+          if (dataSet.getYMin() < _rightAxisMin)
+            _rightAxisMin = dataSet.getYMin();
 
-          if (dataSet.getYMax() > mRightAxisMax)
-            mRightAxisMax = dataSet.getYMax();
+          if (dataSet.getYMax() > _rightAxisMax)
+            _rightAxisMax = dataSet.getYMax();
         }
       }
     }
@@ -126,15 +126,15 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @return
   int getDataSetCount() {
-    if (mDataSets == null) return 0;
-    return mDataSets.length;
+    if (_dataSets == null) return 0;
+    return _dataSets.length;
   }
 
   /// Returns the smallest y-value the data object contains.
   ///
   /// @return
   double getYMin1() {
-    return mYMin;
+    return _yMin;
   }
 
   /// Returns the minimum y-value for the specified axis.
@@ -143,15 +143,15 @@ class ChartData<T extends IDataSet<Entry>> {
   /// @return
   double getYMin2(AxisDependency axis) {
     if (axis == AxisDependency.LEFT) {
-      if (mLeftAxisMin.isInfinite) {
-        return mRightAxisMin;
+      if (_leftAxisMin.isInfinite) {
+        return _rightAxisMin;
       } else
-        return mLeftAxisMin;
+        return _leftAxisMin;
     } else {
-      if (mRightAxisMin.isInfinite) {
-        return mLeftAxisMin;
+      if (_rightAxisMin.isInfinite) {
+        return _leftAxisMin;
       } else
-        return mRightAxisMin;
+        return _rightAxisMin;
     }
   }
 
@@ -159,7 +159,7 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @return
   double getYMax1() {
-    return mYMax;
+    return _yMax;
   }
 
   /// Returns the maximum y-value for the specified axis.
@@ -168,34 +168,36 @@ class ChartData<T extends IDataSet<Entry>> {
   /// @return
   double getYMax2(AxisDependency axis) {
     if (axis == AxisDependency.LEFT) {
-      if (mLeftAxisMax == -double.infinity) {
-        return mRightAxisMax;
+      if (_leftAxisMax == -double.infinity) {
+        return _rightAxisMax;
       } else
-        return mLeftAxisMax;
+        return _leftAxisMax;
     } else {
-      if (mRightAxisMax == -double.infinity) {
-        return mLeftAxisMax;
+      if (_rightAxisMax == -double.infinity) {
+        return _leftAxisMax;
       } else
-        return mRightAxisMax;
+        return _rightAxisMax;
     }
   }
 
-  /// Returns the minimum x-value this data object contains.
-  ///
-  /// @return
-  double getXMin() {
-    return mXMin;
+  double get xMax => _xMax;
+
+  double get xMin => _xMin;
+
+  set xMax(double value) {
+    _xMax = value;
   }
 
-  double getXMax() {
-    return mXMax;
+  List<T> get dataSets => _dataSets;
+
+  set dataSets(List<T> value) {
+    _dataSets = value;
   }
 
-  /// Returns all DataSet objects this ChartData object holds.
-  ///
-  /// @return
-  List<T> getDataSets() {
-    return mDataSets;
+  double get yMax => _yMax;
+
+  set yMax(double value) {
+    _yMax = value;
   }
 
   /// Retrieve the index of a DataSet with a specific label from the ChartData.
@@ -224,10 +226,10 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @return
   List<String> getDataSetLabels() {
-    List<String> types = List(mDataSets.length);
+    List<String> types = List(_dataSets.length);
 
-    for (int i = 0; i < mDataSets.length; i++) {
-      types[i] = mDataSets[i].getLabel();
+    for (int i = 0; i < _dataSets.length; i++) {
+      types[i] = _dataSets[i].getLabel();
     }
 
     return types;
@@ -238,11 +240,11 @@ class ChartData<T extends IDataSet<Entry>> {
   /// @param highlight
   /// @return the entry that is highlighted
   Entry getEntryForHighlight(Highlight highlight) {
-    if (highlight.getDataSetIndex() >= mDataSets.length)
+    if (highlight.dataSetIndex >= _dataSets.length)
       return null;
     else {
-      return mDataSets[highlight.getDataSetIndex()]
-          .getEntryForXValue2(highlight.getX(), highlight.getY());
+      return _dataSets[highlight.dataSetIndex]
+          .getEntryForXValue2(highlight.x, highlight.y);
     }
   }
 
@@ -254,19 +256,19 @@ class ChartData<T extends IDataSet<Entry>> {
   /// @param ignorecase
   /// @return
   T getDataSetByLabel(String label, bool ignorecase) {
-    int index = getDataSetIndexByLabel(mDataSets, label, ignorecase);
+    int index = getDataSetIndexByLabel(_dataSets, label, ignorecase);
 
-    if (index < 0 || index >= mDataSets.length)
+    if (index < 0 || index >= _dataSets.length)
       return null;
     else
-      return mDataSets[index];
+      return _dataSets[index];
   }
 
   T getDataSetByIndex(int index) {
-    if (mDataSets == null || index < 0 || index >= mDataSets.length)
+    if (_dataSets == null || index < 0 || index >= _dataSets.length)
       return null;
 
-    return mDataSets[index];
+    return _dataSets[index];
   }
 
   /// Adds a DataSet dynamically.
@@ -277,7 +279,7 @@ class ChartData<T extends IDataSet<Entry>> {
 
     calcMinMax3(d);
 
-    mDataSets.add(d);
+    _dataSets.add(d);
   }
 
   /// Removes the given DataSet from this data object. Also recalculates all
@@ -288,7 +290,7 @@ class ChartData<T extends IDataSet<Entry>> {
   bool removeDataSet1(T d) {
     if (d == null) return false;
 
-    bool removed = mDataSets.remove(d);
+    bool removed = _dataSets.remove(d);
 
     // if a DataSet was removed
     if (removed) {
@@ -304,9 +306,9 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @param index
   bool removeDataSet2(int index) {
-    if (index >= mDataSets.length || index < 0) return false;
+    if (index >= _dataSets.length || index < 0) return false;
 
-    T set = mDataSets[index];
+    T set = _dataSets[index];
     return removeDataSet1(set);
   }
 
@@ -316,8 +318,8 @@ class ChartData<T extends IDataSet<Entry>> {
   /// @param e
   /// @param dataSetIndex
   void addEntry(Entry e, int dataSetIndex) {
-    if (mDataSets.length > dataSetIndex && dataSetIndex >= 0) {
-      IDataSet set = mDataSets[dataSetIndex];
+    if (_dataSets.length > dataSetIndex && dataSetIndex >= 0) {
+      IDataSet set = _dataSets[dataSetIndex];
       // add the entry to the dataset
       if (!set.addEntry(e)) return;
 
@@ -330,18 +332,18 @@ class ChartData<T extends IDataSet<Entry>> {
   /// @param e
   /// @param axis
   void calcMinMax2(Entry e, AxisDependency axis) {
-    if (mYMax < e.y) mYMax = e.y;
-    if (mYMin > e.y) mYMin = e.y;
+    if (_yMax < e.y) _yMax = e.y;
+    if (_yMin > e.y) _yMin = e.y;
 
-    if (mXMax < e.x) mXMax = e.x;
-    if (mXMin > e.x) mXMin = e.x;
+    if (_xMax < e.x) _xMax = e.x;
+    if (_xMin > e.x) _xMin = e.x;
 
     if (axis == AxisDependency.LEFT) {
-      if (mLeftAxisMax < e.y) mLeftAxisMax = e.y;
-      if (mLeftAxisMin > e.y) mLeftAxisMin = e.y;
+      if (_leftAxisMax < e.y) _leftAxisMax = e.y;
+      if (_leftAxisMin > e.y) _leftAxisMin = e.y;
     } else {
-      if (mRightAxisMax < e.y) mRightAxisMax = e.y;
-      if (mRightAxisMin > e.y) mRightAxisMin = e.y;
+      if (_rightAxisMax < e.y) _rightAxisMax = e.y;
+      if (_rightAxisMin > e.y) _rightAxisMin = e.y;
     }
   }
 
@@ -349,18 +351,18 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @param d
   void calcMinMax3(T d) {
-    if (mYMax < d.getYMax()) mYMax = d.getYMax();
-    if (mYMin > d.getYMin()) mYMin = d.getYMin();
+    if (_yMax < d.getYMax()) _yMax = d.getYMax();
+    if (_yMin > d.getYMin()) _yMin = d.getYMin();
 
-    if (mXMax < d.getXMax()) mXMax = d.getXMax();
-    if (mXMin > d.getXMin()) mXMin = d.getXMin();
+    if (_xMax < d.getXMax()) _xMax = d.getXMax();
+    if (_xMin > d.getXMin()) _xMin = d.getXMin();
 
     if (d.getAxisDependency() == AxisDependency.LEFT) {
-      if (mLeftAxisMax < d.getYMax()) mLeftAxisMax = d.getYMax();
-      if (mLeftAxisMin > d.getYMin()) mLeftAxisMin = d.getYMin();
+      if (_leftAxisMax < d.getYMax()) _leftAxisMax = d.getYMax();
+      if (_leftAxisMin > d.getYMin()) _leftAxisMin = d.getYMin();
     } else {
-      if (mRightAxisMax < d.getYMax()) mRightAxisMax = d.getYMax();
-      if (mRightAxisMin > d.getYMin()) mRightAxisMin = d.getYMin();
+      if (_rightAxisMax < d.getYMax()) _rightAxisMax = d.getYMax();
+      if (_rightAxisMin > d.getYMin()) _rightAxisMin = d.getYMin();
     }
   }
 
@@ -370,9 +372,9 @@ class ChartData<T extends IDataSet<Entry>> {
   /// @param dataSetIndex
   bool removeEntry1(Entry e, int dataSetIndex) {
     // entry null, outofbounds
-    if (e == null || dataSetIndex >= mDataSets.length) return false;
+    if (e == null || dataSetIndex >= _dataSets.length) return false;
 
-    IDataSet set = mDataSets[dataSetIndex];
+    IDataSet set = _dataSets[dataSetIndex];
 
     if (set != null) {
       // remove the entry from the dataset
@@ -395,9 +397,9 @@ class ChartData<T extends IDataSet<Entry>> {
   /// @param dataSetIndex
   /// @return
   bool removeEntry2(double xValue, int dataSetIndex) {
-    if (dataSetIndex >= mDataSets.length) return false;
+    if (dataSetIndex >= _dataSets.length) return false;
 
-    IDataSet dataSet = mDataSets[dataSetIndex];
+    IDataSet dataSet = _dataSets[dataSetIndex];
     Entry e = dataSet.getEntryForXValue2(xValue, double.nan);
 
     if (e == null) return false;
@@ -413,8 +415,8 @@ class ChartData<T extends IDataSet<Entry>> {
   T getDataSetForEntry(Entry e) {
     if (e == null) return null;
 
-    for (int i = 0; i < mDataSets.length; i++) {
-      T set = mDataSets[i];
+    for (int i = 0; i < _dataSets.length; i++) {
+      T set = _dataSets[i];
 
       for (int j = 0; j < set.getEntryCount(); j++) {
         if (e == set.getEntryForXValue2(e.x, e.y)) return set;
@@ -429,19 +431,19 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @return
   List<ui.Color> getColors() {
-    if (mDataSets == null) return null;
+    if (_dataSets == null) return null;
 
     int clrcnt = 0;
 
-    for (int i = 0; i < mDataSets.length; i++) {
-      clrcnt += mDataSets[i].getColors().length;
+    for (int i = 0; i < _dataSets.length; i++) {
+      clrcnt += _dataSets[i].getColors().length;
     }
 
     List<ui.Color> colors = List(clrcnt);
     int cnt = 0;
 
-    for (int i = 0; i < mDataSets.length; i++) {
-      List<ui.Color> clrs = mDataSets[i].getColors();
+    for (int i = 0; i < _dataSets.length; i++) {
+      List<ui.Color> clrs = _dataSets[i].getColors();
 
       for (ui.Color clr in clrs) {
         colors[cnt] = clr;
@@ -457,7 +459,7 @@ class ChartData<T extends IDataSet<Entry>> {
   /// @param dataSet
   /// @return
   int getIndexOfDataSet(T dataSet) {
-    return mDataSets.indexOf(dataSet);
+    return _dataSets.indexOf(dataSet);
   }
 
   /// Returns the first DataSet from the datasets-array that has it's dependency on the left axis.
@@ -489,7 +491,7 @@ class ChartData<T extends IDataSet<Entry>> {
     if (f == null)
       return;
     else {
-      for (IDataSet set in mDataSets) {
+      for (IDataSet set in _dataSets) {
         set.setValueFormatter(f);
       }
     }
@@ -500,7 +502,7 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @param color
   void setValueTextColor(ui.Color color) {
-    for (IDataSet set in mDataSets) {
+    for (IDataSet set in _dataSets) {
       set.setValueTextColor(color);
     }
   }
@@ -510,7 +512,7 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @param colors
   void setValueTextColors(List<ui.Color> colors) {
-    for (IDataSet set in mDataSets) {
+    for (IDataSet set in _dataSets) {
       set.setValueTextColors(colors);
     }
   }
@@ -520,7 +522,7 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @param tf
   void setValueTypeface(ui.TextStyle tf) {
-    for (IDataSet set in mDataSets) {
+    for (IDataSet set in _dataSets) {
       set.setValueTypeface(tf);
     }
   }
@@ -530,7 +532,7 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @param size
   void setValueTextSize(double size) {
-    for (IDataSet set in mDataSets) {
+    for (IDataSet set in _dataSets) {
       set.setValueTextSize(size);
     }
   }
@@ -540,7 +542,7 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @param enabled
   void setDrawValues(bool enabled) {
-    for (IDataSet set in mDataSets) {
+    for (IDataSet set in _dataSets) {
       set.setDrawValues(enabled);
     }
   }
@@ -549,7 +551,7 @@ class ChartData<T extends IDataSet<Entry>> {
   /// contains. If set to true, this means that values can
   /// be highlighted programmatically or by touch gesture.
   void setHighlightEnabled(bool enabled) {
-    for (IDataSet set in mDataSets) {
+    for (IDataSet set in _dataSets) {
       set.setHighlightEnabled(enabled);
     }
   }
@@ -559,7 +561,7 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @return
   bool isHighlightEnabled() {
-    for (IDataSet set in mDataSets) {
+    for (IDataSet set in _dataSets) {
       if (!set.isHighlightEnabled()) return false;
     }
     return true;
@@ -568,8 +570,8 @@ class ChartData<T extends IDataSet<Entry>> {
   /// Clears this data object from all DataSets and removes all Entries. Don't
   /// forget to invalidate the chart after this.
   void clearValues() {
-    if (mDataSets != null) {
-      mDataSets.clear();
+    if (_dataSets != null) {
+      _dataSets.clear();
     }
     notifyDataChanged();
   }
@@ -580,7 +582,7 @@ class ChartData<T extends IDataSet<Entry>> {
   /// @param dataSet
   /// @return
   bool contains(T dataSet) {
-    for (T set in mDataSets) {
+    for (T set in _dataSets) {
       if (set == dataSet) return true;
     }
     return false;
@@ -591,7 +593,7 @@ class ChartData<T extends IDataSet<Entry>> {
   /// @return
   int getEntryCount() {
     int count = 0;
-    for (T set in mDataSets) {
+    for (T set in _dataSets) {
       count += set.getEntryCount();
     }
     return count;
@@ -601,11 +603,45 @@ class ChartData<T extends IDataSet<Entry>> {
   ///
   /// @return
   T getMaxEntryCountSet() {
-    if (mDataSets == null || mDataSets.isEmpty) return null;
-    T max = mDataSets[0];
-    for (T set in mDataSets) {
+    if (_dataSets == null || _dataSets.isEmpty) return null;
+    T max = _dataSets[0];
+    for (T set in _dataSets) {
       if (set.getEntryCount() > max.getEntryCount()) max = set;
     }
     return max;
+  }
+
+  double get yMin => _yMin;
+
+  set yMin(double value) {
+    _yMin = value;
+  }
+
+  double get leftAxisMax => _leftAxisMax;
+
+  set leftAxisMax(double value) {
+    _leftAxisMax = value;
+  }
+
+  double get leftAxisMin => _leftAxisMin;
+
+  set leftAxisMin(double value) {
+    _leftAxisMin = value;
+  }
+
+  double get rightAxisMax => _rightAxisMax;
+
+  set rightAxisMax(double value) {
+    _rightAxisMax = value;
+  }
+
+  double get rightAxisMin => _rightAxisMin;
+
+  set rightAxisMin(double value) {
+    _rightAxisMin = value;
+  }
+
+  set xMin(double value) {
+    _xMin = value;
   }
 }

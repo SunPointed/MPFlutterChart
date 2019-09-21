@@ -207,7 +207,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
       ..setValueTextSize(11)
       ..setValueTextColor(ColorUtils.BLACK);
 //    ..setValueTypeface(tf);
-    
+
     setState(() {});
   }
 
@@ -220,51 +220,37 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    pieChart = PieChart(pieData, (painter) {
-      _formatter.setPieChartPainter(painter);
-
-      painter
-        ..setUsePercentValues(true)
-        ..mExtraLeftOffset = 20
-        ..mExtraTopOffset = 0
-        ..mExtraRightOffset = 20
-        ..mExtraBottomOffset = 0
-        ..mDragDecelerationFrictionCoef = 0.95
-//      ..setCenterTextTypeface()
-        ..setCenterText("value lines")
-        ..setDrawHoleEnabled(true)
-        ..setHoleColor(ColorUtils.WHITE)
-        ..setTransparentCircleColor(ColorUtils.WHITE)
-        ..setTransparentCircleAlpha(110)
-        ..setHoleRadius(58)
-        ..setTransparentCircleRadius(61)
-        ..setRotationEnabled(true)
-        ..mHighLightPerTapEnabled = true
-        ..highlightValues(null)
-        ..setOnChartValueSelectedListener(this);
-
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.TOP)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
-        ..setOrientation(LegendOrientation.VERTICAL)
-        ..setDrawInside(false)
-        ..setEnabled(false);
-
-      painter.mAnimator.animateY2(1400, Easing.EaseInOutQuad);
-    },
+    var desc = Description()..enabled = false;
+    pieChart = PieChart(pieData,
         rotateEnabled: true,
         drawHole: true,
         drawCenterText: true,
-        extraLeftOffset: 5,
-        extraTopOffset: 10,
-        extraRightOffset: 5,
-        extraBottomOffset: 5,
+        extraLeftOffset: 20,
+        extraTopOffset: 0,
+        extraRightOffset: 20,
+        extraBottomOffset: 0,
         usePercentValues: true,
         touchEnabled: true,
+        centerText: "value lines",
         dragDecelerationFrictionCoef: 0.95,
-        desc: desc);
+        holeRadiusPercent: 58,
+        transparentCircleRadiusPercent: 61,
+        highLightPerTapEnabled: true,
+        selectionListener: this,
+        description: desc);
+    _formatter.setPieChartPainter(pieChart.painter);
+    pieChart.painter
+      ..setHoleColor(ColorUtils.WHITE)
+      ..setTransparentCircleColor(ColorUtils.WHITE)
+      ..setTransparentCircleAlpha(110)
+      ..highlightValues(null);
+    pieChart.legend
+      ..verticalAlignment = (LegendVerticalAlignment.TOP)
+      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+      ..orientation = (LegendOrientation.VERTICAL)
+      ..drawInside = (false)
+      ..enabled = (false);
+    pieChart.animator.animateY2(1400, Easing.EaseInOutQuad);
   }
 
   @override

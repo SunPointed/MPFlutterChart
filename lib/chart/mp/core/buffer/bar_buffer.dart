@@ -3,42 +3,40 @@ import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_bar_data_set.da
 import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 
 class BarBuffer extends AbstractBuffer<IBarDataSet> {
-  int mDataSetIndex = 0;
-  int mDataSetCount = 1;
-  bool mContainsStacks = false;
-  bool mInverted = false;
+  int _dataSetIndex = 0;
+  int _dataSetCount = 1;
+  bool _containsStacks = false;
+  bool _inverted = false;
 
   /// width of the bar on the x-axis, in values (not pixels)
-  double mBarWidth = 1.0;
+  double _barWidth = 1.0;
 
   BarBuffer(int size, int dataSetCount, bool containsStacks) : super(size) {
-    this.mDataSetCount = dataSetCount;
-    this.mContainsStacks = containsStacks;
+    this._dataSetCount = dataSetCount;
+    this._containsStacks = containsStacks;
   }
 
-  void setBarWidth(double barWidth) {
-    this.mBarWidth = barWidth;
-  }
+  int get dataSetIndex => _dataSetIndex;
 
-  void setDataSet(int index) {
-    this.mDataSetIndex = index;
-  }
-
-  void setInverted(bool inverted) {
-    this.mInverted = inverted;
+  set dataSetIndex(int value) {
+    _dataSetIndex = value;
   }
 
   void addBar(double left, double top, double right, double bottom) {
-    buffer[index++] = left;
-    buffer[index++] = top;
-    buffer[index++] = right;
-    buffer[index++] = bottom;
+    buffer[index] = left;
+    index += 1;
+    buffer[index] = top;
+    index += 1;
+    buffer[index] = right;
+    index += 1;
+    buffer[index] = bottom;
+    index += 1;
   }
 
   @override
   void feed(IBarDataSet data) {
     double size = data.getEntryCount() * phaseX;
-    double barWidthHalf = mBarWidth / 2.0;
+    double barWidthHalf = _barWidth / 2.0;
 
     for (int i = 0; i < size; i++) {
       BarEntry e = data.getEntryForIndex(i);
@@ -47,14 +45,14 @@ class BarBuffer extends AbstractBuffer<IBarDataSet> {
 
       double x = e.x;
       double y = e.y;
-      List<double> vals = e.getYVals();
+      List<double> vals = e.yVals;
 
-      if (!mContainsStacks || vals == null) {
+      if (!_containsStacks || vals == null) {
         double left = x - barWidthHalf;
         double right = x + barWidthHalf;
         double bottom, top;
 
-        if (mInverted) {
+        if (_inverted) {
           bottom = y >= 0 ? y : 0;
           top = y <= 0 ? y : 0;
         } else {
@@ -71,7 +69,7 @@ class BarBuffer extends AbstractBuffer<IBarDataSet> {
         addBar(left, top, right, bottom);
       } else {
         double posY = 0.0;
-        double negY = -e.getNegativeSum();
+        double negY = -e.negativeSum;
         double yStart = 0.0;
 
         // fill the stack
@@ -96,7 +94,7 @@ class BarBuffer extends AbstractBuffer<IBarDataSet> {
           double right = x + barWidthHalf;
           double bottom, top;
 
-          if (mInverted) {
+          if (_inverted) {
             bottom = y >= yStart ? y : yStart;
             top = y <= yStart ? y : yStart;
           } else {
@@ -113,5 +111,29 @@ class BarBuffer extends AbstractBuffer<IBarDataSet> {
       }
     }
     reset();
+  }
+
+  int get dataSetCount => _dataSetCount;
+
+  set dataSetCount(int value) {
+    _dataSetCount = value;
+  }
+
+  bool get containsStacks => _containsStacks;
+
+  set containsStacks(bool value) {
+    _containsStacks = value;
+  }
+
+  bool get inverted => _inverted;
+
+  set inverted(bool value) {
+    _inverted = value;
+  }
+
+  double get barWidth => _barWidth;
+
+  set barWidth(double value) {
+    _barWidth = value;
   }
 }

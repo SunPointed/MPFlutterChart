@@ -3,7 +3,7 @@ import 'dart:ui' as ui;
 
 class BubbleEntry extends Entry {
   /// size value
-  double mSize = 0;
+  double _size = 0;
 
   /// Constructor.
   ///
@@ -12,22 +12,19 @@ class BubbleEntry extends Entry {
   /// @param size The size of the bubble.
   BubbleEntry({double x, double y, double size, Object data, ui.Image icon})
       : super(x: x, y: y, data: data, icon: icon) {
-    this.mSize = size;
+    this._size = size;
   }
 
   BubbleEntry copy() {
-    BubbleEntry c = BubbleEntry(x: x, y: y, size: mSize, data: mData);
+    BubbleEntry c = BubbleEntry(x: x, y: y, size: _size, data: mData);
     return c;
   }
 
-  /// Returns the size of this entry (the size of the bubble).
-  ///
-  /// @return
-  double getSize() {
-    return mSize;
+  double get size => _size;
+
+  set size(double value) {
+    _size = value;
   }
 
-  void setSize(double size) {
-    this.mSize = size;
-  }
+
 }

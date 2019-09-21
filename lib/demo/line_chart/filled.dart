@@ -190,30 +190,8 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    _lineChart = LineChart(_lineData, (painter) {
-      painter.setGridBackgroundColor(_fillColor);
-      painter.mLegend.setEnabled(false);
-      painter.mXAxis.setEnabled(false);
-      painter.mAxisLeft
-        ..setAxisMaximum(900)
-        ..setAxisMinimum(-250)
-        ..setDrawAxisLine(false)
-        ..setDrawZeroLine(false)
-        ..setDrawGridLines(false);
-      painter.mAxisRight.setEnabled(false);
-
-      var formatter1 = painter.mData.getDataSetByIndex(0).getFillFormatter();
-      if (formatter1 is A) {
-        (formatter1 as A).setPainter(painter);
-      }
-
-      var formatter2 = painter.mData.getDataSetByIndex(1).getFillFormatter();
-      if (formatter2 is B) {
-        (formatter2 as B).setPainter(painter);
-      }
-    },
+    var desc = Description()..enabled = false;
+    _lineChart = LineChart(_lineData,
         drawBorders: true,
         touchEnabled: true,
         drawGridBackground: true,
@@ -222,7 +200,25 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
         scaleXEnabled: true,
         scaleYEnabled: true,
         pinchZoomEnabled: false,
-        desc: desc);
+        backgroundColor: _fillColor,
+        description: desc);
+    _lineChart.legend.enabled = (false);
+    _lineChart.xAxis.enabled = (false);
+    _lineChart.axisLeft
+      ..setAxisMaximum(900)
+      ..setAxisMinimum(-250)
+      ..drawAxisLine = (false)
+      ..setDrawZeroLine(false)
+      ..drawGridLines = (false);
+    _lineChart.axisRight.enabled = (false);
+    var formatter1 = _lineData.getDataSetByIndex(0).getFillFormatter();
+    if (formatter1 is A) {
+      formatter1.setPainter(_lineChart.painter);
+    }
+    var formatter2 = _lineData.getDataSetByIndex(1).getFillFormatter();
+    if (formatter2 is B) {
+      formatter2.setPainter(_lineChart.painter);
+    }
   }
 }
 
@@ -236,7 +232,7 @@ class A implements IFillFormatter {
   @override
   double getFillLinePosition(
       ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return _painter?.mAxisLeft?.getAxisMinimum();
+    return _painter?.axisLeft?.axisMinimum;
   }
 }
 
@@ -250,6 +246,6 @@ class B implements IFillFormatter {
   @override
   double getFillLinePosition(
       ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return _painter?.mAxisLeft?.getAxisMaximum();
+    return _painter?.axisLeft?.axisMaximum;
   }
 }

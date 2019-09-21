@@ -7,7 +7,7 @@ import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class TriangleShapeRenderer implements IShapeRenderer {
-  Path mTrianglePathBuffer = Path();
+  Path _trianglePathBuffer = Path();
 
   @override
   void renderShape(
@@ -29,7 +29,7 @@ class TriangleShapeRenderer implements IShapeRenderer {
     renderPaint.style = PaintingStyle.fill;
 
     // create a triangle path
-    Path tri = mTrianglePathBuffer;
+    Path tri = _trianglePathBuffer;
     tri.reset();
 
     tri.moveTo(posX, posY - shapeHalf);

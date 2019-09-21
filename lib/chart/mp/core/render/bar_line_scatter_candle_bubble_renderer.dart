@@ -8,12 +8,18 @@ import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 
 abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
   /// buffer for storing the current minimum and maximum visible x
-  XBounds mXBounds;
+  XBounds _xBounds;
 
   BarLineScatterCandleBubbleRenderer(
       ChartAnimator animator, ViewPortHandler viewPortHandler)
       : super(animator, viewPortHandler) {
-    mXBounds = XBounds(mAnimator);
+    _xBounds = XBounds(this.animator);
+  }
+
+  XBounds get xBounds => _xBounds;
+
+  set xBounds(XBounds value) {
+    _xBounds = value;
   }
 
   /// Returns true if the DataSet values should be drawn, false if not.
@@ -35,8 +41,7 @@ abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
 
     double entryIndex = set.getEntryIndex2(e).toDouble();
 
-    if (e == null ||
-        entryIndex >= set.getEntryCount() * mAnimator.getPhaseX()) {
+    if (e == null || entryIndex >= set.getEntryCount() * animator.getPhaseX()) {
       return false;
     } else {
       return true;

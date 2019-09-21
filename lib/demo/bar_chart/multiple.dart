@@ -184,7 +184,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
 //    barData.setValueTypeface(tfLight);
 
     // specify the width each bar should have
-    barData.setBarWidth(0.2);
+    barData.barWidth = (0.2);
 
     setState(() {});
   }
@@ -194,54 +194,15 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
       return;
     }
 
-    if(barChart != null){
+    if (barChart != null) {
       barChart?.data = barData;
       barChart?.getState()?.setStateIfNotDispose();
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    barChart = BarChart(barData, (painter) {
-      double groupSpace = 0.08;
-      double barSpace = 0.03; // x4 DataSet/ x4 DataSet
-      // (0.2 + 0.03) * 4 + 0.08 = 1.00 -> interval per "group"
+    var desc = Description()..enabled = false;
 
-      painter
-        ..groupBars(startYear.toDouble(), groupSpace, barSpace)
-        ..setOnChartValueSelectedListener(this)
-        ..setDrawBarShadow(false);
-
-      painter.mXAxis
-//      ..setTypeface(tf)
-        ..setGranularity(1.0)
-        ..setCenterAxisLabels
-        ..setAxisMinimum(startYear.toDouble())
-        ..setAxisMaximum(startYear +
-            painter.getData().getGroupWidth(groupSpace, barSpace) * groupCount)
-        ..setValueFormatter(A());
-
-      ValueFormatter formatter = LargeValueFormatter();
-      painter.mAxisLeft
-//      ..setTypeface(tf)
-        ..setValueFormatter(formatter)
-        ..setDrawGridLines(false)
-        ..setSpaceTop(35)
-        ..setAxisMinimum(0);
-
-      painter.mAxisRight.setEnabled(false);
-
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.TOP)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
-        ..setOrientation(LegendOrientation.VERTICAL)
-        ..setDrawInside(false)
-//        ..setTypeface(tfLight)
-        ..setYOffset(0.0)
-        ..setXOffset(10)
-        ..setYEntrySpace(0)
-        ..setTextSize(8);
-    },
+    barChart = BarChart(barData,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -250,7 +211,39 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
         scaleYEnabled: true,
         pinchZoomEnabled: false,
         maxVisibleCount: 60,
-        desc: desc);
+        selectionListener: this,
+        drawBarShadow: false,
+        description: desc);
+    double groupSpace = 0.08;
+    double barSpace = 0.03; // x4 DataSet/ x4 DataSet
+    // (0.2 + 0.03) * 4 + 0.08 = 1.00 -> interval per "group"
+    barChart.groupBars(startYear.toDouble(), groupSpace, barSpace);
+    barChart.xAxis
+//      ..setTypeface(tf)
+      ..setGranularity(1.0)
+      ..centerAxisLabels = true
+      ..setAxisMinimum(startYear.toDouble())
+      ..setAxisMaximum(
+          startYear + barData.getGroupWidth(groupSpace, barSpace) * groupCount)
+      ..setValueFormatter(A());
+    ValueFormatter formatter = LargeValueFormatter();
+    barChart.axisLeft
+//      ..setTypeface(tf)
+      ..setValueFormatter(formatter)
+      ..drawGridLines = (false)
+      ..spacePercentTop = (35)
+      ..setAxisMinimum(0);
+    barChart.axisRight.enabled = (false);
+    barChart.legend
+      ..verticalAlignment = (LegendVerticalAlignment.TOP)
+      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+      ..orientation = (LegendOrientation.VERTICAL)
+      ..drawInside = (false)
+//        ..setTypeface(tfLight)
+      ..yOffset = (0.0)
+      ..xOffset = (10)
+      ..yEntrySpace = (0)
+      ..textSize = (8);
   }
 
   @override

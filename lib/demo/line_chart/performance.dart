@@ -124,23 +124,14 @@ class LineChartPerformanceState
   void _initLineChart() {
     if (_lineData == null) return;
 
-    if(_lineChart != null){
+    if (_lineChart != null) {
       _lineChart?.data = _lineData;
       _lineChart?.getState()?.setStateIfNotDispose();
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    _lineChart = LineChart(_lineData, (painter) {
-      painter.mAxisLeft.setDrawGridLines(false);
-      painter.mAxisRight.setEnabled(false);
-      painter.mXAxis
-        ..setDrawGridLines(true)
-        ..setDrawAxisLine(false);
-      painter.mDescription.setEnabled(false);
-      painter.mLegend.setEnabled(false);
-    },
+    var desc = Description()..enabled = false;
+    _lineChart = LineChart(_lineData,
         touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
@@ -148,6 +139,12 @@ class LineChartPerformanceState
         scaleXEnabled: true,
         scaleYEnabled: true,
         pinchZoomEnabled: false,
-        desc: desc);
+        description: desc);
+    _lineChart.axisLeft.drawGridLines = (false);
+    _lineChart.axisRight.enabled = (false);
+    _lineChart.xAxis
+      ..drawGridLines = (true)
+      ..drawAxisLine = (false);
+    _lineChart.legend.enabled = (false);
   }
 }

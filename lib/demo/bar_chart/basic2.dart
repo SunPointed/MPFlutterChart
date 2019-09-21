@@ -141,7 +141,7 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
 
     barData = BarData(dataSets);
     barData.setValueTextSize(10);
-    barData.setBarWidth(0.9);
+    barData.barWidth = 0.9;
 
     setState(() {});
   }
@@ -151,37 +151,32 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
       return;
     }
 
-    if(barChart != null){
+    if (barChart != null) {
       barChart?.data = barData;
       barChart?.getState()?.setStateIfNotDispose();
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    barChart = BarChart(barData, (painter) {
-      painter
-        ..mMaxVisibleCount = 60
-        ..setFitBars(true);
+    var desc = Description()..enabled = false;
 
-      painter.mXAxis
-        ..setPosition(XAxisPosition.BOTTOM)
-        ..setDrawGridLines(false);
-
-      painter.mAxisLeft.setDrawGridLines(false);
-
-      painter.mLegend.setEnabled(false);
-
-      painter.mAnimator.animateY1(1500);
-    },
-        touchEnabled: true,
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: false,
-        maxVisibleCount: 60,
-        desc: desc);
+    barChart = BarChart(
+      barData,
+      touchEnabled: true,
+      drawGridBackground: false,
+      dragXEnabled: true,
+      dragYEnabled: true,
+      scaleXEnabled: true,
+      scaleYEnabled: true,
+      pinchZoomEnabled: false,
+      maxVisibleCount: 60,
+      description: desc,
+      fitBars: true,
+    );
+    barChart.xAxis
+      ..position = XAxisPosition.BOTTOM
+      ..drawGridLines = false;
+    barChart.axisLeft.drawGridLines = false;
+    barChart.legend.enabled = false;
+    barChart.animator.animateY1(1500);
   }
 }

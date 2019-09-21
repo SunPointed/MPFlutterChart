@@ -14,7 +14,7 @@ class RadarHighlighter extends PieRadarHighlighter<RadarChartPainter> {
     List<Highlight> highlights = getHighlightsAtIndex(index);
 
     double distanceToCenter =
-        mChart.distanceToCenter(x, y) / mChart.getFactor();
+        painter.distanceToCenter(x, y) / painter.getFactor();
 
     Highlight closest;
     double distance = double.infinity;
@@ -22,7 +22,7 @@ class RadarHighlighter extends PieRadarHighlighter<RadarChartPainter> {
     for (int i = 0; i < highlights.length; i++) {
       Highlight high = highlights[i];
 
-      double cdistance = (high.getY() - distanceToCenter).abs();
+      double cdistance = (high.y - distanceToCenter).abs();
       if (cdistance < distance) {
         closest = high;
         distance = cdistance;
@@ -40,25 +40,25 @@ class RadarHighlighter extends PieRadarHighlighter<RadarChartPainter> {
   /// @param index
   /// @return
   List<Highlight> getHighlightsAtIndex(int index) {
-    mHighlightBuffer.clear();
+    highlightBuffer.clear();
 
-    double phaseX = mChart.mAnimator.getPhaseX();
-    double phaseY = mChart.mAnimator.getPhaseY();
-    double sliceangle = mChart.getSliceAngle();
-    double factor = mChart.getFactor();
+    double phaseX = painter.animator.getPhaseX();
+    double phaseY = painter.animator.getPhaseY();
+    double sliceangle = painter.getSliceAngle();
+    double factor = painter.getFactor();
 
     MPPointF pOut = MPPointF.getInstance1(0, 0);
-    for (int i = 0; i < mChart.getData().getDataSetCount(); i++) {
-      IDataSet dataSet = mChart.getData().getDataSetByIndex(i);
+    for (int i = 0; i < painter.getData().getDataSetCount(); i++) {
+      IDataSet dataSet = painter.getData().getDataSetByIndex(i);
 
       final Entry entry = dataSet.getEntryForIndex(index);
 
-      double y = (entry.y - mChart.getYChartMin());
+      double y = (entry.y - painter.getYChartMin());
 
-      Utils.getPosition(mChart.getCenterOffsets(), y * factor * phaseY,
-          sliceangle * index * phaseX + mChart.getRotationAngle(), pOut);
+      Utils.getPosition(painter.getCenterOffsets(), y * factor * phaseY,
+          sliceangle * index * phaseX + painter.getRotationAngle(), pOut);
 
-      mHighlightBuffer.add(Highlight(
+      highlightBuffer.add(Highlight(
           x: index.toDouble(),
           y: entry.y,
           xPx: pOut.x,
@@ -67,6 +67,6 @@ class RadarHighlighter extends PieRadarHighlighter<RadarChartPainter> {
           axis: dataSet.getAxisDependency()));
     }
 
-    return mHighlightBuffer;
+    return highlightBuffer;
   }
 }

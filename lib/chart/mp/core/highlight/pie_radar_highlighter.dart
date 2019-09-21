@@ -5,35 +5,39 @@ import 'package:mp_flutter_chart/chart/mp/painter/pie_redar_chart_painter.dart';
 
 abstract class PieRadarHighlighter<T extends PieRadarChartPainter>
     implements IHighlighter {
-  T mChart;
+  T _painter;
 
   /// buffer for storing previously highlighted values
-  List<Highlight> mHighlightBuffer = List();
+  List<Highlight> _highlightBuffer = List();
 
-  PieRadarHighlighter(T chart) {
-    this.mChart = chart;
+  PieRadarHighlighter(T painter) {
+    this._painter = painter;
   }
+
+  List<Highlight> get highlightBuffer => _highlightBuffer;
+
+  T get painter => _painter;
 
   @override
   Highlight getHighlight(double x, double y) {
-    double touchDistanceToCenter = mChart.distanceToCenter(x, y);
+    double touchDistanceToCenter = _painter.distanceToCenter(x, y);
 
     // check if a slice was touched
-    if (touchDistanceToCenter > mChart.getRadius()) {
+    if (touchDistanceToCenter > _painter.getRadius()) {
       // if no slice was touched, highlight nothing
       return null;
     } else {
-      double angle = mChart.getAngleForPoint(x, y);
+      double angle = _painter.getAngleForPoint(x, y);
 
-      if (mChart is PieChartPainter) {
-        angle /= mChart.mAnimator.getPhaseY();
+      if (_painter is PieChartPainter) {
+        angle /= _painter.animator.getPhaseY();
       }
 
-      int index = mChart.getIndexForAngle(angle);
+      int index = _painter.getIndexForAngle(angle);
 
       // check if the index could be found
       if (index < 0 ||
-          index >= mChart.getData().getMaxEntryCountSet().getEntryCount()) {
+          index >= _painter.getData().getMaxEntryCountSet().getEntryCount()) {
         return null;
       } else {
         return getClosestHighlight(index, x, y);

@@ -13,70 +13,76 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 abstract class AxisRenderer extends Renderer {
   /// base axis this axis renderer works with */
-  AxisBase mAxis;
+  AxisBase _axis;
 
   /// transformer to transform values to screen pixels and return */
-  Transformer mTrans;
+  Transformer _trans;
 
   /// paint object for the grid lines
-  Paint mGridPaint;
+  Paint _gridPaint;
 
   /// paint for the x-label values
-  TextPainter mAxisLabelPaint;
+  TextPainter _axisLabelPaint;
 
   /// paint for the line surrounding the chart
-  Paint mAxisLinePaint;
+  Paint _axisLinePaint;
 
   /// paint used for the limit lines
-  Paint mLimitLinePaint;
+  Paint _limitLinePaint;
 
   AxisRenderer(
       ViewPortHandler viewPortHandler, Transformer trans, AxisBase axis)
       : super(viewPortHandler) {
-    this.mTrans = trans;
-    this.mAxis = axis;
-    if (mViewPortHandler != null) {
-      mGridPaint = Paint()
+    this._trans = trans;
+    this._axis = axis;
+    if (viewPortHandler != null) {
+      _gridPaint = Paint()
         ..color = Color.fromARGB(90, 160, 160, 160)
         ..strokeWidth = 1
         ..style = PaintingStyle.stroke;
 
-      mAxisLabelPaint = PainterUtils.create(null, null, ColorUtils.BLACK, null);
+      _axisLabelPaint = PainterUtils.create(null, null, ColorUtils.BLACK, null);
 
-      mLimitLinePaint = Paint()
+      _limitLinePaint = Paint()
         ..isAntiAlias = true
         ..style = PaintingStyle.stroke;
     }
   }
 
-  /// Returns the Paint object used for drawing the axis (labels).
-  ///
-  /// @return
-  TextPainter getPaintAxisLabels() {
-    return mAxisLabelPaint;
+  AxisBase get axis => _axis;
+
+  set axis(AxisBase value) {
+    _axis = value;
   }
 
-  /// Returns the Paint object that is used for drawing the grid-lines of the
-  /// axis.
-  ///
-  /// @return
-  Paint getPaintGrid() {
-    return mGridPaint;
+  Transformer get trans => _trans;
+
+  set trans(Transformer value) {
+    _trans = value;
   }
 
-  /// Returns the Paint object that is used for drawing the axis-line that goes
-  /// alongside the axis.
-  ///
-  /// @return
-  Paint getPaintAxisLine() {
-    return mAxisLinePaint;
+  Paint get axisLinePaint => _axisLinePaint;
+
+  set axisLinePaint(Paint value) {
+    _axisLinePaint = value;
   }
 
-  /// Returns the Transformer object used for transforming the axis values.
-  ///
-  /// @return
-  Transformer getTransformer() {
-    return mTrans;
+  TextPainter get axisLabelPaint => _axisLabelPaint;
+
+  set axisLabelPaint(TextPainter value) {
+    _axisLabelPaint = value;
+  }
+
+  Paint get gridPaint => _gridPaint;
+
+  set gridPaint(Paint value) {
+    _gridPaint = value;
+  }
+
+  Paint get limitLinePaint => _limitLinePaint;
+
+  set limitLinePaint(Paint value) {
+    _limitLinePaint = value;
   }
 
   /// Computes the axis values.
@@ -86,13 +92,13 @@ abstract class AxisRenderer extends Renderer {
   void computeAxis(double min, double max, bool inverted) {
     // calculate the starting and entry point of the y-labels (depending on
     // zoom / contentrect bounds)
-    if (mViewPortHandler != null &&
-        mViewPortHandler.contentWidth() > 10 &&
-        !mViewPortHandler.isFullyZoomedOutY()) {
-      MPPointD p1 = mTrans.getValuesByTouchPoint1(
-          mViewPortHandler.contentLeft(), mViewPortHandler.contentTop());
-      MPPointD p2 = mTrans.getValuesByTouchPoint1(
-          mViewPortHandler.contentLeft(), mViewPortHandler.contentBottom());
+    if (viewPortHandler != null &&
+        viewPortHandler.contentWidth() > 10 &&
+        !viewPortHandler.isFullyZoomedOutY()) {
+      MPPointD p1 = _trans.getValuesByTouchPoint1(
+          viewPortHandler.contentLeft(), viewPortHandler.contentTop());
+      MPPointD p2 = _trans.getValuesByTouchPoint1(
+          viewPortHandler.contentLeft(), viewPortHandler.contentBottom());
 
       if (!inverted) {
         min = p2.y;
@@ -116,13 +122,13 @@ abstract class AxisRenderer extends Renderer {
     double yMin = min;
     double yMax = max;
 
-    int labelCount = mAxis.getLabelCount();
+    int labelCount = _axis.labelCount;
     double range = (yMax - yMin).abs();
 
     if (labelCount == 0 || range <= 0 || range.isInfinite) {
-      mAxis.mEntries = List<double>();
-      mAxis.mCenteredEntries = List<double>();
-      mAxis.mEntryCount = 0;
+      _axis.entries = List<double>();
+      _axis.centeredEntries = List<double>();
+      _axis.entryCount = 0;
       return;
     }
 
@@ -132,9 +138,8 @@ abstract class AxisRenderer extends Renderer {
 
     // If granularity is enabled, then do not allow the interval to go below specified granularity.
     // This is used to avoid repeated values when rounding values for display.
-    if (mAxis.isGranularityEnabled())
-      interval =
-          interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
+    if (_axis.granularityEnabled)
+      interval = interval < _axis.granularity ? _axis.granularity : interval;
 
     // Normalize interval
     double intervalMagnitude =
@@ -146,22 +151,22 @@ abstract class AxisRenderer extends Renderer {
       interval = (10 * intervalMagnitude).floorToDouble();
     }
 
-    int n = mAxis.isCenterAxisLabelsEnabled() ? 1 : 0;
+    int n = _axis.isCenterAxisLabelsEnabled() ? 1 : 0;
 
     // force label count
-    if (mAxis.isForceLabelsEnabled()) {
+    if (_axis.forceLabels) {
       interval = range / (labelCount - 1);
-      mAxis.mEntryCount = labelCount;
+      _axis.entryCount = labelCount;
 
-      if (mAxis.mEntries.length < labelCount) {
+      if (_axis.entries.length < labelCount) {
         // Ensure stops contains at least numStops elements.
-        mAxis.mEntries = List(labelCount);
+        _axis.entries = List(labelCount);
       }
 
       double v = min;
 
       for (int i = 0; i < labelCount; i++) {
-        mAxis.mEntries[i] = v;
+        _axis.entries[i] = v;
         v += interval;
       }
 
@@ -171,7 +176,7 @@ abstract class AxisRenderer extends Renderer {
     } else {
       double first =
           interval == 0.0 ? 0.0 : (yMin / interval).ceil() * interval;
-      if (mAxis.isCenterAxisLabelsEnabled()) {
+      if (_axis.isCenterAxisLabelsEnabled()) {
         first -= interval;
       }
 
@@ -188,11 +193,11 @@ abstract class AxisRenderer extends Renderer {
         }
       }
 
-      mAxis.mEntryCount = n;
+      _axis.entryCount = n;
 
-      if (mAxis.mEntries.length < n) {
+      if (_axis.entries.length < n) {
         // Ensure stops contains at least numStops elements.
-        mAxis.mEntries = List(n);
+        _axis.entries = List(n);
       }
 
       i = 0;
@@ -201,26 +206,26 @@ abstract class AxisRenderer extends Renderer {
             0.0) // Fix for negative zero case (Where value == -0.0, and 0.0 == -0.0)
           f = 0.0;
 
-        mAxis.mEntries[i] = f;
+        _axis.entries[i] = f;
       }
     }
 
     // set decimals
     if (interval < 1) {
-      mAxis.mDecimals = (-log(interval) / ln10).ceil();
+      _axis.decimals = (-log(interval) / ln10).ceil();
     } else {
-      mAxis.mDecimals = 0;
+      _axis.decimals = 0;
     }
 
-    if (mAxis.isCenterAxisLabelsEnabled()) {
-      if (mAxis.mCenteredEntries.length < n) {
-        mAxis.mCenteredEntries = List(n);
+    if (_axis.isCenterAxisLabelsEnabled()) {
+      if (_axis.centeredEntries.length < n) {
+        _axis.centeredEntries = List(n);
       }
 
       double offset = interval / 2.0;
 
       for (int i = 0; i < n; i++) {
-        mAxis.mCenteredEntries[i] = mAxis.mEntries[i] + offset;
+        _axis.centeredEntries[i] = _axis.entries[i] + offset;
       }
     }
   }

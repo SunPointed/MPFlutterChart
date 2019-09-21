@@ -7,39 +7,39 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry>
     implements IBubbleDataSet {
-  double mMaxSize = 0.0;
-  bool mNormalizeSize = true;
+  double _maxSize = 0.0;
+  bool _normalizeSize = true;
 
-  double mHighlightCircleWidth = 2.5;
+  double _highlightCircleWidth = 2.5;
 
   BubbleDataSet(List<BubbleEntry> yVals, String label) : super(yVals, label);
 
   @override
   void setHighlightCircleWidth(double width) {
-    mHighlightCircleWidth = Utils.convertDpToPixel(width);
+    _highlightCircleWidth = Utils.convertDpToPixel(width);
   }
 
   @override
   double getHighlightCircleWidth() {
-    return mHighlightCircleWidth;
+    return _highlightCircleWidth;
   }
 
   @override
   void calcMinMax1(BubbleEntry e) {
     super.calcMinMax1(e);
 
-    final double size = e.getSize();
+    final double size = e.size;
 
-    if (size > mMaxSize) {
-      mMaxSize = size;
+    if (size > _maxSize) {
+      _maxSize = size;
     }
   }
 
   @override
   DataSet<BubbleEntry> copy1() {
     List<BubbleEntry> entries = List<BubbleEntry>();
-    for (int i = 0; i < mValues.length; i++) {
-      entries.add(mValues[i].copy());
+    for (int i = 0; i < values.length; i++) {
+      entries.add(values[i].copy());
     }
     BubbleDataSet copied = BubbleDataSet(entries, getLabel());
     copy(copied);
@@ -50,22 +50,22 @@ class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry>
     super.copy(baseDataSet);
     if (baseDataSet is BubbleDataSet) {
       var bubbleDataSet = baseDataSet;
-      bubbleDataSet.mHighlightCircleWidth = mHighlightCircleWidth;
-      bubbleDataSet.mNormalizeSize = mNormalizeSize;
+      bubbleDataSet._highlightCircleWidth = _highlightCircleWidth;
+      bubbleDataSet._normalizeSize = _normalizeSize;
     }
   }
 
   @override
   double getMaxSize() {
-    return mMaxSize;
+    return _maxSize;
   }
 
   @override
   bool isNormalizeSizeEnabled() {
-    return mNormalizeSize;
+    return _normalizeSize;
   }
 
   void setNormalizeSizeEnabled(bool normalizeSize) {
-    mNormalizeSize = normalizeSize;
+    _normalizeSize = normalizeSize;
   }
 }

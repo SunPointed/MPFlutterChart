@@ -4,7 +4,7 @@ import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.d
 import 'package:mp_flutter_chart/chart/mp/painter/bar_line_chart_painter.dart';
 
 class DayAxisValueFormatter extends ValueFormatter {
-  final List<String> mMonths = List()
+  final List<String> _months = List()
     ..add("Jan")
     ..add("Feb")
     ..add("Mar")
@@ -18,10 +18,10 @@ class DayAxisValueFormatter extends ValueFormatter {
     ..add("Nov")
     ..add("Dec");
 
-  BarLineChartBasePainter chart;
+  BarLineChartBasePainter _painter;
 
-  DayAxisValueFormatter(BarLineChartBasePainter chart) {
-    this.chart = chart;
+  DayAxisValueFormatter(BarLineChartBasePainter painter) {
+    this._painter = painter;
   }
 
   @override
@@ -31,10 +31,10 @@ class DayAxisValueFormatter extends ValueFormatter {
     int year = determineYear(days);
 
     int month = determineMonth(days);
-    String monthName = mMonths[month % mMonths.length];
+    String monthName = _months[month % _months.length];
     String yearName = year.toString();
 
-    if (chart.getVisibleXRange() > 30 * 6) {
+    if (_painter.getVisibleXRange() > 30 * 6) {
       return monthName + " " + yearName;
     } else {
       int dayOfMonth = determineDayOfMonth(days, month + 12 * (year - 2016));

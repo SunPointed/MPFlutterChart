@@ -2,34 +2,34 @@ import 'package:intl/intl.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 
 class LargeValueFormatter extends ValueFormatter {
-  List<String> mSuffix = List()
+  List<String> _suffix = List()
     ..add("")
     ..add("k")
     ..add("m")
     ..add("b")
     ..add("t");
-  int mMaxLength = 5;
-  NumberFormat mFormat;
-  String mText = "";
+  int _maxLength = 5;
+  NumberFormat _format;
+  String _text = "";
 
   /// Creates a formatter that appends a specified text to the result string
   ///
   /// @param appendix a text that will be appended
   LargeValueFormatter({String appendix = ""}) {
-    mFormat = new NumberFormat("###E00");
-    mText = appendix;
+    _format = new NumberFormat("###E00");
+    _text = appendix;
   }
 
   @override
   String getFormattedValue1(double value) {
-    return makePretty(value) + mText;
+    return makePretty(value) + _text;
   }
 
   /// Set an appendix text to be added at the end of the formatted value.
   ///
   /// @param appendix
   void setAppendix(String appendix) {
-    this.mText = appendix;
+    this._text = appendix;
   }
 
   /// Set custom suffix to be appended after the values.
@@ -37,17 +37,17 @@ class LargeValueFormatter extends ValueFormatter {
   ///
   /// @param suffix new suffix
   void setSuffix(List<String> suffix) {
-    this.mSuffix = suffix;
+    this._suffix = suffix;
   }
 
   void setMaxLength(int maxLength) {
-    this.mMaxLength = maxLength;
+    this._maxLength = maxLength;
   }
 
   /// Formats each number properly. Special thanks to Roman Gromov
   /// (https://github.com/romangromov) for this piece of code.
   String makePretty(double number) {
-    String r = mFormat.format(number);
+    String r = _format.format(number);
     int numericValue1 = int.tryParse(r[r.length - 1]);
     int numericValue2 = int.tryParse(r[r.length - 2]);
     int combined = int.parse("$numericValue2$numericValue1");
@@ -58,9 +58,9 @@ class LargeValueFormatter extends ValueFormatter {
           caseSensitive: false,
           multiLine: false,
         ),
-        (match) => mSuffix[combined ~/ 3]);
+        (match) => _suffix[combined ~/ 3]);
 
-    while (r.length > mMaxLength ||
+    while (r.length > _maxLength ||
         RegExp(
           r"[0-9]+\\.[a-z]",
           caseSensitive: false,

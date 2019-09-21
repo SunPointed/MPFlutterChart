@@ -125,29 +125,8 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
 
   LineChart _setupChart(LineData data, Color color) {
     (data.getDataSetByIndex(0) as LineDataSet).setCircleHoleColor(color);
-
-    var desc = Description();
-    return LineChart(data, (painter) {
-      (data.getDataSetByIndex(0) as LineDataSet).setCircleHoleColor(color);
-
-      // no description text
-      painter
-        ..mDescription.setEnabled(false)
-        ..setGridBackgroundColor(color)
-        ..setViewPortOffsets(0, 0, 0, 0);
-
-      painter.mLegend.setEnabled(false);
-
-      painter.mAxisLeft
-        ..setEnabled(false)
-        ..setSpaceTop(40)
-        ..setSpaceBottom(40);
-      painter.mAxisRight.setEnabled(false);
-      painter.mXAxis.setEnabled(false);
-
-      // animate calls invalidate()...
-      painter.mAnimator.animateX1(2500);
-    },
+    var desc = Description()..enabled = false;
+    var lineChart = LineChart(data,
         touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
@@ -155,6 +134,18 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
         scaleXEnabled: true,
         scaleYEnabled: true,
         pinchZoomEnabled: false,
-        desc: desc);
+        backgroundColor: color,
+        description: desc);
+    lineChart.painter.setViewPortOffsets(0, 0, 0, 0);
+    lineChart.legend.enabled = (false);
+    lineChart.axisLeft
+      ..enabled = (false)
+      ..spacePercentTop = (40)
+      ..spacePercentBottom = (40);
+    lineChart.axisRight.enabled = (false);
+    lineChart.xAxis.enabled = (false);
+    // animate calls invalidate()...
+    lineChart.animator.animateX1(2500);
+    return lineChart;
   }
 }

@@ -4,44 +4,44 @@ import 'package:flutter/painting.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
+import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/value_formatter/default_value_formatter.dart';
-import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
+import 'package:mp_flutter_chart/chart/mp/core/value_formatter/default_value_formatter.dart';
 
 class LineChartMarker implements IMarker {
-  Entry entry;
-  Highlight highlight;
-  double dx = 0.0;
-  double dy = 0.0;
+  Entry _entry;
+  Highlight _highlight;
+  double _dx = 0.0;
+  double _dy = 0.0;
 
-  DefaultValueFormatter formatter;
-  Color textColor;
-  Color backColor;
-  double fontSize;
+  DefaultValueFormatter _formatter;
+  Color _textColor;
+  Color _backColor;
+  double _fontSize;
 
   LineChartMarker({Color textColor, Color backColor, double fontSize})
-      : textColor = textColor,
-        backColor = backColor,
-        fontSize = fontSize {
-    formatter = DefaultValueFormatter(0);
-    this.textColor ??= ColorUtils.PURPLE;
+      : _textColor = textColor,
+        _backColor = backColor,
+        _fontSize = fontSize {
+    _formatter = DefaultValueFormatter(0);
+    this._textColor ??= ColorUtils.PURPLE;
 //    _backColor ??= Color.fromARGB((_textColor.alpha * 0.5).toInt(),
 //        _textColor.red, _textColor.green, _textColor.blue);
-    this.backColor ??= ColorUtils.WHITE;
-    this.fontSize ??= 10;
+    this._backColor ??= ColorUtils.WHITE;
+    this._fontSize ??= Utils.convertDpToPixel(10);
   }
 
   @override
   void draw(Canvas canvas, double posX, double posY) {
     TextPainter painter = PainterUtils.create(
         null,
-        "${formatter.getFormattedValue1(entry.x)},${formatter.getFormattedValue1(entry.y)}",
-        textColor,
-        fontSize);
+        "${_formatter.getFormattedValue1(_entry.x)},${_formatter.getFormattedValue1(_entry.y)}",
+        _textColor,
+        _fontSize);
     Paint paint = Paint()
-      ..color = backColor
+      ..color = _backColor
       ..strokeWidth = 2
       ..isAntiAlias = true
       ..style = PaintingStyle.fill;
@@ -68,7 +68,7 @@ class LineChartMarker implements IMarker {
 
   @override
   MPPointF getOffset() {
-    return MPPointF.getInstance1(dx, dy);
+    return MPPointF.getInstance1(_dx, _dy);
   }
 
   @override
@@ -78,7 +78,7 @@ class LineChartMarker implements IMarker {
 
   @override
   void refreshContent(Entry e, Highlight highlight) {
-    entry = e;
+    _entry = e;
     highlight = highlight;
   }
 }

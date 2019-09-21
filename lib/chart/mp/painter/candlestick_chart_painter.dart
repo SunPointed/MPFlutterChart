@@ -130,8 +130,8 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
   void initDefaultWithData() {
     renderer = CandleStickChartRenderer(this, animator, viewPortHandler);
     super.initDefaultWithData();
-    xAxis.setSpaceMin(0.5);
-    xAxis.setSpaceMax(0.5);
+    xAxis.spaceMin = (0.5);
+    xAxis.spaceMax = (0.5);
   }
 
   @override

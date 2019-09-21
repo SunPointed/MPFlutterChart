@@ -3,17 +3,17 @@ import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.d
 
 class DefaultAxisValueFormatter extends ValueFormatter {
   /// decimalformat for formatting
-  NumberFormat mFormat;
+  NumberFormat _format;
 
   /// the number of decimal digits this formatter uses
-  int digits;
+  int _digits;
 
   /// Constructor that specifies to how many digits the value should be
   /// formatted.
   ///
   /// @param digits
   DefaultAxisValueFormatter(int digits) {
-    this.digits = digits;
+    this._digits = digits;
 
     StringBuffer b = StringBuffer();
     for (int i = 0; i < digits; i++) {
@@ -21,19 +21,14 @@ class DefaultAxisValueFormatter extends ValueFormatter {
       b.write("0");
     }
 
-    mFormat = NumberFormat("###,###,###,##0" + b.toString());
+    _format = NumberFormat("###,###,###,##0" + b.toString());
   }
 
   @override
   String getFormattedValue1(double value) {
     // avoid memory allocations here (for performance)
-    return mFormat.format(value);
+    return _format.format(value);
   }
 
-  /// Returns the number of decimal digits this formatter uses or -1, if unspecified.
-  ///
-  /// @return
-  int getDecimalDigits() {
-    return digits;
-  }
+  int get digits => _digits;
 }

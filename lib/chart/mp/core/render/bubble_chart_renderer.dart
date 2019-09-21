@@ -17,28 +17,30 @@ import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
-  BubbleDataProvider mChart;
+  BubbleDataProvider _provider;
 
   BubbleChartRenderer(BubbleDataProvider chart, ChartAnimator animator,
       ViewPortHandler viewPortHandler)
       : super(animator, viewPortHandler) {
-    mChart = chart;
+    _provider = chart;
 
-    mRenderPaint..style = PaintingStyle.fill;
+    renderPaint..style = PaintingStyle.fill;
 
-    mHighlightPaint
+    highlightPaint
       ..style = PaintingStyle.stroke
       ..strokeWidth = Utils.convertDpToPixel(1.5);
   }
+
+  BubbleDataProvider get provider => _provider;
 
   @override
   void initBuffers() {}
 
   @override
   void drawData(Canvas c) {
-    BubbleData bubbleData = mChart.getBubbleData();
+    BubbleData bubbleData = _provider.getBubbleData();
 
-    for (IBubbleDataSet set in bubbleData.getDataSets()) {
+    for (IBubbleDataSet set in bubbleData.dataSets) {
       if (set.isVisible()) drawDataSet(c, set);
     }
   }
@@ -58,11 +60,11 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
   void drawDataSet(Canvas c, IBubbleDataSet dataSet) {
     if (dataSet.getEntryCount() < 1) return;
 
-    Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+    Transformer trans = _provider.getTransformer(dataSet.getAxisDependency());
 
-    double phaseY = mAnimator.getPhaseY();
+    double phaseY = animator.getPhaseY();
 
-    mXBounds.set(mChart, dataSet);
+    xBounds.set(_provider, dataSet);
 
     sizeBuffer[0] = 0;
     sizeBuffer[2] = 1;
@@ -74,49 +76,47 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
     // calcualte the full width of 1 step on the x-axis
     final double maxBubbleWidth = (sizeBuffer[2] - sizeBuffer[0]).abs();
     final double maxBubbleHeight =
-        (mViewPortHandler.contentBottom() - mViewPortHandler.contentTop())
-            .abs();
+        (viewPortHandler.contentBottom() - viewPortHandler.contentTop()).abs();
     final double referenceSize = min(maxBubbleHeight, maxBubbleWidth);
 
-    for (int j = mXBounds.min; j <= mXBounds.range + mXBounds.min; j++) {
+    for (int j = xBounds.min; j <= xBounds.range + xBounds.min; j++) {
       final BubbleEntry entry = dataSet.getEntryForIndex(j);
 
       pointBuffer[0] = entry.x;
       pointBuffer[1] = (entry.y) * phaseY;
       trans.pointValuesToPixel(pointBuffer);
 
-      double shapeHalf = getShapeSize(entry.getSize(), dataSet.getMaxSize(),
-              referenceSize, normalizeSize) /
+      double shapeHalf = getShapeSize(
+              entry.size, dataSet.getMaxSize(), referenceSize, normalizeSize) /
           2;
 
-      if (!mViewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf) ||
-          !mViewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf))
+      if (!viewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf) ||
+          !viewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf))
         continue;
 
-      if (!mViewPortHandler.isInBoundsLeft(pointBuffer[0] + shapeHalf))
-        continue;
+      if (!viewPortHandler.isInBoundsLeft(pointBuffer[0] + shapeHalf)) continue;
 
-      if (!mViewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf)) break;
+      if (!viewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf)) break;
 
       final Color color = dataSet.getColor2(entry.x.toInt());
 
-      mRenderPaint.color = color;
+      renderPaint.color = color;
       c.drawCircle(
-          Offset(pointBuffer[0], pointBuffer[1]), shapeHalf, mRenderPaint);
+          Offset(pointBuffer[0], pointBuffer[1]), shapeHalf, renderPaint);
     }
   }
 
   @override
   void drawValues(Canvas c) {
-    BubbleData bubbleData = mChart.getBubbleData();
+    BubbleData bubbleData = _provider.getBubbleData();
 
     if (bubbleData == null) return;
 
     // if values are drawn
-    if (isDrawingValuesAllowed(mChart)) {
-      final List<IBubbleDataSet> dataSets = bubbleData.getDataSets();
+    if (isDrawingValuesAllowed(_provider)) {
+      final List<IBubbleDataSet> dataSets = bubbleData.dataSets;
 
-      double lineHeight = Utils.calcTextHeight(mValuePaint, "1").toDouble();
+      double lineHeight = Utils.calcTextHeight(valuePaint, "1").toDouble();
 
       for (int i = 0; i < dataSets.length; i++) {
         IBubbleDataSet dataSet = dataSets[i];
@@ -126,15 +126,15 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
         // apply the text-styling defined by the DataSet
         applyValueTextStyle(dataSet);
 
-        final double phaseX = max(0.0, min(1.0, mAnimator.getPhaseX()));
-        final double phaseY = mAnimator.getPhaseY();
+        final double phaseX = max(0.0, min(1.0, animator.getPhaseX()));
+        final double phaseY = animator.getPhaseY();
 
-        mXBounds.set(mChart, dataSet);
+        xBounds.set(_provider, dataSet);
 
-        List<double> positions = mChart
+        List<double> positions = _provider
             .getTransformer(dataSet.getAxisDependency())
             .generateTransformedValuesBubble(
-                dataSet, phaseY, mXBounds.min, mXBounds.max);
+                dataSet, phaseY, xBounds.min, xBounds.max);
 
         final double alpha = phaseX == 1 ? phaseY : phaseX;
 
@@ -146,19 +146,19 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         for (int j = 0; j < positions.length; j += 2) {
           Color valueTextColor =
-              dataSet.getValueTextColor2(j ~/ 2 + mXBounds.min);
+              dataSet.getValueTextColor2(j ~/ 2 + xBounds.min);
           valueTextColor = Color.fromARGB((255.0 * alpha).round(),
               valueTextColor.red, valueTextColor.green, valueTextColor.blue);
 
           double x = positions[j];
           double y = positions[j + 1];
 
-          if (!mViewPortHandler.isInBoundsRight(x)) break;
+          if (!viewPortHandler.isInBoundsRight(x)) break;
 
-          if ((!mViewPortHandler.isInBoundsLeft(x) ||
-              !mViewPortHandler.isInBoundsY(y))) continue;
+          if ((!viewPortHandler.isInBoundsLeft(x) ||
+              !viewPortHandler.isInBoundsY(y))) continue;
 
-          BubbleEntry entry = dataSet.getEntryForIndex(j ~/ 2 + mXBounds.min);
+          BubbleEntry entry = dataSet.getEntryForIndex(j ~/ 2 + xBounds.min);
 
           if (dataSet.isDrawValuesEnabled()) {
             drawValue(c, formatter.getBubbleLabel(entry), x,
@@ -171,7 +171,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
                 Offset(x + iconsOffset.x, y + iconsOffset.y),
                 entry.mIcon,
                 Size(15, 15),
-                mDrawPaint);
+                drawPaint);
           }
         }
 
@@ -182,16 +182,16 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
   @override
   void drawValue(Canvas c, String valueText, double x, double y, Color color) {
-    mValuePaint = PainterUtils.create(
-        mValuePaint,
+    valuePaint = PainterUtils.create(
+        valuePaint,
         valueText,
         color,
-        mValuePaint.text.style.fontSize == null
+        valuePaint.text.style.fontSize == null
             ? Utils.convertDpToPixel(13)
-            : mValuePaint.text.style.fontSize);
-    mValuePaint.layout();
-    mValuePaint.paint(
-        c, Offset(x - mValuePaint.width / 2, y - mValuePaint.height));
+            : valuePaint.text.style.fontSize);
+    valuePaint.layout();
+    valuePaint.paint(
+        c, Offset(x - valuePaint.width / 2, y - valuePaint.height));
   }
 
   @override
@@ -199,23 +199,22 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
   @override
   void drawHighlighted(Canvas c, List<Highlight> indices) {
-    BubbleData bubbleData = mChart.getBubbleData();
+    BubbleData bubbleData = _provider.getBubbleData();
 
-    double phaseY = mAnimator.getPhaseY();
+    double phaseY = animator.getPhaseY();
 
     for (Highlight high in indices) {
-      IBubbleDataSet set = bubbleData.getDataSetByIndex(high.getDataSetIndex());
+      IBubbleDataSet set = bubbleData.getDataSetByIndex(high.dataSetIndex);
 
       if (set == null || !set.isHighlightEnabled()) continue;
 
-      final BubbleEntry entry =
-          set.getEntryForXValue2(high.getX(), high.getY());
+      final BubbleEntry entry = set.getEntryForXValue2(high.x, high.y);
 
-      if (entry.y != high.getY()) continue;
+      if (entry.y != high.y) continue;
 
       if (!isInBoundsX(entry, set)) continue;
 
-      Transformer trans = mChart.getTransformer(set.getAxisDependency());
+      Transformer trans = _provider.getTransformer(set.getAxisDependency());
 
       sizeBuffer[0] = 0;
       sizeBuffer[2] = 1;
@@ -227,7 +226,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
       // calcualte the full width of 1 step on the x-axis
       final double maxBubbleWidth = (sizeBuffer[2] - sizeBuffer[0]).abs();
       final double maxBubbleHeight =
-          (mViewPortHandler.contentBottom() - mViewPortHandler.contentTop())
+          (viewPortHandler.contentBottom() - viewPortHandler.contentTop())
               .abs();
       final double referenceSize = min(maxBubbleHeight, maxBubbleWidth);
 
@@ -238,28 +237,27 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
       high.setDraw(pointBuffer[0], pointBuffer[1]);
 
       double shapeHalf = getShapeSize(
-              entry.getSize(), set.getMaxSize(), referenceSize, normalizeSize) /
+              entry.size, set.getMaxSize(), referenceSize, normalizeSize) /
           2;
 
-      if (!mViewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf) ||
-          !mViewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf))
+      if (!viewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf) ||
+          !viewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf))
         continue;
 
-      if (!mViewPortHandler.isInBoundsLeft(pointBuffer[0] + shapeHalf))
-        continue;
+      if (!viewPortHandler.isInBoundsLeft(pointBuffer[0] + shapeHalf)) continue;
 
-      if (!mViewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf)) break;
+      if (!viewPortHandler.isInBoundsRight(pointBuffer[0] - shapeHalf)) break;
 
       final Color originalColor = set.getColor2(entry.x.toInt());
 
       var hsv = HSVColor.fromColor(originalColor);
       var color = hsv.toColor();
 
-      mHighlightPaint
+      highlightPaint
         ..color = color
         ..strokeWidth = set.getHighlightCircleWidth();
       c.drawCircle(
-          Offset(pointBuffer[0], pointBuffer[1]), shapeHalf, mHighlightPaint);
+          Offset(pointBuffer[0], pointBuffer[1]), shapeHalf, highlightPaint);
     }
   }
 }

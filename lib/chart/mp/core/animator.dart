@@ -9,22 +9,22 @@ class ChartAnimator {
   static const double MAX = 1.0;
 
   /// object that is updated upon animation update
-  AnimatorUpdateListener mListener;
+  AnimatorUpdateListener _listener;
 
   /// The phase of drawn values on the y-axis. 0 - 1
-  double mPhaseY = MAX;
+  double _phaseY = MAX;
 
   /// The phase of drawn values on the x-axis. 0 - 1
-  double mPhaseX = MAX;
+  double _phaseX = MAX;
 
-  double mAngle;
+  double _angle;
 
   Timer _countdownTimer;
 
   bool _isShowed = false;
 
   ChartAnimator(AnimatorUpdateListener listener) {
-    mListener = listener;
+    _listener = listener;
   }
 
   void reset() {
@@ -33,33 +33,33 @@ class ChartAnimator {
 
   bool get needReset => _isShowed;
 
-  void spin(int durationMillis, double fromAngle, double toAngle,
+  void spin(int durationMillis, double fro_angle, double toAngle,
       EasingFunction easing) {
     if (_isShowed ||
         _countdownTimer != null ||
         durationMillis < 0 ||
-        fromAngle >= toAngle) {
+        fro_angle >= toAngle) {
       return;
     }
 
     _isShowed = true;
     final double totalTime = durationMillis.toDouble();
-    mAngle = fromAngle;
+    _angle = fro_angle;
     _countdownTimer =
         Timer.periodic(Duration(milliseconds: REFRESH_RATE), (timer) {
       if (durationMillis < 0) {
-        mAngle = toAngle;
+        _angle = toAngle;
         _countdownTimer?.cancel();
         _countdownTimer = null;
       } else {
-        mAngle += toAngle *
+        _angle += toAngle *
             (1.0 - easing.getInterpolation(durationMillis / totalTime));
-        if (mAngle >= toAngle) {
-          mAngle = toAngle;
+        if (_angle >= toAngle) {
+          _angle = toAngle;
         }
         durationMillis -= REFRESH_RATE;
       }
-      mListener?.onRotateUpdate(mAngle);
+      _listener?.onRotateUpdate(_angle);
     });
   }
 
@@ -81,21 +81,21 @@ class ChartAnimator {
 
     _isShowed = true;
     final double totalTime = durationMillis.toDouble();
-    mPhaseX = MIN;
+    _phaseX = MIN;
     _countdownTimer =
         Timer.periodic(Duration(milliseconds: REFRESH_RATE), (timer) {
       if (durationMillis < 0) {
-        mPhaseX = MAX;
+        _phaseX = MAX;
         _countdownTimer?.cancel();
         _countdownTimer = null;
       } else {
-        mPhaseX = MAX - easing.getInterpolation(durationMillis / totalTime);
-        if (mPhaseX >= MAX) {
-          mPhaseX = MAX;
+        _phaseX = MAX - easing.getInterpolation(durationMillis / totalTime);
+        if (_phaseX >= MAX) {
+          _phaseX = MAX;
         }
         durationMillis -= REFRESH_RATE;
       }
-      mListener?.onAnimationUpdate(mPhaseX, mPhaseY);
+      _listener?.onAnimationUpdate(_phaseX, _phaseY);
     });
   }
 
@@ -124,30 +124,30 @@ class ChartAnimator {
     _isShowed = true;
     final double totalTimeX = durationMillisX.toDouble();
     final double totalTimeY = durationMillisY.toDouble();
-    mPhaseX = MIN;
-    mPhaseY = MIN;
+    _phaseX = MIN;
+    _phaseY = MIN;
     _countdownTimer =
         Timer.periodic(Duration(milliseconds: REFRESH_RATE), (timer) {
       if (durationMillisX < 0 && durationMillisY < 0) {
-        mPhaseX = MAX;
-        mPhaseY = MAX;
+        _phaseX = MAX;
+        _phaseY = MAX;
         _countdownTimer?.cancel();
         _countdownTimer = null;
       } else {
-        mPhaseX = MAX - easing.getInterpolation(durationMillisX / totalTimeX);
-        if (mPhaseX >= MAX) {
-          mPhaseX = MAX;
+        _phaseX = MAX - easing.getInterpolation(durationMillisX / totalTimeX);
+        if (_phaseX >= MAX) {
+          _phaseX = MAX;
         }
 
-        mPhaseY = MAX - easing.getInterpolation(durationMillisY / totalTimeY);
-        if (mPhaseY >= MAX) {
-          mPhaseY = MAX;
+        _phaseY = MAX - easing.getInterpolation(durationMillisY / totalTimeY);
+        if (_phaseY >= MAX) {
+          _phaseY = MAX;
         }
 
         durationMillisX -= REFRESH_RATE;
         durationMillisY -= REFRESH_RATE;
       }
-      mListener?.onAnimationUpdate(mPhaseX, mPhaseY);
+      _listener?.onAnimationUpdate(_phaseX, _phaseY);
     });
   }
 
@@ -169,30 +169,30 @@ class ChartAnimator {
     _isShowed = true;
     final double totalTimeX = durationMillisX.toDouble();
     final double totalTimeY = durationMillisY.toDouble();
-    mPhaseX = MIN;
-    mPhaseY = MIN;
+    _phaseX = MIN;
+    _phaseY = MIN;
     _countdownTimer =
         Timer.periodic(Duration(milliseconds: REFRESH_RATE), (timer) {
       if (durationMillisX < 0 && durationMillisY < 0) {
-        mPhaseX = MAX;
-        mPhaseY = MAX;
+        _phaseX = MAX;
+        _phaseY = MAX;
         _countdownTimer?.cancel();
         _countdownTimer = null;
       } else {
-        mPhaseX = MAX - easingX.getInterpolation(durationMillisX / totalTimeX);
-        if (mPhaseX >= MAX) {
-          mPhaseX = MAX;
+        _phaseX = MAX - easingX.getInterpolation(durationMillisX / totalTimeX);
+        if (_phaseX >= MAX) {
+          _phaseX = MAX;
         }
 
-        mPhaseY = MAX - easingY.getInterpolation(durationMillisY / totalTimeY);
-        if (mPhaseY >= MAX) {
-          mPhaseY = MAX;
+        _phaseY = MAX - easingY.getInterpolation(durationMillisY / totalTimeY);
+        if (_phaseY >= MAX) {
+          _phaseY = MAX;
         }
 
         durationMillisX -= REFRESH_RATE;
         durationMillisY -= REFRESH_RATE;
       }
-      mListener?.onAnimationUpdate(mPhaseX, mPhaseY);
+      _listener?.onAnimationUpdate(_phaseX, _phaseY);
     });
   }
 
@@ -214,29 +214,29 @@ class ChartAnimator {
 
     _isShowed = true;
     final double totalTime = durationMillis.toDouble();
-    mPhaseY = MIN;
+    _phaseY = MIN;
     _countdownTimer =
         Timer.periodic(Duration(milliseconds: REFRESH_RATE), (timer) {
       if (durationMillis < 0) {
-        mPhaseY = MAX;
+        _phaseY = MAX;
         _countdownTimer?.cancel();
         _countdownTimer = null;
       } else {
-        mPhaseY = MAX - easing.getInterpolation(durationMillis / totalTime);
-        if (mPhaseY >= MAX) {
-          mPhaseY = MAX;
+        _phaseY = MAX - easing.getInterpolation(durationMillis / totalTime);
+        if (_phaseY >= MAX) {
+          _phaseY = MAX;
         }
         durationMillis -= REFRESH_RATE;
       }
-      mListener?.onAnimationUpdate(mPhaseX, mPhaseY);
+      _listener?.onAnimationUpdate(_phaseX, _phaseY);
     });
   }
 
   /// Gets the Y axis phase of the animation.
   ///
-  /// @return double value of {@link #mPhaseY}
+  /// @return double value of {@link #_phaseY}
   double getPhaseY() {
-    return mPhaseY;
+    return _phaseY;
   }
 
   /// Sets the Y axis phase of the animation.
@@ -248,14 +248,14 @@ class ChartAnimator {
     } else if (phase < 0) {
       phase = 0;
     }
-    mPhaseY = phase;
+    _phaseY = phase;
   }
 
   /// Gets the X axis phase of the animation.
   ///
-  /// @return double value of {@link #mPhaseX}
+  /// @return double value of {@link #_phaseX}
   double getPhaseX() {
-    return mPhaseX;
+    return _phaseX;
   }
 
   /// Sets the X axis phase of the animation.
@@ -267,7 +267,7 @@ class ChartAnimator {
     } else if (phase < 0) {
       phase = 0;
     }
-    mPhaseX = phase;
+    _phaseX = phase;
   }
 }
 

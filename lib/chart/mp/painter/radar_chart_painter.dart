@@ -49,6 +49,20 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
   YAxisRendererRadarChart _yAxisRenderer;
   XAxisRendererRadarChart _xAxisRenderer;
 
+  Color get webColor => _webColor;
+
+  Color get webColorInner => _webColorInner;
+
+  double get webLineWidth => _webLineWidth;
+
+  double get innerWebLineWidth => _innerWebLineWidth;
+
+  int get webAlpha => _webAlpha;
+
+  int get skipWebLineCount => _skipWebLineCount;
+
+  YAxis get yAxis => _yAxis;
+
   RadarChartPainter(
       RadarData data,
       ChartAnimator animator,
@@ -144,22 +158,22 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
     super.calculateOffsets();
     calcMinMax();
     _yAxisRenderer.computeAxis(
-        _yAxis.mAxisMinimum, _yAxis.mAxisMaximum, _yAxis.isInverted());
-    _xAxisRenderer.computeAxis(xAxis.mAxisMinimum, xAxis.mAxisMaximum, false);
-    if (legend != null && !legend.isLegendCustom())
+        _yAxis.axisMinimum, _yAxis.axisMaximum, _yAxis.inverted);
+    _xAxisRenderer.computeAxis(xAxis.axisMinimum, xAxis.axisMaximum, false);
+    if (legend != null && !legend.isLegendCustom)
       legendRenderer.computeLegend(getData());
   }
 
   @override
   void onPaint(Canvas canvas, Size size) {
-    if (xAxis.isEnabled())
-      _xAxisRenderer.computeAxis(xAxis.mAxisMinimum, xAxis.mAxisMaximum, false);
+    if (xAxis.enabled)
+      _xAxisRenderer.computeAxis(xAxis.axisMinimum, xAxis.axisMaximum, false);
 
     _xAxisRenderer.renderAxisLabels(canvas);
 
     if (_drawWeb) renderer.drawExtras(canvas);
 
-    if (_yAxis.isEnabled() && _yAxis.isDrawLimitLinesBehindDataEnabled())
+    if (_yAxis.enabled && _yAxis.drawLimitLineBehindData)
       _yAxisRenderer.renderLimitLines(canvas);
 
     renderer.drawData(canvas);
@@ -167,7 +181,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
     if (valuesToHighlight())
       renderer.drawHighlighted(canvas, indicesToHighlight);
 
-    if (_yAxis.isEnabled() && !_yAxis.isDrawLimitLinesBehindDataEnabled())
+    if (_yAxis.enabled && !_yAxis.drawLimitLineBehindData)
       _yAxisRenderer.renderLimitLines(canvas);
 
     _yAxisRenderer.renderAxisLabels(canvas);
@@ -188,7 +202,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
    */
   double getFactor() {
     Rect content = viewPortHandler.getContentRect();
-    return min(content.width / 2, content.height / 2) / _yAxis.mAxisRange;
+    return min(content.width / 2, content.height / 2) / _yAxis.axisRange;
   }
 
   /**
@@ -225,14 +239,14 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
 
   @override
   double getRequiredLegendOffset() {
-    var size = legendRenderer.getLabelPaint().text.style.fontSize;
+    var size = legendRenderer.legendLabelPaint.text.style.fontSize;
     return (size == null ? Utils.convertDpToPixel(9) : size) * 4.0;
   }
 
   @override
   double getRequiredBaseOffset() {
-    return xAxis.isEnabled() && xAxis.isDrawLabelsEnabled()
-        ? xAxis.mLabelRotatedWidth.toDouble()
+    return xAxis.enabled && xAxis.drawLabels
+        ? xAxis.labelRotatedWidth.toDouble()
         : Utils.convertDpToPixel(10);
   }
 
@@ -246,13 +260,13 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
    * Returns the maximum value this chart can display on it's y-axis.
    */
   double getYChartMax() {
-    return _yAxis.mAxisMaximum;
+    return _yAxis.axisMaximum;
   }
 
   /**
    * Returns the minimum value this chart can display on it's y-axis.
    */
   double getYChartMin() {
-    return _yAxis.mAxisMinimum;
+    return _yAxis.axisMinimum;
   }
 }

@@ -135,6 +135,8 @@ class CandlestickChart extends BarLineScatterCandleBubbleChart {
       createChartState() {
     return CandlestickChartState();
   }
+
+  CandlestickChartPainter get painter => super.painter;
 }
 
 class CandlestickChartState extends BarLineScatterCandleBubbleState<
@@ -195,8 +197,8 @@ class CandlestickChartState extends BarLineScatterCandleBubbleState<
         widget.minimumScaleX,
         widget.minimumScaleY);
     if (painter.getData() != null &&
-        painter.getData().getDataSets() != null &&
-        painter.getData().getDataSets().length > 0)
+        painter.getData().dataSets != null &&
+        painter.getData().dataSets.length > 0)
       painter.highlightValue6(lastHighlighted, false);
   }
 }

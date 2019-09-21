@@ -6,33 +6,31 @@ import 'package:mp_flutter_chart/chart/mp/core/data_set/base_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
     implements IBarDataSet {
   /// the maximum number of bars that are stacked upon each other, this value
   /// is calculated from the Entries that are added to the DataSet
-  int mStackSize = 1;
+  int _stackSize = 1;
 
   /// the color used for drawing the bar shadows
-  Color mBarShadowColor = Color.fromARGB(255, 215, 215, 215);
+  Color _barShadowColor = Color.fromARGB(255, 215, 215, 215);
 
-  double mBarBorderWidth = 0.0;
+  double _barBorderWidth = 0.0;
 
-  Color mBarBorderColor = ColorUtils.BLACK;
+  Color _barBorderColor = ColorUtils.BLACK;
 
   /// the alpha value used to draw the highlight indicator bar
-  int mHighLightAlpha = 120;
+  int _highLightAlpha = 120;
 
   /// the overall entry count, including counting each stack-value individually
-  int mEntryCountStacks = 0;
+  int _entryCountStacks = 0;
 
   /// array of labels used to describe the different values of the stacked bars
-  List<String> mStackLabels = List()..add("Stack");
+  List<String> _stackLabels = List()..add("Stack");
 
   BarDataSet(List<BarEntry> yVals, String label) : super(yVals, label) {
-    mHighLightColor = Color.fromARGB(255, 0, 0, 0);
-
+    setHighLightColor(Color.fromARGB(255, 0, 0, 0));
     calcStackSize(yVals);
     calcEntryCountIncludingStacks(yVals);
   }
@@ -40,8 +38,8 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
   @override
   DataSet<BarEntry> copy1() {
     List<BarEntry> entries = List();
-    for (int i = 0; i < mValues.length; i++) {
-      entries.add(mValues[i].copy());
+    for (int i = 0; i < values.length; i++) {
+      entries.add(values[i].copy());
     }
     BarDataSet copied = BarDataSet(entries, getLabel());
     copy(copied);
@@ -52,26 +50,26 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
     super.copy(baseDataSet);
     if (baseDataSet is BarDataSet) {
       var barDataSet = baseDataSet;
-      barDataSet.mStackSize = mStackSize;
-      barDataSet.mBarShadowColor = mBarShadowColor;
-      barDataSet.mBarBorderWidth = mBarBorderWidth;
-      barDataSet.mStackLabels = mStackLabels;
-      barDataSet.mHighLightAlpha = mHighLightAlpha;
+      barDataSet._stackSize = _stackSize;
+      barDataSet._barShadowColor = _barShadowColor;
+      barDataSet._barBorderWidth = _barBorderWidth;
+      barDataSet._stackLabels = _stackLabels;
+      barDataSet._highLightAlpha = _highLightAlpha;
     }
   }
 
   /// Calculates the total number of entries this DataSet represents, including
   /// stacks. All values belonging to a stack are calculated separately.
   void calcEntryCountIncludingStacks(List<BarEntry> yVals) {
-    mEntryCountStacks = 0;
+    _entryCountStacks = 0;
 
     for (int i = 0; i < yVals.length; i++) {
-      List<double> vals = yVals[i].getYVals();
+      List<double> vals = yVals[i].yVals;
 
       if (vals == null)
-        mEntryCountStacks++;
+        _entryCountStacks++;
       else
-        mEntryCountStacks += vals.length;
+        _entryCountStacks += vals.length;
     }
   }
 
@@ -79,23 +77,23 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
   /// DataSet
   void calcStackSize(List<BarEntry> yVals) {
     for (int i = 0; i < yVals.length; i++) {
-      List<double> vals = yVals[i].getYVals();
+      List<double> vals = yVals[i].yVals;
 
-      if (vals != null && vals.length > mStackSize) mStackSize = vals.length;
+      if (vals != null && vals.length > _stackSize) _stackSize = vals.length;
     }
   }
 
   @override
   void calcMinMax1(BarEntry e) {
     if (e != null && !e.y.isNaN) {
-      if (e.getYVals() == null) {
-        if (e.y < mYMin) mYMin = e.y;
+      if (e.yVals == null) {
+        if (e.y < getYMin()) yMin = e.y;
 
-        if (e.y > mYMax) mYMax = e.y;
+        if (e.y > getYMax()) yMax = e.y;
       } else {
-        if (-e.getNegativeSum() < mYMin) mYMin = -e.getNegativeSum();
+        if (-e.negativeSum < getYMin()) yMin = -e.negativeSum;
 
-        if (e.getPositiveSum() > mYMax) mYMax = e.getPositiveSum();
+        if (e.positiveSum > getYMax()) yMax = e.positiveSum;
       }
 
       calcMinMaxX1(e);
@@ -104,12 +102,12 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
 
   @override
   int getStackSize() {
-    return mStackSize;
+    return _stackSize;
   }
 
   @override
   bool isStacked() {
-    return mStackSize > 1 ? true : false;
+    return _stackSize > 1 ? true : false;
   }
 
   /// returns the overall entry count, including counting each stack-value
@@ -117,7 +115,7 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
   ///
   /// @return
   int getEntryCountStacks() {
-    return mEntryCountStacks;
+    return _entryCountStacks;
   }
 
   /// Sets the color used for drawing the bar-shadows. The bar shadows is a
@@ -126,12 +124,12 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
   ///
   /// @param color
   void setBarShadowColor(Color color) {
-    mBarShadowColor = color;
+    _barShadowColor = color;
   }
 
   @override
   Color getBarShadowColor() {
-    return mBarShadowColor;
+    return _barShadowColor;
   }
 
   /// Sets the width used for drawing borders around the bars.
@@ -139,7 +137,7 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
   ///
   /// @return
   void setBarBorderWidth(double width) {
-    mBarBorderWidth = width;
+    _barBorderWidth = width;
   }
 
   /// Returns the width used for drawing borders around the bars.
@@ -148,14 +146,14 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
   /// @return
   @override
   double getBarBorderWidth() {
-    return mBarBorderWidth;
+    return _barBorderWidth;
   }
 
   /// Sets the color drawing borders around the bars.
   ///
   /// @return
   void setBarBorderColor(Color color) {
-    mBarBorderColor = color;
+    _barBorderColor = color;
   }
 
   /// Returns the color drawing borders around the bars.
@@ -163,7 +161,7 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
   /// @return
   @override
   Color getBarBorderColor() {
-    return mBarBorderColor;
+    return _barBorderColor;
   }
 
   /// Set the alpha value (transparency) that is used for drawing the highlight
@@ -171,23 +169,23 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
   ///
   /// @param alpha
   void setHighLightAlpha(int alpha) {
-    mHighLightAlpha = alpha;
+    _highLightAlpha = alpha;
   }
 
   @override
   int getHighLightAlpha() {
-    return mHighLightAlpha;
+    return _highLightAlpha;
   }
 
   /// Sets labels for different values of bar-stacks, in case there are one.
   ///
   /// @param labels
   void setStackLabels(List<String> labels) {
-    mStackLabels = labels;
+    _stackLabels = labels;
   }
 
   @override
   List<String> getStackLabels() {
-    return mStackLabels;
+    return _stackLabels;
   }
 }

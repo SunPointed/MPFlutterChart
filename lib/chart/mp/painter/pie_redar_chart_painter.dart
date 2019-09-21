@@ -25,10 +25,10 @@ import 'radar_chart_painter.dart';
 abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
     extends ChartPainter<T> {
   /// holds the normalized version of the current rotation angle of the chart
-  final double _rotationAngle; //270
+  double _rotationAngle; //270
 
   /// holds the raw version of the current rotation angle of the chart
-  final double _rawRotationAngle; //270
+  double _rawRotationAngle; //270
 
   /// flag that indicates if rotation is enabled or not
   final bool _rotateEnabled; //true
@@ -37,33 +37,33 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
   final double _minOffset; //0.0
 
   PieRadarChartPainter(
-      T data,
-      ChartAnimator animator,
-      ViewPortHandler viewPortHandler,
-      double maxHighlightDistance,
-      bool highLightPerTapEnabled,
-      bool dragDecelerationEnabled,
-      double dragDecelerationFrictionCoef,
-      double extraLeftOffset,
-      double extraTopOffset,
-      double extraRightOffset,
-      double extraBottomOffset,
-      String noDataText,
-      bool touchEnabled,
-      IMarker marker,
-      Description desc,
-      bool drawMarkers,
-      TextPainter infoPainter,
-      TextPainter descPainter,
-      XAxis xAxis,
-      Legend legend,
-      LegendRenderer legendRenderer,
-      OnChartValueSelectedListener selectedListener,
-      double rotationAngle,
-      double rawRotationAngle,
-      bool rotateEnabled,
-      double minOffset,)
-      : _rotationAngle = rotationAngle,
+    T data,
+    ChartAnimator animator,
+    ViewPortHandler viewPortHandler,
+    double maxHighlightDistance,
+    bool highLightPerTapEnabled,
+    bool dragDecelerationEnabled,
+    double dragDecelerationFrictionCoef,
+    double extraLeftOffset,
+    double extraTopOffset,
+    double extraRightOffset,
+    double extraBottomOffset,
+    String noDataText,
+    bool touchEnabled,
+    IMarker marker,
+    Description desc,
+    bool drawMarkers,
+    TextPainter infoPainter,
+    TextPainter descPainter,
+    XAxis xAxis,
+    Legend legend,
+    LegendRenderer legendRenderer,
+    OnChartValueSelectedListener selectedListener,
+    double rotationAngle,
+    double rawRotationAngle,
+    bool rotateEnabled,
+    double minOffset,
+  )   : _rotationAngle = rotationAngle,
         _rawRotationAngle = rawRotationAngle,
         _rotateEnabled = rotateEnabled,
         _minOffset = minOffset,
@@ -116,23 +116,18 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
 
     double legendLeft = 0, legendRight = 0, legendBottom = 0, legendTop = 0;
 
-    if (legend != null &&
-        legend.isEnabled() &&
-        !legend.isDrawInsideEnabled()) {
-      double fullLegendWidth = min(legend.mNeededWidth,
-          viewPortHandler.getChartWidth() * legend.getMaxSizePercent());
+    if (legend != null && legend.enabled && !legend.drawInside) {
+      double fullLegendWidth = min(legend.neededWidth,
+          viewPortHandler.getChartWidth() * legend.maxSizePercent);
 
-      switch (legend.getOrientation()) {
+      switch (legend.orientation) {
         case LegendOrientation.VERTICAL:
           {
             double xLegendOffset = 0.0;
 
-            if (legend.getHorizontalAlignment() ==
-                    LegendHorizontalAlignment.LEFT ||
-                legend.getHorizontalAlignment() ==
-                    LegendHorizontalAlignment.RIGHT) {
-              if (legend.getVerticalAlignment() ==
-                  LegendVerticalAlignment.CENTER) {
+            if (legend.horizontalAlignment == LegendHorizontalAlignment.LEFT ||
+                legend.horizontalAlignment == LegendHorizontalAlignment.RIGHT) {
+              if (legend.verticalAlignment == LegendVerticalAlignment.CENTER) {
                 // this is the space between the legend and the chart
                 final double spacing = Utils.convertDpToPixel(13);
 
@@ -143,11 +138,11 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
 
                 double legendWidth = fullLegendWidth + spacing;
                 double legendHeight =
-                    legend.mNeededHeight + legend.mTextHeightMax;
+                    legend.neededHeight + legend.textHeightMax;
 
                 var center = getCenter(size);
 
-                double bottomX = legend.getHorizontalAlignment() ==
+                double bottomX = legend.horizontalAlignment ==
                         LegendHorizontalAlignment.RIGHT
                     ? size.width - legendWidth + 15.0
                     : legendWidth - 15.0;
@@ -176,7 +171,7 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
               }
             }
 
-            switch (legend.getHorizontalAlignment()) {
+            switch (legend.horizontalAlignment) {
               case LegendHorizontalAlignment.LEFT:
                 legendLeft = xLegendOffset;
                 break;
@@ -186,18 +181,18 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
                 break;
 
               case LegendHorizontalAlignment.CENTER:
-                switch (legend.getVerticalAlignment()) {
+                switch (legend.verticalAlignment) {
                   case LegendVerticalAlignment.TOP:
                     legendTop = min(
-                        legend.mNeededHeight,
+                        legend.neededHeight,
                         viewPortHandler.getChartHeight() *
-                            legend.getMaxSizePercent());
+                            legend.maxSizePercent);
                     break;
                   case LegendVerticalAlignment.BOTTOM:
                     legendBottom = min(
-                        legend.mNeededHeight,
+                        legend.neededHeight,
                         viewPortHandler.getChartHeight() *
-                            legend.getMaxSizePercent());
+                            legend.maxSizePercent);
                     break;
                   default:
                     break;
@@ -210,20 +205,17 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
         case LegendOrientation.HORIZONTAL:
           double yLegendOffset = 0.0;
 
-          if (legend.getVerticalAlignment() == LegendVerticalAlignment.TOP ||
-              legend.getVerticalAlignment() ==
-                  LegendVerticalAlignment.BOTTOM) {
+          if (legend.verticalAlignment == LegendVerticalAlignment.TOP ||
+              legend.verticalAlignment == LegendVerticalAlignment.BOTTOM) {
             // It's possible that we do not need this offset anymore as it
             //   is available through the extraOffsets, but changing it can mean
             //   changing default visibility for existing apps.
             double yOffset = getRequiredLegendOffset();
 
-            yLegendOffset = min(
-                legend.mNeededHeight + yOffset,
-                viewPortHandler.getChartHeight() *
-                    legend.getMaxSizePercent());
+            yLegendOffset = min(legend.neededHeight + yOffset,
+                viewPortHandler.getChartHeight() * legend.maxSizePercent);
 
-            switch (legend.getVerticalAlignment()) {
+            switch (legend.verticalAlignment) {
               case LegendVerticalAlignment.TOP:
                 legendTop = yLegendOffset;
                 break;
@@ -248,8 +240,8 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
     if (this is RadarChartPainter) {
       XAxis x = this.xAxis;
 
-      if (x.isEnabled() && x.isDrawLabelsEnabled()) {
-        minOffset = max(minOffset, x.mLabelRotatedWidth.toDouble());
+      if (x.enabled && x.drawLabels) {
+        minOffset = max(minOffset, x.labelRotatedWidth.toDouble());
       }
     }
 
@@ -433,5 +425,10 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
   @override
   double getYChartMin() {
     return 0;
+  }
+
+  void setRotationAngle(double angle) {
+    _rawRotationAngle = angle;
+    _rotationAngle = Utils.getNormalizedAngle(_rawRotationAngle);
   }
 }

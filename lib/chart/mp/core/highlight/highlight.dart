@@ -2,36 +2,36 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
 
 class Highlight {
   /// the x-value of the highlighted value
-  double mX = double.nan;
+  double _x = double.nan;
 
   /// the y-value of the highlighted value
-  double mY = double.nan;
+  double _y = double.nan;
 
   /// the x-pixel of the highlight
-  double mXPx;
+  double _xPx;
 
   /// the y-pixel of the highlight
-  double mYPx;
+  double _yPx;
 
   /// the index of the data object - in case it refers to more than one
-  int mDataIndex = -1;
+  int _dataIndex = -1;
 
   ///
   /// the index of the datase
   /// t the highlighted value is in
-  int mDataSetIndex;
+  int _dataSetIndex;
 
   /// index which value of a stacked bar entry is highlighted, default -1
-  int mStackIndex = -1;
+  int _stackIndex = -1;
 
   /// the axis the highlighted value belongs to
-  AxisDependency axis;
+  AxisDependency _axis;
 
   /// the x-position (pixels) on which this highlight object was last drawn
-  double mDrawX;
+  double _drawX;
 
   /// the y-position (pixels) on which this highlight object was last drawn
-  double mDrawY;
+  double _drawY;
 
   Highlight(
       {double x = double.nan,
@@ -41,98 +41,51 @@ class Highlight {
       int dataSetIndex = 0,
       int stackIndex = -1,
       AxisDependency axis = null}) {
-    this.mX = x;
-    this.mY = y;
-    this.mXPx = xPx;
-    this.mYPx = yPx;
-    this.mDataSetIndex = dataSetIndex;
-    this.axis = axis;
-    this.mStackIndex = stackIndex;
+    this._x = x;
+    this._y = y;
+    this._xPx = xPx;
+    this._yPx = yPx;
+    this._dataSetIndex = dataSetIndex;
+    this._axis = axis;
+    this._stackIndex = stackIndex;
   }
 
-  /// returns the x-value of the highlighted value
-  ///
-  /// @return
-  double getX() {
-    return mX;
+  double get x => _x;
+
+  double get y => _y;
+
+  double get xPx => _xPx;
+
+  double get yPx => _yPx;
+
+  int get dataIndex => _dataIndex;
+
+  set dataIndex(int value) {
+    _dataIndex = value;
   }
 
-  /// returns the y-value of the highlighted value
-  ///
-  /// @return
-  double getY() {
-    return mY;
-  }
+  int get dataSetIndex => _dataSetIndex;
 
-  /// returns the x-position of the highlight in pixels
-  double getXPx() {
-    return mXPx;
-  }
-
-  /// returns the y-position of the highlight in pixels
-  double getYPx() {
-    return mYPx;
-  }
-
-  /// the index of the data object - in case it refers to more than one
-  ///
-  /// @return
-  int getDataIndex() {
-    return mDataIndex;
-  }
-
-  void setDataIndex(int mDataIndex) {
-    this.mDataIndex = mDataIndex;
-  }
-
-  /// returns the index of the DataSet the highlighted value is in
-  ///
-  /// @return
-  int getDataSetIndex() {
-    return mDataSetIndex;
-  }
-
-  /// Only needed if a stacked-barchart entry was highlighted. References the
-  /// selected value within the stacked-entry.
-  ///
-  /// @return
-  int getStackIndex() {
-    return mStackIndex;
-  }
+  int get stackIndex => _stackIndex;
 
   bool isStacked() {
-    return mStackIndex >= 0;
+    return _stackIndex >= 0;
   }
 
-  /// Returns the axis the highlighted value belongs to.
-  ///
-  /// @return
-  AxisDependency getAxis() {
-    return axis;
-  }
+  AxisDependency get axis => _axis;
 
   /// Sets the x- and y-position (pixels) where this highlight was last drawn.
   ///
   /// @param x
   /// @param y
   void setDraw(double x, double y) {
-    this.mDrawX = x;
-    this.mDrawY = y;
+    this._drawX = x;
+    this._drawY = y;
   }
 
-  /// Returns the x-position in pixels where this highlight object was last drawn.
-  ///
-  /// @return
-  double getDrawX() {
-    return mDrawX;
-  }
+  double get drawX => _drawX;
 
-  /// Returns the y-position in pixels where this highlight object was last drawn.
-  ///
-  /// @return
-  double getDrawY() {
-    return mDrawY;
-  }
+  double get drawY => _drawY;
 
   /// Returns true if this highlight object is equal to the other (compares
   /// xIndex and dataSetIndex)
@@ -143,10 +96,10 @@ class Highlight {
     if (h == null)
       return false;
     else {
-      if (this.mDataSetIndex == h.mDataSetIndex &&
-          this.mX == h.mX &&
-          this.mStackIndex == h.mStackIndex &&
-          this.mDataIndex == h.mDataIndex)
+      if (this._dataSetIndex == h._dataSetIndex &&
+          this._x == h._x &&
+          this._stackIndex == h._stackIndex &&
+          this._dataIndex == h._dataIndex)
         return true;
       else
         return false;
@@ -155,6 +108,6 @@ class Highlight {
 
   @override
   String toString() {
-    return "Highlight, x: $mX, y: $mY, dataSetIndex: $mDataSetIndex, stackIndex (only stacked barentry): $mStackIndex";
+    return "Highlight, x: $_x, y: $_y, dataSetIndex: $_dataSetIndex, stackIndex (only stacked barentry): $_stackIndex";
   }
 }

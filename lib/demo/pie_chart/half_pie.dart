@@ -126,35 +126,8 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    _pieChart = PieChart(_pieData, (painter) {
-      _formatter.setPieChartPainter(painter);
-
-      painter
-//      ..setCenterTextTypeface()
-        ..setCenterText("half pie")
-        ..setHoleColor(ColorUtils.WHITE)
-        ..setTransparentCircleColor(ColorUtils.WHITE)
-        ..setTransparentCircleAlpha(110)
-        ..setHoleRadius(58)
-        ..setTransparentCircleRadius(61)
-        ..setCenterTextOffset(0, -20)
-        ..setEntryLabelColor(ColorUtils.WHITE)
-        ..setEntryLabelTextSize(12)
-        ..setRotationAngle(180);
-
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.TOP)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.CENTER)
-        ..setOrientation(LegendOrientation.HORIZONTAL)
-        ..setDrawInside(false)
-        ..setXEntrySpace(7)
-        ..setYEntrySpace(0)
-        ..setYOffset(0);
-
-      painter.mAnimator.animateY2(1400, Easing.EaseInOutQuad);
-    },
+    var desc = Description()..enabled = false;
+    _pieChart = PieChart(_pieData,
         rotateEnabled: false,
         drawHole: true,
         usePercentValues: true,
@@ -164,6 +137,27 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
         dragDecelerationFrictionCoef: 0.95,
         maxAngle: 180,
         rotationAngle: 180,
-        desc: desc);
+        centerText: "half pie",
+        holeRadiusPercent: 58,
+        transparentCircleRadiusPercent: 61,
+        description: desc);
+    _formatter.setPieChartPainter(_pieChart.painter);
+    _pieChart.painter
+      ..setHoleColor(ColorUtils.WHITE)
+      ..setTransparentCircleColor(ColorUtils.WHITE)
+      ..setTransparentCircleAlpha(110)
+      ..setCenterTextOffset(0, -20)
+      ..setEntryLabelColor(ColorUtils.WHITE)
+      ..setEntryLabelTextSize(12)
+      ..setRotationAngle(180);
+    _pieChart.legend
+      ..verticalAlignment = (LegendVerticalAlignment.TOP)
+      ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
+      ..orientation = (LegendOrientation.HORIZONTAL)
+      ..drawInside = (false)
+      ..xEntrySpace = (7)
+      ..yEntrySpace = (0)
+      ..yOffset = (0);
+    _pieChart.animator.animateY2(1400, Easing.EaseInOutQuad);
   }
 }

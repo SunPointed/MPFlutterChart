@@ -112,6 +112,8 @@ class RadarChart extends PieRadarChart {
       createChartState() {
     return RadarChartState();
   }
+
+  RadarChartPainter get painter => super.painter;
 }
 
 class RadarChartState
@@ -154,8 +156,8 @@ class RadarChartState
         widget.skipWebLineCount,
         widget.yAxis);
     if (painter.getData() != null &&
-        painter.getData().getDataSets() != null &&
-        painter.getData().getDataSets().length > 0)
+        painter.getData().dataSets != null &&
+        painter.getData().dataSets.length > 0)
       painter.highlightValue6(lastHighlighted, false);
   }
 }

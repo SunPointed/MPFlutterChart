@@ -23,9 +23,9 @@ class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
     MPPointD pos = getValsForTouch(x, y);
 
-    BarData barData = mChart.getBarData();
+    BarData barData = provider.getBarData();
 
-    IBarDataSet set = barData.getDataSetByIndex(high.getDataSetIndex());
+    IBarDataSet set = barData.getDataSetByIndex(high.dataSetIndex);
     if (set.isStacked()) {
       return getStackedHighlight(high, set, pos.x, pos.y);
     }
@@ -50,26 +50,26 @@ class BarHighlighter extends ChartHighlighter<BarDataProvider> {
     if (entry == null) return null;
 
     // not stacked
-    if (entry.getYVals() == null) {
+    if (entry.yVals == null) {
       return high;
     } else {
-      List<Range> ranges = entry.getRanges();
+      List<Range> ranges = entry.ranges;
 
       if (ranges.length > 0) {
         int stackIndex = getClosestStackIndex(ranges, yVal);
 
-        MPPointD pixels = mChart
+        MPPointD pixels = provider
             .getTransformer(set.getAxisDependency())
-            .getPixelForValues(high.getX(), ranges[stackIndex].to);
+            .getPixelForValues(high.x, ranges[stackIndex].to);
 
         Highlight stackedHigh = Highlight(
             x: entry.x,
             y: entry.y,
             xPx: pixels.x,
             yPx: pixels.y,
-            dataSetIndex: high.getDataSetIndex(),
+            dataSetIndex: high.dataSetIndex,
             stackIndex: stackIndex,
-            axis: high.getAxis());
+            axis: high.axis);
 
         MPPointD.recycleInstance2(pixels);
 
@@ -106,6 +106,6 @@ class BarHighlighter extends ChartHighlighter<BarDataProvider> {
 
   @override
   BarLineScatterCandleBubbleData getData() {
-    return mChart.getBarData();
+    return provider.getBarData();
   }
 }

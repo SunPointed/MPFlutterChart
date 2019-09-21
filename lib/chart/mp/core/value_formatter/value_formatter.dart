@@ -46,10 +46,10 @@ abstract class ValueFormatter {
   }
 
   String getBubbleLabel(BubbleEntry bubbleEntry) {
-    return getFormattedValue1(bubbleEntry.getSize());
+    return getFormattedValue1(bubbleEntry.size);
   }
 
   String getCandleLabel(CandleEntry candleEntry) {
-    return getFormattedValue1(candleEntry.getHigh());
+    return getFormattedValue1(candleEntry.shadowHigh);
   }
 }

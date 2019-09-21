@@ -163,40 +163,14 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
   void _initLineChart() {
     if (lineData == null) return;
 
-    if(lineChart != null){
+    if (lineChart != null) {
       lineChart?.data = lineData;
       lineChart?.getState()?.setStateIfNotDispose();
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    lineChart = LineChart(lineData, (painter) {
-      painter
-        ..setViewPortOffsets(0, 0, 0, 0)
-        ..setGridBackgroundColor(Color.fromARGB(255, 104, 241, 175));
-
-      painter.mXAxis.setEnabled(false);
-
-      painter.mAxisLeft
-//      ..setTypeface(tf)
-        ..setLabelCount2(6, false)
-        ..setTextColor(ColorUtils.WHITE)
-        ..setPosition(YAxisLabelPosition.INSIDE_CHART)
-        ..setDrawGridLines(false)
-        ..setAxisLineColor(ColorUtils.WHITE);
-
-      painter.mAxisRight.setEnabled(false);
-
-      painter.mLegend.setEnabled(false);
-
-      var formatter = painter.mData.getDataSetByIndex(0).getFillFormatter();
-      if (formatter is A) {
-        (formatter as A).setPainter(painter);
-      }
-
-      painter.mAnimator.animateXY1(2000, 2000);
-    },
+    var desc = Description()..enabled = false;
+    lineChart = LineChart(lineData,
         touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
@@ -204,7 +178,24 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
         scaleXEnabled: true,
         scaleYEnabled: true,
         pinchZoomEnabled: false,
-        desc: desc);
+        backgroundColor: Color.fromARGB(255, 104, 241, 175),
+        description: desc);
+    lineChart.painter.setViewPortOffsets(0, 0, 0, 0);
+    lineChart.xAxis.enabled = (false);
+    lineChart.axisLeft
+//      ..setTypeface(tf)
+      ..setLabelCount2(6, false)
+      ..textColor = (ColorUtils.WHITE)
+      ..position = (YAxisLabelPosition.INSIDE_CHART)
+      ..drawGridLines = (false)
+      ..axisLineColor = (ColorUtils.WHITE);
+    lineChart.axisRight.enabled = (false);
+    lineChart.legend.enabled = (false);
+    var formatter = lineData.getDataSetByIndex(0).getFillFormatter();
+    if (formatter is A) {
+      formatter.setPainter(lineChart.painter);
+    }
+    lineChart.animator.animateXY1(2000, 2000);
   }
 }
 
@@ -218,6 +209,6 @@ class A implements IFillFormatter {
   @override
   double getFillLinePosition(
       ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return _painter?.mAxisLeft?.getAxisMinimum();
+    return _painter?.axisLeft?.axisMinimum;
   }
 }

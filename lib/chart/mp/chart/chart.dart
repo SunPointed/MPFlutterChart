@@ -144,6 +144,8 @@ abstract class Chart extends StatefulWidget {
       LegendRenderer(viewPortHandler, legend);
 
   OnChartValueSelectedListener initSelectionListener() => null;
+
+  ChartAnimator get animator => _state?.animator;
 }
 
 abstract class ChartState<P extends ChartPainter, T extends Chart>
@@ -294,6 +296,8 @@ abstract class PieRadarChart extends Chart {
             infoTextSize: infoTextSize,
             descTextColor: descTextColor,
             infoTextColor: infoTextColor);
+
+  PieRadarChartPainter get painter => _state?.painter;
 }
 
 abstract class PieRadarChartState<P extends PieRadarChartPainter,
@@ -545,6 +549,8 @@ abstract class BarLineScatterCandleBubbleChart extends Chart {
       XAxisRenderer(viewPortHandler, xAxis, leftAxisTransformer);
 
   Matrix4 initZoomMatrixBuffer() => Matrix4.identity();
+
+  BarLineChartBasePainter get painter => _state?.painter;
 }
 
 abstract class BarLineScatterCandleBubbleState<

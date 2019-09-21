@@ -118,51 +118,39 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    radarChart = RadarChart(radarData, (painter) {
-      painter
-        ..setWebColor(ColorUtils.LTGRAY)
-        ..setWebColorInner(ColorUtils.LTGRAY);
-//      // create a custom MarkerView (extend MarkerView) and specify the layout
-//      // to use for it
-//      MarkerView mv =  RadarMarkerView(this, R.layout.radar_markerview);
-//      mv.setChartView(chart); // For bounds control
-//      chart.setMarker(mv); //
-
-      painter.mXAxis
-        ..setTextSize(9)
-//      ..setTypeface(tf)
-        ..setYOffset(0)
-        ..setXOffset(0)
-        ..setTextColor(ColorUtils.WHITE)
-        ..setValueFormatter(A());
-
-      painter.mYAxis
-//      ..setTypeface(tf)
-        ..setLabelCount2(5, false)
-        ..setTextSize(9)
-        ..setAxisMinimum(0)
-        ..setAxisMaximum(80)
-        ..setDrawLabels(false);
-
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.TOP)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.CENTER)
-        ..setOrientation(LegendOrientation.HORIZONTAL)
-        ..setDrawInside(false)
-//      ..setTypeface(tf)
-        ..setXEntrySpace(7)
-        ..setYEntrySpace(5)
-        ..setTextColor(ColorUtils.WHITE);
-
-      painter.mAnimator.animateXY2(1400, 1400, Easing.EaseInOutQuad);
-    },
+    var desc = Description()..enabled = false;
+    radarChart = RadarChart(radarData,
         webLineWidth: 1.0,
         webAlpha: 100,
         innerWebLineWidth: 1.0,
         touchEnabled: true,
-        desc: desc);
+        webColor: ColorUtils.LTGRAY,
+        webColorInner: ColorUtils.LTGRAY,
+        description: desc);
+    radarChart.xAxis
+      ..textSize = (9)
+//      ..setTypeface(tf)
+      ..yOffset = (0)
+      ..xOffset = (0)
+      ..textColor = (ColorUtils.WHITE)
+      ..setValueFormatter(A());
+    radarChart.yAxis
+//      ..setTypeface(tf)
+      ..setLabelCount2(5, false)
+      ..textSize = (9)
+      ..setAxisMinimum(0)
+      ..setAxisMaximum(80)
+      ..drawLabels = (false);
+    radarChart.legend
+      ..verticalAlignment = (LegendVerticalAlignment.TOP)
+      ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
+      ..orientation = (LegendOrientation.HORIZONTAL)
+      ..drawInside = (false)
+//      ..setTypeface(tf)
+      ..xEntrySpace = (7)
+      ..yEntrySpace = (5)
+      ..textColor = (ColorUtils.WHITE);
+    radarChart.animator.animateXY2(1400, 1400, Easing.EaseInOutQuad);
   }
 }
 

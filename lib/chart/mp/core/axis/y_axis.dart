@@ -11,133 +11,92 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class YAxis extends AxisBase {
   /// indicates if the bottom y-label entry is drawn or not
-  bool mDrawBottomYLabelEntry = true;
+  bool _drawBottomYLabelEntry = true;
 
   /// indicates if the top y-label entry is drawn or not
-  bool mDrawTopYLabelEntry = true;
+  bool _drawTopYLabelEntry = true;
 
   /// flag that indicates if the axis is inverted or not
-  bool mInverted = false;
+  bool _inverted = false;
 
   /// flag that indicates if the zero-line should be drawn regardless of other grid lines
-  bool mDrawZeroLine = false;
+  bool _drawZeroLine = false;
 
   /// flag indicating that auto scale min restriction should be used
-  bool mUseAutoScaleRestrictionMin = false;
+  bool _useAutoScaleRestrictionMin = false;
 
   /// flag indicating that auto scale max restriction should be used
-  bool mUseAutoScaleRestrictionMax = false;
+  bool _useAutoScaleRestrictionMax = false;
 
   /// Color of the zero line
-  Color mZeroLineColor = ColorUtils.GRAY;
+  Color _zeroLineColor = ColorUtils.GRAY;
 
   /// Width of the zero line in pixels
-  double mZeroLineWidth = 1;
+  double _zeroLineWidth = 1;
 
   /// axis space from the largest value to the top in percent of the total axis range
-  double mSpacePercentTop = 10;
+  double _spacePercentTop = 10;
 
   /// axis space from the smallest value to the bottom in percent of the total axis range
-  double mSpacePercentBottom = 10;
+  double _spacePercentBottom = 10;
 
   /// the position of the y-labels relative to the chart
-  YAxisLabelPosition mPosition = YAxisLabelPosition.OUTSIDE_CHART;
+  YAxisLabelPosition _position = YAxisLabelPosition.OUTSIDE_CHART;
 
   /// the side this axis object represents
-  AxisDependency mAxisDependency;
+  AxisDependency _axisDependency;
 
   /// the minimum width that the axis should take (in dp).
   /// <p/>
   /// default: 0.0
-  double mMinWidth = 0;
+  double _minWidth = 0;
 
   /// the maximum width that the axis can take (in dp).
   /// use Inifinity for disabling the maximum
   /// default: Float.POSITIVE_INFINITY (no maximum specified)
-  double mMaxWidth = double.infinity;
+  double _maxWidth = double.infinity;
 
   YAxis({AxisDependency position = AxisDependency.LEFT}) : super() {
-    this.mAxisDependency = position;
-    this.mYOffset = 0;
+    this._axisDependency = position;
+    yOffset = 0;
   }
 
-  AxisDependency getAxisDependency() {
-    return mAxisDependency;
+  AxisDependency get axisDependency => _axisDependency;
+
+  double get minWidth => _minWidth;
+
+  set minWidth(double value) {
+    _minWidth = value;
   }
 
-  /// @return the minimum width that the axis should take (in dp).
-  double getMinWidth() {
-    return mMinWidth;
+  double get maxWidth => _maxWidth;
+
+  set maxWidth(double value) {
+    _maxWidth = value;
   }
 
-  /// Sets the minimum width that the axis should take (in dp).
-  ///
-  /// @param minWidth
-  void setMinWidth(double minWidth) {
-    mMinWidth = minWidth;
+  YAxisLabelPosition get position => _position;
+
+  set position(YAxisLabelPosition value) {
+    _position = value;
   }
 
-  /// @return the maximum width that the axis can take (in dp).
-  double getMaxWidth() {
-    return mMaxWidth;
+  bool get drawTopYLabelEntry => _drawTopYLabelEntry;
+
+  set drawTopYLabelEntry(bool value) {
+    _drawTopYLabelEntry = value;
   }
 
-  /// Sets the maximum width that the axis can take (in dp).
-  ///
-  /// @param maxWidth
-  void setMaxWidth(double maxWidth) {
-    mMaxWidth = maxWidth;
+  bool get drawBottomYLabelEntry => _drawBottomYLabelEntry;
+
+  set drawBottomYLabelEntry(bool value) {
+    _drawBottomYLabelEntry = value;
   }
 
-  /// returns the position of the y-labels
-  YAxisLabelPosition getLabelPosition() {
-    return mPosition;
-  }
+  bool get inverted => _inverted;
 
-  /// sets the position of the y-labels
-  ///
-  /// @param pos
-  void setPosition(YAxisLabelPosition pos) {
-    mPosition = pos;
-  }
-
-  /// returns true if drawing the top y-axis label entry is enabled
-  ///
-  /// @return
-  bool isDrawTopYLabelEntryEnabled() {
-    return mDrawTopYLabelEntry;
-  }
-
-  /// returns true if drawing the bottom y-axis label entry is enabled
-  ///
-  /// @return
-  bool isDrawBottomYLabelEntryEnabled() {
-    return mDrawBottomYLabelEntry;
-  }
-
-  /// set this to true to enable drawing the top y-label entry. Disabling this can be helpful
-  /// when the top y-label and
-  /// left x-label interfere with each other. default: true
-  ///
-  /// @param enabled
-  void setDrawTopYLabelEntry(bool enabled) {
-    mDrawTopYLabelEntry = enabled;
-  }
-
-  /// If this is set to true, the y-axis is inverted which means that low values are on top of
-  /// the chart, high values
-  /// on bottom.
-  ///
-  /// @param enabled
-  void setInverted(bool enabled) {
-    mInverted = enabled;
-  }
-
-  /// If this returns true, the y-axis is inverted.
-  ///
-  /// @return
-  bool isInverted() {
-    return mInverted;
+  set inverted(bool value) {
+    _inverted = value;
   }
 
   /// This method is deprecated.
@@ -151,66 +110,42 @@ class YAxis extends AxisBase {
       resetAxisMinimum();
   }
 
-  /// Sets the top axis space in percent of the full range. Default 10f
-  ///
-  /// @param percent
-  void setSpaceTop(double percent) {
-    mSpacePercentTop = percent;
+  double get spacePercentTop => _spacePercentTop;
+
+  set spacePercentTop(double value) {
+    _spacePercentTop = value;
   }
 
-  /// Returns the top axis space in percent of the full range. Default 10f
-  ///
-  /// @return
-  double getSpaceTop() {
-    return mSpacePercentTop;
+  double get spacePercentBottom => _spacePercentBottom;
+
+  set spacePercentBottom(double value) {
+    _spacePercentBottom = value;
   }
 
-  /// Sets the bottom axis space in percent of the full range. Default 10f
-  ///
-  /// @param percent
-  void setSpaceBottom(double percent) {
-    mSpacePercentBottom = percent;
-  }
+  bool get drawZeroLine => _drawZeroLine;
 
-  /// Returns the bottom axis space in percent of the full range. Default 10f
-  ///
-  /// @return
-  double getSpaceBottom() {
-    return mSpacePercentBottom;
-  }
-
-  bool isDrawZeroLineEnabled() {
-    return mDrawZeroLine;
+  set drawZeroLine(bool value) {
+    _drawZeroLine = value;
   }
 
   /// Set this to true to draw the zero-line regardless of weather other
   /// grid-lines are enabled or not. Default: false
   ///
-  /// @param mDrawZeroLine
-  void setDrawZeroLine(bool mDrawZeroLine) {
-    this.mDrawZeroLine = mDrawZeroLine;
+  /// @param _drawZeroLine
+  void setDrawZeroLine(bool _drawZeroLine) {
+    this._drawZeroLine = _drawZeroLine;
   }
 
-  Color getZeroLineColor() {
-    return mZeroLineColor;
+  Color get zeroLineColor => _zeroLineColor;
+
+  set zeroLineColor(Color value) {
+    _zeroLineColor = value;
   }
 
-  /// Sets the color of the zero line
-  ///
-  /// @param color
-  void setZeroLineColor(Color color) {
-    mZeroLineColor = color;
-  }
+  double get zeroLineWidth => _zeroLineWidth;
 
-  double getZeroLineWidth() {
-    return mZeroLineWidth;
-  }
-
-  /// Sets the width of the zero line in dp
-  ///
-  /// @param width
-  void setZeroLineWidth(double width) {
-    this.mZeroLineWidth = Utils.convertDpToPixel(width);
+  set zeroLineWidth(double value) {
+    _zeroLineWidth = value;
   }
 
   /// This is for normal (not horizontal) charts horizontal spacing.
@@ -218,13 +153,10 @@ class YAxis extends AxisBase {
   /// @param p
   /// @return
   double getRequiredWidthSpace(TextPainter p) {
-    p = PainterUtils.create(p, null, null, mTextSize);
+    p = PainterUtils.create(p, null, null, textSize);
 
     String label = getLongestLabel();
-    double width = Utils.calcTextWidth(p, label) + getXOffset() * 2;
-
-    double minWidth = getMinWidth();
-    double maxWidth = getMaxWidth();
+    double width = Utils.calcTextWidth(p, label) + xOffset * 2;
 
     if (minWidth > 0) minWidth = Utils.convertDpToPixel(minWidth);
 
@@ -241,42 +173,32 @@ class YAxis extends AxisBase {
   /// @param p
   /// @return
   double getRequiredHeightSpace(TextPainter p) {
-    p = PainterUtils.create(p, null, null, mTextSize);
+    p = PainterUtils.create(p, null, null, textSize);
 
     String label = getLongestLabel();
-    return Utils.calcTextHeight(p, label) + getYOffset() * 2;
+    return Utils.calcTextHeight(p, label) + yOffset * 2;
   }
 
   /// Returns true if this axis needs horizontal offset, false if no offset is needed.
   ///
   /// @return
   bool needsOffset() {
-    if (isEnabled() &&
-        isDrawLabelsEnabled() &&
-        getLabelPosition() == YAxisLabelPosition.OUTSIDE_CHART)
+    if (enabled && drawLabels && position == YAxisLabelPosition.OUTSIDE_CHART)
       return true;
     else
       return false;
   }
 
-  /// Returns true if autoscale restriction for axis min value is enabled
-  bool isUseAutoScaleMinRestriction() {
-    return mUseAutoScaleRestrictionMin;
+  bool get useAutoScaleRestrictionMin => _useAutoScaleRestrictionMin;
+
+  set useAutoScaleRestrictionMin(bool value) {
+    _useAutoScaleRestrictionMin = value;
   }
 
-  /// Sets autoscale restriction for axis min value as enabled/disabled
-  void setUseAutoScaleMinRestriction(bool isEnabled) {
-    mUseAutoScaleRestrictionMin = isEnabled;
-  }
+  bool get useAutoScaleRestrictionMax => _useAutoScaleRestrictionMax;
 
-  /// Returns true if autoscale restriction for axis max value is enabled
-  bool isUseAutoScaleMaxRestriction() {
-    return mUseAutoScaleRestrictionMax;
-  }
-
-  /// Sets autoscale restriction for axis max value as enabled/disabled
-  void setUseAutoScaleMaxRestriction(bool isEnabled) {
-    mUseAutoScaleRestrictionMax = isEnabled;
+  set useAutoScaleRestrictionMax(bool value) {
+    _useAutoScaleRestrictionMax = value;
   }
 
   @override
@@ -296,13 +218,13 @@ class YAxis extends AxisBase {
     range = (max - min).abs();
 
     // calc extra spacing
-    this.mAxisMinimum = mCustomAxisMin
-        ? this.mAxisMinimum
-        : min - (range / 100) * getSpaceBottom();
-    this.mAxisMaximum = mCustomAxisMax
-        ? this.mAxisMaximum
-        : max + (range / 100) * getSpaceTop();
+    this.axisMinimum = customAxisMin
+        ? this.axisMinimum
+        : min - (range / 100) * spacePercentBottom;
+    this.axisMaximum = customAxisMax
+        ? this.axisMaximum
+        : max + (range / 100) * spacePercentTop;
 
-    this.mAxisRange = (this.mAxisMinimum - this.mAxisMaximum).abs();
+    this.axisRange = (this.axisMinimum - this.axisMaximum).abs();
   }
 }

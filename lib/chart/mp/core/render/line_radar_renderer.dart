@@ -23,7 +23,7 @@ abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
 //    (int) mViewPortHandler.contentRight(),
 //    (int) mViewPortHandler.contentBottom());
 //    drawable.draw(c);
-      c.drawImage(drawable, Offset(0, 0), mDrawPaint);
+      c.drawImage(drawable, Offset(0, 0), drawPaint);
 
       c.restore();
     }
@@ -51,18 +51,18 @@ abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
       c.restore();
     } else {
       // save
-      var previous = mRenderPaint.style;
-      Color previousColor = mRenderPaint.color;
+      var previous = renderPaint.style;
+      Color previousColor = renderPaint.color;
 
       // set
-      mRenderPaint
+      renderPaint
         ..style = PaintingStyle.fill
         ..color = Color(color);
 
-      c.drawPath(filledPath, mRenderPaint);
+      c.drawPath(filledPath, renderPaint);
 
       // restore
-      mRenderPaint
+      renderPaint
         ..style = previous
         ..color = previousColor;
     }

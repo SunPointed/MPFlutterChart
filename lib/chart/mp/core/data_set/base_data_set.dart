@@ -14,71 +14,70 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   /// List representing all colors that are used for this DataSet
-  List<ui.Color> mColors = null;
+  List<ui.Color> _colors = null;
 
-  GradientColor mGradientColor = null;
+  GradientColor _gradientColor = null;
 
-  List<GradientColor> mGradientColors = null;
+  List<GradientColor> _gradientColors = null;
 
   /// List representing all colors that are used for drawing the actual values for this DataSet
-  List<ui.Color> mValueColors = null;
+  List<ui.Color> _valueColors = null;
 
   /// label that describes the DataSet or the data the DataSet represents
-  String mLabel = "DataSet";
+  String _label = "DataSet";
 
   /// this specifies which axis this DataSet should be plotted against
-  AxisDependency mAxisDependency = AxisDependency.LEFT;
+  AxisDependency _axisDependency = AxisDependency.LEFT;
 
   /// if true, value highlightning is enabled
-  bool mHighlightEnabled = true;
+  bool _highlightEnabled = true;
 
   /// custom formatter that is used instead of the auto-formatter if set
-  ValueFormatter mValueFormatter;
+  ValueFormatter _valueFormatter;
 
   /// the typeface used for the value text
-  ui.TextStyle mValueTypeface;
+  ui.TextStyle _valueTypeface;
 
-  LegendForm mForm = LegendForm.DEFAULT;
-  double mFormSize = double.nan;
-  double mFormLineWidth = double.nan;
-  DashPathEffect mFormLineDashEffect = null;
+  LegendForm _form = LegendForm.DEFAULT;
+  double _formSize = double.nan;
+  double _formLineWidth = double.nan;
+  DashPathEffect _formLineDashEffect = null;
 
   /// if true, y-values are drawn on the chart
-  bool mDrawValues = true;
+  bool _drawValues = true;
 
   /// if true, y-icons are drawn on the chart
-  bool mDrawIcons = false;
+  bool _drawIcons = false;
 
   /// the offset for drawing icons (in dp)
-  MPPointF mIconsOffset = MPPointF(0, 0);
+  MPPointF _iconsOffset = MPPointF(0, 0);
 
   /// the size of the value-text labels
-  double mValueTextSize = 17;
+  double _valueTextSize = 17;
 
   /// flag that indicates if the DataSet is visible or not
-  bool mVisible = true;
+  bool _visible = true;
 
   /// Default constructor.
   BaseDataSet() {
-    mColors = List();
-    mValueColors = List();
-
+    _colors = List();
+    _valueColors = List();
     // default color
-    mColors.add(ui.Color.fromARGB(255, 140, 234, 255));
-    mValueColors.add(ColorUtils.BLACK);
+    _colors.add(ui.Color.fromARGB(255, 140, 234, 255));
+    _valueColors.add(ColorUtils.BLACK);
   }
 
   /// Constructor with label.
   ///
   /// @param label
   BaseDataSet.withLabel(String label) {
-    mColors = List();
-    mValueColors = List();
+    _colors = List();
+    _valueColors = List();
 
     // default color
-    mColors.add(ui.Color.fromARGB(255, 140, 234, 255));
-    mValueColors.add(ColorUtils.BLACK);
-    this.mLabel = label;
+    _colors.add(ui.Color.fromARGB(255, 140, 234, 255));
+    _valueColors.add(ColorUtils.BLACK);
+    this._label = label;
   }
 
   /// Use this method to tell the data set that the underlying data has changed.
@@ -92,36 +91,36 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
   @override
   List<ui.Color> getColors() {
-    return mColors;
+    return _colors;
   }
 
   List<ui.Color> getValueColors() {
-    return mValueColors;
+    return _valueColors;
   }
 
   @override
   ui.Color getColor1() {
-    return mColors[0];
+    return _colors[0];
   }
 
   @override
   ui.Color getColor2(int index) {
-    return mColors[index % mColors.length];
+    return _colors[index % _colors.length];
   }
 
   @override
   GradientColor getGradientColor1() {
-    return mGradientColor;
+    return _gradientColor;
   }
 
   @override
   List<GradientColor> getGradientColors() {
-    return mGradientColors;
+    return _gradientColors;
   }
 
   @override
   GradientColor getGradientColor2(int index) {
-    return mGradientColors[index % mGradientColors.length];
+    return _gradientColors[index % _gradientColors.length];
   }
 
   /**
@@ -136,15 +135,15 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   ///
   /// @param colors
   void setColors1(List<ui.Color> colors) {
-    this.mColors = colors;
+    this._colors = colors;
   }
 
   /// Adds a  color to the colors array of the DataSet.
   ///
   /// @param color
   void addColor(ui.Color color) {
-    if (mColors == null) mColors = List();
-    mColors.add(color);
+    if (_colors == null) _colors = List();
+    _colors.add(color);
   }
 
   /// Sets the one and ONLY color that should be used for this DataSet.
@@ -153,13 +152,13 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   /// @param color
   void setColor1(ui.Color color) {
     resetColors();
-    mColors.add(color);
+    _colors.add(color);
   }
 
   void setColor3(ui.Color color, int alpha) {
     resetColors();
     alpha = alpha > 255 ? 255 : (alpha < 0 ? 0 : alpha);
-    mColors.add(Color.fromARGB(alpha, color.red, color.green, color.blue));
+    _colors.add(Color.fromARGB(alpha, color.red, color.green, color.blue));
   }
 
   /// Sets the start and end color for gradient color, ONLY color that should be used for this DataSet.
@@ -167,14 +166,14 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   /// @param startColor
   /// @param endColor
   void setGradientColor(ui.Color startColor, ui.Color endColor) {
-    mGradientColor = GradientColor(startColor, endColor);
+    _gradientColor = GradientColor(startColor, endColor);
   }
 
   /// Sets the start and end color for gradient colors, ONLY color that should be used for this DataSet.
   ///
   /// @param gradientColors
   void setGradientColors(List<GradientColor> gradientColors) {
-    this.mGradientColors = gradientColors;
+    this._gradientColors = gradientColors;
   }
 
   /// Sets a color with a specific alpha value.
@@ -198,32 +197,32 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
 
   /// Resets all colors of this DataSet and recreates the colors array.
   void resetColors() {
-    if (mColors == null) {
-      mColors = List();
+    if (_colors == null) {
+      _colors = List();
     }
-    mColors.clear();
+    _colors.clear();
   }
 
   /// ###### ###### OTHER STYLING RELATED METHODS ##### ######
 
   @override
   void setLabel(String label) {
-    mLabel = label;
+    _label = label;
   }
 
   @override
   String getLabel() {
-    return mLabel;
+    return _label;
   }
 
   @override
   void setHighlightEnabled(bool enabled) {
-    mHighlightEnabled = enabled;
+    _highlightEnabled = enabled;
   }
 
   @override
   bool isHighlightEnabled() {
-    return mHighlightEnabled;
+    return _highlightEnabled;
   }
 
   @override
@@ -231,146 +230,146 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     if (f == null)
       return;
     else
-      mValueFormatter = f;
+      _valueFormatter = f;
   }
 
   @override
   ValueFormatter getValueFormatter() {
     if (needsFormatter()) return Utils.getDefaultValueFormatter();
-    return mValueFormatter;
+    return _valueFormatter;
   }
 
   @override
   bool needsFormatter() {
-    return mValueFormatter == null;
+    return _valueFormatter == null;
   }
 
   @override
   void setValueTextColor(ui.Color color) {
-    mValueColors.clear();
-    mValueColors.add(color);
+    _valueColors.clear();
+    _valueColors.add(color);
   }
 
   @override
   void setValueTextColors(List<ui.Color> colors) {
-    mValueColors = colors;
+    _valueColors = colors;
   }
 
   @override
   void setValueTypeface(ui.TextStyle tf) {
-    mValueTypeface = tf;
+    _valueTypeface = tf;
   }
 
   @override
   void setValueTextSize(double size) {
-    mValueTextSize = Utils.convertDpToPixel(size);
+    _valueTextSize = Utils.convertDpToPixel(size);
   }
 
   @override
   ui.Color getValueTextColor1() {
-    return mValueColors[0];
+    return _valueColors[0];
   }
 
   @override
   ui.Color getValueTextColor2(int index) {
-    return mValueColors[index % mValueColors.length];
+    return _valueColors[index % _valueColors.length];
   }
 
   @override
   ui.TextStyle getValueTypeface() {
-    return mValueTypeface;
+    return _valueTypeface;
   }
 
   @override
   double getValueTextSize() {
-    return mValueTextSize;
+    return _valueTextSize;
   }
 
   void setForm(LegendForm form) {
-    mForm = form;
+    _form = form;
   }
 
   @override
   LegendForm getForm() {
-    return mForm;
+    return _form;
   }
 
   void setFormSize(double formSize) {
-    mFormSize = formSize;
+    _formSize = formSize;
   }
 
   @override
   double getFormSize() {
-    return mFormSize;
+    return _formSize;
   }
 
   void setFormLineWidth(double formLineWidth) {
-    mFormLineWidth = formLineWidth;
+    _formLineWidth = formLineWidth;
   }
 
   @override
   double getFormLineWidth() {
-    return mFormLineWidth;
+    return _formLineWidth;
   }
 
   void setFormLineDashEffect(DashPathEffect dashPathEffect) {
-    mFormLineDashEffect = dashPathEffect;
+    _formLineDashEffect = dashPathEffect;
   }
 
   @override
   DashPathEffect getFormLineDashEffect() {
-    return mFormLineDashEffect;
+    return _formLineDashEffect;
   }
 
   @override
   void setDrawValues(bool enabled) {
-    this.mDrawValues = enabled;
+    this._drawValues = enabled;
   }
 
   @override
   bool isDrawValuesEnabled() {
-    return mDrawValues;
+    return _drawValues;
   }
 
   @override
   void setDrawIcons(bool enabled) {
-    mDrawIcons = enabled;
+    _drawIcons = enabled;
   }
 
   @override
   bool isDrawIconsEnabled() {
-    return mDrawIcons;
+    return _drawIcons;
   }
 
   @override
   void setIconsOffset(MPPointF offsetDp) {
-    mIconsOffset.x = offsetDp.x;
-    mIconsOffset.y = offsetDp.y;
+    _iconsOffset.x = offsetDp.x;
+    _iconsOffset.y = offsetDp.y;
   }
 
   @override
   MPPointF getIconsOffset() {
-    return mIconsOffset;
+    return _iconsOffset;
   }
 
   @override
   void setVisible(bool visible) {
-    mVisible = visible;
+    _visible = visible;
   }
 
   @override
   bool isVisible() {
-    return mVisible;
+    return _visible;
   }
 
   @override
   AxisDependency getAxisDependency() {
-    return mAxisDependency;
+    return _axisDependency;
   }
 
   @override
   void setAxisDependency(AxisDependency dependency) {
-    mAxisDependency = dependency;
+    _axisDependency = dependency;
   }
 
   /// ###### ###### DATA RELATED METHODS ###### ######
@@ -424,22 +423,22 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   }
 
   void copy(BaseDataSet baseDataSet) {
-    baseDataSet.mAxisDependency = mAxisDependency;
-    baseDataSet.mColors = mColors;
-    baseDataSet.mDrawIcons = mDrawIcons;
-    baseDataSet.mDrawValues = mDrawValues;
-    baseDataSet.mForm = mForm;
-    baseDataSet.mFormLineDashEffect = mFormLineDashEffect;
-    baseDataSet.mFormLineWidth = mFormLineWidth;
-    baseDataSet.mFormSize = mFormSize;
-    baseDataSet.mGradientColor = mGradientColor;
-    baseDataSet.mGradientColors = mGradientColors;
-    baseDataSet.mHighlightEnabled = mHighlightEnabled;
-    baseDataSet.mIconsOffset = mIconsOffset;
-    baseDataSet.mValueColors = mValueColors;
-    baseDataSet.mValueFormatter = mValueFormatter;
-    baseDataSet.mValueColors = mValueColors;
-    baseDataSet.mValueTextSize = mValueTextSize;
-    baseDataSet.mVisible = mVisible;
+    baseDataSet._axisDependency = _axisDependency;
+    baseDataSet._colors = _colors;
+    baseDataSet._drawIcons = _drawIcons;
+    baseDataSet._drawValues = _drawValues;
+    baseDataSet._form = _form;
+    baseDataSet._formLineDashEffect = _formLineDashEffect;
+    baseDataSet._formLineWidth = _formLineWidth;
+    baseDataSet._formSize = _formSize;
+    baseDataSet._gradientColor = _gradientColor;
+    baseDataSet._gradientColors = _gradientColors;
+    baseDataSet._highlightEnabled = _highlightEnabled;
+    baseDataSet._iconsOffset = _iconsOffset;
+    baseDataSet._valueColors = _valueColors;
+    baseDataSet._valueFormatter = _valueFormatter;
+    baseDataSet._valueColors = _valueColors;
+    baseDataSet._valueTextSize = _valueTextSize;
+    baseDataSet._visible = _visible;
   }
 }

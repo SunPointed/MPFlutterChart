@@ -195,26 +195,8 @@ class OtherChartScatterPlotState
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    scatterChart = ScatterChart(scatterData, (painter) {
-      painter..setOnChartValueSelectedListener(this);
-
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.TOP)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
-        ..setOrientation(LegendOrientation.VERTICAL)
-        ..setDrawInside(false)
-//      ..setTypeface(tf)
-        ..setXOffset(5);
-
-      painter.mAxisLeft..setAxisMinimum(0);
-//      ..setTypeface(tf)
-
-      painter.mAxisRight.setEnabled(false);
-      painter.mXAxis..setDrawGridLines(false);
-//      ..setTypeface(tf)
-    },
+    var desc = Description()..enabled = false;
+    scatterChart = ScatterChart(scatterData,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -224,7 +206,20 @@ class OtherChartScatterPlotState
         pinchZoomEnabled: true,
         maxVisibleCount: 200,
         maxHighlightDistance: 50,
-        desc: desc);
+        selectionListener: this,
+        description: desc);
+    scatterChart.legend
+      ..verticalAlignment = (LegendVerticalAlignment.TOP)
+      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+      ..orientation = (LegendOrientation.VERTICAL)
+      ..drawInside = (false)
+//      ..setTypeface(tf)
+      ..xOffset = (5);
+    scatterChart.axisLeft.setAxisMinimum(0);
+//      ..setTypeface(tf)
+    scatterChart.axisRight.enabled = (false);
+    scatterChart.xAxis.drawGridLines = (false);
+//      ..setTypeface(tf)
   }
 
   @override

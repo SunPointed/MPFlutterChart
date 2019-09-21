@@ -2,7 +2,13 @@ import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 
 abstract class Renderer {
   /// the component that handles the drawing area of the chart and it's offsets
-  ViewPortHandler mViewPortHandler;
+  ViewPortHandler _viewPortHandler;
 
-  Renderer(this.mViewPortHandler);
+  Renderer(this._viewPortHandler);
+
+  ViewPortHandler get viewPortHandler => _viewPortHandler;
+
+  set viewPortHandler(ViewPortHandler value) {
+    _viewPortHandler = value;
+  }
 }

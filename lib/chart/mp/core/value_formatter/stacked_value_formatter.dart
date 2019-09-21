@@ -4,12 +4,12 @@ import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.d
 
 class StackedValueFormatter extends ValueFormatter {
   /// if true, all stack values of the stacked bar entry are drawn, else only top
-  bool mDrawWholeStack;
+  bool _drawWholeStack;
 
   /// a string that should be appended behind the value
-  String mSuffix;
+  String _suffix;
 
-  NumberFormat mFormat;
+  NumberFormat _format;
 
   /// Constructor.
   ///
@@ -17,8 +17,8 @@ class StackedValueFormatter extends ValueFormatter {
   /// @param suffix         a string that should be appended behind the value
   /// @param decimals       the number of decimal digits to use
   StackedValueFormatter(bool drawWholeStack, String suffix, int decimals) {
-    this.mDrawWholeStack = drawWholeStack;
-    this.mSuffix = suffix;
+    this._drawWholeStack = drawWholeStack;
+    this._suffix = suffix;
 
     StringBuffer b = new StringBuffer();
     for (int i = 0; i < decimals; i++) {
@@ -26,25 +26,25 @@ class StackedValueFormatter extends ValueFormatter {
       b.write("0");
     }
 
-    this.mFormat = NumberFormat("###,###,###,##0" + b.toString());
+    this._format = NumberFormat("###,###,###,##0" + b.toString());
   }
 
   @override
   String getBarStackedLabel(double value, BarEntry entry) {
-    if (!mDrawWholeStack) {
-      List<double> vals = entry.getYVals();
+    if (!_drawWholeStack) {
+      List<double> vals = entry.yVals;
 
       if (vals != null) {
         // find out if we are on top of the stack
         if (vals[vals.length - 1] == value) {
           // return the "sum" across all stack values
-          return mFormat.format(entry.y) + mSuffix;
+          return _format.format(entry.y) + _suffix;
         } else {
           return ""; // return empty
         }
       }
     }
     // return the "proposed" value
-    return mFormat.format(value) + mSuffix;
+    return _format.format(value) + _suffix;
   }
 }

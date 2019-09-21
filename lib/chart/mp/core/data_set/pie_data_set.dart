@@ -9,29 +9,29 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
   /// the space in pixels between the chart-slices, default 0f
-  double mSliceSpace = 0;
-  bool mAutomaticallyDisableSliceSpacing = false;
+  double _sliceSpace = 0;
+  bool _automaticallyDisableSliceSpacing = false;
 
   /// indicates the selection distance of a pie slice
-  double mShift = 18;
+  double _shift = 18;
 
-  ValuePosition mXValuePosition = ValuePosition.INSIDE_SLICE;
-  ValuePosition mYValuePosition = ValuePosition.INSIDE_SLICE;
-  bool mUsingSliceColorAsValueLineColor = false;
-  Color mValueLineColor = Color(0xff000000);
-  double mValueLineWidth = 1.0;
-  double mValueLinePart1OffsetPercentage = 75.0;
-  double mValueLinePart1Length = 0.3;
-  double mValueLinePart2Length = 0.4;
-  bool mValueLineVariableLength = true;
+  ValuePosition _xValuePosition = ValuePosition.INSIDE_SLICE;
+  ValuePosition _yValuePosition = ValuePosition.INSIDE_SLICE;
+  bool _usingSliceColorAsValueLineColor = false;
+  Color _valueLineColor = Color(0xff000000);
+  double _valueLineWidth = 1.0;
+  double _valueLinePart1OffsetPercentage = 75.0;
+  double _valueLinePart1Length = 0.3;
+  double _valueLinePart2Length = 0.4;
+  bool _valueLineVariableLength = true;
 
   PieDataSet(List<PieEntry> yVals, String label) : super(yVals, label);
 
   @override
   DataSet<PieEntry> copy1() {
     List<PieEntry> entries = List();
-    for (int i = 0; i < mValues.length; i++) {
-      entries.add(mValues[i].copy());
+    for (int i = 0; i < values.length; i++) {
+      entries.add(values[i].copy());
     }
     PieDataSet copied = PieDataSet(entries, getLabel());
     copy(copied);
@@ -56,12 +56,12 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
     if (spaceDp > 20) spaceDp = 20;
     if (spaceDp < 0) spaceDp = 0;
 
-    mSliceSpace = Utils.convertDpToPixel(spaceDp);
+    _sliceSpace = Utils.convertDpToPixel(spaceDp);
   }
 
   @override
   double getSliceSpace() {
-    return mSliceSpace;
+    return _sliceSpace;
   }
 
   /// When enabled, slice spacing will be 0.0 when the smallest value is going to be
@@ -69,7 +69,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
   ///
   /// @param autoDisable
   void setAutomaticallyDisableSliceSpacing(bool autoDisable) {
-    mAutomaticallyDisableSliceSpacing = autoDisable;
+    _automaticallyDisableSliceSpacing = autoDisable;
   }
 
   /// When enabled, slice spacing will be 0.0 when the smallest value is going to be
@@ -78,7 +78,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
   /// @return
   @override
   bool isAutomaticallyDisableSliceSpacingEnabled() {
-    return mAutomaticallyDisableSliceSpacing;
+    return _automaticallyDisableSliceSpacing;
   }
 
   /// sets the distance the highlighted piechart-slice of this DataSet is
@@ -86,101 +86,101 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
   ///
   /// @param shift
   void setSelectionShift(double shift) {
-    mShift = Utils.convertDpToPixel(shift);
+    _shift = Utils.convertDpToPixel(shift);
   }
 
   @override
   double getSelectionShift() {
-    return mShift;
+    return _shift;
   }
 
   @override
   ValuePosition getXValuePosition() {
-    return mXValuePosition;
+    return _xValuePosition;
   }
 
   void setXValuePosition(ValuePosition xValuePosition) {
-    this.mXValuePosition = xValuePosition;
+    this._xValuePosition = xValuePosition;
   }
 
   @override
   ValuePosition getYValuePosition() {
-    return mYValuePosition;
+    return _yValuePosition;
   }
 
   void setYValuePosition(ValuePosition yValuePosition) {
-    this.mYValuePosition = yValuePosition;
+    this._yValuePosition = yValuePosition;
   }
 
   /// When valuePosition is OutsideSlice, use slice colors as line color if true
   @override
   bool isUsingSliceColorAsValueLineColor() {
-    return mUsingSliceColorAsValueLineColor;
+    return _usingSliceColorAsValueLineColor;
   }
 
   void setUsingSliceColorAsValueLineColor(
       bool usingSliceColorAsValueLineColor) {
-    this.mUsingSliceColorAsValueLineColor = usingSliceColorAsValueLineColor;
+    this._usingSliceColorAsValueLineColor = usingSliceColorAsValueLineColor;
   }
 
   /// When valuePosition is OutsideSlice, indicates line color
   @override
   Color getValueLineColor() {
-    return mValueLineColor;
+    return _valueLineColor;
   }
 
   void setValueLineColor(Color valueLineColor) {
-    this.mValueLineColor = valueLineColor;
+    this._valueLineColor = valueLineColor;
   }
 
   /// When valuePosition is OutsideSlice, indicates line width
   @override
   double getValueLineWidth() {
-    return mValueLineWidth;
+    return _valueLineWidth;
   }
 
   void setValueLineWidth(double valueLineWidth) {
-    this.mValueLineWidth = valueLineWidth;
+    this._valueLineWidth = valueLineWidth;
   }
 
   /// When valuePosition is OutsideSlice, indicates offset as percentage out of the slice size
   @override
   double getValueLinePart1OffsetPercentage() {
-    return mValueLinePart1OffsetPercentage;
+    return _valueLinePart1OffsetPercentage;
   }
 
   void setValueLinePart1OffsetPercentage(
       double valueLinePart1OffsetPercentage) {
-    this.mValueLinePart1OffsetPercentage = valueLinePart1OffsetPercentage;
+    this._valueLinePart1OffsetPercentage = valueLinePart1OffsetPercentage;
   }
 
   /// When valuePosition is OutsideSlice, indicates length of first half of the line
   @override
   double getValueLinePart1Length() {
-    return mValueLinePart1Length;
+    return _valueLinePart1Length;
   }
 
   void setValueLinePart1Length(double valueLinePart1Length) {
-    this.mValueLinePart1Length = valueLinePart1Length;
+    this._valueLinePart1Length = valueLinePart1Length;
   }
 
   /// When valuePosition is OutsideSlice, indicates length of second half of the line
   @override
   double getValueLinePart2Length() {
-    return mValueLinePart2Length;
+    return _valueLinePart2Length;
   }
 
   void setValueLinePart2Length(double valueLinePart2Length) {
-    this.mValueLinePart2Length = valueLinePart2Length;
+    this._valueLinePart2Length = valueLinePart2Length;
   }
 
   /// When valuePosition is OutsideSlice, this allows variable line length
   @override
   bool isValueLineVariableLength() {
-    return mValueLineVariableLength;
+    return _valueLineVariableLength;
   }
 
   void setValueLineVariableLength(bool valueLineVariableLength) {
-    this.mValueLineVariableLength = valueLineVariableLength;
+    this._valueLineVariableLength = valueLineVariableLength;
   }
 }

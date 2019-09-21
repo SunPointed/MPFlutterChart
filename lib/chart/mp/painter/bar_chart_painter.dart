@@ -10,7 +10,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data_provider/bar_data_provider.d
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
-import 'package:mp_flutter_chart/chart/mp/core/fill_formatter/bar_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/bar_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
@@ -155,17 +155,17 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
     highlighter = BarHighlighter(this);
     renderer = BarChartRenderer(this, animator, viewPortHandler);
     super.initDefaultWithData();
-    xAxis?.setSpaceMin(0.5);
-    xAxis?.setSpaceMax(0.5);
+    xAxis?.spaceMin = (0.5);
+    xAxis?.spaceMax = (0.5);
   }
 
   @override
   void calcMinMax() {
     if (_fitBars) {
-      xAxis.calculate(getBarData().getXMin() - getBarData().getBarWidth() / 2.0,
-          getBarData().getXMax() + getBarData().getBarWidth() / 2.0);
+      xAxis.calculate(getBarData().xMin - getBarData().barWidth / 2.0,
+          getBarData().xMax + getBarData().barWidth / 2.0);
     } else {
-      xAxis.calculate(getBarData().getXMin(), getBarData().getXMax());
+      xAxis.calculate(getBarData().xMin, getBarData().xMax);
     }
 
     // calculate axis range (min / max) according to provided data
@@ -192,13 +192,13 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
 
       // For isHighlightFullBarEnabled, remove stackIndex
       return Highlight(
-          x: h.mX,
-          y: h.mY,
-          xPx: h.mXPx,
-          yPx: h.mYPx,
-          dataSetIndex: h.getDataSetIndex(),
+          x: h.x,
+          y: h.y,
+          xPx: h.xPx,
+          yPx: h.yPx,
+          dataSetIndex: h.dataSetIndex,
           stackIndex: -1,
-          axis: h.getAxis());
+          axis: h.axis);
     }
   }
 
@@ -221,7 +221,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
     double y = e.y;
     double x = e.x;
 
-    double barWidth = getBarData().getBarWidth();
+    double barWidth = getBarData().barWidth;
 
     double left = x - barWidth / 2.0;
     double right = x + barWidth / 2.0;

@@ -12,8 +12,8 @@ class PieData extends ChartData<IPieDataSet> {
   ///
   /// @param dataSet
   void setDataSet(IPieDataSet dataSet) {
-    mDataSets.clear();
-    mDataSets.add(dataSet);
+    dataSets.clear();
+    dataSets.add(dataSet);
     notifyDataChanged();
   }
 
@@ -22,7 +22,7 @@ class PieData extends ChartData<IPieDataSet> {
   ///
   /// @return
   IPieDataSet getDataSet() {
-    return mDataSets[0];
+    return dataSets[0];
   }
 
   /// The PieData object can only have one DataSet. Use getDataSet() method instead.
@@ -37,15 +37,15 @@ class PieData extends ChartData<IPieDataSet> {
   @override
   IPieDataSet getDataSetByLabel(String label, bool ignorecase) {
     return ignorecase
-        ? DartAdapterUtils.equalsIgnoreCase(label, mDataSets[0].getLabel())
-        ? mDataSets[0]
+        ? DartAdapterUtils.equalsIgnoreCase(label, dataSets[0].getLabel())
+        ? dataSets[0]
         : null
-        : (label == mDataSets[0].getLabel()) ? mDataSets[0] : null;
+        : (label == dataSets[0].getLabel()) ? dataSets[0] : null;
   }
 
   @override
   Entry getEntryForHighlight(Highlight highlight) {
-    return getDataSet().getEntryForIndex(highlight.getX().toInt());
+    return getDataSet().getEntryForIndex(highlight.x.toInt());
   }
 
   /// Returns the sum of all values in this PieData object.

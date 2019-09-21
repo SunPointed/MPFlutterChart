@@ -89,64 +89,63 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
     _barData.setValueTextSize(13);
 //    _barData.setValueTypeface(tfRegular);
     _barData.setValueFormatter(Formatter());
-    _barData.setBarWidth(0.8);
+    _barData.barWidth = (0.8);
   }
 
   void _initBarChart() {
-    if(_barData == null){
+    if (_barData == null) {
       return;
     }
 
-    if(_barChart != null){
+    if (_barChart != null) {
       _barChart?.data = _barData;
       _barChart?.getState()?.setStateIfNotDispose();
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    _barChart = BarChart(_barData, (painter) {
-      painter
-        ..mExtraTopOffset = -30
-        ..mExtraBottomOffset = 10
-        ..mExtraLeftOffset = 70
-        ..mExtraRightOffset = 70
-        ..setDrawBarShadow(false)
-        ..setDrawValueAboveBar(true);
+    var desc = Description()..enabled = false;
+    _barChart = BarChart(
+      _barData,
+      touchEnabled: true,
+      drawGridBackground: false,
+      dragXEnabled: true,
+      dragYEnabled: true,
+      scaleXEnabled: true,
+      scaleYEnabled: true,
+      pinchZoomEnabled: false,
+      description: desc,
+      extraTopOffset: -30,
+      extraBottomOffset: 10,
+      extraLeftOffset: 70,
+      extraRightOffset: 70,
+      drawBarShadow: false,
+      drawValueAboveBar: true,
+    );
 
-      painter.mXAxis
-        ..setPosition(XAxisPosition.BOTTOM)
+    _barChart.xAxis
+      ..position = (XAxisPosition.BOTTOM)
 //        ..setTypeface(tf)
-        ..setDrawGridLines(false)
-        ..setDrawAxisLine(false)
-        ..setTextColor(ColorUtils.LTGRAY)
-        ..setTextSize(13)
-        ..setLabelCount1(5)
-        ..setCenterAxisLabels(true)
-        ..setValueFormatter(A(_data))
-        ..setGranularity(1);
+      ..drawGridLines = (false)
+      ..drawAxisLine = (false)
+      ..textColor = (ColorUtils.LTGRAY)
+      ..textSize = (13)
+      ..setLabelCount1(5)
+      ..centerAxisLabels = (true)
+      ..setValueFormatter(A(_data))
+      ..setGranularity(1);
 
-      painter.mAxisLeft
-        ..setDrawLabels(false)
-        ..setSpaceTop(25)
-        ..setSpaceBottom(25)
-        ..setDrawAxisLine(false)
-        ..setDrawGridLines(false)
-        ..setDrawZeroLine(false)
-        ..mZeroLineColor = ColorUtils.GRAY
-        ..mZeroLineWidth = 0.7;
+    _barChart.axisLeft
+      ..drawLabels = (false)
+      ..spacePercentTop = (25)
+      ..spacePercentBottom = (25)
+      ..drawAxisLine = (false)
+      ..drawGridLines = (false)
+      ..setDrawZeroLine(false)
+      ..zeroLineColor = ColorUtils.GRAY
+      ..zeroLineWidth = 0.7;
 
-      painter.mAxisRight.setEnabled(false);
-      painter.mLegend.setEnabled(false);
-    },
-        touchEnabled: true,
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: false,
-        desc: desc);
+    _barChart.axisRight.enabled = (false);
+    _barChart.legend.enabled = (false);
   }
 }
 

@@ -171,23 +171,23 @@ class HorizontalBarChartPainter extends BarChartPainter {
     // offsets for y-labels
     if (axisLeft.needsOffset()) {
       offsetTop += axisLeft
-          .getRequiredHeightSpace(axisRendererLeft.getPaintAxisLabels());
+          .getRequiredHeightSpace(axisRendererLeft.axisLabelPaint);
     }
 
     if (axisRight.needsOffset()) {
       offsetBottom += axisRight
-          .getRequiredHeightSpace(axisRendererRight.getPaintAxisLabels());
+          .getRequiredHeightSpace(axisRendererRight.axisLabelPaint);
     }
 
-    double xlabelwidth = xAxis.mLabelRotatedWidth.toDouble();
+    double xlabelwidth = xAxis.labelRotatedWidth.toDouble();
 
-    if (xAxis.isEnabled()) {
+    if (xAxis.enabled) {
       // offsets for x-labels
-      if (xAxis.getPosition() == XAxisPosition.BOTTOM) {
+      if (xAxis.position == XAxisPosition.BOTTOM) {
         offsetLeft += xlabelwidth;
-      } else if (xAxis.getPosition() == XAxisPosition.TOP) {
+      } else if (xAxis.position == XAxisPosition.TOP) {
         offsetRight += xlabelwidth;
-      } else if (xAxis.getPosition() == XAxisPosition.BOTH_SIDED) {
+      } else if (xAxis.position == XAxisPosition.BOTH_SIDED) {
         offsetLeft += xlabelwidth;
         offsetRight += xlabelwidth;
       }
@@ -212,15 +212,15 @@ class HorizontalBarChartPainter extends BarChartPainter {
 
   @override
   void prepareValuePxMatrix() {
-    rightAxisTransformer.prepareMatrixValuePx(axisRight.mAxisMinimum,
-        axisRight.mAxisRange, xAxis.mAxisRange, xAxis.mAxisMinimum);
-    leftAxisTransformer.prepareMatrixValuePx(axisLeft.mAxisMinimum,
-        axisLeft.mAxisRange, xAxis.mAxisRange, xAxis.mAxisMinimum);
+    rightAxisTransformer.prepareMatrixValuePx(axisRight.axisMinimum,
+        axisRight.axisRange, xAxis.axisRange, xAxis.axisMinimum);
+    leftAxisTransformer.prepareMatrixValuePx(axisLeft.axisMinimum,
+        axisLeft.axisRange, xAxis.axisRange, xAxis.axisMinimum);
   }
 
   @override
   List<double> getMarkerPosition(Highlight high) {
-    return new List()..add(high.getDrawY())..add(high.getDrawX());
+    return new List()..add(high.drawY)..add(high.drawX);
   }
 
   @override
@@ -237,7 +237,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
     double y = e.y;
     double x = e.x;
 
-    double barWidth = getBarData().getBarWidth();
+    double barWidth = getBarData().barWidth;
 
     double top = x - barWidth / 2;
     double bottom = x + barWidth / 2;
@@ -289,7 +289,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
         viewPortHandler.contentLeft(),
         viewPortHandler.contentBottom(),
         posForGetLowestVisibleX);
-    double result = max(xAxis.mAxisMinimum, posForGetLowestVisibleX.y);
+    double result = max(xAxis.axisMinimum, posForGetLowestVisibleX.y);
     return result;
   }
 
@@ -299,7 +299,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
         viewPortHandler.contentLeft(),
         viewPortHandler.contentTop(),
         posForGetHighestVisibleX);
-    double result = min(xAxis.mAxisMaximum, posForGetHighestVisibleX.y);
+    double result = min(xAxis.axisMaximum, posForGetHighestVisibleX.y);
     return result;
   }
 

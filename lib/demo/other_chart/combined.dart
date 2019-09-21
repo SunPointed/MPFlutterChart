@@ -84,46 +84,14 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   void _initCombinedChart() {
     if (combinedData == null) return;
 
-    if(combinedChart != null){
+    if (combinedChart != null) {
       combinedChart.data = combinedData;
       combinedChart.getState()?.setStateIfNotDispose();
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    combinedChart = CombinedChart(combinedData, (painter) {
-      painter
-        ..setDrawOrder(List()
-          ..add(DrawOrder.BAR)
-          ..add(DrawOrder.BUBBLE)
-          ..add(DrawOrder.CANDLE)
-          ..add(DrawOrder.LINE)
-          ..add(DrawOrder.SCATTER));
-
-      painter.mLegend
-        ..setWordWrapEnabled(true)
-        ..setVerticalAlignment(LegendVerticalAlignment.BOTTOM)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.CENTER)
-        ..setOrientation(LegendOrientation.HORIZONTAL)
-        ..setDrawInside(false);
-
-      painter.mAxisRight
-        ..setDrawGridLines(false)
-        ..setAxisMinimum(0);
-
-      painter.mAxisLeft
-        ..setDrawGridLines(false)
-        ..setAxisMinimum(0);
-
-      painter.mXAxis
-        ..setPosition(XAxisPosition.BOTH_SIDED)
-        ..setAxisMinimum(0)
-        ..setGranularity(1)
-        ..setValueFormatter(A())
-        ..setAxisMaximum(
-            combinedData == null ? 0 : combinedData.getXMax() + 0.25);
-    },
+    var desc = Description()..enabled = false;
+    combinedChart = CombinedChart(combinedData,
         drawGridBackground: false,
         drawBarShadow: false,
         highlightFullBarEnabled: false,
@@ -134,7 +102,32 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
         scaleYEnabled: true,
         pinchZoomEnabled: false,
         maxVisibleCount: 60,
-        desc: desc);
+        description: desc);
+    combinedChart.painter
+      ..setDrawOrder(List()
+        ..add(DrawOrder.BAR)
+        ..add(DrawOrder.BUBBLE)
+        ..add(DrawOrder.CANDLE)
+        ..add(DrawOrder.LINE)
+        ..add(DrawOrder.SCATTER));
+    combinedChart.legend
+      ..wordWrapEnabled = (true)
+      ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+      ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
+      ..orientation = (LegendOrientation.HORIZONTAL)
+      ..drawInside = (false);
+    combinedChart.axisRight
+      ..drawGridLines = (false)
+      ..setAxisMinimum(0);
+    combinedChart.axisLeft
+      ..drawGridLines = (false)
+      ..setAxisMinimum(0);
+    combinedChart.xAxis
+      ..position = (XAxisPosition.BOTH_SIDED)
+      ..setAxisMinimum(0)
+      ..setGranularity(1)
+      ..setValueFormatter(A())
+      ..setAxisMaximum(combinedData == null ? 0 : combinedData.xMax + 0.25);
   }
 
   double getRandom(double range, double start) {
@@ -202,7 +195,7 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
     // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
 
     BarData d = BarData(List()..add(set1)..add(set2));
-    d.setBarWidth(barWidth);
+    d.barWidth = (barWidth);
 
     // make this BarData object grouped
     d.groupBars(0, groupSpace, barSpace); // start at x = 0

@@ -19,27 +19,27 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
     implements IScatterDataSet {
   /// the size the scattershape will have, in density pixels
-  double mShapeSize = 15;
+  double _shapeSize = 15;
 
   /// Renderer responsible for rendering this DataSet, default: square
-  IShapeRenderer mShapeRenderer = SquareShapeRenderer();
+  IShapeRenderer _shapeRenderer = SquareShapeRenderer();
 
   /// The radius of the hole in the shape (applies to Square, Circle and Triangle)
   /// - default: 0.0
-  double mScatterShapeHoleRadius = 0;
+  double _scatterShapeHoleRadius = 0;
 
   /// Color for the hole in the shape.
   /// Setting to `ColorUtils.COLOR_NONE` will behave as transparent.
   /// - default: ColorUtils.COLOR_NONE
-  Color mScatterShapeHoleColor = ColorUtils.COLOR_NONE;
+  Color _scatterShapeHoleColor = ColorUtils.COLOR_NONE;
 
   ScatterDataSet(List<Entry> yVals, String label) : super(yVals, label);
 
   @override
   DataSet<Entry> copy1() {
     List<Entry> entries = List<Entry>();
-    for (int i = 0; i < mValues.length; i++) {
-      entries.add(mValues[i].copy());
+    for (int i = 0; i < values.length; i++) {
+      entries.add(values[i].copy());
     }
     ScatterDataSet copied = ScatterDataSet(entries, getLabel());
     copy(copied);
@@ -51,10 +51,10 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
     super.copy(baseDataSet);
     if (baseDataSet is ScatterDataSet) {
       var scatterDataSet = baseDataSet;
-      scatterDataSet.mShapeSize = mShapeSize;
-      scatterDataSet.mShapeRenderer = mShapeRenderer;
-      scatterDataSet.mScatterShapeHoleRadius = mScatterShapeHoleRadius;
-      scatterDataSet.mScatterShapeHoleColor = mScatterShapeHoleColor;
+      scatterDataSet._shapeSize = _shapeSize;
+      scatterDataSet._shapeRenderer = _shapeRenderer;
+      scatterDataSet._scatterShapeHoleRadius = _scatterShapeHoleRadius;
+      scatterDataSet._scatterShapeHoleColor = _scatterShapeHoleColor;
     }
   }
 
@@ -63,12 +63,12 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
   ///
   /// @param size
   void setScatterShapeSize(double size) {
-    mShapeSize = size;
+    _shapeSize = size;
   }
 
   @override
   double getScatterShapeSize() {
-    return mShapeSize;
+    return _shapeSize;
   }
 
   /// Sets the ScatterShape this DataSet should be drawn with. This will search for an available IShapeRenderer and set this
@@ -76,7 +76,7 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
   ///
   /// @param shape
   void setScatterShape(ScatterShape shape) {
-    mShapeRenderer = getRendererForShape(shape);
+    _shapeRenderer = getRendererForShape(shape);
   }
 
   /// Sets a  IShapeRenderer responsible for drawing this DataSet.
@@ -84,12 +84,12 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
   ///
   /// @param shapeRenderer
   void setShapeRenderer(IShapeRenderer shapeRenderer) {
-    mShapeRenderer = shapeRenderer;
+    _shapeRenderer = shapeRenderer;
   }
 
   @override
   IShapeRenderer getShapeRenderer() {
-    return mShapeRenderer;
+    return _shapeRenderer;
   }
 
   /// Sets the radius of the hole in the shape (applies to Square, Circle and Triangle)
@@ -97,24 +97,24 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
   ///
   /// @param holeRadius
   void setScatterShapeHoleRadius(double holeRadius) {
-    mScatterShapeHoleRadius = holeRadius;
+    _scatterShapeHoleRadius = holeRadius;
   }
 
   @override
   double getScatterShapeHoleRadius() {
-    return mScatterShapeHoleRadius;
+    return _scatterShapeHoleRadius;
   }
 
   /// Sets the color for the hole in the shape.
   ///
   /// @param holeColor
   void setScatterShapeHoleColor(Color holeColor) {
-    mScatterShapeHoleColor = holeColor;
+    _scatterShapeHoleColor = holeColor;
   }
 
   @override
   Color getScatterShapeHoleColor() {
-    return mScatterShapeHoleColor;
+    return _scatterShapeHoleColor;
   }
 
   static IShapeRenderer getRendererForShape(ScatterShape shape) {

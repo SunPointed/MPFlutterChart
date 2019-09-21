@@ -152,6 +152,15 @@ class BarChart extends BarLineScatterCandleBubbleChart {
 
   @override
   IMarker initMarker() => BarChartMarker();
+
+  void groupBars(double fromX, double groupSpace, double barSpace) {
+    if (data == null) {
+      throw Exception(
+          "You need to set data for the chart before grouping bars.");
+    } else {
+      (data as BarData).groupBars(fromX, groupSpace, barSpace);
+    }
+  }
 }
 
 class BarChartState
@@ -216,8 +225,8 @@ class BarChartState
         widget.drawBarShadow,
         widget.fitBars);
     if (painter.getData() != null &&
-        painter.getData().getDataSets() != null &&
-        painter.getData().getDataSets().length > 0)
+        painter.getData().dataSets != null &&
+        painter.getData().dataSets.length > 0)
       painter.highlightValue6(lastHighlighted, false);
   }
 }

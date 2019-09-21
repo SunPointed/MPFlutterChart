@@ -7,7 +7,7 @@ import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 abstract class LineScatterCandleRadarRenderer
     extends BarLineScatterCandleBubbleRenderer {
   /// path that is used for drawing highlight-lines (drawLines(...) cannot be used because of dashes)
-  Path mHighlightLinePath = Path();
+  Path _highlightLinePath = Path();
 
   LineScatterCandleRadarRenderer(
       ChartAnimator animator, ViewPortHandler viewPortHandler)
@@ -22,31 +22,31 @@ abstract class LineScatterCandleRadarRenderer
   void drawHighlightLines(
       Canvas c, double x, double y, ILineScatterCandleRadarDataSet set) {
     // set color and stroke-width
-    mHighlightPaint
+    highlightPaint
       ..color = set.getHighLightColor()
       ..strokeWidth = set.getHighlightLineWidth();
 
     // draw highlighted lines (if enabled)
-//    mHighlightPaint.setPathEffect(set.getDashPathEffectHighlight());
+//    highlightPaint.setPathEffect(set.getDashPathEffectHighlight());
 
     // draw vertical highlight lines
     if (set.isVerticalHighlightIndicatorEnabled()) {
       // create vertical path
-      mHighlightLinePath.reset();
-      mHighlightLinePath.moveTo(x, mViewPortHandler.contentTop());
-      mHighlightLinePath.lineTo(x, mViewPortHandler.contentBottom());
+      _highlightLinePath.reset();
+      _highlightLinePath.moveTo(x, viewPortHandler.contentTop());
+      _highlightLinePath.lineTo(x, viewPortHandler.contentBottom());
 
-      c.drawPath(mHighlightLinePath, mHighlightPaint);
+      c.drawPath(_highlightLinePath, highlightPaint);
     }
 
     // draw horizontal highlight lines
     if (set.isHorizontalHighlightIndicatorEnabled()) {
       // create horizontal path
-      mHighlightLinePath.reset();
-      mHighlightLinePath.moveTo(mViewPortHandler.contentLeft(), y);
-      mHighlightLinePath.lineTo(mViewPortHandler.contentRight(), y);
+      _highlightLinePath.reset();
+      _highlightLinePath.moveTo(viewPortHandler.contentLeft(), y);
+      _highlightLinePath.lineTo(viewPortHandler.contentRight(), y);
 
-      c.drawPath(mHighlightLinePath, mHighlightPaint);
+      c.drawPath(_highlightLinePath, highlightPaint);
     }
   }
 }

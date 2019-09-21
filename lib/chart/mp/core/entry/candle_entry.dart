@@ -3,16 +3,16 @@ import 'dart:ui' as ui;
 
 class CandleEntry extends Entry {
   /// shadow-high value
-  double mShadowHigh = 0;
+  double _shadowHigh = 0;
 
   /// shadow-low value
-  double mShadowLow = 0;
+  double _shadowLow = 0;
 
   /// close value
-  double mClose = 0;
+  double _close = 0;
 
   /// open value
-  double mOpen = 0;
+  double _open = 0;
 
   CandleEntry(
       {double x,
@@ -23,10 +23,10 @@ class CandleEntry extends Entry {
       ui.Image icon,
       Object data})
       : super(x: x, y: (shadowH + shadowL) / 2, icon: icon, data: data) {
-    this.mShadowHigh = shadowH;
-    this.mShadowLow = shadowL;
-    this.mOpen = open;
-    this.mClose = close;
+    this._shadowHigh = shadowH;
+    this._shadowLow = shadowL;
+    this._open = open;
+    this._close = close;
   }
 
   /// Returns the overall range (difference) between shadow-high and
@@ -34,68 +34,48 @@ class CandleEntry extends Entry {
   ///
   /// @return
   double getShadowRange() {
-    return (mShadowHigh - mShadowLow).abs();
+    return (_shadowHigh - _shadowLow).abs();
   }
 
   /// Returns the body size (difference between open and close).
   ///
   /// @return
   double getBodyRange() {
-    return (mOpen - mClose).abs();
+    return (_open - _close).abs();
   }
 
   CandleEntry copy() {
     CandleEntry c = CandleEntry(
         x: x,
-        shadowH: mShadowHigh,
-        shadowL: mShadowLow,
-        open: mOpen,
-        close: mClose,
+        shadowH: _shadowHigh,
+        shadowL: _shadowLow,
+        open: _open,
+        close: _close,
         data: mData);
     return c;
   }
 
-  /// Returns the upper shadows highest value.
-  ///
-  /// @return
-  double getHigh() {
-    return mShadowHigh;
+  double get open => _open;
+
+  set open(double value) {
+    _open = value;
   }
 
-  void setHigh(double mShadowHigh) {
-    this.mShadowHigh = mShadowHigh;
+  double get close => _close;
+
+  set close(double value) {
+    _close = value;
   }
 
-  /// Returns the lower shadows lowest value.
-  ///
-  /// @return
-  double getLow() {
-    return mShadowLow;
+  double get shadowLow => _shadowLow;
+
+  set shadowLow(double value) {
+    _shadowLow = value;
   }
 
-  void setLow(double mShadowLow) {
-    this.mShadowLow = mShadowLow;
-  }
+  double get shadowHigh => _shadowHigh;
 
-  /// Returns the bodys close value.
-  ///
-  /// @return
-  double getClose() {
-    return mClose;
-  }
-
-  void setClose(double mClose) {
-    this.mClose = mClose;
-  }
-
-  /// Returns the bodys open value.
-  ///
-  /// @return
-  double getOpen() {
-    return mOpen;
-  }
-
-  void setOpen(double mOpen) {
-    this.mOpen = mOpen;
+  set shadowHigh(double value) {
+    _shadowHigh = value;
   }
 }

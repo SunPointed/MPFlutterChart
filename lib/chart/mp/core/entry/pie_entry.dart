@@ -2,11 +2,11 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'dart:ui' as ui;
 
 class PieEntry extends Entry {
-  String label;
+  String _label;
 
   PieEntry({double value, String label, ui.Image icon, Object data})
       : super(x: 0, y: value, icon: icon, data: data) {
-    this.label = label;
+    this._label = label;
   }
 
   double getValue() {
@@ -14,7 +14,13 @@ class PieEntry extends Entry {
   }
 
   PieEntry copy() {
-    PieEntry e = PieEntry(value: getValue(), label: label, data: mData);
+    PieEntry e = PieEntry(value: getValue(), label: _label, data: mData);
     return e;
+  }
+
+  String get label => _label;
+
+  set label(String value) {
+    _label = value;
   }
 }

@@ -14,7 +14,6 @@ import 'package:mp_flutter_chart/chart/mp/core/highlight/pie_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/pie_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
@@ -221,7 +220,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
 
     double rotationAngle = getRotationAngle();
 
-    int entryIndex = highlight.getX().toInt();
+    int entryIndex = highlight.x.toInt();
 
     // offset needed to center the drawn text in the slice
     double offset = _drawAngles[entryIndex] / 2;
@@ -265,7 +264,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
 
     double yValueSum = (getData() as PieData).getYValueSum();
 
-    List<IPieDataSet> dataSets = getData().getDataSets();
+    List<IPieDataSet> dataSets = getData().dataSets;
 
     bool hasMinAngle =
         _minAngleForSlices != 0 && entryCount * _minAngleForSlices <= _maxAngle;
@@ -331,7 +330,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
     for (int i = 0; i < indicesToHighlight.length; i++)
 
       // check if the xvalue for the given dataset needs highlight
-      if (indicesToHighlight[i].getX().toInt() == index) return true;
+      if (indicesToHighlight[i].x.toInt() == index) return true;
 
     return false;
   }
@@ -370,7 +369,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   /// @param xIndex
   /// @return
   int getDataSetIndexForIndex(int xIndex) {
-    List<IPieDataSet> dataSets = getData().getDataSets();
+    List<IPieDataSet> dataSets = getData().dataSets;
 
     for (int i = 0; i < dataSets.length; i++) {
       if (dataSets[i].getEntryForXValue2(xIndex.toDouble(), double.nan) != null)
@@ -429,7 +428,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
 
   @override
   double getRequiredLegendOffset() {
-    var offset = legendRenderer.getLabelPaint().text?.style?.fontSize * 2.0;
+    var offset = legendRenderer.legendLabelPaint.text?.style?.fontSize * 2.0;
     return offset == null ? Utils.convertDpToPixel(9) : offset;
   }
 
@@ -487,7 +486,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   ///
   /// @param color
   void setTransparentCircleColor(Color color) {
-    Paint p = (renderer as PieChartRenderer).getPaintTransparentCircle();
+    Paint p = (renderer as PieChartRenderer).transparentCirclePaint;
     p.color = Color.fromARGB(p.color?.alpha == null ? 255 : p.color?.alpha,
         color.red, color.green, color.blue);
   }
@@ -502,9 +501,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   ///
   /// @param alpha 0-255
   void setTransparentCircleAlpha(int alpha) {
-    Color color =
-        (renderer as PieChartRenderer).getPaintTransparentCircle().color;
-    (renderer as PieChartRenderer).getPaintTransparentCircle().color =
+    Color color = (renderer as PieChartRenderer).transparentCirclePaint.color;
+    (renderer as PieChartRenderer).transparentCirclePaint.color =
         Color.fromARGB(alpha, color.red, color.green, color.blue);
   }
 
@@ -519,17 +517,17 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   ///
   /// @param color
   void setEntryLabelColor(Color color) {
-    (renderer as PieChartRenderer).mEntryLabelsPaint = PainterUtils.create(
-        (renderer as PieChartRenderer).mEntryLabelsPaint, null, color, null);
+    (renderer as PieChartRenderer).entryLabelsPaint = PainterUtils.create(
+        (renderer as PieChartRenderer).entryLabelsPaint, null, color, null);
   }
 
   /// Sets the size of the entry labels in dp. Default: 13dp
   ///
   /// @param size
   void setEntryLabelTextSize(double size) {
-    var style = (renderer as PieChartRenderer).mEntryLabelsPaint.text.style;
-    (renderer as PieChartRenderer).mEntryLabelsPaint = PainterUtils.create(
-        (renderer as PieChartRenderer).mEntryLabelsPaint,
+    var style = (renderer as PieChartRenderer).entryLabelsPaint.text.style;
+    (renderer as PieChartRenderer).entryLabelsPaint = PainterUtils.create(
+        (renderer as PieChartRenderer).entryLabelsPaint,
         null,
         style?.color == null ? ColorUtils.WHITE : style?.color,
         Utils.convertDpToPixel(size));
@@ -555,5 +553,9 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   /// default 1.f (100%)
   double getCenterTextRadiusPercent() {
     return _centerTextRadiusPercent;
+  }
+
+  void setHoleColor(Color color) {
+    (renderer as PieChartRenderer).holePaint.color = color;
   }
 }

@@ -10,7 +10,6 @@ import 'package:mp_flutter_chart/chart/mp/core/data/scatter_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
@@ -136,6 +135,8 @@ class ScatterChart extends BarLineScatterCandleBubbleChart {
       createChartState() {
     return ScatterChartState();
   }
+
+  ScatterChartPainter get painter => super.painter;
 }
 
 class ScatterChartState
@@ -196,8 +197,8 @@ class ScatterChartState
         widget.minimumScaleX,
         widget.minimumScaleY);
     if (painter.getData() != null &&
-        painter.getData().getDataSets() != null &&
-        painter.getData().getDataSets().length > 0)
+        painter.getData().dataSets != null &&
+        painter.getData().dataSets.length > 0)
       painter.highlightValue6(lastHighlighted, false);
   }
 }

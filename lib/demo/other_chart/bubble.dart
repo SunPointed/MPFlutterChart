@@ -199,29 +199,8 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    bubbleChart = BubbleChart(bubbleData, (painter) {
-      painter..setOnChartValueSelectedListener(this);
-
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.TOP)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
-        ..setOrientation(LegendOrientation.VERTICAL)
-        ..setDrawInside(false);
-//      ..setTypeface(tf)
-
-      painter.mAxisLeft
-        ..setSpaceTop(30)
-        ..setSpaceBottom(30)
-//      ..setTypeface(tf)
-        ..setDrawZeroLine(false);
-
-      painter.mAxisRight.setEnabled(false);
-
-      painter.mXAxis..setPosition(XAxisPosition.BOTTOM);
-//      ..setTypeface(tf)
-    },
+    var desc = Description()..enabled = false;
+    bubbleChart = BubbleChart(bubbleData,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -230,7 +209,22 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
         scaleYEnabled: true,
         pinchZoomEnabled: true,
         maxVisibleCount: 200,
-        desc: desc);
+        selectionListener: this,
+        description: desc);
+    bubbleChart.legend
+      ..verticalAlignment = (LegendVerticalAlignment.TOP)
+      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+      ..orientation = (LegendOrientation.VERTICAL)
+      ..drawInside = (false);
+//      ..setTypeface(tf)
+    bubbleChart.axisLeft
+      ..spacePercentTop = (30)
+      ..spacePercentBottom = (30)
+//      ..setTypeface(tf)
+      ..setDrawZeroLine(false);
+    bubbleChart.axisRight.enabled = (false);
+    bubbleChart.xAxis.position = (XAxisPosition.BOTTOM);
+//      ..setTypeface(tf)
   }
 
   @override

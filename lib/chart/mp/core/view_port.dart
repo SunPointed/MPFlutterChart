@@ -7,46 +7,50 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class ViewPortHandler {
   /// matrix used for touch events
-  final Matrix4 mMatrixTouch = Matrix4.identity();
+  final Matrix4 _matrixTouch = Matrix4.identity();
 
   /// this rectangle defines the area in which graph values can be drawn
-  Rect mContentRect = Rect.zero;
+  Rect _contentRect = Rect.zero;
 
-  double mChartWidth = 0;
-  double mChartHeight = 0;
+  double _chartWidth = 0;
+  double _chartHeight = 0;
 
   /// minimum scale value on the y-axis
-  double mMinScaleY = 1;
+  double _minScaleY = 1;
 
   /// maximum scale value on the y-axis
-  double mMaxScaleY = 100;
+  double _maxScaleY = 100;
 
   /// minimum scale value on the x-axis
-  double mMinScaleX = 1;
+  double _minScaleX = 1;
 
   /// maximum scale value on the x-axis
-  double mMaxScaleX = 100;
+  double _maxScaleX = 100;
 
   /// contains the current scale factor of the x-axis
-  double mScaleX = 1;
+  double _scaleX = 1;
 
   /// contains the current scale factor of the y-axis
-  double mScaleY = 1;
+  double _scaleY = 1;
 
   /// current translation (drag distance) on the x-axis
-  double mTransX = 0;
+  double _transX = 0;
 
   /// current translation (drag distance) on the y-axis
-  double mTransY = 0;
+  double _transY = 0;
 
   /// offset that allows the chart to be dragged over its bounds on the x-axis
-  double mTransOffsetX = 0;
+  double _transOffsetX = 0;
 
   /// offset that allows the chart to be dragged over its bounds on the x-axis
-  double mTransOffsetY = 0;
+  double _transOffsetY = 0;
 
   /// Constructor - don't forget calling setChartDimens(...)
   ViewPortHandler();
+
+  Matrix4 get matrixTouch => _matrixTouch;
+
+  Rect get contentRect => _contentRect;
 
   /// Sets the width and height of the chart.
   ///
@@ -58,14 +62,14 @@ class ViewPortHandler {
     double offsetRight = this.offsetRight();
     double offsetBottom = this.offsetBottom();
 
-    mChartHeight = height;
-    mChartWidth = width;
+    _chartHeight = height;
+    _chartWidth = width;
 
     restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
   }
 
   bool hasChartDimens() {
-    if (mChartHeight > 0 && mChartWidth > 0)
+    if (_chartHeight > 0 && _chartWidth > 0)
       return true;
     else
       return false;
@@ -73,72 +77,72 @@ class ViewPortHandler {
 
   void restrainViewPort(double offsetLeft, double offsetTop, double offsetRight,
       double offsetBottom) {
-    mContentRect = Rect.fromLTRB(offsetLeft, offsetTop,
-        mChartWidth - offsetRight, mChartHeight - offsetBottom);
+    _contentRect = Rect.fromLTRB(offsetLeft, offsetTop,
+        _chartWidth - offsetRight, _chartHeight - offsetBottom);
   }
 
   double offsetLeft() {
-    return mContentRect.left;
+    return _contentRect.left;
   }
 
   double offsetRight() {
-    return mChartWidth - mContentRect.right;
+    return _chartWidth - _contentRect.right;
   }
 
   double offsetTop() {
-    return mContentRect.top;
+    return _contentRect.top;
   }
 
   double offsetBottom() {
-    return mChartHeight - mContentRect.bottom;
+    return _chartHeight - _contentRect.bottom;
   }
 
   double contentTop() {
-    return mContentRect.top;
+    return _contentRect.top;
   }
 
   double contentLeft() {
-    return mContentRect.left;
+    return _contentRect.left;
   }
 
   double contentRight() {
-    return mContentRect.right;
+    return _contentRect.right;
   }
 
   double contentBottom() {
-    return mContentRect.bottom;
+    return _contentRect.bottom;
   }
 
   double contentWidth() {
-    return mContentRect.width;
+    return _contentRect.width;
   }
 
   double contentHeight() {
-    return mContentRect.height;
+    return _contentRect.height;
   }
 
   Rect getContentRect() {
-    return mContentRect;
+    return _contentRect;
   }
 
   MPPointF getContentCenter() {
     return MPPointF.getInstance1(
-        mContentRect.center.dx, mContentRect.center.dy);
+        _contentRect.center.dx, _contentRect.center.dy);
   }
 
   double getChartHeight() {
-    return mChartHeight;
+    return _chartHeight;
   }
 
   double getChartWidth() {
-    return mChartWidth;
+    return _chartWidth;
   }
 
   /// Returns the smallest extension of the content rect (width or height).
   ///
   /// @return
   double getSmallestContentExtension() {
-    return min(mContentRect.width, mContentRect.height);
+    return min(_contentRect.width, _contentRect.height);
   }
 
   /**
@@ -158,7 +162,7 @@ class ViewPortHandler {
   }
 
   void zoomIn2(double x, double y, Matrix4 outputMatrix) {
-    mMatrixTouch.copyInto(outputMatrix);
+    _matrixTouch.copyInto(outputMatrix);
     Matrix4Utils.postScaleByPoint(outputMatrix, 1.4, 1.4, x, y);
   }
 
@@ -171,14 +175,14 @@ class ViewPortHandler {
   }
 
   void zoomOut2(double x, double y, Matrix4 outputMatrix) {
-    mMatrixTouch.copyInto(outputMatrix);
+    _matrixTouch.copyInto(outputMatrix);
     Matrix4Utils.postScaleByPoint(outputMatrix, 0.7, 0.7, x, y);
   }
 
   /// Zooms out to original size.
   /// @param outputMatrix
   void resetZoom(Matrix4 outputMatrix) {
-    mMatrixTouch.copyInto(outputMatrix);
+    _matrixTouch.copyInto(outputMatrix);
     Matrix4Utils.postScaleByPoint(outputMatrix, 1.0, 1.0, 0.0, 0.0);
   }
 
@@ -194,7 +198,7 @@ class ViewPortHandler {
   }
 
   void zoom2(double scaleX, double scaleY, Matrix4 outputMatrix) {
-    mMatrixTouch.copyInto(outputMatrix);
+    _matrixTouch.copyInto(outputMatrix);
     Matrix4Utils.postScale(outputMatrix, scaleX, scaleY);
   }
 
@@ -213,7 +217,7 @@ class ViewPortHandler {
 
   void zoom4(
       double scaleX, double scaleY, double x, double y, Matrix4 outputMatrix) {
-    mMatrixTouch.copyInto(outputMatrix);
+    _matrixTouch.copyInto(outputMatrix);
     Matrix4Utils.postScaleByPoint(outputMatrix, scaleX, scaleY, x, y);
   }
 
@@ -229,7 +233,7 @@ class ViewPortHandler {
   }
 
   void setZoom2(double scaleX, double scaleY, Matrix4 outputMatrix) {
-    mMatrixTouch.copyInto(outputMatrix);
+    _matrixTouch.copyInto(outputMatrix);
     Matrix4Utils.setScale(outputMatrix, scaleX, scaleY);
   }
 
@@ -242,7 +246,7 @@ class ViewPortHandler {
   /// @return
   Matrix4 setZoom3(double scaleX, double scaleY, double x, double y) {
     Matrix4 save = Matrix4.identity();
-    save.add(mMatrixTouch);
+    save.add(_matrixTouch);
     Matrix4Utils.setScaleByPoint(save, scaleX, scaleY, x, y);
     return save;
   }
@@ -260,10 +264,10 @@ class ViewPortHandler {
   /// Resets all zooming and dragging and makes the chart fit exactly it's
   /// bounds.  Output Matrix is available for those who wish to cache the object.
   void fitScreen2(Matrix4 outputMatrix) {
-    mMinScaleX = 1;
-    mMinScaleY = 1;
+    _minScaleX = 1;
+    _minScaleY = 1;
 
-    mMatrixTouch.copyInto(outputMatrix);
+    _matrixTouch.copyInto(outputMatrix);
 
     outputMatrix
       ..storage[3] = 0
@@ -291,7 +295,7 @@ class ViewPortHandler {
   /// @param transformedPts
   /// @return
   void translate2(final List<double> transformedPts, Matrix4 outputMatrix) {
-    mMatrixTouch.copyInto(outputMatrix);
+    _matrixTouch.copyInto(outputMatrix);
     final double x = transformedPts[0] - offsetLeft();
     final double y = transformedPts[1] - offsetTop();
     Matrix4Utils.postTranslate(outputMatrix, -x, -y);
@@ -311,7 +315,7 @@ class ViewPortHandler {
       final List<double> transformedPts, final Function refresh) {
     mCenterViewPortMatrixBuffer = Matrix4.identity();
     Matrix4 save = mCenterViewPortMatrixBuffer;
-    mMatrixTouch.copyInto(save);
+    _matrixTouch.copyInto(save);
 
     final double x = transformedPts[0] - offsetLeft();
     final double y = transformedPts[1] - offsetTop();
@@ -328,10 +332,10 @@ class ViewPortHandler {
   /// @param newMatrix
   /// @return
   Matrix4 refresh(Matrix4 newMatrix) {
-    newMatrix.copyInto(mMatrixTouch);
+    newMatrix.copyInto(_matrixTouch);
     // make sure scale and translation are within their bounds
-    limitTransAndScale(mMatrixTouch, mContentRect);
-    mMatrixTouch.copyInto(newMatrix);
+    limitTransAndScale(_matrixTouch, _contentRect);
+    _matrixTouch.copyInto(newMatrix);
     return newMatrix;
   }
 
@@ -350,10 +354,10 @@ class ViewPortHandler {
     double curScaleY = matrixBuffer[5];
 
     // min scale-x is 1f
-    mScaleX = min(max(mMinScaleX, curScaleX), mMaxScaleX);
+    _scaleX = min(max(_minScaleX, curScaleX), _maxScaleX);
 
     // min scale-y is 1f
-    mScaleY = min(max(mMinScaleY, curScaleY), mMaxScaleY);
+    _scaleY = min(max(_minScaleY, curScaleY), _maxScaleY);
 
     double width = 0;
     double height = 0;
@@ -363,17 +367,17 @@ class ViewPortHandler {
       height = content.height;
     }
 
-    double maxTransX = -width * (mScaleX - 1);
-    mTransX = min(max(curTransX, maxTransX - mTransOffsetX), mTransOffsetX);
+    double maxTransX = -width * (_scaleX - 1);
+    _transX = min(max(curTransX, maxTransX - _transOffsetX), _transOffsetX);
 
-    double maxTransY = height * (mScaleY - 1);
-    mTransY = max(min(curTransY, maxTransY + mTransOffsetY), -mTransOffsetY);
+    double maxTransY = height * (_scaleY - 1);
+    _transY = max(min(curTransY, maxTransY + _transOffsetY), -_transOffsetY);
 
-    matrixBuffer[12] = mTransX;
-    matrixBuffer[0] = mScaleX;
+    matrixBuffer[12] = _transX;
+    matrixBuffer[0] = _scaleX;
 
-    matrixBuffer[13] = mTransY;
-    matrixBuffer[5] = mScaleY;
+    matrixBuffer[13] = _transY;
+    matrixBuffer[5] = _scaleY;
 
     for (int i = 0; i < 16; i++) {
       matrix.storage[i] = matrixBuffer[i];
@@ -386,9 +390,9 @@ class ViewPortHandler {
   void setMinimumScaleX(double xScale) {
     if (xScale < 1) xScale = 1;
 
-    mMinScaleX = xScale;
+    _minScaleX = xScale;
 
-    limitTransAndScale(mMatrixTouch, mContentRect);
+    limitTransAndScale(_matrixTouch, _contentRect);
   }
 
   /// Sets the maximum scale factor for the x-axis
@@ -397,9 +401,9 @@ class ViewPortHandler {
   void setMaximumScaleX(double xScale) {
     if (xScale == 0) xScale = double.infinity;
 
-    mMaxScaleX = xScale;
+    _maxScaleX = xScale;
 
-    limitTransAndScale(mMatrixTouch, mContentRect);
+    limitTransAndScale(_matrixTouch, _contentRect);
   }
 
   /// Sets the minimum and maximum scale factors for the x-axis
@@ -411,10 +415,10 @@ class ViewPortHandler {
 
     if (maxScaleX == 0) maxScaleX = double.infinity;
 
-    mMinScaleX = minScaleX;
-    mMaxScaleX = maxScaleX;
+    _minScaleX = minScaleX;
+    _maxScaleX = maxScaleX;
 
-    limitTransAndScale(mMatrixTouch, mContentRect);
+    limitTransAndScale(_matrixTouch, _contentRect);
   }
 
   /// Sets the minimum scale factor for the y-axis
@@ -423,9 +427,9 @@ class ViewPortHandler {
   void setMinimumScaleY(double yScale) {
     if (yScale < 1) yScale = 1;
 
-    mMinScaleY = yScale;
+    _minScaleY = yScale;
 
-    limitTransAndScale(mMatrixTouch, mContentRect);
+    limitTransAndScale(_matrixTouch, _contentRect);
   }
 
   /// Sets the maximum scale factor for the y-axis
@@ -434,9 +438,9 @@ class ViewPortHandler {
   void setMaximumScaleY(double yScale) {
     if (yScale == 0) yScale = double.infinity;
 
-    mMaxScaleY = yScale;
+    _maxScaleY = yScale;
 
-    limitTransAndScale(mMatrixTouch, mContentRect);
+    limitTransAndScale(_matrixTouch, _contentRect);
   }
 
   void setMinMaxScaleY(double minScaleY, double maxScaleY) {
@@ -444,25 +448,26 @@ class ViewPortHandler {
 
     if (maxScaleY == 0) maxScaleY = double.infinity;
 
-    mMinScaleY = minScaleY;
-    mMaxScaleY = maxScaleY;
+    _minScaleY = minScaleY;
+    _maxScaleY = maxScaleY;
 
-    limitTransAndScale(mMatrixTouch, mContentRect);
+    limitTransAndScale(_matrixTouch, _contentRect);
   }
 
   /// Returns the charts-touch matrix used for translation and scale on touch.
   ///
   /// @return
   Matrix4 getMatrixTouch() {
-    return mMatrixTouch;
+    return _matrixTouch;
   }
 
   /**
    * ################ ################ ################ ################
    */
+
   /// BELOW METHODS FOR BOUNDS CHECK
 
-  bool  isInBoundsX(double x) {
+  bool isInBoundsX(double x) {
     return isInBoundsLeft(x) && isInBoundsRight(x);
   }
 
@@ -475,69 +480,65 @@ class ViewPortHandler {
   }
 
   bool isInBoundsLeft(double x) {
-    if(x == null)
-      return false;
-    return mContentRect.left <= x + 1;
+    if (x == null) return false;
+    return _contentRect.left <= x + 1;
   }
 
   bool isInBoundsRight(double x) {
-    if(x == null)
-      return false;
+    if (x == null) return false;
     x = ((x * 100.0).toInt()) / 100.0;
-    return mContentRect.right >= x - 1;
+    return _contentRect.right >= x - 1;
   }
 
   bool isInBoundsTop(double y) {
-    if(y == null)
-      return false;
-    return mContentRect.top <= y;
+    if (y == null) return false;
+    return _contentRect.top <= y;
   }
 
   bool isInBoundsBottom(double y) {
-    if(y == null)
-      return false;
+    if (y == null) return false;
     y = ((y * 100.0).toInt()) / 100.0;
-    return mContentRect.bottom >= y;
+    return _contentRect.bottom >= y;
   }
 
   /// returns the current x-scale factor
   double getScaleX() {
-    return mScaleX;
+    return _scaleX;
   }
 
   /// returns the current y-scale factor
   double getScaleY() {
-    return mScaleY;
+    return _scaleY;
   }
 
   double getMinScaleX() {
-    return mMinScaleX;
+    return _minScaleX;
   }
 
   double getMaxScaleX() {
-    return mMaxScaleX;
+    return _maxScaleX;
   }
 
   double getMinScaleY() {
-    return mMinScaleY;
+    return _minScaleY;
   }
 
   double getMaxScaleY() {
-    return mMaxScaleY;
+    return _maxScaleY;
   }
 
   /// Returns the translation (drag / pan) distance on the x-axis
   ///
   /// @return
   double getTransX() {
-    return mTransX;
+    return _transX;
   }
 
   /// Returns the translation (drag / pan) distance on the y-axis
   ///
   /// @return
   double getTransY() {
-    return mTransY;
+    return _transY;
   }
 
   /// if the chart is fully zoomed out, return true
@@ -551,7 +552,7 @@ class ViewPortHandler {
   ///
   /// @return
   bool isFullyZoomedOutY() {
-    return !(mScaleY > mMinScaleY || mMinScaleY > 1);
+    return !(_scaleY > _minScaleY || _minScaleY > 1);
   }
 
   /// Returns true if the chart is fully zoomed out on it's x-axis
@@ -559,7 +560,7 @@ class ViewPortHandler {
   ///
   /// @return
   bool isFullyZoomedOutX() {
-    return !(mScaleX > mMinScaleX || mMinScaleX > 1);
+    return !(_scaleX > _minScaleX || _minScaleX > 1);
   }
 
   /// Set an offset in dp that allows the user to drag the chart over it's
@@ -567,7 +568,7 @@ class ViewPortHandler {
   ///
   /// @param offset
   void setDragOffsetX(double offset) {
-    mTransOffsetX = Utils.convertDpToPixel(offset);
+    _transOffsetX = Utils.convertDpToPixel(offset);
   }
 
   /// Set an offset in dp that allows the user to drag the chart over it's
@@ -575,42 +576,42 @@ class ViewPortHandler {
   ///
   /// @param offset
   void setDragOffsetY(double offset) {
-    mTransOffsetY = Utils.convertDpToPixel(offset);
+    _transOffsetY = Utils.convertDpToPixel(offset);
   }
 
   /// Returns true if both drag offsets (x and y) are zero or smaller.
   ///
   /// @return
   bool hasNoDragOffset() {
-    return mTransOffsetX <= 0 && mTransOffsetY <= 0;
+    return _transOffsetX <= 0 && _transOffsetY <= 0;
   }
 
   /// Returns true if the chart is not yet fully zoomed out on the x-axis
   ///
   /// @return
   bool canZoomOutMoreX() {
-    return mScaleX > mMinScaleX;
+    return _scaleX > _minScaleX;
   }
 
   /// Returns true if the chart is not yet fully zoomed in on the x-axis
   ///
   /// @return
   bool canZoomInMoreX() {
-    return mScaleX < mMaxScaleX;
+    return _scaleX < _maxScaleX;
   }
 
   /// Returns true if the chart is not yet fully zoomed out on the y-axis
   ///
   /// @return
   bool canZoomOutMoreY() {
-    return mScaleY > mMinScaleY;
+    return _scaleY > _minScaleY;
   }
 
   /// Returns true if the chart is not yet fully zoomed in on the y-axis
   ///
   /// @return
   bool canZoomInMoreY() {
-    return mScaleY < mMaxScaleY;
+    return _scaleY < _maxScaleY;
   }
 }
 

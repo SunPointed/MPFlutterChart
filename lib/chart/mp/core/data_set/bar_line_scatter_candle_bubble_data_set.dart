@@ -7,7 +7,7 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 
 abstract class BarLineScatterCandleBubbleDataSet<T extends Entry>
     extends DataSet<T> implements IBarLineScatterCandleBubbleDataSet<T> {
-  Color mHighLightColor = Color.fromARGB(255, 255, 187, 115);
+  Color _highLightColor = Color.fromARGB(255, 255, 187, 115);
 
   BarLineScatterCandleBubbleDataSet(List<T> yVals, String label)
       : super(yVals, label);
@@ -18,12 +18,12 @@ abstract class BarLineScatterCandleBubbleDataSet<T extends Entry>
   ///
   /// @param color
   void setHighLightColor(Color color) {
-    mHighLightColor = color;
+    _highLightColor = color;
   }
 
   @override
   Color getHighLightColor() {
-    return mHighLightColor;
+    return _highLightColor;
   }
 
   @override
@@ -31,7 +31,7 @@ abstract class BarLineScatterCandleBubbleDataSet<T extends Entry>
     super.copy(baseDataSet);
     if (baseDataSet is BarLineScatterCandleBubbleDataSet) {
       var barLineScatterCandleBubbleDataSet = baseDataSet;
-      barLineScatterCandleBubbleDataSet.mHighLightColor = mHighLightColor;
+      barLineScatterCandleBubbleDataSet._highLightColor = _highLightColor;
     }
   }
 }

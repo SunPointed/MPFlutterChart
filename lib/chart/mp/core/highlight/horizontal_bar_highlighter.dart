@@ -4,7 +4,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_provider/bar_data_provider.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/rounding.dart';
-import 'package:mp_flutter_chart/chart/mp/core/fill_formatter/bar_highlighter.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/bar_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 
@@ -13,14 +13,14 @@ class HorizontalBarHighlighter extends BarHighlighter {
 
   @override
   Highlight getHighlight(double x, double y) {
-    BarData barData = mChart.getBarData();
+    BarData barData = provider.getBarData();
 
     MPPointD pos = getValsForTouch(y, x);
 
     Highlight high = getHighlightForX(pos.y, y, x);
     if (high == null) return null;
 
-    IBarDataSet set = barData.getDataSetByIndex(high.getDataSetIndex());
+    IBarDataSet set = barData.getDataSetByIndex(high.dataSetIndex);
     if (set.isStacked()) {
       return getStackedHighlight(high, set, pos.y, pos.x);
     }
@@ -49,7 +49,7 @@ class HorizontalBarHighlighter extends BarHighlighter {
     if (entries.length == 0) return highlights;
 
     for (Entry e in entries) {
-      MPPointD pixels = mChart
+      MPPointD pixels = provider
           .getTransformer(set.getAxisDependency())
           .getPixelForValues(e.y, e.x);
 

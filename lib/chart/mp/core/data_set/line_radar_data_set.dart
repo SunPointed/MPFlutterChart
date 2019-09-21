@@ -9,7 +9,7 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 abstract class LineRadarDataSet<T extends Entry>
     extends LineScatterCandleRadarDataSet<T> implements ILineRadarDataSet<T> {
   /// the color that is used for filling the line surface
-  Color mFillColor = Color.fromARGB(255, 140, 234, 255);
+  Color _fillColor = Color.fromARGB(255, 140, 234, 255);
 
   /**
    * the drawable to be used for filling the line surface
@@ -17,19 +17,19 @@ abstract class LineRadarDataSet<T extends Entry>
 //   Drawable mFillDrawable;
 
   /// transparency used for filling line surface
-  int mFillAlpha = 85;
+  int _fillAlpha = 85;
 
   /// the width of the drawn data lines
-  double mLineWidth = 2.5;
+  double _lineWidth = 2.5;
 
   /// if true, the data will also be drawn filled
-  bool mDrawFilled = false;
+  bool _drawFilled = false;
 
   LineRadarDataSet(List<T> yVals, String label) : super(yVals, label);
 
   @override
   Color getFillColor() {
-    return mFillColor;
+    return _fillColor;
   }
 
   /// Sets the color that is used for filling the area below the line.
@@ -37,7 +37,7 @@ abstract class LineRadarDataSet<T extends Entry>
   ///
   /// @param color
   void setFillColor(Color color) {
-    mFillColor = color;
+    _fillColor = color;
 //    mFillDrawable = null;
   }
 
@@ -55,7 +55,7 @@ abstract class LineRadarDataSet<T extends Entry>
 
   @override
   int getFillAlpha() {
-    return mFillAlpha;
+    return _fillAlpha;
   }
 
   /// sets the alpha value (transparency) that is used for filling the line
@@ -63,7 +63,7 @@ abstract class LineRadarDataSet<T extends Entry>
   ///
   /// @param alpha
   void setFillAlpha(int alpha) {
-    mFillAlpha = alpha;
+    _fillAlpha = alpha;
   }
 
   /// set the line width of the chart (min = 0.2f, max = 10f); default 1f NOTE:
@@ -73,22 +73,22 @@ abstract class LineRadarDataSet<T extends Entry>
   void setLineWidth(double width) {
     if (width < 0.0) width = 0.0;
     if (width > 10.0) width = 10.0;
-    mLineWidth = Utils.convertDpToPixel(width);
+    _lineWidth = Utils.convertDpToPixel(width);
   }
 
   @override
   double getLineWidth() {
-    return mLineWidth;
+    return _lineWidth;
   }
 
   @override
   void setDrawFilled(bool filled) {
-    mDrawFilled = filled;
+    _drawFilled = filled;
   }
 
   @override
   bool isDrawFilledEnabled() {
-    return mDrawFilled;
+    return _drawFilled;
   }
 
   @override
@@ -97,11 +97,11 @@ abstract class LineRadarDataSet<T extends Entry>
 
     if (baseDataSet is LineRadarDataSet) {
       var lineRadarDataSet = baseDataSet;
-      lineRadarDataSet.mDrawFilled = mDrawFilled;
-      lineRadarDataSet.mFillAlpha = mFillAlpha;
-      lineRadarDataSet.mFillColor = mFillColor;
+      lineRadarDataSet._drawFilled = _drawFilled;
+      lineRadarDataSet._fillAlpha = _fillAlpha;
+      lineRadarDataSet._fillColor = _fillColor;
 //      lineRadarDataSet.mFillDrawable = mFillDrawable;
-      lineRadarDataSet.mLineWidth = mLineWidth;
+      lineRadarDataSet._lineWidth = _lineWidth;
     }
   }
 }

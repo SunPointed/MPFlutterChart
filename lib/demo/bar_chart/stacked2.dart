@@ -97,7 +97,7 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
     set.setStackLabels(List()..add("Men")..add("Women"));
 
     barData = BarData(List()..add(set));
-    barData.setBarWidth(8.5);
+    barData.barWidth = (8.5);
 
     setState(() {});
   }
@@ -107,52 +107,14 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
       return;
     }
 
-    if(barChart != null){
+    if (barChart != null) {
       barChart?.data = barData;
       barChart?.getState()?.setStateIfNotDispose();
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    barChart = HorizontalBarChart(barData, (painter) {
-      painter
-        ..setOnChartValueSelectedListener(this)
-        ..setDrawBarShadow(false)
-        ..setDrawValueAboveBar(true)
-        ..setHighlightFullBarEnabled(false);
-
-      painter.mAxisLeft.setEnabled(false);
-      painter.mAxisRight
-        ..setAxisMaximum(25)
-        ..setAxisMinimum(-25)
-        ..setDrawGridLines(false)
-        ..setDrawZeroLine(true)
-        ..setLabelCount2(7, false)
-        ..setValueFormatter(A())
-        ..setTextSize(9);
-
-      painter.mXAxis
-        ..setPosition(XAxisPosition.BOTH_SIDED)
-        ..setDrawGridLines(false)
-        ..setDrawAxisLine(false)
-        ..setTextSize(9)
-        ..setAxisMinimum(0)
-        ..setAxisMaximum(110)
-        ..setCenterAxisLabels(true)
-        ..setLabelCount1(12)
-        ..setGranularity(10)
-        ..setValueFormatter(B());
-
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.BOTTOM)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
-        ..setOrientation(LegendOrientation.HORIZONTAL)
-        ..setDrawInside(false)
-        ..setFormSize(8)
-        ..setFormToTextSpace(4)
-        ..setXEntrySpace(6);
-    },
+    var desc = Description()..enabled = false;
+    barChart = HorizontalBarChart(barData,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -160,7 +122,39 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
         scaleXEnabled: true,
         scaleYEnabled: true,
         pinchZoomEnabled: false,
-        desc: desc);
+        selectionListener: this,
+        drawBarShadow: false,
+        drawValueAboveBar: true,
+        highlightFullBarEnabled: false,
+        description: desc);
+    barChart.axisLeft.enabled = (false);
+    barChart.axisRight
+      ..setAxisMaximum(25)
+      ..setAxisMinimum(-25)
+      ..drawGridLines = (false)
+      ..setDrawZeroLine(true)
+      ..setLabelCount2(7, false)
+      ..setValueFormatter(A())
+      ..textSize = (9);
+    barChart.xAxis
+      ..position = (XAxisPosition.BOTH_SIDED)
+      ..drawGridLines = (false)
+      ..drawAxisLine = (false)
+      ..textSize = (9)
+      ..setAxisMinimum(0)
+      ..setAxisMaximum(110)
+      ..centerAxisLabels = (true)
+      ..setLabelCount1(12)
+      ..setGranularity(10)
+      ..setValueFormatter(B());
+    barChart.legend
+      ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+      ..orientation = (LegendOrientation.HORIZONTAL)
+      ..drawInside = (false)
+      ..formSize = (8)
+      ..formToTextSpace = (4)
+      ..xEntrySpace = (6);
   }
 
   @override

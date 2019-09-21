@@ -114,11 +114,8 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    lineChart = LineChart(lineData, (painter) {
-      painter..setOnChartValueSelectedListener(this);
-    },
+    var desc = Description()..enabled = false;
+    lineChart = LineChart(lineData,
         touchEnabled: true,
         noDataText:
             "No chart data available. \nUse the menu to add entries and data sets!",
@@ -127,8 +124,9 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
+        selectionListener: this,
         pinchZoomEnabled: true,
-        desc: desc);
+        description: desc);
   }
 
   @override

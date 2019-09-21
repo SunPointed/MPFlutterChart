@@ -5,16 +5,16 @@ import 'package:mp_flutter_chart/chart/mp/core/range.dart';
 
 class BarEntry extends Entry {
   /// the values the stacked barchart holds
-  List<double> mYVals;
+  List<double> _yVals;
 
   /// the ranges for the individual stack values - automatically calculated
-  List<Range> mRanges;
+  List<Range> _ranges;
 
   /// the sum of all negative values this entry (if stacked) contains
-  double mNegativeSum;
+  double _negativeSum;
 
   /// the sum of all positive values this entry (if stacked) contains
-  double mPositiveSum;
+  double _positiveSum;
 
   BarEntry({double x, double y, ui.Image icon, Object data})
       : super(x: x, y: y, icon: icon, data: data);
@@ -22,95 +22,74 @@ class BarEntry extends Entry {
   BarEntry.fromListYVals(
       {double x, List<double> vals, ui.Image icon, Object data})
       : super(x: x, y: calcSum(vals), icon: icon, data: data) {
-    this.mYVals = vals;
+    this._yVals = vals;
     calcPosNegSum();
     calcRanges();
   }
 
   BarEntry copy() {
     BarEntry copied = BarEntry(x: x, y: y, data: mData);
-    copied.setVals(mYVals);
+    copied.setVals(_yVals);
     return copied;
   }
 
-  /// Returns the stacked values this BarEntry represents, or null, if only a single value is represented (then, use
-  /// getY()).
-  ///
-  /// @return
-  List<double> getYVals() {
-    return mYVals;
-  }
+  List<double> get yVals => _yVals;
 
   /// Set the array of values this BarEntry should represent.
   ///
   /// @param vals
   void setVals(List<double> vals) {
     y = calcSum(vals);
-    mYVals = vals;
+    _yVals = vals;
     calcPosNegSum();
     calcRanges();
   }
 
-  /// Returns the ranges of the individual stack-entries. Will return null if this entry is not stacked.
-  ///
-  /// @return
-  List<Range> getRanges() {
-    return mRanges;
-  }
+  List<Range> get ranges => _ranges;
 
   /// Returns true if this BarEntry is stacked (has a values array), false if not.
   ///
   /// @return
   bool isStacked() {
-    return mYVals != null;
+    return _yVals != null;
   }
 
   double getSumBelow(int stackIndex) {
-    if (mYVals == null) return 0;
+    if (_yVals == null) return 0;
 
     double remainder = 0.0;
-    int index = mYVals.length - 1;
+    int index = _yVals.length - 1;
     while (index > stackIndex && index >= 0) {
-      remainder += mYVals[index];
+      remainder += _yVals[index];
       index--;
     }
 
     return remainder;
   }
 
-  /// Reuturns the sum of all positive values this entry (if stacked) contains.
-  ///
-  /// @return
-  double getPositiveSum() {
-    return mPositiveSum;
-  }
+  double get negativeSum => _negativeSum;
 
-  /// Returns the sum of all negative values this entry (if stacked) contains. (this is a positive number)
-  ///
-  /// @return
-  double getNegativeSum() {
-    return mNegativeSum;
-  }
+  double get positiveSum => _positiveSum;
 
   void calcPosNegSum() {
-    if (mYVals == null) {
-      mNegativeSum = 0;
-      mPositiveSum = 0;
+    if (_yVals == null) {
+      _negativeSum = 0;
+      _positiveSum = 0;
       return;
     }
 
     double sumNeg = 0.0;
     double sumPos = 0.0;
 
-    for (double f in mYVals) {
+    for (double f in _yVals) {
       if (f <= 0.0)
         sumNeg += f.abs();
       else
         sumPos += f;
     }
 
-    mNegativeSum = sumNeg;
-    mPositiveSum = sumPos;
+    _negativeSum = sumNeg;
+    _positiveSum = sumPos;
   }
 
   /// Calculates the sum across all values of the given stack.
@@ -125,23 +104,23 @@ class BarEntry extends Entry {
   }
 
   void calcRanges() {
-    List<double> values = getYVals();
+    List<double> values = yVals;
 
     if (values == null || values.length == 0) return;
 
-    mRanges = List(values.length);
+    _ranges = List(values.length);
 
-    double negRemain = -getNegativeSum();
+    double negRemain = -negativeSum;
     double posRemain = 0.0;
 
-    for (int i = 0; i < mRanges.length; i++) {
+    for (int i = 0; i < _ranges.length; i++) {
       double value = values[i];
 
       if (value < 0) {
-        mRanges[i] = Range(negRemain, negRemain - value);
+        _ranges[i] = Range(negRemain, negRemain - value);
         negRemain -= value;
       } else {
-        mRanges[i] = Range(posRemain, posRemain + value);
+        _ranges[i] = Range(posRemain, posRemain + value);
         posRemain += value;
       }
     }

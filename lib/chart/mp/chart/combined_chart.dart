@@ -152,6 +152,8 @@ class CombinedChart extends BarLineScatterCandleBubbleChart {
       createChartState() {
     return CombinedChartState();
   }
+
+  CombinedChartPainter get painter => super.painter;
 }
 
 class CombinedChartState

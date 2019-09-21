@@ -64,7 +64,7 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
   @override
   void onValueSelected(Entry e, Highlight h) {
     print(
-        "VAL SELECTED Value: ${e.y}, xIndex: ${e.x}, DataSet index: ${h.getDataSetIndex()}");
+        "VAL SELECTED Value: ${e.y}, xIndex: ${e.x}, DataSet index: ${h.dataSetIndex}");
   }
 
   @override
@@ -206,42 +206,29 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
       lineChart?.getState()?.setStateIfNotDispose();
       return;
     }
-    var desc = Description();
-    lineChart = LineChart(lineData, (painter) {
-      painter.setOnChartValueSelectedListener(this);
-      painter.setOnChartGestureListener(this);
-      painter
-        ..mDrawGridBackground = false
-        ..mDescription.setEnabled(false)
-        ..mDrawBorders = false
-        ..mTouchEnabled = true
-        ..mDragXEnabled = true
-        ..mDragYEnabled = true
-        ..mScaleYEnabled = true
-        ..mScaleXEnabled = true
-        ..mPinchZoomEnabled = false;
-
-      painter.mAxisLeft.setEnabled(false);
-      painter.mAxisRight
-        ..setDrawAxisLine(false)
-        ..setDrawGridLines(false);
-      painter.mXAxis
-        ..setDrawAxisLine(false)
-        ..setDrawGridLines(false);
-
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.TOP)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
-        ..setOrientation(LegendOrientation.VERTICAL)
-        ..setDrawInside(false);
-    },
+    var desc = Description()..enabled = false;
+    lineChart = LineChart(lineData,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        pinchZoomEnabled: true,
-        desc: desc);
+        pinchZoomEnabled: false,
+        selectionListener: this,
+        drawBorders: false,
+        description: desc);
+    lineChart.axisLeft.enabled = (false);
+    lineChart.axisRight
+      ..drawAxisLine = (false)
+      ..drawGridLines = (false);
+    lineChart.xAxis
+      ..drawAxisLine = (false)
+      ..drawGridLines = (false);
+    lineChart.legend
+      ..verticalAlignment = (LegendVerticalAlignment.TOP)
+      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+      ..orientation = (LegendOrientation.VERTICAL)
+      ..drawInside = (false);
   }
 }

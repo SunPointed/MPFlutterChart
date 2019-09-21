@@ -3,6 +3,8 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/bar_chart.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
+import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/color/gradient_color.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/bar_data.dart';
@@ -18,6 +20,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/y_axis_label_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
+import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/day_axis_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/my_value_formatter.dart';
@@ -184,7 +187,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     barData = BarData(dataSets);
     barData.setValueTextSize(10);
 //    barData.setValueTypeface(tfLight);
-    barData.setBarWidth(0.9);
+    barData.barWidth = 0.9;
   }
 
   void _initBarData(int count, double range) async {
@@ -198,57 +201,17 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
       return;
     }
 
-    if(barChart != null){
+    if (barChart != null) {
       barChart?.data = barData;
       barChart?.getState()?.setStateIfNotDispose();
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    barChart = BarChart(barData, (painter) {
-      painter
-        ..setOnChartValueSelectedListener(this)
-        ..setDrawBarShadow(false)
-        ..setDrawValueAboveBar(true);
-
-      ValueFormatter xAxisFormatter = DayAxisValueFormatter(painter);
-      painter.mXAxis
-        ..setPosition(XAxisPosition.BOTTOM)
-//      ..setTypeface(tf)
-        ..setDrawGridLines(false)
-        ..setGranularity(1.0)
-        ..setLabelCount1(7)
-        ..setValueFormatter(xAxisFormatter);
-
-      ValueFormatter custom = MyValueFormatter("\$");
-      painter.mAxisLeft
-        ..setLabelCount2(8, false)
-//      ..setTypeface(tf)
-        ..setValueFormatter(custom)
-        ..setPosition(YAxisLabelPosition.OUTSIDE_CHART)
-        ..setSpaceTop(15)
-        ..setAxisMinimum(0);
-
-      painter.mAxisRight
-        ..setDrawGridLines(false)
-//      ..setTypeface(tf)
-        ..setLabelCount2(8, false)
-        ..setValueFormatter(custom)
-        ..setSpaceTop(15)
-        ..setAxisMinimum(0);
-
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.BOTTOM)
-        ..setOrientation(LegendOrientation.HORIZONTAL)
-        ..setDrawInside(false)
-        ..setForm(LegendForm.SQUARE)
-        ..setFormSize(9)
-        ..setTextSize(11)
-        ..setXEntrySpace(4);
-
-      painter.mAnimator.animateY1(3000);
-    },
+    var desc = Description()..enabled = false;
+    barChart = BarChart(barData,
+        selectionListener: this,
+        drawBarShadow: false,
+        drawValueAboveBar: true,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -257,7 +220,37 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
         scaleYEnabled: true,
         pinchZoomEnabled: false,
         maxVisibleCount: 60,
-        desc: desc);
+        description: desc);
+    barChart.xAxis
+      ..position = XAxisPosition.BOTTOM
+      ..drawGridLines = false
+      ..setGranularity(1.0)
+      ..setLabelCount1(7)
+      ..setValueFormatter(DayAxisValueFormatter(barChart.painter));
+    barChart.axisLeft
+      ..setLabelCount2(8, false)
+//      ..setTypeface(tf)
+      ..setValueFormatter(MyValueFormatter("\$"))
+      ..position = YAxisLabelPosition.OUTSIDE_CHART
+      ..spacePercentTop = 15
+      ..setAxisMinimum(0);
+    barChart.axisRight
+      ..drawGridLines = false
+//      ..setTypeface(tf)
+      ..setLabelCount2(8, false)
+      ..setValueFormatter(MyValueFormatter("\$"))
+      ..spacePercentTop = 15
+      ..setAxisMinimum(0);
+    barChart.legend
+      ..verticalAlignment = LegendVerticalAlignment.BOTTOM
+      ..orientation = LegendOrientation.HORIZONTAL
+      ..drawInside = false
+      ..shape = LegendForm.SQUARE
+      ..formSize = 9
+      ..textSize = 11
+      ..xEntrySpace = 4;
+
+    barChart.animator?.animateY1(3000);
   }
 
   @override

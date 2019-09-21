@@ -1,8 +1,8 @@
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 
 class FSize extends Poolable {
-  double width;
-  double height;
+  double _width;
+  double _height;
 
   static ObjectPool<Poolable> pool = ObjectPool.create(256, FSize(0, 0))
     ..setReplenishPercentage(0.5);
@@ -12,10 +12,22 @@ class FSize extends Poolable {
     return FSize(0, 0);
   }
 
+  double get width => _width;
+
+  set width(double value) {
+    _width = value;
+  }
+
+  double get height => _height;
+
+  set height(double value) {
+    _height = value;
+  }
+
   static FSize getInstance(final double width, final double height) {
     FSize result = pool.get();
-    result.width = width;
-    result.height = height;
+    result._width = width;
+    result._height = height;
     return result;
   }
 
@@ -27,7 +39,7 @@ class FSize extends Poolable {
     pool.recycle2(instances);
   }
 
-  FSize(this.width, this.height);
+  FSize(this._width, this._height);
 
   bool equals(final Object obj) {
     if (obj == null) {
@@ -38,19 +50,19 @@ class FSize extends Poolable {
     }
     if (obj is FSize) {
       final FSize other = obj;
-      return width == other.width && height == other.height;
+      return _width == other._width && _height == other._height;
     }
     return false;
   }
 
   @override
   String toString() {
-    return "${width}x$height";
+    return "${_width}x$_height";
   }
 
   @override
   // ignore: hash_and_equals
   int get hashCode {
-    return width.toInt() ^ height.toInt();
+    return _width.toInt() ^ _height.toInt();
   }
 }

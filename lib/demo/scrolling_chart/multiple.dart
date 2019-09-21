@@ -110,8 +110,7 @@ class ScrollingChartMultipleState
       );
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
+    var desc = Description()..enabled = false;
     Chart chart;
     if (data is LineData) {
       chart = _getLineChart(data);
@@ -184,7 +183,7 @@ class ScrollingChartMultipleState
     d.setHighLightAlpha(255);
 
     BarData cd = BarData(List()..add(d));
-    cd.setBarWidth(0.9);
+    cd.barWidth = (0.9);
     return cd;
   }
 
@@ -206,101 +205,83 @@ class ScrollingChartMultipleState
   }
 
   LineChart _getLineChart(LineData data) {
-    var desc = Description();
-    desc.setEnabled(false);
-    var chart = LineChart(data, (painter) {
-      painter.mAxisLeft
-        ..setLabelCount2(5, false)
-        ..setAxisMinimum(0);
-      painter.mAxisRight
-        ..setLabelCount2(5, false)
-        ..setDrawGridLines(false)
-        ..setAxisMinimum(0);
-
-      painter.mXAxis
-        ..setPosition(XAxisPosition.BOTTOM)
-        ..setDrawGridLines(false)
-        ..setDrawAxisLine(true);
-
-      painter.mAnimator.animateX1(750);
-    },
+    var desc = Description()..enabled = false;
+    var chart = LineChart(data,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        desc: desc);
-
+        description: desc);
+    chart.axisLeft
+      ..setLabelCount2(5, false)
+      ..setAxisMinimum(0);
+    chart.axisRight
+      ..setLabelCount2(5, false)
+      ..drawGridLines = (false)
+      ..setAxisMinimum(0);
+    chart.xAxis
+      ..position = (XAxisPosition.BOTTOM)
+      ..drawGridLines = (false)
+      ..drawAxisLine = (true);
+    chart.animator.animateX1(750);
     return chart;
   }
 
   BarChart _getBarChart(BarData data) {
-    var desc = Description();
-    desc.setEnabled(false);
-    var chart = BarChart(data, (painter) {
-      painter
-        ..setDrawBarShadow(false)
-        ..setFitBars(true);
-      painter.mAxisLeft
-        ..setLabelCount2(5, false)
-        ..setAxisMinimum(0)
-        ..setSpaceTop(20);
-      painter.mAxisRight
-        ..setLabelCount2(5, false)
-        ..setAxisMinimum(0)
-        ..setSpaceTop(20);
-
-      painter.mXAxis
-        ..setPosition(XAxisPosition.BOTTOM)
-        ..setDrawAxisLine(true)
-        ..setDrawGridLines(false);
-
-      painter.mAnimator.animateY1(700);
-    },
+    var desc = Description()..enabled = false;
+    var chart = BarChart(data,
+        drawBarShadow: false,
+        fitBars: true,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        desc: desc);
-
+        description: desc);
+    chart.axisLeft
+      ..setLabelCount2(5, false)
+      ..setAxisMinimum(0)
+      ..spacePercentTop = (20);
+    chart.axisRight
+      ..setLabelCount2(5, false)
+      ..setAxisMinimum(0)
+      ..spacePercentTop = (20);
+    chart.xAxis
+      ..position = (XAxisPosition.BOTTOM)
+      ..drawAxisLine = (true)
+      ..drawGridLines = (false);
+    chart.animator.animateY1(700);
     return chart;
   }
 
   PieChart _getPieChart(PieData data) {
-    var desc = Description();
-    desc.setEnabled(false);
-    var chart = PieChart(data, (painter) {
-      painter
-        ..setHoleRadius(52)
-        ..setTransparentCircleRadius(57)
-        ..setCenterText(generateCenterText())
-        ..setUsePercentValues(true);
-
-      painter.getData()
-        ..setValueFormatter(PercentFormatter())
-        ..setValueTextSize(11)
-        ..setValueTextColor(ColorUtils.WHITE);
-
-      painter.mLegend
-        ..setVerticalAlignment(LegendVerticalAlignment.TOP)
-        ..setHorizontalAlignment(LegendHorizontalAlignment.RIGHT)
-        ..setOrientation(LegendOrientation.VERTICAL)
-        ..setDrawInside(false)
-        ..setYEntrySpace(0)
-        ..setYOffset(0);
-
-      painter.mAnimator.animateY1(900);
-    },
+    var desc = Description()..enabled = false;
+    var chart = PieChart(data,
         touchEnabled: true,
         extraLeftOffset: 5,
         extraRightOffset: 50,
         extraTopOffset: 10,
         extraBottomOffset: 10,
-        desc: desc);
-
+        holeRadiusPercent: 52,
+        transparentCircleRadiusPercent: 57,
+        centerText: generateCenterText(),
+        usePercentValues: true,
+        description: desc);
+    data
+      ..setValueFormatter(PercentFormatter())
+      ..setValueTextSize(11)
+      ..setValueTextColor(ColorUtils.WHITE);
+    chart.legend
+      ..verticalAlignment = (LegendVerticalAlignment.TOP)
+      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+      ..orientation = (LegendOrientation.VERTICAL)
+      ..drawInside = (false)
+      ..yEntrySpace = (0)
+      ..yOffset = (0);
+    chart.animator.animateY1(900);
     return chart;
   }
 

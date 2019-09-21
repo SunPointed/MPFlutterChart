@@ -165,7 +165,7 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
 
     // customize legend entry
     set1.setFormLineWidth(1);
-//      set1.setFormLineDashEffect(new DashPathEffect(new double[]{10f, 5f}, 0f));
+//      set1.setFormLineDashEffect( DashPathEffect( double[]{10f, 5f}, 0f));
     set1.setFormSize(15);
 
     // text size of values
@@ -196,55 +196,14 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
       return;
     }
 
-    if(lineChart != null){
+    if (lineChart != null) {
       lineChart?.data = lineData;
       lineChart?.getState()?.setStateIfNotDispose();
       return;
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    lineChart = LineChart(lineData, (painter) {
-      painter.mXAxis.enableGridDashedLine(10, 10, 0);
-
-      painter.mAxisRight.setEnabled(false);
-//    lineChart.painter.mAxisRight.enableGridDashedLine(10, 10, 0);
-//    lineChart.painter.mAxisRight.setAxisMaximum(200);
-//    lineChart.painter.mAxisRight.setAxisMinimum(-50);
-
-      painter.mAxisLeft.enableGridDashedLine(10, 10, 0);
-      painter.mAxisLeft.setAxisMaximum(200);
-      painter.mAxisLeft.setAxisMinimum(-50);
-
-      LimitLine llXAxis = new LimitLine(9, "Index 10");
-      llXAxis.setLineWidth(4);
-      llXAxis.enableDashedLine(10, 10, 0);
-      llXAxis.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
-      llXAxis.setTextSize(10);
-
-      LimitLine ll1 = new LimitLine(150, "Upper Limit");
-      ll1.setLineWidth(4);
-      ll1.enableDashedLine(10, 10, 0);
-      ll1.setLabelPosition(LimitLabelPosition.RIGHT_TOP);
-      ll1.setTextSize(10);
-
-      LimitLine ll2 = new LimitLine(-30, "Lower Limit");
-      ll2.setLineWidth(4);
-      ll2.enableDashedLine(10, 10, 0);
-      ll2.setLabelPosition(LimitLabelPosition.RIGHT_BOTTOM);
-      ll2.setTextSize(10);
-
-      // draw limit lines behind data instead of on top
-      painter.mAxisLeft.setDrawLimitLinesBehindData(true);
-      painter.mXAxis.setDrawLimitLinesBehindData(true);
-
-      // add limit lines
-      painter.mAxisLeft.addLimitLine(ll1);
-      painter.mAxisLeft.addLimitLine(ll2);
-      painter.mLegend.setForm(LegendForm.LINE);
-
-      painter.mAnimator.animateX1(1500);
-    },
+    var desc = Description()..enabled = false;
+    lineChart = LineChart(lineData,
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -252,6 +211,34 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
         scaleXEnabled: true,
         scaleYEnabled: true,
         pinchZoomEnabled: true,
-        desc: desc);
+        description: desc);
+    lineChart.xAxis.enableGridDashedLine(10, 10, 0);
+    lineChart.axisRight.enabled = (false);
+    lineChart.axisLeft
+      ..enableGridDashedLine(10, 10, 0)
+      ..setAxisMaximum(200)
+      ..setAxisMinimum(-50);
+    LimitLine llXAxis = LimitLine(9, "Index 10");
+    llXAxis.setLineWidth(4);
+    llXAxis.enableDashedLine(10, 10, 0);
+    llXAxis.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
+    llXAxis.textSize = (10);
+    LimitLine ll1 = LimitLine(150, "Upper Limit");
+    ll1.setLineWidth(4);
+    ll1.enableDashedLine(10, 10, 0);
+    ll1.labelPosition = (LimitLabelPosition.RIGHT_TOP);
+    ll1.textSize = (10);
+    LimitLine ll2 = LimitLine(-30, "Lower Limit");
+    ll2.setLineWidth(4);
+    ll2.enableDashedLine(10, 10, 0);
+    ll2.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
+    ll2.textSize = (10);
+    // draw limit lines behind data instead of on top
+    lineChart.axisLeft.drawLimitLineBehindData = (true);
+    lineChart.xAxis.drawLimitLineBehindData = (true);
+    // add limit lines
+    lineChart.axisLeft..addLimitLine(ll1)..addLimitLine(ll2);
+    lineChart.legend.shape = (LegendForm.LINE);
+    lineChart.animator.animateX1(1500);
   }
 }

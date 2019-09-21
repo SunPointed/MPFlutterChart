@@ -96,32 +96,27 @@ class ScrollingChartManyBarState
       );
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
-    return Container(
-        height: 200,
-        child: BarChart(data, (painter) {
-          painter..setFitBars(true);
-          painter.mAxisLeft
-            ..setLabelCount2(5, false)
-            ..setSpaceTop(15);
-          painter.mAxisRight
-            ..setLabelCount2(5, false)
-            ..setSpaceTop(15);
-
-          painter.mXAxis
-            ..setPosition(XAxisPosition.BOTTOM)
-            ..setDrawGridLines(false);
-
-          painter.mAnimator.animateY1(700);
-        },
-            touchEnabled: true,
-            drawGridBackground: false,
-            dragXEnabled: true,
-            dragYEnabled: true,
-            scaleXEnabled: true,
-            scaleYEnabled: true,
-            desc: desc));
+    var desc = Description()..enabled = false;
+    var barChart = BarChart(data,
+        touchEnabled: true,
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        fitBars: true,
+        description: desc);
+    barChart.axisLeft
+      ..setLabelCount2(5, false)
+      ..spacePercentTop = (15);
+    barChart.axisRight
+      ..setLabelCount2(5, false)
+      ..spacePercentTop = (15);
+    barChart.xAxis
+      ..position = (XAxisPosition.BOTTOM)
+      ..drawGridLines = (false);
+    barChart.animator.animateY1(700);
+    return Container(height: 200, child: barChart);
   }
 
   void _initBarDatas() {
@@ -147,7 +142,7 @@ class ScrollingChartManyBarState
     sets.add(d);
 
     BarData cd = BarData(sets);
-    cd.setBarWidth(0.9);
+    cd.barWidth = (0.9);
     return cd;
   }
 }

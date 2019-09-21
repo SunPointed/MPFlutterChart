@@ -95,8 +95,24 @@ class ScrollingChartTallBarState
       );
     }
 
-    var desc = Description();
-    desc.setEnabled(false);
+    var desc = Description()..enabled = false;
+    var barChart = BarChart(_barData,
+        touchEnabled: true,
+        pinchZoomEnabled: false,
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        fitBars: true,
+        drawBarShadow: false,
+        description: desc);
+    barChart.axisLeft.drawGridLines = (false);
+    barChart.legend.enabled = (false);
+    barChart.xAxis
+      ..position = (XAxisPosition.BOTTOM)
+      ..drawGridLines = (false);
+    barChart.animator.animateY1(800);
     return Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,30 +132,8 @@ class ScrollingChartTallBarState
           Container(
               height: 1000,
               child: Padding(
-                padding: EdgeInsets.only(top: 100, bottom: 100),
-                child: BarChart(_barData, (painter) {
-                  painter
-                    ..setFitBars(true)
-                    ..setDrawBarShadow(false);
-                  painter.mAxisLeft..setDrawGridLines(false);
-
-                  painter.mLegend.setEnabled(false);
-
-                  painter.mXAxis
-                    ..setPosition(XAxisPosition.BOTTOM)
-                    ..setDrawGridLines(false);
-
-                  painter.mAnimator.animateY1(800);
-                },
-                    touchEnabled: true,
-                    pinchZoomEnabled: false,
-                    drawGridBackground: false,
-                    dragXEnabled: true,
-                    dragYEnabled: true,
-                    scaleXEnabled: true,
-                    scaleYEnabled: true,
-                    desc: desc),
-              )),
+                  padding: EdgeInsets.only(top: 100, bottom: 100),
+                  child: barChart)),
           Container(
               padding: EdgeInsets.all(15.0),
               child: Center(

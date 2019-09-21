@@ -4,27 +4,27 @@ import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 
 class MyValueFormatter extends ValueFormatter {
-  NumberFormat mFormat;
-  String suffix;
+  NumberFormat _format;
+  String _suffix;
 
   MyValueFormatter(String suffix) {
-    mFormat = NumberFormat("###,###,###,##0.0");
-    this.suffix = suffix;
+    _format = NumberFormat("###,###,###,##0.0");
+    this._suffix = suffix;
   }
 
   @override
   String getFormattedValue1(double value) {
-    return mFormat.format(value) + suffix;
+    return _format.format(value) + _suffix;
   }
 
   @override
   String getAxisLabel(double value, AxisBase axis) {
     if (axis is XAxis) {
-      return mFormat.format(value);
+      return _format.format(value);
     } else if (value > 0) {
-      return mFormat.format(value) + suffix;
+      return _format.format(value) + _suffix;
     } else {
-      return mFormat.format(value);
+      return _format.format(value);
     }
   }
 }

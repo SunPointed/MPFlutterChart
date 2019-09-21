@@ -82,13 +82,13 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   final Legend _legend;
   final LegendRenderer _legendRenderer;
 
-
   final OnChartValueSelectedListener _selectionListener;
 
   ///////////////////////////////////////////////////
   /// object responsible for rendering the data
   DataRenderer renderer;
   IHighlighter highlighter;
+
   /// array of Highlight objects that reference the highlighted slices in the
   /// chart
   List<Highlight> _indicesToHighlight;
@@ -178,9 +178,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
         _selectionListener = selectedListener,
         super() {
     initDefaultNormal();
-    if (data == null ||
-        data.getDataSets() == null ||
-        data.getDataSets().length == 0) {
+    if (data == null || data.dataSets == null || data.dataSets.length == 0) {
       return;
     }
     initDefaultWithData();
@@ -192,7 +190,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
     // calculate how many digits are needed
     _setupDefaultFormatter(_data.getYMin1(), _data.getYMax1());
 
-    for (IDataSet set in _data.getDataSets()) {
+    for (IDataSet set in _data.dataSets) {
       if (set.needsFormatter() ||
           set.getValueFormatter() == _defaultValueFormatter)
         set.setValueFormatter(_defaultValueFormatter);
@@ -278,17 +276,15 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   /// Draws the description text in the bottom right corner of the chart (per default)
   void drawDescription(Canvas c, Size size) {
     // check if description should be drawn
-    if (_description != null && _description.isEnabled()) {
-      MPPointF position = _description.getPosition();
+    if (_description != null && _description.enabled) {
+      MPPointF position = _description.position;
       double x, y;
       // if no position specified, draw on default position
       if (position == null) {
-        x = size.width -
-            _viewPortHandler.offsetRight() -
-            _description.getXOffset();
+        x = size.width - _viewPortHandler.offsetRight() - _description.xOffset;
         y = size.height -
             _viewPortHandler.offsetBottom() -
-            _description.getYOffset();
+            _description.yOffset;
       } else {
         x = position.x;
         y = position.y;
@@ -442,7 +438,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
     for (int i = 0; i < _indicesToHighlight.length; i++) {
       Highlight highlight = _indicesToHighlight[i];
 
-      IDataSet set = _data.getDataSetByIndex(highlight.getDataSetIndex());
+      IDataSet set = _data.getDataSetByIndex(highlight.dataSetIndex);
 
       Entry e = _data.getEntryForHighlight(_indicesToHighlight[i]);
       int entryIndex = set.getEntryIndex2(e);
@@ -469,7 +465,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   /// @param high
   /// @return
   List<double> getMarkerPosition(Highlight high) {
-    return List<double>()..add(high.getDrawX())..add(high.getDrawY());
+    return List<double>()..add(high.drawX)..add(high.drawY);
   }
 
 //  /// returns the current y-max value across all DataSets

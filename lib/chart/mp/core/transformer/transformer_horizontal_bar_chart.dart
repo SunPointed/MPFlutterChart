@@ -11,26 +11,26 @@ class TransformerHorizontalBarChart extends Transformer {
   ///
   /// @param inverted
   void prepareMatrixOffset(bool inverted) {
-    mMatrixOffset = Matrix4.identity();
+    matrixOffset = Matrix4.identity();
 
     // offset.postTranslate(mOffsetLeft, getHeight() - mOffsetBottom);
 
     if (!inverted)
-      Matrix4Utils.postTranslate(mMatrixOffset, mViewPortHandler.offsetLeft(),
-          mViewPortHandler.getChartHeight() - mViewPortHandler.offsetBottom());
+      Matrix4Utils.postTranslate(matrixOffset, viewPortHandler.offsetLeft(),
+          viewPortHandler.getChartHeight() - viewPortHandler.offsetBottom());
     else {
       Matrix4Utils.setTranslate(
-          mMatrixOffset,
-          -(mViewPortHandler.getChartWidth() - mViewPortHandler.offsetRight()),
-          mViewPortHandler.getChartHeight() - mViewPortHandler.offsetBottom());
-      Matrix4Utils.postScale(mMatrixOffset, -1.0, 1.0);
+          matrixOffset,
+          -(viewPortHandler.getChartWidth() - viewPortHandler.offsetRight()),
+          viewPortHandler.getChartHeight() - viewPortHandler.offsetBottom());
+      Matrix4Utils.postScale(matrixOffset, -1.0, 1.0);
     }
 
-    // mMatrixOffset.set(offset);
+    // matrixOffset.set(offset);
 
-    // mMatrixOffset.reset();
+    // matrixOffset.reset();
     //
-    // mMatrixOffset.postTranslate(mOffsetLeft, getHeight() -
+    // matrixOffset.postTranslate(mOffsetLeft, getHeight() -
     // mOffsetBottom);
   }
 }

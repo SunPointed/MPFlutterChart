@@ -8,50 +8,50 @@ import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class XAxisRendererRadarChart extends XAxisRenderer {
-  RadarChartPainter mChart;
+  RadarChartPainter _painter;
 
   XAxisRendererRadarChart(
       ViewPortHandler viewPortHandler, XAxis xAxis, RadarChartPainter chart)
       : super(viewPortHandler, xAxis, null) {
-    mChart = chart;
+    _painter = chart;
   }
 
   @override
   void renderAxisLabels(Canvas c) {
-    if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled()) return;
+    if (!xAxis.enabled || !xAxis.drawLabels) return;
 
-    final double labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
+    final double labelRotationAngleDegrees = xAxis.labelRotationAngle;
     final MPPointF drawLabelAnchor = MPPointF.getInstance1(0.5, 0.25);
 
-//    mAxisLabelPaint.setTypeface(mXAxis.getTypeface()); todo
+//    axisLabelPaint.setTypeface(xAxis.getTypeface()); todo
 
-    mAxisLabelPaint = PainterUtils.create(
-        null, null, mXAxis.getTextColor(), mXAxis.getTextSize());
+    axisLabelPaint =
+        PainterUtils.create(null, null, xAxis.textColor, xAxis.textSize);
 
-    double sliceangle = mChart.getSliceAngle();
+    double sliceangle = _painter.getSliceAngle();
 
     // calculate the factor that is needed for transforming the value to
     // pixels
-    double factor = mChart.getFactor();
+    double factor = _painter.getFactor();
 
-    MPPointF center = mChart.getCenterOffsets();
+    MPPointF center = _painter.getCenterOffsets();
     MPPointF pOut = MPPointF.getInstance1(0, 0);
     for (int i = 0;
-        i < mChart.getData().getMaxEntryCountSet().getEntryCount();
+        i < _painter.getData().getMaxEntryCountSet().getEntryCount();
         i++) {
       String label =
-          mXAxis.getValueFormatter().getAxisLabel(i.toDouble(), mXAxis);
+          xAxis.getValueFormatter().getAxisLabel(i.toDouble(), xAxis);
 
-      double angle = (sliceangle * i + mChart.getRotationAngle()) % 360;
+      double angle = (sliceangle * i + _painter.getRotationAngle()) % 360;
 
       Utils.getPosition(
           center,
-          mChart.getYRange() * factor + mXAxis.mLabelRotatedWidth / 2,
+          _painter.yAxis.axisRange * factor + xAxis.labelRotatedWidth / 2,
           angle,
           pOut);
 
-      drawLabel(c, label, pOut.x, pOut.y - mXAxis.mLabelRotatedHeight / 2.0,
-          drawLabelAnchor, labelRotationAngleDegrees, mXAxis.getPosition());
+      drawLabel(c, label, pOut.x, pOut.y - xAxis.labelRotatedHeight / 2.0,
+          drawLabelAnchor, labelRotationAngleDegrees, xAxis.position);
     }
 
     MPPointF.recycleInstance(center);

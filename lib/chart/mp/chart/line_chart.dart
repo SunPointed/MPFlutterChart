@@ -1,6 +1,5 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
@@ -10,7 +9,6 @@ import 'package:mp_flutter_chart/chart/mp/core/data/line_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
-import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/line_chart_marker.dart';
@@ -200,8 +198,8 @@ class LineChartState
         widget.minimumScaleX,
         widget.minimumScaleY);
     if (painter.getData() != null &&
-        painter.getData().getDataSets() != null &&
-        painter.getData().getDataSets().length > 0)
+        painter.getData().dataSets != null &&
+        painter.getData().dataSets.length > 0)
       painter.highlightValue6(lastHighlighted, false);
   }
 }

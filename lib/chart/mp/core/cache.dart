@@ -6,9 +6,9 @@ import 'package:flutter/painting.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_line_data_set.dart';
 
 class DataSetImageCache {
-  Path mCirclePathBuffer = Path();
+  Path _circlePathBuffer = Path();
 
-  List<ByteData> circleBitmaps;
+  List<ByteData> _circleBitmaps;
 
   /// Sets up the cache, returns true if a change of cache was required.
   ///
@@ -18,11 +18,11 @@ class DataSetImageCache {
     int size = set.getCircleColorCount();
     bool changeRequired = false;
 
-    if (circleBitmaps == null) {
-      circleBitmaps = List(size);
+    if (_circleBitmaps == null) {
+      _circleBitmaps = List(size);
       changeRequired = true;
-    } else if (circleBitmaps.length != size) {
-      circleBitmaps = List(size);
+    } else if (_circleBitmaps.length != size) {
+      _circleBitmaps = List(size);
       changeRequired = true;
     }
 
@@ -58,22 +58,22 @@ class DataSetImageCache {
               0,
               drawCircleHole ? circleHoleRadius * 2 : circleRadius * 2,
               drawCircleHole ? circleHoleRadius * 2 : circleRadius * 2));
-//      circleBitmaps[i] = circleBitmap;
+//      _circleBitmaps[i] = circleBitmap;
       paint..color = set.getCircleColor(i);
 
       if (drawTransparentCircleHole) {
         // Begin path for circle with hole
-        mCirclePathBuffer.reset();
+        _circlePathBuffer.reset();
 
-        mCirclePathBuffer
+        _circlePathBuffer
             .addOval(Rect.fromLTRB(0, 0, circleRadius * 2, circleRadius * 2));
 
         // Cut hole in path
-        mCirclePathBuffer.addOval(
+        _circlePathBuffer.addOval(
             Rect.fromLTRB(0, 0, circleHoleRadius * 2, circleHoleRadius * 2));
 
         // Fill in-between
-        canvas.drawPath(mCirclePathBuffer, paint);
+        canvas.drawPath(_circlePathBuffer, paint);
       } else {
         canvas.drawCircle(
             Offset(circleRadius, circleRadius), circleRadius, paint);
@@ -88,7 +88,7 @@ class DataSetImageCache {
           (drawCircleHole ? circleHoleRadius * 2 : circleRadius * 2).toInt();
       recorder.endRecording().toImage(length, length).then((image) {
         image.toByteData(format: ImageByteFormat.rawRgba).then((data) {
-          circleBitmaps[i] = data;
+          _circleBitmaps[i] = data;
           if (finishCount >= colorCount - 1) {
             callback();
           }
@@ -99,6 +99,6 @@ class DataSetImageCache {
   }
 
   ByteData getBitmap(int index) {
-    return circleBitmaps[index % circleBitmaps.length];
+    return _circleBitmaps[index % _circleBitmaps.length];
   }
 }
