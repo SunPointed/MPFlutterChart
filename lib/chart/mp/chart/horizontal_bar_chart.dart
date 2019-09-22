@@ -171,7 +171,7 @@ class HorizontalBarChart extends BarChart {
 class HorizontalBarChartState extends BarChartState<HorizontalBarChart> {
   @override
   void updatePainter() {
-    // todo
+    widget.initialPainter();
     if (widget.painter.getData() != null &&
         widget.painter.getData().dataSets != null &&
         widget.painter.getData().dataSets.length > 0)

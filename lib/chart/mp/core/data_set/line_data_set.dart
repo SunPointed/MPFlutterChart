@@ -305,4 +305,9 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
     copy(copied);
     return copied;
   }
+
+  @override
+  String toString() {
+    return '${super.toString()}\nLineDataSet{_mode: $_mode,\n _circleColors: $_circleColors,\n _circleHoleColor: $_circleHoleColor,\n _circleRadius: $_circleRadius,\n _circleHoleRadius: $_circleHoleRadius,\n _cubicIntensity: $_cubicIntensity,\n _dashPathEffect: $_dashPathEffect,\n _fillFormatter: $_fillFormatter,\n _draw: $_draw,\n mDrawCircleHole: $mDrawCircleHole}';
+  }
 }

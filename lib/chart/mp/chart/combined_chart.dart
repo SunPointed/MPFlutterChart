@@ -220,7 +220,7 @@ class CombinedChart
 class CombinedChartState extends ChartState<CombinedChart> {
   @override
   void updatePainter() {
-    // todo
+    widget.initialPainter();
     widget.painter.highlightValue6(_lastHighlighted, false);
   }
 

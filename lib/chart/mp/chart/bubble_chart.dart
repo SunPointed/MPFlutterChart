@@ -194,7 +194,7 @@ class BubbleChart extends BarLineScatterCandleBubbleChart<BubbleChartPainter> {
 class BubbleChartState extends BarLineScatterCandleBubbleState<BubbleChart> {
   @override
   void updatePainter() {
-    // todo
+    widget.initialPainter();
     if (widget.painter.getData() != null &&
         widget.painter.getData().dataSets != null &&
         widget.painter.getData().dataSets.length > 0)

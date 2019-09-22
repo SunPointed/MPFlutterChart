@@ -580,6 +580,9 @@ class LineChartRenderer extends LineRadarRenderer {
 
         xBounds.set(_provider, dataSet);
 
+//        print(dataSet);
+//        print("xBounds.min ${xBounds.min }");
+//        print("xBounds.max ${xBounds.max }");
         List<double> positions = trans.generateTransformedValuesLine(
             dataSet,
             animator.getPhaseX(),

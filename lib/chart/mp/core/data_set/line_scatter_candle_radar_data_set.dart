@@ -108,4 +108,9 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
 //    lineScatterCandleRadarDataSet.mHighlightDashPathEffect = mHighlightDashPathEffect;
     }
   }
+
+  @override
+  String toString() {
+    return '${super.toString()}\nLineScatterCandleRadarDataSet{\n_drawVerticalHighlightIndicator: $_drawVerticalHighlightIndicator,\n _drawHorizontalHighlightIndicator: $_drawHorizontalHighlightIndicator,\n _highlightLineWidth: $_highlightLineWidth}';
+  }
 }

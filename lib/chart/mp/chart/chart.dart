@@ -176,9 +176,6 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
 abstract class ChartState<T extends Chart> extends State<T> {
   bool _singleTap = false;
 
-  @override
-  void onRotateUpdate(double angle) {}
-
   void setStateIfNotDispose() {
     if (mounted) {
       setState(() {});
@@ -189,6 +186,7 @@ abstract class ChartState<T extends Chart> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
+    updatePainter();
     return Stack(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -310,6 +308,13 @@ abstract class PieRadarChart<P extends PieRadarChartPainter> extends Chart<P> {
   @override
   void doneBeforePainterInit() {}
 
+  @override
+  void onRotateUpdate(double angle) {
+    rawRotationAngle = angle;
+    rotationAngle = Utils.getNormalizedAngle(rawRotationAngle);
+    _state.setStateIfNotDispose();
+  }
+
   PieRadarChartPainter get painter => super.painter;
 }
 
@@ -328,13 +333,6 @@ abstract class PieRadarChartState<T extends PieRadarChart>
     double angle = widget.painter.getAngleForPoint(x, y) - _startAngle;
     widget.rawRotationAngle = angle;
     widget.rotationAngle = Utils.getNormalizedAngle(widget.rawRotationAngle);
-  }
-
-  @override
-  void onRotateUpdate(double angle) {
-    widget.rawRotationAngle = angle;
-    widget.rotationAngle = Utils.getNormalizedAngle(widget.rawRotationAngle);
-    setState(() {});
   }
 
   @override

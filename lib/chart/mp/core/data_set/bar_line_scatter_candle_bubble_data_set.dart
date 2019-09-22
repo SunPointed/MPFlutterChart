@@ -34,4 +34,11 @@ abstract class BarLineScatterCandleBubbleDataSet<T extends Entry>
       barLineScatterCandleBubbleDataSet._highLightColor = _highLightColor;
     }
   }
+
+  @override
+  String toString() {
+    return '${super.toString()}\nBarLineScatterCandleBubbleDataSet{_highLightColor: $_highLightColor}';
+  }
+
+
 }

@@ -166,7 +166,7 @@ class PieChart extends PieRadarChart<PieChartPainter> {
 class PieChartState extends PieRadarChartState<PieChart> {
   @override
   void updatePainter() {
-    // todo
+    widget.initialPainter();
     if (widget.painter.getData() != null &&
         widget.painter.getData().dataSets != null &&
         widget.painter.getData().dataSets.length > 0)

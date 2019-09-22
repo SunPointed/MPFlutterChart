@@ -16,6 +16,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/chart_hightlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
@@ -245,33 +246,15 @@ abstract class BarLineChartBasePainter<
 
   @override
   void initDefaultWithData() {
-    super.initDefaultWithData();
+    highlighter = ChartHighlighter(this);
     double minXScale = xAxis.axisRange / (_minXRange);
     viewPortHandler.setMaximumScaleX(minXScale);
     double maxXScale = xAxis.axisRange / (_maxXRange);
     viewPortHandler.setMinimumScaleX(maxXScale);
     viewPortHandler.setMinimumScaleX(_minimumScaleX);
     viewPortHandler.setMinimumScaleY(_minimumScaleY);
+    super.initDefaultWithData();
   }
-
-//  @override
-//  void init() {
-//    _axisLeft = YAxis(position: AxisDependency.LEFT);
-//    _axisRight = YAxis(position: AxisDependency.RIGHT);
-//
-//    _leftAxisTransformer ??= Transformer(viewPortHandler);
-//    _rightAxisTransformer ??= Transformer(viewPortHandler);
-//    _zoomMatrixBuffer ??= Matrix4.identity();
-//
-//    _axisRendererLeft ??=
-//        YAxisRenderer(viewPortHandler, _axisLeft, _leftAxisTransformer);
-//    _axisRendererRight ??=
-//        YAxisRenderer(viewPortHandler, _axisRight, _rightAxisTransformer);
-//    _xAxisRenderer ??=
-//        XAxisRenderer(viewPortHandler, xAxis, _leftAxisTransformer);
-//
-//    mHighlighter = ChartHighlighter(this);
-//  }
 
   @override
   void onPaint(Canvas canvas, Size size) {

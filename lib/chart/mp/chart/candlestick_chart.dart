@@ -200,7 +200,7 @@ class CandlestickChartState
     extends BarLineScatterCandleBubbleState<CandlestickChart> {
   @override
   void updatePainter() {
-    // todo
+    widget.initialPainter();
     if (widget.painter.getData() != null &&
         widget.painter.getData().dataSets != null &&
         widget.painter.getData().dataSets.length > 0)

@@ -111,14 +111,10 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     super.copy(dataSet);
   }
 
+
   @override
   String toString() {
-    StringBuffer buffer = StringBuffer();
-    buffer.write(toSimpleString());
-    for (int i = 0; i < _values.length; i++) {
-      buffer.write(_values[i].toString() + " ");
-    }
-    return buffer.toString();
+    return 'DataSet{_values.length: ${_values.length},\n _yMax: $_yMax,\n _yMin: $_yMin,\n _xMax: $_xMax,\n _xMin: $_xMin}';
   }
 
   /// Returns a simple string representation of the DataSet with the type and

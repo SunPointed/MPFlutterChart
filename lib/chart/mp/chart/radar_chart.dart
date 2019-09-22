@@ -161,7 +161,7 @@ class RadarChart extends PieRadarChart<RadarChartPainter> {
 class RadarChartState extends PieRadarChartState<RadarChart> {
   @override
   void updatePainter() {
-    // todo
+    widget.initialPainter();
     if (widget.painter.getData() != null &&
         widget.painter.getData().dataSets != null &&
         widget.painter.getData().dataSets.length > 0)
