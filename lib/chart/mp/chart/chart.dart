@@ -13,7 +13,6 @@ import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
@@ -73,10 +72,6 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
   Chart(ChartData data,
       {IMarker marker,
       Description description,
-      ViewPortHandler viewPortHandler,
-      XAxis xAxis,
-      Legend legend,
-      LegendRenderer legendRenderer,
       OnChartValueSelectedListener selectionListener,
       double maxHighlightDistance = 0.0,
       bool highLightPerTapEnabled = true,
@@ -107,10 +102,6 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
         drawMarkers = drawMarkers,
         marker = marker,
         description = description,
-        viewPortHandler = viewPortHandler,
-        xAxis = xAxis,
-        legend = legend,
-        legendRenderer = legendRenderer,
         selectionListener = selectionListener {
     if (descTextColor == null) {
       descTextColor = ColorUtils.BLACK;
@@ -129,7 +120,6 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
     this.legend ??= initLegend();
     this.marker ??= initMarker();
     this.description ??= initDescription();
-    this.xAxis ??= initXAxis();
     this.legendRenderer ??= initLegendRenderer();
     this.selectionListener ??= initSelectionListener();
 
@@ -168,7 +158,9 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
     _painter = value;
   }
 
-  void doneBeforePainterInit();
+  void doneBeforePainterInit(){
+    this.xAxis = initXAxis();
+  }
 
   void initialPainter();
 }
@@ -186,6 +178,8 @@ abstract class ChartState<T extends Chart> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
+    widget.doneBeforePainterInit();
+    widget.initialPainter();
     updatePainter();
     return Stack(
         // Center is a layout widget. It takes a single child and positions it
@@ -252,11 +246,6 @@ abstract class PieRadarChart<P extends PieRadarChartPainter> extends Chart<P> {
   PieRadarChart(ChartData<IDataSet<Entry>> data,
       {IMarker marker,
       Description description,
-      ViewPortHandler viewPortHandler,
-      XAxis xAxis,
-      Legend legend,
-      LegendRenderer legendRenderer,
-      DataRenderer renderer,
       OnChartValueSelectedListener selectionListener,
       double rotationAngle = 270,
       double rawRotationAngle = 270,
@@ -284,10 +273,6 @@ abstract class PieRadarChart<P extends PieRadarChartPainter> extends Chart<P> {
         super(data,
             marker: marker,
             description: description,
-            viewPortHandler: viewPortHandler,
-            xAxis: xAxis,
-            legend: legend,
-            legendRenderer: legendRenderer,
             selectionListener: selectionListener,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
@@ -304,9 +289,6 @@ abstract class PieRadarChart<P extends PieRadarChartPainter> extends Chart<P> {
             infoTextSize: infoTextSize,
             descTextColor: descTextColor,
             infoTextColor: infoTextColor);
-
-  @override
-  void doneBeforePainterInit() {}
 
   @override
   void onRotateUpdate(double angle) {
@@ -418,11 +400,6 @@ abstract class BarLineScatterCandleBubbleChart<
     ChartData<IDataSet<Entry>> data, {
     IMarker marker,
     Description description,
-    ViewPortHandler viewPortHandler,
-    XAxis xAxis,
-    Legend legend,
-    LegendRenderer legendRenderer,
-    DataRenderer renderer,
     OnChartValueSelectedListener selectionListener,
     Color backgroundColor,
     Color borderColor,
@@ -504,10 +481,6 @@ abstract class BarLineScatterCandleBubbleChart<
         super(data,
             marker: marker,
             description: description,
-            viewPortHandler: viewPortHandler,
-            xAxis: xAxis,
-            legend: legend,
-            legendRenderer: legendRenderer,
             selectionListener: selectionListener,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
@@ -527,6 +500,7 @@ abstract class BarLineScatterCandleBubbleChart<
 
   @override
   void doneBeforePainterInit() {
+    super.doneBeforePainterInit();
     gridBackgroundPaint = Paint()
       ..color = backgroundColor == null
           ? Color.fromARGB(255, 240, 240, 240)

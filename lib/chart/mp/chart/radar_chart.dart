@@ -1,20 +1,11 @@
 import 'package:flutter/painting.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/radar_data.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/radar_chart_marker.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
-import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/radar_chart_painter.dart';
 
 import 'chart.dart';
@@ -32,11 +23,6 @@ class RadarChart extends PieRadarChart<RadarChartPainter> {
   RadarChart(RadarData data,
       {IMarker marker,
       Description description,
-      ViewPortHandler viewPortHandler,
-      XAxis xAxis,
-      Legend legend,
-      LegendRenderer legendRenderer,
-      DataRenderer renderer,
       OnChartValueSelectedListener selectionListener,
       double rotationAngle = 270,
       double rawRotationAngle = 270,
@@ -75,10 +61,6 @@ class RadarChart extends PieRadarChart<RadarChartPainter> {
         super(data,
             marker: marker,
             description: description,
-            viewPortHandler: viewPortHandler,
-            xAxis: xAxis,
-            legend: legend,
-            legendRenderer: legendRenderer,
             selectionListener: selectionListener,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
@@ -161,7 +143,6 @@ class RadarChart extends PieRadarChart<RadarChartPainter> {
 class RadarChartState extends PieRadarChartState<RadarChart> {
   @override
   void updatePainter() {
-    widget.initialPainter();
     if (widget.painter.getData() != null &&
         widget.painter.getData().dataSets != null &&
         widget.painter.getData().dataSets.length > 0)

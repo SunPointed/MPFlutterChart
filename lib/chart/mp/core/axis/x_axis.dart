@@ -74,6 +74,4 @@ class XAxis extends AxisBase {
   set labelWidth(int value) {
     _labelWidth = value;
   }
-
-
 }

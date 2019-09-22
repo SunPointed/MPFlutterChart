@@ -26,11 +26,6 @@ class CandlestickChart
   CandlestickChart(CandleData data,
       {IMarker marker,
       Description description,
-      ViewPortHandler viewPortHandler,
-      XAxis xAxis,
-      Legend legend,
-      LegendRenderer legendRenderer,
-      DataRenderer renderer,
       OnChartValueSelectedListener selectionListener,
       Color backgroundColor,
       Color borderColor,
@@ -80,12 +75,7 @@ class CandlestickChart
       Matrix4 zoomMatrixBuffer})
       : super(data,
             marker: marker,
-            description: description,
-            viewPortHandler: viewPortHandler,
-            xAxis: xAxis,
-            legend: legend,
-            legendRenderer: legendRenderer,
-            renderer: renderer,
+      description: description,
             selectionListener: selectionListener,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
@@ -200,7 +190,6 @@ class CandlestickChartState
     extends BarLineScatterCandleBubbleState<CandlestickChart> {
   @override
   void updatePainter() {
-    widget.initialPainter();
     if (widget.painter.getData() != null &&
         widget.painter.getData().dataSets != null &&
         widget.painter.getData().dataSets.length > 0)

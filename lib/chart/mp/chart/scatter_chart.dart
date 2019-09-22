@@ -2,23 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/chart.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/scatter_data.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
-import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/scatter_chart_painter.dart';
 
 class ScatterChart
@@ -26,11 +17,6 @@ class ScatterChart
   ScatterChart(ScatterData data,
       {IMarker marker,
       Description description,
-      ViewPortHandler viewPortHandler,
-      XAxis xAxis,
-      Legend legend,
-      LegendRenderer legendRenderer,
-      DataRenderer renderer,
       OnChartValueSelectedListener selectionListener,
       Color backgroundColor,
       Color borderColor,
@@ -81,11 +67,6 @@ class ScatterChart
       : super(data,
             marker: marker,
             description: description,
-            viewPortHandler: viewPortHandler,
-            xAxis: xAxis,
-            legend: legend,
-            legendRenderer: legendRenderer,
-            renderer: renderer,
             selectionListener: selectionListener,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
@@ -199,7 +180,6 @@ class ScatterChart
 class ScatterChartState extends BarLineScatterCandleBubbleState<ScatterChart> {
   @override
   void updatePainter() {
-    widget.initialPainter();
     if (widget.painter.getData() != null &&
         widget.painter.getData().dataSets != null &&
         widget.painter.getData().dataSets.length > 0)

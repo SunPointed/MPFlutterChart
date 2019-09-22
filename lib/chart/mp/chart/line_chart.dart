@@ -1,31 +1,21 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/chart.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/line_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/line_chart_marker.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
-import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
 
 class LineChart extends BarLineScatterCandleBubbleChart<LineChartPainter> {
   LineChart(LineData data,
       {IMarker marker,
       Description description,
-      ViewPortHandler viewPortHandler,
-      XAxis xAxis,
-      Legend legend,
-      LegendRenderer legendRenderer,
-      DataRenderer renderer,
       OnChartValueSelectedListener selectionListener,
       Color backgroundColor,
       Color borderColor,
@@ -76,11 +66,6 @@ class LineChart extends BarLineScatterCandleBubbleChart<LineChartPainter> {
       : super(data,
             marker: marker,
             description: description,
-            viewPortHandler: viewPortHandler,
-            xAxis: xAxis,
-            legend: legend,
-            legendRenderer: legendRenderer,
-            renderer: renderer,
             selectionListener: selectionListener,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
@@ -197,7 +182,6 @@ class LineChart extends BarLineScatterCandleBubbleChart<LineChartPainter> {
 class LineChartState extends BarLineScatterCandleBubbleState<LineChart> {
   @override
   void updatePainter() {
-    widget.initialPainter();
     if (widget.painter.getData() != null &&
         widget.painter.getData().dataSets != null &&
         widget.painter.getData().dataSets.length > 0)
