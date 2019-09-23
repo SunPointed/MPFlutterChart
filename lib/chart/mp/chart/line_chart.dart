@@ -39,7 +39,7 @@ class LineChart extends BarLineScatterCandleBubbleChart<LineChartPainter> {
       double maxXRange = 1.0,
       double minimumScaleX = 1.0,
       double minimumScaleY = 1.0,
-      double maxHighlightDistance = 0.0,
+      double maxHighlightDistance = 100.0,
       bool highLightPerTapEnabled = true,
       bool dragDecelerationEnabled = true,
       double dragDecelerationFrictionCoef = 0.9,
@@ -65,6 +65,7 @@ class LineChart extends BarLineScatterCandleBubbleChart<LineChartPainter> {
       Matrix4 zoomMatrixBuffer})
       : super(data,
             marker: marker,
+            backgroundColor:backgroundColor,
             description: description,
             selectionListener: selectionListener,
             maxHighlightDistance: maxHighlightDistance,

@@ -136,7 +136,7 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
         pinchZoomEnabled: false,
         backgroundColor: color,
         description: desc);
-    lineChart.painter.setViewPortOffsets(0, 0, 0, 0);
+    lineChart.setViewPortOffsets(0, 0, 0, 0);
     lineChart.legend.enabled = (false);
     lineChart.axisLeft
       ..enabled = (false)

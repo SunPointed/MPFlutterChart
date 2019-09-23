@@ -58,4 +58,6 @@ abstract class ComponentBase {
   set textColor(Color value) {
     _textColor = value;
   }
+
+  void reset(){}
 }

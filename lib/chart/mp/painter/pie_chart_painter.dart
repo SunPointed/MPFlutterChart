@@ -155,8 +155,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
 
   @override
   void initDefaultWithData() {
-    renderer = PieChartRenderer(this, animator, viewPortHandler);
     super.initDefaultWithData();
+    renderer = PieChartRenderer(this, animator, viewPortHandler);
     highlighter = PieHighlighter(this);
   }
 

@@ -128,8 +128,8 @@ class LineChartPainter extends BarLineChartBasePainter<LineData>
 
   @override
   void initDefaultWithData() {
-    renderer = LineChartRenderer(this, animator, viewPortHandler);
     super.initDefaultWithData();
+    renderer = LineChartRenderer(this, animator, viewPortHandler);
   }
 
   @override

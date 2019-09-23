@@ -246,6 +246,7 @@ abstract class BarLineChartBasePainter<
 
   @override
   void initDefaultWithData() {
+    super.initDefaultWithData();
     highlighter = ChartHighlighter(this);
     double minXScale = xAxis.axisRange / (_minXRange);
     viewPortHandler.setMaximumScaleX(minXScale);
@@ -253,7 +254,6 @@ abstract class BarLineChartBasePainter<
     viewPortHandler.setMinimumScaleX(maxXScale);
     viewPortHandler.setMinimumScaleX(_minimumScaleX);
     viewPortHandler.setMinimumScaleY(_minimumScaleY);
-    super.initDefaultWithData();
   }
 
   @override
@@ -606,24 +606,6 @@ abstract class BarLineChartBasePainter<
     double minScale = getAxisRange(axis) / minYRange;
     double maxScale = getAxisRange(axis) / maxYRange;
     viewPortHandler.setMinMaxScaleY(minScale, maxScale);
-  }
-
-  /// Sets custom offsets for the current ViewPort (the offsets on the sides of
-  /// the actual chart window). Setting this will prevent the chart from
-  /// automatically calculating it's offsets. Use resetViewPortOffsets() to
-  /// undo this. ONLY USE THIS WHEN YOU KNOW WHAT YOU ARE DOING, else use
-  /// setExtraOffsets(...).
-  ///
-  /// @param left
-  /// @param top
-  /// @param right
-  /// @param bottom
-  void setViewPortOffsets(final double left, final double top,
-      final double right, final double bottom) {
-    _customViewPortEnabled = true;
-    viewPortHandler.restrainViewPort(left, top, right, bottom);
-    prepareOffsetMatrix();
-    prepareValuePxMatrix();
   }
 
   /**

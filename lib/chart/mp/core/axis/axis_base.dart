@@ -503,4 +503,13 @@ abstract class AxisBase extends ComponentBase {
   set limitLines(List<LimitLine> value) {
     _limitLines = value;
   }
+
+  @override
+  void reset() {
+    _axisMaximum = 0.0;
+    _axisMinimum = 0.0;
+    _axisRange = 0.0;
+  }
+
+
 }

@@ -15,7 +15,7 @@ abstract class Util {
   }
 
   static void _launchURL() async {
-    const url = 'https://github.com/SunPointed/js_learn';
+    const url = 'https://github.com/SunPointed/mp_flutter_chart';
     if (await canLaunch(url)) {
       await launch(url);
     } else {

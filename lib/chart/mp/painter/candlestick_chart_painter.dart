@@ -9,7 +9,6 @@ import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/candle_stick_chart_renderer.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
@@ -128,8 +127,8 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
 
   @override
   void initDefaultWithData() {
-    renderer = CandleStickChartRenderer(this, animator, viewPortHandler);
     super.initDefaultWithData();
+    renderer = CandleStickChartRenderer(this, animator, viewPortHandler);
     xAxis.spaceMin = (0.5);
     xAxis.spaceMax = (0.5);
   }

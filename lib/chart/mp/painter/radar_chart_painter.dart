@@ -137,11 +137,11 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
 
   @override
   void initDefaultWithData() {
-    _yAxisRenderer ??= YAxisRendererRadarChart(viewPortHandler, _yAxis, this);
-    _xAxisRenderer ??= XAxisRendererRadarChart(viewPortHandler, xAxis, this);
+    super.initDefaultWithData();
     renderer = RadarChartRenderer(this, animator, viewPortHandler);
     highlighter = RadarHighlighter(this);
-    super.initDefaultWithData();
+    _yAxisRenderer = YAxisRendererRadarChart(viewPortHandler, _yAxis, this);
+    _xAxisRenderer = XAxisRendererRadarChart(viewPortHandler, xAxis, this);
   }
 
   @override

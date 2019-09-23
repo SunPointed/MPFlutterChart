@@ -146,9 +146,9 @@ class HorizontalBarChartPainter extends BarChartPainter {
 
   @override
   void initDefaultWithData() {
+    super.initDefaultWithData();
     highlighter = HorizontalBarHighlighter(this);
     renderer = HorizontalBarChartRenderer(this, animator, viewPortHandler);
-    super.initDefaultWithData();
   }
 
   Rect _offsetsBuffer = Rect.zero;

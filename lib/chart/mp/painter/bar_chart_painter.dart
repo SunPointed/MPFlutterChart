@@ -152,9 +152,9 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
 
   @override
   void initDefaultWithData() {
+    super.initDefaultWithData();
     highlighter = BarHighlighter(this);
     renderer = BarChartRenderer(this, animator, viewPortHandler);
-    super.initDefaultWithData();
     xAxis?.spaceMin = (0.5);
     xAxis?.spaceMax = (0.5);
   }

@@ -159,7 +159,7 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
         scaleYEnabled: true,
         pinchZoomEnabled: false,
         description: desc);
-    lineChart.painter.setViewPortOffsets(0, 0, 0, 0);
+    lineChart.setViewPortOffsets(0, 0, 0, 0);
     lineChart.legend.enabled = (false);
     lineChart.xAxis
       ..position = (XAxisPosition.TOP_INSIDE)

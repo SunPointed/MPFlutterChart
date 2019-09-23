@@ -127,8 +127,8 @@ class ScatterChartPainter extends BarLineChartBasePainter<ScatterData>
 
   @override
   void initDefaultWithData() {
-    renderer = ScatterChartRenderer(this, animator, viewPortHandler);
     super.initDefaultWithData();
+    renderer = ScatterChartRenderer(this, animator, viewPortHandler);
     xAxis.spaceMin = (0.5);
     xAxis.spaceMax = (0.5);
   }

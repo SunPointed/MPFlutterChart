@@ -51,7 +51,7 @@ class CombinedChart
       double maxXRange = 1.0,
       double minimumScaleX = 1.0,
       double minimumScaleY = 1.0,
-      double maxHighlightDistance = 0.0,
+      double maxHighlightDistance = 100.0,
       bool highLightPerTapEnabled = true,
       bool dragDecelerationEnabled = true,
       double dragDecelerationFrictionCoef = 0.9,
@@ -86,6 +86,7 @@ class CombinedChart
         super(data,
             marker: marker,
             description: description,
+            backgroundColor: backgroundColor,
             selectionListener: selectionListener,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
@@ -254,7 +255,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
       widget.painter.zoom(widget.painter.scaleXEnabled ? 1.4 : 1,
           widget.painter.scaleYEnabled ? 1.4 : 1, trans.x, trans.y);
 //      painter.getOnChartGestureListener()?.onChartDoubleTapped(_curX, _curY);
-      setState(() {});
+      setStateIfNotDispose();
       MPPointF.recycleInstance(trans);
     }
   }
@@ -296,14 +297,14 @@ class CombinedChartState extends ChartState<CombinedChart> {
             Offset(detail.localFocalPoint.dx, detail.localFocalPoint.dy));
 //        listener?.onChartTranslate(
 //            detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
-        setState(() {});
+        setStateIfNotDispose();
       } else {
         if (widget.painter.dragXEnabled) {
           widget.painter.translate(dx, 0.0);
           _dragHighlight(Offset(detail.localFocalPoint.dx, 0.0));
 //          listener?.onChartTranslate(
 //              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
-          setState(() {});
+          setStateIfNotDispose();
         } else if (widget.painter.dragYEnabled) {
           if (_inverted()) {
             // if there is an inverted horizontalbarchart
@@ -317,7 +318,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
           _dragHighlight(Offset(0.0, detail.localFocalPoint.dy));
 //          listener?.onChartTranslate(
 //              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
-          setState(() {});
+          setStateIfNotDispose();
         }
       }
       _curX = detail.localFocalPoint.dx;
@@ -339,7 +340,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
       widget.painter.zoom(scaleX, scaleY, trans.x, trans.y);
 //      listener?.onChartScale(
 //          detail.localFocalPoint.dx, detail.localFocalPoint.dy, scaleX, scaleY);
-      setState(() {});
+      setStateIfNotDispose();
       MPPointF.recycleInstance(trans);
     }
     _scaleX = detail.horizontalScale;
@@ -372,12 +373,9 @@ class CombinedChartState extends ChartState<CombinedChart> {
           HighlightUtils.performHighlight(widget.painter, h, _lastHighlighted);
 //      painter.getOnChartGestureListener()?.onChartSingleTapped(
 //          detail.localPosition.dx, detail.localPosition.dy);
-      setState(() {});
+      setStateIfNotDispose();
     } else {
       _lastHighlighted = null;
     }
   }
 }
-
-typedef InitCombinedChartPainterCallback = void Function(
-    CombinedChartPainter painter);

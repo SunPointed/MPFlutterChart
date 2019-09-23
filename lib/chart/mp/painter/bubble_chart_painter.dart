@@ -127,8 +127,8 @@ class BubbleChartPainter extends BarLineChartBasePainter<BubbleData>
 
   @override
   void initDefaultWithData() {
-    renderer = BubbleChartRenderer(this, animator, viewPortHandler);
     super.initDefaultWithData();
+    renderer = BubbleChartRenderer(this, animator, viewPortHandler);
   }
 
   @override

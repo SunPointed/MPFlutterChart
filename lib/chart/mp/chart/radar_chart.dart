@@ -28,7 +28,7 @@ class RadarChart extends PieRadarChart<RadarChartPainter> {
       double rawRotationAngle = 270,
       bool rotateEnabled = true,
       double minOffset = 30.0,
-      double maxHighlightDistance = 0.0,
+      double maxHighlightDistance = 100.0,
       bool highLightPerTapEnabled = true,
       bool dragDecelerationEnabled = true,
       double dragDecelerationFrictionCoef = 0.9,
@@ -87,7 +87,7 @@ class RadarChart extends PieRadarChart<RadarChartPainter> {
     super.doneBeforePainterInit();
     this.webColor ??= Color.fromARGB(255, 122, 122, 122);
     this.webColorInner ??= Color.fromARGB(255, 122, 122, 122);
-    this.yAxis ??= YAxis(position: AxisDependency.LEFT);
+    this.yAxis = YAxis(position: AxisDependency.LEFT);
   }
 
   @override

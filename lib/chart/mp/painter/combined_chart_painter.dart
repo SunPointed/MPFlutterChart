@@ -14,6 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_provider/combined_data_provider.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/highlight/combined_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
@@ -163,8 +164,9 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
 
   @override
   void initDefaultWithData() {
-    renderer = CombinedChartRenderer(this, animator, viewPortHandler);
     super.initDefaultWithData();
+    highlighter = CombinedHighlighter(this, this);
+    renderer = CombinedChartRenderer(this, animator, viewPortHandler);
     (renderer as CombinedChartRenderer).createRenderers();
     renderer.initBuffers();
   }

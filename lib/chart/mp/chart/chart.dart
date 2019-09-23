@@ -73,7 +73,7 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
       {IMarker marker,
       Description description,
       OnChartValueSelectedListener selectionListener,
-      double maxHighlightDistance = 0.0,
+      double maxHighlightDistance = 100.0,
       bool highLightPerTapEnabled = true,
       bool dragDecelerationEnabled = true,
       double dragDecelerationFrictionCoef = 0.9,
@@ -159,7 +159,7 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
   }
 
   void doneBeforePainterInit(){
-    this.xAxis = initXAxis();
+    xAxis = initXAxis();
   }
 
   void initialPainter();
@@ -251,7 +251,7 @@ abstract class PieRadarChart<P extends PieRadarChartPainter> extends Chart<P> {
       double rawRotationAngle = 270,
       bool rotateEnabled = true,
       double minOffset = 30.0,
-      double maxHighlightDistance = 0.0,
+      double maxHighlightDistance = 100.0,
       bool highLightPerTapEnabled = true,
       bool dragDecelerationEnabled = true,
       double dragDecelerationFrictionCoef = 0.9,
@@ -423,7 +423,7 @@ abstract class BarLineScatterCandleBubbleChart<
     double maxXRange = 1.0,
     double minimumScaleX = 1.0,
     double minimumScaleY = 1.0,
-    double maxHighlightDistance = 0.0,
+    double maxHighlightDistance = 100.0,
     bool highLightPerTapEnabled = true,
     bool dragDecelerationEnabled = true,
     double dragDecelerationFrictionCoef = 0.9,
@@ -547,6 +547,12 @@ abstract class BarLineScatterCandleBubbleChart<
   Matrix4 initZoomMatrixBuffer() => Matrix4.identity();
 
   BarLineChartBasePainter get painter => super.painter;
+
+  void setViewPortOffsets(final double left, final double top,
+      final double right, final double bottom) {
+    customViewPortEnabled = true;
+    viewPortHandler.restrainViewPort(left, top, right, bottom);
+  }
 }
 
 abstract class BarLineScatterCandleBubbleState<

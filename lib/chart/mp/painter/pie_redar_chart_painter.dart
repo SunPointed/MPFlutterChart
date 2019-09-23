@@ -14,7 +14,6 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.d
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
@@ -90,13 +89,6 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
             legend,
             legendRenderer,
             selectedListener);
-
-//  @override todo
-//   void init() {
-//    super.init();
-//
-//    mChartTouchListener = new PieRadarChartTouchListener(this);
-//  }
 
   @override
   void calcMinMax() {

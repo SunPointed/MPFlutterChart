@@ -14,6 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer_horizontal
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer_horizontal_bar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
+import 'package:mp_flutter_chart/chart/mp/painter/horizontal_bar_chart_painter.dart';
 
 class HorizontalBarChart extends BarChart {
   HorizontalBarChart(BarData data,
@@ -42,7 +43,7 @@ class HorizontalBarChart extends BarChart {
       double maxXRange = 1.0,
       double minimumScaleX = 1.0,
       double minimumScaleY = 1.0,
-      double maxHighlightDistance = 0.0,
+      double maxHighlightDistance = 100.0,
       bool highLightPerTapEnabled = true,
       bool dragDecelerationEnabled = true,
       double dragDecelerationFrictionCoef = 0.9,
@@ -74,6 +75,7 @@ class HorizontalBarChart extends BarChart {
             marker: marker,
             description: description,
             selectionListener: selectionListener,
+            backgroundColor: backgroundColor,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
             dragDecelerationEnabled: dragDecelerationEnabled,
@@ -151,6 +153,69 @@ class HorizontalBarChart extends BarChart {
   @override
   HorizontalBarChartState createChartState() {
     return HorizontalBarChartState();
+  }
+
+  HorizontalBarChartPainter get painter => super.painter;
+
+  @override
+  void initialPainter() {
+    painter = HorizontalBarChartPainter(
+        data,
+        animator,
+        viewPortHandler,
+        maxHighlightDistance,
+        highLightPerTapEnabled,
+        dragDecelerationEnabled,
+        dragDecelerationFrictionCoef,
+        extraLeftOffset,
+        extraTopOffset,
+        extraRightOffset,
+        extraBottomOffset,
+        noDataText,
+        touchEnabled,
+        marker,
+        description,
+        drawMarkers,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
+        selectionListener,
+        maxVisibleCount,
+        autoScaleMinMaxEnabled,
+        pinchZoomEnabled,
+        doubleTapToZoomEnabled,
+        highlightPerDragEnabled,
+        dragXEnabled,
+        dragYEnabled,
+        scaleXEnabled,
+        scaleYEnabled,
+        gridBackgroundPaint,
+        borderPaint,
+        drawGridBackground,
+        drawBorders,
+        clipValuesToContent,
+        minOffset,
+        keepPositionOnRotation,
+        drawListener,
+        axisLeft,
+        axisRight,
+        axisRendererLeft,
+        axisRendererRight,
+        leftAxisTransformer,
+        rightAxisTransformer,
+        xAxisRenderer,
+        zoomMatrixBuffer,
+        customViewPortEnabled,
+        minXRange,
+        maxXRange,
+        minimumScaleX,
+        minimumScaleY,
+        highlightFullBarEnabled,
+        drawValueAboveBar,
+        drawBarShadow,
+        fitBars);
   }
 }
 

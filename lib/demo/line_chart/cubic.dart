@@ -180,7 +180,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
         pinchZoomEnabled: false,
         backgroundColor: Color.fromARGB(255, 104, 241, 175),
         description: desc);
-    lineChart.painter.setViewPortOffsets(0, 0, 0, 0);
+    lineChart.setViewPortOffsets(0, 0, 0, 0);
     lineChart.xAxis.enabled = (false);
     lineChart.axisLeft
 //      ..setTypeface(tf)

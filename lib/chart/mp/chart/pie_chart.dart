@@ -31,7 +31,7 @@ class PieChart extends PieRadarChart<PieChartPainter> {
       double rawRotationAngle = 270,
       bool rotateEnabled = true,
       double minOffset = 30.0,
-      double maxHighlightDistance = 0.0,
+      double maxHighlightDistance = 100.0,
       bool highLightPerTapEnabled = true,
       bool dragDecelerationEnabled = true,
       double dragDecelerationFrictionCoef = 0.9,
