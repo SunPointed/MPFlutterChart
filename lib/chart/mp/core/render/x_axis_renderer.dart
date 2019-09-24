@@ -67,8 +67,8 @@ class XAxisRenderer extends AxisRenderer {
   void computeSize() {
     String longest = _xAxis.getLongestLabel();
 
-    axisLabelPaint = PainterUtils.create(axisLabelPaint, null,
-        axisLabelPaint.text.style.color, _xAxis.textSize);
+    axisLabelPaint = PainterUtils.create(
+        axisLabelPaint, null, axisLabelPaint.text.style.color, _xAxis.textSize);
 
     final FSize labelSize = Utils.calcTextSize1(axisLabelPaint, longest);
 
@@ -112,11 +112,8 @@ class XAxisRenderer extends AxisRenderer {
     } else if (_xAxis.position == XAxisPosition.BOTTOM_INSIDE) {
       pointF.x = 0.5;
       pointF.y = 0.0;
-      drawLabels(
-          c,
-          viewPortHandler.contentBottom() - _xAxis.labelRotatedHeight,
-          pointF,
-          _xAxis.position);
+      drawLabels(c, viewPortHandler.contentBottom() - _xAxis.labelRotatedHeight,
+          pointF, _xAxis.position);
     } else {
       // BOTH SIDED
       pointF.x = 0.5;
@@ -130,6 +127,8 @@ class XAxisRenderer extends AxisRenderer {
     MPPointF.recycleInstance(pointF);
   }
 
+  Path _axisLinePath = Path();
+
   @override
   void renderAxisLine(Canvas c) {
     if (!_xAxis.drawAxisLine || !_xAxis.enabled) return;
@@ -141,22 +140,37 @@ class XAxisRenderer extends AxisRenderer {
     if (_xAxis.position == XAxisPosition.TOP ||
         _xAxis.position == XAxisPosition.TOP_INSIDE ||
         _xAxis.position == XAxisPosition.BOTH_SIDED) {
-      c.drawLine(
-          Offset(viewPortHandler.contentLeft(), viewPortHandler.contentTop()),
-          Offset(
-              viewPortHandler.contentRight(), viewPortHandler.contentTop()),
-          axisLinePaint);
+      _axisLinePath.reset();
+      _axisLinePath.moveTo(
+          viewPortHandler.contentLeft(), viewPortHandler.contentTop());
+      _axisLinePath.lineTo(
+          viewPortHandler.contentRight(), viewPortHandler.contentTop());
+      if (xAxis.axisLineDashPathEffect != null) {
+        _axisLinePath =
+            xAxis.axisLineDashPathEffect.convert2DashPath(_axisLinePath);
+      }
+      c.drawPath(_axisLinePath, axisLinePaint);
     }
 
     if (_xAxis.position == XAxisPosition.BOTTOM ||
         _xAxis.position == XAxisPosition.BOTTOM_INSIDE ||
         _xAxis.position == XAxisPosition.BOTH_SIDED) {
-      c.drawLine(
-          Offset(
-              viewPortHandler.contentLeft(), viewPortHandler.contentBottom()),
-          Offset(viewPortHandler.contentRight(),
-              viewPortHandler.contentBottom()),
-          axisLinePaint);
+      _axisLinePath.reset();
+      _axisLinePath.moveTo(
+          viewPortHandler.contentLeft(), viewPortHandler.contentBottom());
+      _axisLinePath.lineTo(
+          viewPortHandler.contentRight(), viewPortHandler.contentBottom());
+      if (xAxis.axisLineDashPathEffect != null) {
+        _axisLinePath =
+            xAxis.axisLineDashPathEffect.convert2DashPath(_axisLinePath);
+      }
+      c.drawPath(_axisLinePath, axisLinePaint);
+//      c.drawLine(
+//          Offset(
+//              viewPortHandler.contentLeft(), viewPortHandler.contentBottom()),
+//          Offset(
+//              viewPortHandler.contentRight(), viewPortHandler.contentBottom()),
+//          axisLinePaint);
     }
   }
 
@@ -274,6 +288,9 @@ class XAxisRenderer extends AxisRenderer {
     path.lineTo(x, viewPortHandler.contentTop());
 
     // draw a path because lines don't support dashing on lower android versions
+    if (xAxis.gridDashPathEffect != null) {
+      path = xAxis.gridDashPathEffect.convert2DashPath(path);
+    }
     c.drawPath(path, gridPaint);
 
     path.reset();
@@ -320,28 +337,32 @@ class XAxisRenderer extends AxisRenderer {
     }
   }
 
-  List<double> mLimitLineSegmentsBuffer = List(4);
-  Path mLimitLinePath = Path();
+  List<double> _limitLineSegmentsBuffer = List(4);
+  Path _limitLinePath = Path();
 
   void renderLimitLineLine(
       Canvas c, LimitLine limitLine, List<double> position) {
-    mLimitLineSegmentsBuffer[0] = position[0];
-    mLimitLineSegmentsBuffer[1] = viewPortHandler.contentTop();
-    mLimitLineSegmentsBuffer[2] = position[0];
-    mLimitLineSegmentsBuffer[3] = viewPortHandler.contentBottom();
+    _limitLineSegmentsBuffer[0] = position[0];
+    _limitLineSegmentsBuffer[1] = viewPortHandler.contentTop();
+    _limitLineSegmentsBuffer[2] = position[0];
+    _limitLineSegmentsBuffer[3] = viewPortHandler.contentBottom();
 
-    mLimitLinePath.reset();
-    mLimitLinePath.moveTo(
-        mLimitLineSegmentsBuffer[0], mLimitLineSegmentsBuffer[1]);
-    mLimitLinePath.lineTo(
-        mLimitLineSegmentsBuffer[2], mLimitLineSegmentsBuffer[3]);
+    _limitLinePath.reset();
+    _limitLinePath.moveTo(
+        _limitLineSegmentsBuffer[0], _limitLineSegmentsBuffer[1]);
+    _limitLinePath.lineTo(
+        _limitLineSegmentsBuffer[2], _limitLineSegmentsBuffer[3]);
 
     limitLinePaint
       ..style = PaintingStyle.stroke
       ..color = limitLine.lineColor
       ..strokeWidth = limitLine.lineWidth;
 
-    c.drawPath(mLimitLinePath, limitLinePaint);
+    if (limitLine.dashPathEffect != null) {
+      _limitLinePath =
+          limitLine.dashPathEffect.convert2DashPath(_limitLinePath);
+    }
+    c.drawPath(_limitLinePath, limitLinePaint);
   }
 
   void renderLimitLineLabel(

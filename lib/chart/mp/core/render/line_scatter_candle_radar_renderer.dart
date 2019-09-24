@@ -26,9 +26,6 @@ abstract class LineScatterCandleRadarRenderer
       ..color = set.getHighLightColor()
       ..strokeWidth = set.getHighlightLineWidth();
 
-    // draw highlighted lines (if enabled)
-//    highlightPaint.setPathEffect(set.getDashPathEffectHighlight());
-
     // draw vertical highlight lines
     if (set.isVerticalHighlightIndicatorEnabled()) {
       // create vertical path
@@ -36,6 +33,11 @@ abstract class LineScatterCandleRadarRenderer
       _highlightLinePath.moveTo(x, viewPortHandler.contentTop());
       _highlightLinePath.lineTo(x, viewPortHandler.contentBottom());
 
+      if (set.getDashPathEffectHighlight() != null) {
+        _highlightLinePath = set
+            .getDashPathEffectHighlight()
+            .convert2DashPath(_highlightLinePath);
+      }
       c.drawPath(_highlightLinePath, highlightPaint);
     }
 
@@ -46,6 +48,11 @@ abstract class LineScatterCandleRadarRenderer
       _highlightLinePath.moveTo(viewPortHandler.contentLeft(), y);
       _highlightLinePath.lineTo(viewPortHandler.contentRight(), y);
 
+      if (set.getDashPathEffectHighlight() != null) {
+        _highlightLinePath = set
+            .getDashPathEffectHighlight()
+            .convert2DashPath(_highlightLinePath);
+      }
       c.drawPath(_highlightLinePath, highlightPaint);
     }
   }

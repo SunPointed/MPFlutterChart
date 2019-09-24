@@ -174,9 +174,10 @@ class LineChartRenderer extends LineRadarRenderer {
       drawCubicFill(canvas, dataSet, _cubicFillPath, trans, xBounds);
     }
 
+    if (dataSet.getDashPathEffect() != null) {
+      _cubicPath = dataSet.getDashPathEffect().convert2DashPath(_cubicPath);
+    }
     canvas.drawPath(_cubicPath, renderPaint);
-
-//    renderPaint.setPathEffect(null);
   }
 
   void drawCubicBezier(Canvas canvas, ILineDataSet dataSet) {
@@ -278,9 +279,10 @@ class LineChartRenderer extends LineRadarRenderer {
       drawCubicFill(canvas, dataSet, _cubicFillPath, trans, xBounds);
     }
 
+    if (dataSet.getDashPathEffect() != null) {
+      _cubicPath = dataSet.getDashPathEffect().convert2DashPath(_cubicPath);
+    }
     canvas.drawPath(_cubicPath, renderPaint);
-
-//    renderPaint.setPathEffect(null);
   }
 
   void drawCubicFill(Canvas c, ILineDataSet dataSet, Path spline,
@@ -392,7 +394,8 @@ class LineChartRenderer extends LineRadarRenderer {
         renderPaint..color = dataSet.getColor2(j);
 
         CanvasUtils.drawLines(
-            canvas, mLineBuffer, 0, pointsPerEntryPair * 2, renderPaint);
+            canvas, mLineBuffer, 0, pointsPerEntryPair * 2, renderPaint,
+            effect: dataSet.getDashPathEffect());
       }
     } else {
       // only one color per dataset
@@ -437,15 +440,14 @@ class LineChartRenderer extends LineRadarRenderer {
 
           renderPaint..color = dataSet.getColor1();
 
-          CanvasUtils.drawLines(canvas, mLineBuffer, 0, size, renderPaint);
+          CanvasUtils.drawLines(canvas, mLineBuffer, 0, size, renderPaint,
+              effect: dataSet.getDashPathEffect());
         }
       }
     }
-
-//    renderPaint.setPathEffect(null);
   }
 
-  Path mGenerateFilledPathBuffer = Path();
+  Path _generateFilledPathBuffer = Path();
 
   /// Draws a filled linear path on the canvas.
   ///
@@ -455,7 +457,7 @@ class LineChartRenderer extends LineRadarRenderer {
   /// @param bounds
   void drawLinearFill(
       Canvas c, ILineDataSet dataSet, Transformer trans, XBounds bounds) {
-    final Path filled = mGenerateFilledPathBuffer;
+    final Path filled = _generateFilledPathBuffer;
 
     final int startingIndex = bounds.min;
     final int endingIndex = bounds.range + bounds.min;

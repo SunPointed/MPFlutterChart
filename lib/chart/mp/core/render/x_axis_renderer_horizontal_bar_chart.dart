@@ -231,7 +231,6 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
         ..style = PaintingStyle.stroke
         ..color = l.lineColor
         ..strokeWidth = l.lineWidth;
-//      limitLinePaint.setPathEffect(l.getDashPathEffect());
 
       pts[1] = l.limit;
 
@@ -240,9 +239,11 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
       limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1]);
       limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1]);
 
+      if(l.dashPathEffect != null){
+        limitLinePath = l.dashPathEffect.convert2DashPath(limitLinePath);
+      }
       c.drawPath(limitLinePath, limitLinePaint);
       limitLinePath.reset();
-      // c.drawLines(pts, limitLinePaint);
 
       String label = l.label;
 

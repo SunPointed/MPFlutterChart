@@ -6,6 +6,7 @@ import 'package:mp_flutter_chart/chart/mp/core/limit_line.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/default_axis_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
+import 'package:path_drawing/path_drawing.dart';
 
 abstract class AxisBase extends ComponentBase {
   /// custom formatter that is used instead of the auto-formatter if set
@@ -312,9 +313,7 @@ abstract class AxisBase extends ComponentBase {
   /// @param phase       offset, in degrees (normally, use 0)
   void enableGridDashedLine(
       double lineLength, double spaceLength, double phase) {
-//    _gridDashPathEffect =  DashPathEffect( double[]{ todo
-//    lineLength, spaceLength
-//    }, phase);
+    _gridDashPathEffect = DashPathEffect(lineLength, spaceLength, phase);
   }
 
   DashPathEffect get gridDashPathEffect => _gridDashPathEffect;
@@ -344,9 +343,7 @@ abstract class AxisBase extends ComponentBase {
   /// @param phase       offset, in degrees (normally, use 0)
   void enableAxisLineDashedLine(
       double lineLength, double spaceLength, double phase) {
-//    _axisLineDashPathEffect =  DashPathEffect( double[]{ todo
-//    lineLength, spaceLength
-//    }, phase);
+    _axisLineDashPathEffect = DashPathEffect(lineLength, spaceLength, phase);
   }
 
   /// Disables the axis line to be drawn in dashed mode.
@@ -503,13 +500,4 @@ abstract class AxisBase extends ComponentBase {
   set limitLines(List<LimitLine> value) {
     _limitLines = value;
   }
-
-  @override
-  void reset() {
-    _axisMaximum = 0.0;
-    _axisMinimum = 0.0;
-    _axisRange = 0.0;
-  }
-
-
 }

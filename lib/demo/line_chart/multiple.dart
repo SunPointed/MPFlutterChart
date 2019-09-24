@@ -190,7 +190,7 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
     }
 
     // make the first DataSet dashed
-//    (dataSets[0] as LineDataSet).enableDashedLine(10, 10, 0);
+    (dataSets[0] as LineDataSet).enableDashedLine(10, 10, 0);
     (dataSets[0] as LineDataSet).setColors1(ColorUtils.VORDIPLOM_COLORS);
     (dataSets[0] as LineDataSet).setCircleColors(ColorUtils.VORDIPLOM_COLORS);
 

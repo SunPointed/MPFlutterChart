@@ -197,7 +197,6 @@ class YAxisRendererRadarChart extends YAxisRenderer {
       limitLinePaint
         ..color = (l.lineColor)
         ..strokeWidth = l.lineWidth;
-//      limitLinePaint.setPathEffect(l.getDashPathEffect()); todo
 
       double r = (l.limit - _painter.getYChartMin()) * factor;
 
@@ -217,6 +216,9 @@ class YAxisRendererRadarChart extends YAxisRenderer {
       }
       limitPath.close();
 
+      if (l.dashPathEffect != null) {
+        limitPath = l.dashPathEffect.convert2DashPath(limitPath);
+      }
       c.drawPath(limitPath, limitLinePaint);
     }
     MPPointF.recycleInstance(center);

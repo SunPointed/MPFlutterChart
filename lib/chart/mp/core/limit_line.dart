@@ -54,9 +54,7 @@ class LimitLine extends ComponentBase {
   /// @param spaceLength the length of space inbetween the pieces
   /// @param phase offset, in degrees (normally, use 0)
   void enableDashedLine(double lineLength, double spaceLength, double phase) {
-//    _dashPathEffect = new DashPathEffect(new float[] { todo
-//    lineLength, spaceLength
-//    }, phase);
+    _dashPathEffect = DashPathEffect(lineLength, spaceLength, phase);
   }
 
   /// Disables the line to be drawn in dashed mode.
@@ -72,11 +70,10 @@ class LimitLine extends ComponentBase {
     return _dashPathEffect == null ? false : true;
   }
 
-  /// returns the DashPathEffect that is set for this LimitLine
-  ///
-  /// @return
-  DashPathEffect getDashPathEffect() {
-    return _dashPathEffect;
+  DashPathEffect get dashPathEffect => _dashPathEffect;
+
+  set dashPathEffect(DashPathEffect value) {
+    _dashPathEffect = value;
   }
 
   PaintingStyle get textStyle => _textStyle;

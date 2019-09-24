@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:mp_flutter_chart/chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_form.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 
@@ -11,13 +12,13 @@ class LegendEntry {
       LegendForm form,
       double formSize,
       double formLineWidth,
-//      DashPathEffect formLineDashEffect,
+      DashPathEffect formLineDashEffect,
       Color formColor) {
     this._label = label;
     this._form = form;
     this._formSize = formSize;
     this._formLineWidth = formLineWidth;
-//    this.formLineDashEffect = formLineDashEffect;
+    this.formLineDashEffect = formLineDashEffect;
     this._formColor = formColor;
   }
 
@@ -47,7 +48,7 @@ class LegendEntry {
    *
    * Set to null to use the legend's default
    */
-//   DashPathEffect formLineDashEffect = null;
+  DashPathEffect formLineDashEffect = null;
 
   /// The color for drawing the form
   Color _formColor = ColorUtils.COLOR_NONE;

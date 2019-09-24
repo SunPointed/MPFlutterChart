@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
+import 'package:mp_flutter_chart/chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/line_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_line_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/line_data_set.dart';
@@ -141,11 +142,11 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     set1.setDrawIcons(false);
 
     // draw dashed line
-//      set1.enableDashedLine(10, 5, 0);
+    set1.enableDashedLine(10, 5, 0);
 
     // black lines and points
-    set1.setColor1(ColorUtils.FADE_RED_END);
-    set1.setCircleColor(ColorUtils.FADE_RED_END);
+    set1.setColor1(ColorUtils.BLACK);
+    set1.setCircleColor(ColorUtils.BLACK);
     set1.setHighLightColor(ColorUtils.PURPLE);
 
     // line thickness and point size
@@ -157,14 +158,14 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
 
     // customize legend entry
     set1.setFormLineWidth(1);
-//      set1.setFormLineDashEffect( DashPathEffect( double[]{10f, 5f}, 0f));
+    set1.setFormLineDashEffect(DashPathEffect(10, 5, 0));
     set1.setFormSize(15);
 
     // text size of values
     set1.setValueTextSize(9);
 
     // draw selection line as dashed
-//      set1.enableDashedHighlightLine(10, 5, 0);
+    set1.enableDashedHighlightLine(10, 5, 0);
 
     // set the filled area
     set1.setDrawFilled(true);

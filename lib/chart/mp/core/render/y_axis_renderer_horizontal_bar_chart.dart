@@ -196,7 +196,7 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         viewPortHandler.getContentRect().top - yAxis.zeroLineWidth,
         viewPortHandler.getContentRect().right,
         viewPortHandler.getContentRect().bottom);
-    c.clipRect(mLimitLineClippingRect);
+    c.clipRect(limitLineClippingRect);
 
     // draw zero line
     MPPointD pos = trans.getPixelForValues(0, 0);
@@ -244,12 +244,12 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
       if (!l.enabled) continue;
 
       c.save();
-      mLimitLineClippingRect = Rect.fromLTRB(
+      limitLineClippingRect = Rect.fromLTRB(
           viewPortHandler.getContentRect().left - l.lineWidth,
           viewPortHandler.getContentRect().top - l.lineWidth,
           viewPortHandler.getContentRect().right,
           viewPortHandler.getContentRect().bottom);
-      c.clipRect(mLimitLineClippingRect);
+      c.clipRect(limitLineClippingRect);
 
       pts[0] = l.limit;
       pts[2] = l.limit;
@@ -266,8 +266,10 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         ..style = PaintingStyle.stroke
         ..color = l.lineColor
         ..strokeWidth = l.lineWidth;
-//      limitLinePaint.setPathEffect(l.getDashPathEffect());
 
+      if (l.dashPathEffect != null) {
+        limitLinePath = l.dashPathEffect.convert2DashPath(limitLinePath);
+      }
       c.drawPath(limitLinePath, limitLinePaint);
       limitLinePath.reset();
 
@@ -278,11 +280,6 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         axisLabelPaint =
             PainterUtils.create(axisLabelPaint, label, l.textColor, l.textSize);
         axisLabelPaint.layout();
-//        limitLinePaint.setPathEffect(null);
-//        limitLinePaint.setStrokeWidth(0.5f);
-
-        double xOffset = l.lineWidth + l.xOffset;
-        double yOffset = Utils.convertDpToPixel(2) + l.yOffset;
 
         final LimitLabelPosition position = l.labelPosition;
 

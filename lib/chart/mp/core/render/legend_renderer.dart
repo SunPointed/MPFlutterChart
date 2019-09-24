@@ -1,4 +1,5 @@
 import 'package:flutter/painting.dart';
+import 'package:mp_flutter_chart/chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_bar_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_candle_data_set.dart';
@@ -80,7 +81,7 @@ class LegendRenderer extends Renderer {
                 dataSet.getForm(),
                 dataSet.getFormSize(),
                 dataSet.getFormLineWidth(),
-//  dataSet.getFormLineDashEffect(),
+                dataSet.getFormLineDashEffect(),
                 clrs[j]));
           }
 
@@ -91,7 +92,7 @@ class LegendRenderer extends Renderer {
                 LegendForm.NONE,
                 double.nan,
                 double.nan,
-//  null,
+                null,
                 ColorUtils.COLOR_NONE));
           }
         } else if (dataSet is IPieDataSet) {
@@ -103,7 +104,7 @@ class LegendRenderer extends Renderer {
                 dataSet.getForm(),
                 dataSet.getFormSize(),
                 dataSet.getFormLineWidth(),
-//  dataSet.getFormLineDashEffect(),
+                dataSet.getFormLineDashEffect(),
                 clrs[j]));
           }
 
@@ -114,7 +115,7 @@ class LegendRenderer extends Renderer {
                 LegendForm.NONE,
                 double.nan,
                 double.nan,
-//  null,
+                null,
                 ColorUtils.COLOR_NONE));
           }
         } else if (dataSet is ICandleDataSet &&
@@ -127,7 +128,7 @@ class LegendRenderer extends Renderer {
               dataSet.getForm(),
               dataSet.getFormSize(),
               dataSet.getFormLineWidth(),
-//  dataSet.getFormLineDashEffect(),
+              dataSet.getFormLineDashEffect(),
               decreasingColor));
 
           _computedEntries.add(LegendEntry(
@@ -135,7 +136,7 @@ class LegendRenderer extends Renderer {
               dataSet.getForm(),
               dataSet.getFormSize(),
               dataSet.getFormLineWidth(),
-//  dataSet.getFormLineDashEffect(),
+              dataSet.getFormLineDashEffect(),
               increasingColor));
         } else {
           // all others
@@ -156,7 +157,7 @@ class LegendRenderer extends Renderer {
                 dataSet.getForm(),
                 dataSet.getFormSize(),
                 dataSet.getFormLineWidth(),
-//  dataSet.getFormLineDashEffect(),
+                dataSet.getFormLineDashEffect(),
                 clrs[j]));
           }
         }
@@ -481,10 +482,10 @@ class LegendRenderer extends Renderer {
               entry.formLineWidth.isNaN
                   ? legend.formLineWidth
                   : entry.formLineWidth);
-//          final DashPathEffect formLineDashEffect =
-//              entry.formLineDashEffect == null
-//                  ? legend.getFormLineDashEffect()
-//                  : entry.formLineDashEffect;
+          final DashPathEffect formLineDashEffect =
+              entry.formLineDashEffect == null
+                  ? legend.getFormLineDashEffect()
+                  : entry.formLineDashEffect;
           _legendFormPaint = Paint()
             ..isAntiAlias = true
             ..color = entry.formColor
@@ -493,6 +494,9 @@ class LegendRenderer extends Renderer {
           mLineFormPath.reset();
           mLineFormPath.moveTo(x, y);
           mLineFormPath.lineTo(x + formSize, y);
+          if (formLineDashEffect != null) {
+            mLineFormPath = formLineDashEffect.convert2DashPath(mLineFormPath);
+          }
           c.drawPath(mLineFormPath, _legendFormPaint);
         }
         break;

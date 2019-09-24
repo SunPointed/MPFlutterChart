@@ -175,7 +175,14 @@ class YAxisRenderer extends AxisRenderer {
       // draw the grid
       for (int i = 0; i < positions.length; i += 2) {
         // draw a path because lines don't support dashing on lower android versions
-        c.drawPath(linePath(gridLinePath, i, positions), gridPaint);
+        if (yAxis.gridDashPathEffect != null) {
+          c.drawPath(
+              yAxis.gridDashPathEffect
+                  .convert2DashPath(linePath(gridLinePath, i, positions)),
+              gridPaint);
+        } else {
+          c.drawPath(linePath(gridLinePath, i, positions), gridPaint);
+        }
         gridLinePath.reset();
       }
 
@@ -265,9 +272,15 @@ class YAxisRenderer extends AxisRenderer {
     c.restore();
   }
 
-  Path mRenderLimitLines = Path();
-  List<double> mRenderLimitLinesBuffer = List(2);
-  Rect mLimitLineClippingRect = Rect.zero;
+  Path _renderLimitLines = Path();
+  List<double> _renderLimitLinesBuffer = List(2);
+  Rect _limitLineClippingRect = Rect.zero;
+
+  Rect get limitLineClippingRect => _limitLineClippingRect;
+
+  set limitLineClippingRect(Rect value) {
+    _limitLineClippingRect = value;
+  }
 
   /// Draws the LimitLines associated with this axis to the screen.
   ///
@@ -278,10 +291,10 @@ class YAxisRenderer extends AxisRenderer {
 
     if (limitLines == null || limitLines.length <= 0) return;
 
-    List<double> pts = mRenderLimitLinesBuffer;
+    List<double> pts = _renderLimitLinesBuffer;
     pts[0] = 0;
     pts[1] = 0;
-    Path limitLinePath = mRenderLimitLines;
+    Path limitLinePath = _renderLimitLines;
     limitLinePath.reset();
 
     for (int i = 0; i < limitLines.length; i++) {
@@ -290,12 +303,12 @@ class YAxisRenderer extends AxisRenderer {
       if (!l.enabled) continue;
 
       c.save();
-      mLimitLineClippingRect = Rect.fromLTRB(
+      _limitLineClippingRect = Rect.fromLTRB(
           viewPortHandler.getContentRect().left,
           viewPortHandler.getContentRect().top,
           viewPortHandler.getContentRect().right + l.lineWidth,
           viewPortHandler.getContentRect().bottom + l.lineWidth);
-      c.clipRect(mLimitLineClippingRect);
+      c.clipRect(_limitLineClippingRect);
 
       limitLinePaint
         ..style = PaintingStyle.stroke
@@ -309,9 +322,11 @@ class YAxisRenderer extends AxisRenderer {
       limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1]);
       limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1]);
 
+      if (l.dashPathEffect != null) {
+        limitLinePath = l.dashPathEffect.convert2DashPath(limitLinePath);
+      }
       c.drawPath(limitLinePath, limitLinePaint);
       limitLinePath.reset();
-      // c.drawLines(pts, limitLinePaint);
 
       String label = l.label;
 

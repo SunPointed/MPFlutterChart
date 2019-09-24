@@ -1,3 +1,4 @@
+import 'package:mp_flutter_chart/chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_line_scatter_candle_radar_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/bar_line_scatter_candle_bubble_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/base_data_set.dart';
@@ -12,6 +13,9 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
 
   /// the width of the highlight indicator lines
   double _highlightLineWidth = 0.5;
+
+  /// the path effect for dashed highlight-lines
+  DashPathEffect _highlightDashPathEffect = null;
 
   /// the path effect for dashed highlight-lines
 //   DashPathEffect mHighlightDashPathEffect = null;
@@ -68,18 +72,17 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
    * @param spaceLength the length of space inbetween the line-pieces
    * @param phase offset, in degrees (normally, use 0)
    */
-//   void enableDashedHighlightLine(double lineLength, double spaceLength, double phase) {
-//    mHighlightDashPathEffect =  DashPathEffect( double[] {
-//    lineLength, spaceLength
-//    }, phase);
-//  }
+  void enableDashedHighlightLine(
+      double lineLength, double spaceLength, double phase) {
+    _highlightDashPathEffect = DashPathEffect(lineLength, spaceLength, phase);
+  }
 
   /**
    * Disables the highlight-line to be drawn in dashed mode.
    */
-//   void disableDashedHighlightLine() {
-//    mHighlightDashPathEffect = null;
-//  }
+  void disableDashedHighlightLine() {
+    _highlightDashPathEffect = null;
+  }
 
   /**
    * Returns true if the dashed-line effect is enabled for highlight lines, false if not.
@@ -87,14 +90,18 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
    *
    * @return
    */
-//   bool isDashedHighlightLineEnabled() {
-//    return mHighlightDashPathEffect == null ? false : true;
-//  }
+  bool isDashedHighlightLineEnabled() {
+    return _highlightDashPathEffect == null ? false : true;
+  }
 
-//  @override
-//   DashPathEffect getDashPathEffectHighlight() {
-//    return mHighlightDashPathEffect;
-//  }
+  @override
+  DashPathEffect getDashPathEffectHighlight() {
+    return _highlightDashPathEffect;
+  }
+
+  set highlightDashPathEffect(DashPathEffect value) {
+    _highlightDashPathEffect = value;
+  }
 
   void copy(BaseDataSet baseDataSet) {
     super.copy(baseDataSet);
@@ -105,7 +112,8 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
       lineScatterCandleRadarDataSet._drawVerticalHighlightIndicator =
           _drawVerticalHighlightIndicator;
       lineScatterCandleRadarDataSet._highlightLineWidth = _highlightLineWidth;
-//    lineScatterCandleRadarDataSet.mHighlightDashPathEffect = mHighlightDashPathEffect;
+      lineScatterCandleRadarDataSet._highlightDashPathEffect =
+          _highlightDashPathEffect;
     }
   }
 

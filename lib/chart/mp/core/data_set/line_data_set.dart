@@ -160,11 +160,9 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
    * @param spaceLength the length of space in between the pieces
    * @param phase       offset, in degrees (normally, use 0)
    */
-//  void enableDashedLine(double lineLength, double spaceLength, double phase) { todo
-//    _dashPathEffect =  DashPathEffect( double[]{
-//    lineLength, spaceLength
-//    }, phase);
-//  }
+  void enableDashedLine(double lineLength, double spaceLength, double phase) {
+    _dashPathEffect = DashPathEffect(lineLength, spaceLength, phase);
+  }
 
   /// Disables the line to be drawn in dashed mode.
   void disableDashedLine() {
@@ -176,10 +174,14 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
     return _dashPathEffect == null ? false : true;
   }
 
-//  @override
-//   DashPathEffect getDashPathEffect() {
-//    return _dashPathEffect;
-//  }
+  @override
+  DashPathEffect getDashPathEffect(){
+    return _dashPathEffect;
+  }
+
+  set dashPathEffect(DashPathEffect value) {
+    _dashPathEffect = value;
+  }
 
   /// set this to true to enable the drawing of circle indicators for this
   /// DataSet, default true

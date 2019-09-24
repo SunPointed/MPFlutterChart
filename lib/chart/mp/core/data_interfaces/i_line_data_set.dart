@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:mp_flutter_chart/chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_line_radar_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/mode.dart';
@@ -57,7 +58,7 @@ mixin ILineDataSet on ILineRadarDataSet<Entry> {
   /// Returns the DashPathEffect that is used for drawing the lines.
   ///
   /// @return
-//  DashPathEffect getDashPathEffect(); todo
+  DashPathEffect getDashPathEffect();
 
   /// Returns true if the dashed-line effect is enabled, false if not.
   /// If the DashPathEffect object is null, also return false here.
