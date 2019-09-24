@@ -51,6 +51,7 @@ Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when
     <img src="./img/line_charts/filled.png"  width="240" height="480">
 </div>
 <br/><br/>
+
 **BarCharts**
 <div align=center>
     <img src="./img/bar_charts/basic.png"  width="240" height="480">
@@ -84,6 +85,7 @@ Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when
     <img src="./img/bar_charts/sine.png"  width="240" height="480">
 </div>
 <br/><br/>
+
 **PieCharts**
 <div align=center>
     <img src="./img/pie_charts/basic.png"  width="240" height="480">
@@ -97,6 +99,7 @@ Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when
     <img src="./img/pie_charts/half_pie.png"  width="240" height="480">
 </div>
 <br/><br/>
+
 **OtherCharts**
 <div align=center>
     <img src="./img/other_charts/combined.png"  width="240" height="480">
@@ -118,6 +121,7 @@ Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when
     <img src="./img/other_charts/radar.png"  width="240" height="480">
 </div>
 <br/><br/>
+
 **ScrollingCharts**
 <div align=center>
     <img src="./img/scrolling_charts/multiple.png"  width="240" height="480">
@@ -132,9 +136,10 @@ Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when
 </div>
 <br/><br/>
 <div align=center>
-    <img src="./img/scrolling_charts/basic.png"  width="240" height="480">
+    <img src="./img/scrolling_charts/many.png"  width="240" height="480">
 </div>
 <br/><br/>
+
 **EvenMoreCharts**
 <div align=center>
     <img src="./img/even_more_charts/dynamic.png"  width="240" height="480">
