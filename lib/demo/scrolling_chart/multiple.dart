@@ -234,11 +234,22 @@ class ScrollingChartMultipleState
 
   BarChart _getBarChart(BarData data) {
     var desc = Description()..enabled = false;
-    var chart = BarChart(data,
-        axisLeftSettingFunction: (axisLeft, chart) {},
-        axisRightSettingFunction: (axisRight, chart) {},
-        legendSettingFunction: (legend, chart) {},
-        xAxisSettingFunction: (xAxis, chart) {},
+    var chart = BarChart(data, axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+        ..setLabelCount2(5, false)
+        ..setAxisMinimum(0)
+        ..spacePercentTop = (20);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight
+        ..setLabelCount2(5, false)
+        ..setAxisMinimum(0)
+        ..spacePercentTop = (20);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        ..position = (XAxisPosition.BOTTOM)
+        ..drawAxisLine = (true)
+        ..drawGridLines = (false);
+    },
         drawBarShadow: false,
         fitBars: true,
         touchEnabled: true,
@@ -248,27 +259,25 @@ class ScrollingChartMultipleState
         scaleXEnabled: true,
         scaleYEnabled: true,
         description: desc);
-    chart.axisLeft
-      ..setLabelCount2(5, false)
-      ..setAxisMinimum(0)
-      ..spacePercentTop = (20);
-    chart.axisRight
-      ..setLabelCount2(5, false)
-      ..setAxisMinimum(0)
-      ..spacePercentTop = (20);
-    chart.xAxis
-      ..position = (XAxisPosition.BOTTOM)
-      ..drawAxisLine = (true)
-      ..drawGridLines = (false);
     chart.animator.animateY1(700);
     return chart;
   }
 
   PieChart _getPieChart(PieData data) {
+    data
+      ..setValueFormatter(PercentFormatter())
+      ..setValueTextSize(11)
+      ..setValueTextColor(ColorUtils.WHITE);
     var desc = Description()..enabled = false;
-    var chart = PieChart(data,
-        legendSettingFunction: (legend, chart) {},
-        xAxisSettingFunction: (xAxis, chart) {},
+    var chart = PieChart(data, legendSettingFunction: (legend, chart) {
+      legend
+        ..verticalAlignment = (LegendVerticalAlignment.TOP)
+        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+        ..orientation = (LegendOrientation.VERTICAL)
+        ..drawInside = (false)
+        ..yEntrySpace = (0)
+        ..yOffset = (0);
+    },
         touchEnabled: true,
         extraLeftOffset: 5,
         extraRightOffset: 50,
@@ -279,17 +288,6 @@ class ScrollingChartMultipleState
         centerText: generateCenterText(),
         usePercentValues: true,
         description: desc);
-    data
-      ..setValueFormatter(PercentFormatter())
-      ..setValueTextSize(11)
-      ..setValueTextColor(ColorUtils.WHITE);
-    chart.legend
-      ..verticalAlignment = (LegendVerticalAlignment.TOP)
-      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-      ..orientation = (LegendOrientation.VERTICAL)
-      ..drawInside = (false)
-      ..yEntrySpace = (0)
-      ..yOffset = (0);
     chart.animator.animateY1(900);
     return chart;
   }
