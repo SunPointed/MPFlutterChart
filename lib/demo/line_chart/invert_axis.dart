@@ -173,7 +173,19 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
     }
 
     var desc = Description()..enabled = false;
-    lineChart = LineChart(lineData,
+    lineChart = LineChart(lineData, axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+        ..setAxisMinimum(0)
+        ..inverted = (true);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight.enabled = (false);
+    }, legendSettingFunction: (legend, chart) {
+      legend.shape = (LegendForm.LINE);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        ..avoidFirstLastClipping = (true)
+        ..setAxisMinimum(0);
+    },
         touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
@@ -183,13 +195,5 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
         pinchZoomEnabled: true,
         selectionListener: this,
         description: desc);
-    lineChart.xAxis
-      ..avoidFirstLastClipping = (true)
-      ..setAxisMinimum(0);
-    lineChart.axisLeft
-      ..setAxisMinimum(0)
-      ..inverted = (true);
-    lineChart.axisRight.enabled = (false);
-    lineChart.legend.shape = (LegendForm.LINE);
   }
 }

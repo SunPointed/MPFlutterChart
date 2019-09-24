@@ -5,6 +5,7 @@ import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/bar_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/horizontal_bar_chart_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
@@ -20,6 +21,11 @@ class HorizontalBarChart extends BarChart {
   HorizontalBarChart(BarData data,
       {IMarker marker,
       Description description,
+      AxisLeftSettingFunction axisLeftSettingFunction,
+      AxisRightSettingFunction axisRightSettingFunction,
+      XAxisSettingFunction xAxisSettingFunction,
+      LegendSettingFunction legendSettingFunction,
+      DataRendererSettingFunction rendererSettingFunction,
       OnChartValueSelectedListener selectionListener,
       Color backgroundColor,
       Color borderColor,
@@ -75,6 +81,11 @@ class HorizontalBarChart extends BarChart {
             marker: marker,
             description: description,
             selectionListener: selectionListener,
+            axisLeftSettingFunction: axisLeftSettingFunction,
+            axisRightSettingFunction: axisRightSettingFunction,
+            xAxisSettingFunction: xAxisSettingFunction,
+            legendSettingFunction: legendSettingFunction,
+            rendererSettingFunction: rendererSettingFunction,
             backgroundColor: backgroundColor,
             maxHighlightDistance: maxHighlightDistance,
             highLightPerTapEnabled: highLightPerTapEnabled,
@@ -181,6 +192,7 @@ class HorizontalBarChart extends BarChart {
         xAxis,
         legend,
         legendRenderer,
+        rendererSettingFunction,
         selectionListener,
         maxVisibleCount,
         autoScaleMinMaxEnabled,

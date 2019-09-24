@@ -1,31 +1,28 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
-import 'package:mp_flutter_chart/chart/mp/chart/chart.dart';
-import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
+import 'package:mp_flutter_chart/chart/mp/chart/bar_line_scatter_candle_bubble_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/candle_data.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
-import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
-import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/transformer/transformer.dart';
-import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/candlestick_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 
 class CandlestickChart
     extends BarLineScatterCandleBubbleChart<CandlestickChartPainter> {
   CandlestickChart(CandleData data,
       {IMarker marker,
       Description description,
+      AxisLeftSettingFunction axisLeftSettingFunction,
+      AxisRightSettingFunction axisRightSettingFunction,
+      XAxisSettingFunction xAxisSettingFunction,
+      LegendSettingFunction legendSettingFunction,
+      DataRendererSettingFunction rendererSettingFunction,
       OnChartValueSelectedListener selectionListener,
       Color backgroundColor,
       Color borderColor,
@@ -76,6 +73,11 @@ class CandlestickChart
       : super(data,
             marker: marker,
             description: description,
+            axisLeftSettingFunction: axisLeftSettingFunction,
+            axisRightSettingFunction: axisRightSettingFunction,
+            xAxisSettingFunction: xAxisSettingFunction,
+            legendSettingFunction: legendSettingFunction,
+            rendererSettingFunction: rendererSettingFunction,
             selectionListener: selectionListener,
             backgroundColor: backgroundColor,
             maxHighlightDistance: maxHighlightDistance,
@@ -153,6 +155,7 @@ class CandlestickChart
         xAxis,
         legend,
         legendRenderer,
+        rendererSettingFunction,
         selectionListener,
         maxVisibleCount,
         autoScaleMinMaxEnabled,

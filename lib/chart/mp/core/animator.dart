@@ -41,7 +41,7 @@ class ChartAnimator {
         fro_angle >= toAngle) {
       return;
     }
-
+    reset();
     _isShowed = true;
     final double totalTime = durationMillis.toDouble();
     _angle = fro_angle;
@@ -78,7 +78,7 @@ class ChartAnimator {
     if (_isShowed || _countdownTimer != null || durationMillis < 0) {
       return;
     }
-
+    reset();
     _isShowed = true;
     final double totalTime = durationMillis.toDouble();
     _phaseX = MIN;
@@ -120,7 +120,7 @@ class ChartAnimator {
         durationMillisY < 0) {
       return;
     }
-
+    reset();
     _isShowed = true;
     final double totalTimeX = durationMillisX.toDouble();
     final double totalTimeY = durationMillisY.toDouble();
@@ -165,7 +165,7 @@ class ChartAnimator {
         durationMillisY < 0) {
       return;
     }
-
+    reset();
     _isShowed = true;
     final double totalTimeX = durationMillisX.toDouble();
     final double totalTimeY = durationMillisY.toDouble();
@@ -211,7 +211,7 @@ class ChartAnimator {
     if (_isShowed || _countdownTimer != null || durationMillis < 0) {
       return;
     }
-
+    reset();
     _isShowed = true;
     final double totalTime = durationMillis.toDouble();
     _phaseY = MIN;

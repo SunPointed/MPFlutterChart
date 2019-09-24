@@ -204,7 +204,39 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     }
 
     var desc = Description()..enabled = false;
-    barChart = BarChart(barData,
+    barChart = BarChart(barData, axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+        ..setLabelCount2(8, false)
+//      ..setTypeface(tf)
+        ..setValueFormatter(MyValueFormatter("\$"))
+        ..position = YAxisLabelPosition.OUTSIDE_CHART
+        ..spacePercentTop = 15
+        ..setAxisMinimum(0);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight
+        ..drawGridLines = false
+//      ..setTypeface(tf)
+        ..setLabelCount2(8, false)
+        ..setValueFormatter(MyValueFormatter("\$"))
+        ..spacePercentTop = 15
+        ..setAxisMinimum(0);
+    }, legendSettingFunction: (legend, chart) {
+      legend
+        ..verticalAlignment = LegendVerticalAlignment.BOTTOM
+        ..orientation = LegendOrientation.HORIZONTAL
+        ..drawInside = false
+        ..shape = LegendForm.SQUARE
+        ..formSize = 9
+        ..textSize = 11
+        ..xEntrySpace = 4;
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        ..position = XAxisPosition.BOTTOM
+        ..drawGridLines = false
+        ..setGranularity(1.0)
+        ..setLabelCount1(7)
+        ..setValueFormatter(DayAxisValueFormatter(chart));
+    },
         selectionListener: this,
         drawBarShadow: false,
         drawValueAboveBar: true,
@@ -217,35 +249,6 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
         pinchZoomEnabled: false,
         maxVisibleCount: 60,
         description: desc);
-    barChart.xAxis
-      ..position = XAxisPosition.BOTTOM
-      ..drawGridLines = false
-      ..setGranularity(1.0)
-      ..setLabelCount1(7)
-      ..setValueFormatter(DayAxisValueFormatter(barChart.painter));
-    barChart.axisLeft
-      ..setLabelCount2(8, false)
-//      ..setTypeface(tf)
-      ..setValueFormatter(MyValueFormatter("\$"))
-      ..position = YAxisLabelPosition.OUTSIDE_CHART
-      ..spacePercentTop = 15
-      ..setAxisMinimum(0);
-    barChart.axisRight
-      ..drawGridLines = false
-//      ..setTypeface(tf)
-      ..setLabelCount2(8, false)
-      ..setValueFormatter(MyValueFormatter("\$"))
-      ..spacePercentTop = 15
-      ..setAxisMinimum(0);
-    barChart.legend
-      ..verticalAlignment = LegendVerticalAlignment.BOTTOM
-      ..orientation = LegendOrientation.HORIZONTAL
-      ..drawInside = false
-      ..shape = LegendForm.SQUARE
-      ..formSize = 9
-      ..textSize = 11
-      ..xEntrySpace = 4;
-
     barChart.animator?.animateY1(3000);
   }
 

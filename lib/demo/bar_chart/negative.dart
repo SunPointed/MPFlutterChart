@@ -106,6 +106,36 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
     var desc = Description()..enabled = false;
     _barChart = BarChart(
       _barData,
+      axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..drawLabels = (false)
+          ..spacePercentTop = (25)
+          ..spacePercentBottom = (25)
+          ..drawAxisLine = (false)
+          ..drawGridLines = (false)
+          ..setDrawZeroLine(false)
+          ..zeroLineColor = ColorUtils.GRAY
+          ..zeroLineWidth = 0.7;
+      },
+      axisRightSettingFunction: (axisRight, chart) {
+        axisRight.enabled = (false);
+      },
+      legendSettingFunction: (legend, chart) {
+        legend.enabled = (false);
+      },
+      xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..position = (XAxisPosition.BOTTOM)
+//        ..setTypeface(tf)
+          ..drawGridLines = (false)
+          ..drawAxisLine = (false)
+          ..textColor = (ColorUtils.LTGRAY)
+          ..textSize = (13)
+          ..setLabelCount1(5)
+          ..centerAxisLabels = (true)
+          ..setValueFormatter(A(_data))
+          ..setGranularity(1);
+      },
       touchEnabled: true,
       drawGridBackground: false,
       dragXEnabled: true,
@@ -121,31 +151,6 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
       drawBarShadow: false,
       drawValueAboveBar: true,
     );
-
-    _barChart.xAxis
-      ..position = (XAxisPosition.BOTTOM)
-//        ..setTypeface(tf)
-      ..drawGridLines = (false)
-      ..drawAxisLine = (false)
-      ..textColor = (ColorUtils.LTGRAY)
-      ..textSize = (13)
-      ..setLabelCount1(5)
-      ..centerAxisLabels = (true)
-      ..setValueFormatter(A(_data))
-      ..setGranularity(1);
-
-    _barChart.axisLeft
-      ..drawLabels = (false)
-      ..spacePercentTop = (25)
-      ..spacePercentBottom = (25)
-      ..drawAxisLine = (false)
-      ..drawGridLines = (false)
-      ..setDrawZeroLine(false)
-      ..zeroLineColor = ColorUtils.GRAY
-      ..zeroLineWidth = 0.7;
-
-    _barChart.axisRight.enabled = (false);
-    _barChart.legend.enabled = (false);
   }
 }
 

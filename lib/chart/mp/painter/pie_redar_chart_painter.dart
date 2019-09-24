@@ -11,6 +11,7 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
@@ -57,6 +58,7 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
     XAxis xAxis,
     Legend legend,
     LegendRenderer legendRenderer,
+        DataRendererSettingFunction rendererSettingFunction,
     OnChartValueSelectedListener selectedListener,
     double rotationAngle,
     double rawRotationAngle,
@@ -88,6 +90,7 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
             xAxis,
             legend,
             legendRenderer,
+          rendererSettingFunction,
             selectedListener);
 
   @override

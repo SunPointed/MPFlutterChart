@@ -11,6 +11,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/pie_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/percent_formatter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
@@ -127,7 +128,24 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
     }
 
     var desc = Description()..enabled = false;
-    _pieChart = PieChart(_pieData,
+    _pieChart = PieChart(_pieData, legendSettingFunction: (legend, chart) {
+      _formatter.setPieChartPainter(chart);
+      legend
+        ..verticalAlignment = (LegendVerticalAlignment.TOP)
+        ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
+        ..orientation = (LegendOrientation.HORIZONTAL)
+        ..drawInside = (false)
+        ..xEntrySpace = (7)
+        ..yEntrySpace = (0)
+        ..yOffset = (0);
+    }, rendererSettingFunction: (renderer) {
+      (renderer as PieChartRenderer)
+        ..setHoleColor(ColorUtils.WHITE)
+        ..setTransparentCircleColor(ColorUtils.WHITE)
+        ..setTransparentCircleAlpha(110)
+        ..setEntryLabelColor(ColorUtils.WHITE)
+        ..setEntryLabelTextSize(12);
+    },
         rotateEnabled: false,
         drawHole: true,
         usePercentValues: true,
@@ -136,28 +154,14 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
         highLightPerTapEnabled: true,
         dragDecelerationFrictionCoef: 0.95,
         maxAngle: 180,
+        rawRotationAngle: 180,
         rotationAngle: 180,
         centerText: "half pie",
+        centerTextOffsetX: 0,
+        centerTextOffsetY: -20,
         holeRadiusPercent: 58,
         transparentCircleRadiusPercent: 61,
         description: desc);
-    _formatter.setPieChartPainter(_pieChart.painter);
-    _pieChart.painter
-      ..setHoleColor(ColorUtils.WHITE)
-      ..setTransparentCircleColor(ColorUtils.WHITE)
-      ..setTransparentCircleAlpha(110)
-      ..setCenterTextOffset(0, -20)
-      ..setEntryLabelColor(ColorUtils.WHITE)
-      ..setEntryLabelTextSize(12)
-      ..setRotationAngle(180);
-    _pieChart.legend
-      ..verticalAlignment = (LegendVerticalAlignment.TOP)
-      ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
-      ..orientation = (LegendOrientation.HORIZONTAL)
-      ..drawInside = (false)
-      ..xEntrySpace = (7)
-      ..yEntrySpace = (0)
-      ..yOffset = (0);
     _pieChart.animator.animateY2(1400, Easing.EaseInOutQuad);
   }
 }

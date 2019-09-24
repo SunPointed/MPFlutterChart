@@ -9,6 +9,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_provider/chart_interface.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/i_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
@@ -84,6 +85,8 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
 
   final OnChartValueSelectedListener _selectionListener;
 
+  final DataRendererSettingFunction _rendererSettingFunction;
+
   ///////////////////////////////////////////////////
   /// object responsible for rendering the data
   DataRenderer renderer;
@@ -153,6 +156,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
+      DataRendererSettingFunction rendererSettingFunction,
       OnChartValueSelectedListener selectedListener)
       : _data = data,
         _viewPortHandler = viewPortHandler,
@@ -175,6 +179,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
         _xAxis = xAxis,
         _legend = legend,
         _legendRenderer = legendRenderer,
+        _rendererSettingFunction = rendererSettingFunction,
         _selectionListener = selectedListener,
         super() {
     initDefaultNormal();
@@ -182,6 +187,9 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
       return;
     }
     initDefaultWithData();
+    if (_rendererSettingFunction != null && renderer != null) {
+      _rendererSettingFunction(renderer);
+    }
     init();
     isInit = true;
   }
@@ -200,21 +208,6 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   void initDefaultNormal() {}
 
   void init() {}
-
-//  /// Returns true if the chart is empty (meaning it's data object is either
-//  /// null or contains no entries).
-//  ///
-//  /// @return
-//  bool isEmpty() {
-//    if (_data == null)
-//      return true;
-//    else {
-//      if (_data.getEntryCount() <= 0)
-//        return true;
-//      else
-//        return false;
-//    }
-//  }
 
   /// Calculates the offsets of the chart to the border depending on the
   /// position of an eventual legend or depending on the length of the y-axis

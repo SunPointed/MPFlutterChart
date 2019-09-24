@@ -226,7 +226,42 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
     }
 
     var desc = Description()..enabled = false;
-    lineChart = LineChart(lineData,
+    lineChart = LineChart(lineData, axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+        ..textColor = (ColorUtils.HOLO_BLUE)
+        ..setAxisMaximum(200.0)
+        ..setAxisMinimum(0.0)
+        //    ..setTypeface(tf)
+        ..drawGridLines = (true)
+        ..drawAxisLine = (true)
+        ..granularityEnabled = (true);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight
+        ..textColor = (ColorUtils.RED)
+        ..setAxisMaximum(900.0)
+        ..setAxisMinimum(-200)
+        //    ..setTypeface(tf)
+        ..drawGridLines = (false)
+        ..setDrawZeroLine(false)
+        ..granularityEnabled = (false);
+    }, legendSettingFunction: (legend, chart) {
+      legend
+        ..shape = (LegendForm.LINE)
+        ..textSize = (11)
+        //      ..setTypeface(tf)
+        ..textColor = (ColorUtils.WHITE)
+        ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+        ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
+        ..orientation = (LegendOrientation.HORIZONTAL)
+        ..drawInside = (false);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        //    ..setTypeface(tf)
+        ..textColor = (ColorUtils.WHITE)
+        ..textSize = (11)
+        ..drawGridLines = (false)
+        ..drawAxisLine = (false);
+    },
         touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
@@ -239,37 +274,6 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
         highLightPerTapEnabled: true,
         backgroundColor: ColorUtils.LTGRAY,
         description: desc);
-    lineChart.legend
-      ..shape = (LegendForm.LINE)
-      ..textSize = (11)
-      ..textColor = (ColorUtils.WHITE)
-      ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-      ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
-      ..orientation = (LegendOrientation.HORIZONTAL)
-      ..drawInside = (false);
-//      ..setTypeface(tf)
-    lineChart.xAxis
-      ..textColor = (ColorUtils.WHITE)
-      ..textSize = (11)
-      ..drawGridLines = (false)
-      ..drawAxisLine = (false);
-//    ..setTypeface(tf)
-    lineChart.axisLeft
-      ..textColor = (ColorUtils.HOLO_BLUE)
-      ..setAxisMaximum(200.0)
-      ..setAxisMinimum(0.0)
-      ..drawGridLines = (true)
-      ..drawAxisLine = (true)
-      ..granularityEnabled = (true);
-//    ..setTypeface(tf)
-    lineChart.axisRight
-      ..textColor = (ColorUtils.RED)
-      ..setAxisMaximum(900.0)
-      ..setAxisMinimum(-200)
-      ..drawGridLines = (false)
-      ..setDrawZeroLine(false)
-      ..granularityEnabled = (false);
-//    ..setTypeface(tf)
     lineChart.animator.animateX1(1500);
   }
 }

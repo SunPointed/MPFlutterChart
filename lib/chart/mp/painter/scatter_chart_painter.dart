@@ -6,6 +6,7 @@ import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/scatter_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_provider/scatter_data_provider.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
@@ -40,6 +41,7 @@ class ScatterChartPainter extends BarLineChartBasePainter<ScatterData>
     XAxis xAxis,
     Legend legend,
     LegendRenderer legendRenderer,
+    DataRendererSettingFunction rendererSettingFunction,
     OnChartValueSelectedListener selectedListener,
     int maxVisibleCount,
     bool autoScaleMinMaxEnabled,
@@ -93,6 +95,7 @@ class ScatterChartPainter extends BarLineChartBasePainter<ScatterData>
             xAxis,
             legend,
             legendRenderer,
+            rendererSettingFunction,
             selectedListener,
             maxVisibleCount,
             autoScaleMinMaxEnabled,

@@ -197,6 +197,23 @@ class OtherChartScatterPlotState
 
     var desc = Description()..enabled = false;
     scatterChart = ScatterChart(scatterData,
+        axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft.setAxisMinimum(0);
+      //      ..setTypeface(tf)
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight.enabled = (false);
+    }, legendSettingFunction: (legend, chart) {
+      legend
+        ..verticalAlignment = (LegendVerticalAlignment.TOP)
+        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+        ..orientation = (LegendOrientation.VERTICAL)
+        ..drawInside = (false)
+//      ..setTypeface(tf)
+        ..xOffset = (5);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis.drawGridLines = (false);
+//      ..setTypeface(tf)
+    },
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -208,18 +225,6 @@ class OtherChartScatterPlotState
         maxHighlightDistance: 50,
         selectionListener: this,
         description: desc);
-    scatterChart.legend
-      ..verticalAlignment = (LegendVerticalAlignment.TOP)
-      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-      ..orientation = (LegendOrientation.VERTICAL)
-      ..drawInside = (false)
-//      ..setTypeface(tf)
-      ..xOffset = (5);
-    scatterChart.axisLeft.setAxisMinimum(0);
-//      ..setTypeface(tf)
-    scatterChart.axisRight.enabled = (false);
-    scatterChart.xAxis.drawGridLines = (false);
-//      ..setTypeface(tf)
   }
 
   @override

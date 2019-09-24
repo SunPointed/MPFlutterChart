@@ -97,6 +97,15 @@ class ScrollingChartTallBarState
 
     var desc = Description()..enabled = false;
     var barChart = BarChart(_barData,
+        axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft.drawGridLines = (false);
+    }, legendSettingFunction: (legend, chart) {
+      legend.enabled = (false);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        ..position = (XAxisPosition.BOTTOM)
+        ..drawGridLines = (false);
+    },
         touchEnabled: true,
         pinchZoomEnabled: false,
         drawGridBackground: false,
@@ -107,11 +116,6 @@ class ScrollingChartTallBarState
         fitBars: true,
         drawBarShadow: false,
         description: desc);
-    barChart.axisLeft.drawGridLines = (false);
-    barChart.legend.enabled = (false);
-    barChart.xAxis
-      ..position = (XAxisPosition.BOTTOM)
-      ..drawGridLines = (false);
     barChart.animator.animateY1(800);
     return Column(
         mainAxisSize: MainAxisSize.max,

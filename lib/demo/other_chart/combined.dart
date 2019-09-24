@@ -92,6 +92,36 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
 
     var desc = Description()..enabled = false;
     combinedChart = CombinedChart(combinedData,
+        axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+        ..drawGridLines = (false)
+        ..setAxisMinimum(0);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight
+        ..drawGridLines = (false)
+        ..setAxisMinimum(0);
+    }, legendSettingFunction: (legend, chart) {
+      (chart as CombinedChart).painter
+        ..setDrawOrder(List()
+          ..add(DrawOrder.BAR)
+          ..add(DrawOrder.BUBBLE)
+          ..add(DrawOrder.CANDLE)
+          ..add(DrawOrder.LINE)
+          ..add(DrawOrder.SCATTER));
+      legend
+        ..wordWrapEnabled = (true)
+        ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+        ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
+        ..orientation = (LegendOrientation.HORIZONTAL)
+        ..drawInside = (false);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        ..position = (XAxisPosition.BOTH_SIDED)
+        ..setAxisMinimum(0)
+        ..setGranularity(1)
+        ..setValueFormatter(A())
+        ..setAxisMaximum(combinedData == null ? 0 : combinedData.xMax + 0.25);
+    },
         drawGridBackground: false,
         drawBarShadow: false,
         highlightFullBarEnabled: false,
@@ -103,31 +133,6 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
         pinchZoomEnabled: false,
         maxVisibleCount: 60,
         description: desc);
-    combinedChart.painter
-      ..setDrawOrder(List()
-        ..add(DrawOrder.BAR)
-        ..add(DrawOrder.BUBBLE)
-        ..add(DrawOrder.CANDLE)
-        ..add(DrawOrder.LINE)
-        ..add(DrawOrder.SCATTER));
-    combinedChart.legend
-      ..wordWrapEnabled = (true)
-      ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-      ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
-      ..orientation = (LegendOrientation.HORIZONTAL)
-      ..drawInside = (false);
-    combinedChart.axisRight
-      ..drawGridLines = (false)
-      ..setAxisMinimum(0);
-    combinedChart.axisLeft
-      ..drawGridLines = (false)
-      ..setAxisMinimum(0);
-    combinedChart.xAxis
-      ..position = (XAxisPosition.BOTH_SIDED)
-      ..setAxisMinimum(0)
-      ..setGranularity(1)
-      ..setValueFormatter(A())
-      ..setAxisMaximum(combinedData == null ? 0 : combinedData.xMax + 0.25);
   }
 
   double getRandom(double range, double start) {

@@ -135,7 +135,35 @@ class BarChartSineState extends BarActionState<BarChartSine> {
     }
 
     var desc = Description()..enabled = false;
-    barChart = BarChart(barData,
+    barChart = BarChart(barData, axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+        ..setLabelCount2(6, false)
+//        ..setTypeface(tf)
+        ..setAxisMaximum(2.5)
+        ..setAxisMinimum(-2.5)
+        ..granularityEnabled = (true)
+        ..setGranularity(0.1);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight
+        ..drawGridLines = (false)
+//      ..setTypeface(tf)
+        ..setLabelCount2(6, false)
+        ..setAxisMinimum(-2.5)
+        ..setAxisMaximum(2.5)
+        ..setGranularity(0.1);
+    }, legendSettingFunction: (legend, chart) {
+      legend
+        ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+        ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
+        ..orientation = (LegendOrientation.HORIZONTAL)
+        ..drawInside = (false)
+        ..shape = (LegendForm.SQUARE)
+        ..formSize = (9)
+        ..textSize = (11)
+        ..xEntrySpace = (4);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis.enabled = (false);
+    },
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -147,30 +175,6 @@ class BarChartSineState extends BarActionState<BarChartSine> {
         drawBarShadow: false,
         drawValueAboveBar: true,
         description: desc);
-    barChart.xAxis.enabled = (false);
-    barChart.axisLeft
-      ..setLabelCount2(6, false)
-//        ..setTypeface(tf)
-      ..setAxisMaximum(2.5)
-      ..setAxisMinimum(-2.5)
-      ..granularityEnabled = (true)
-      ..setGranularity(0.1);
-    barChart.axisRight
-      ..drawGridLines = (false)
-//      ..setTypeface(tf)
-      ..setLabelCount2(6, false)
-      ..setAxisMinimum(-2.5)
-      ..setAxisMaximum(2.5)
-      ..setGranularity(0.1);
-    barChart.legend
-      ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-      ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
-      ..orientation = (LegendOrientation.HORIZONTAL)
-      ..drawInside = (false)
-      ..shape = (LegendForm.SQUARE)
-      ..formSize = (9)
-      ..textSize = (11)
-      ..xEntrySpace = (4);
     barChart.animator.animateXY1(1500, 1500);
   }
 }

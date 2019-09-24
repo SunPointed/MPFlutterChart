@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:mp_flutter_chart/chart/mp/chart/bar_line_scatter_candle_bubble_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/bar_line_chart_painter.dart';
 
@@ -18,10 +19,10 @@ class DayAxisValueFormatter extends ValueFormatter {
     ..add("Nov")
     ..add("Dec");
 
-  BarLineChartBasePainter _painter;
+  BarLineScatterCandleBubbleChart _chart;
 
-  DayAxisValueFormatter(BarLineChartBasePainter painter) {
-    this._painter = painter;
+  DayAxisValueFormatter(BarLineScatterCandleBubbleChart chart) {
+    this._chart = chart;
   }
 
   @override
@@ -34,7 +35,7 @@ class DayAxisValueFormatter extends ValueFormatter {
     String monthName = _months[month % _months.length];
     String yearName = year.toString();
 
-    if (_painter.getVisibleXRange() > 30 * 6) {
+    if (_chart.painter.getVisibleXRange() > 30 * 6) {
       return monthName + " " + yearName;
     } else {
       int dayOfMonth = determineDayOfMonth(days, month + 12 * (year - 2016));

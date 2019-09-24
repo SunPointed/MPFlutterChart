@@ -16,6 +16,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_horizontal_alignment
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/chart_hightlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
@@ -159,6 +160,7 @@ abstract class BarLineChartBasePainter<
     XAxis xAxis,
     Legend legend,
     LegendRenderer legendRenderer,
+    DataRendererSettingFunction rendererSettingFunction,
     OnChartValueSelectedListener selectedListener,
     int maxVisibleCount,
     bool autoScaleMinMaxEnabled,
@@ -242,6 +244,7 @@ abstract class BarLineChartBasePainter<
             xAxis,
             legend,
             legendRenderer,
+            rendererSettingFunction,
             selectedListener);
 
   @override
@@ -250,8 +253,6 @@ abstract class BarLineChartBasePainter<
     highlighter = ChartHighlighter(this);
     double minXScale = xAxis.axisRange / (_minXRange);
     viewPortHandler.setMaximumScaleX(minXScale);
-    double maxXScale = xAxis.axisRange / (_maxXRange);
-    viewPortHandler.setMinimumScaleX(maxXScale);
     viewPortHandler.setMinimumScaleX(_minimumScaleX);
     viewPortHandler.setMinimumScaleY(_minimumScaleY);
   }

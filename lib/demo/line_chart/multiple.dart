@@ -207,7 +207,23 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
       return;
     }
     var desc = Description()..enabled = false;
-    lineChart = LineChart(lineData,
+    lineChart = LineChart(lineData, axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft.enabled = (false);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight
+        ..drawAxisLine = (false)
+        ..drawGridLines = (false);
+    }, legendSettingFunction: (legend, chart) {
+      legend
+        ..verticalAlignment = (LegendVerticalAlignment.TOP)
+        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+        ..orientation = (LegendOrientation.VERTICAL)
+        ..drawInside = (false);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        ..drawAxisLine = (false)
+        ..drawGridLines = (false);
+    },
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -218,17 +234,5 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
         selectionListener: this,
         drawBorders: false,
         description: desc);
-    lineChart.axisLeft.enabled = (false);
-    lineChart.axisRight
-      ..drawAxisLine = (false)
-      ..drawGridLines = (false);
-    lineChart.xAxis
-      ..drawAxisLine = (false)
-      ..drawGridLines = (false);
-    lineChart.legend
-      ..verticalAlignment = (LegendVerticalAlignment.TOP)
-      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-      ..orientation = (LegendOrientation.VERTICAL)
-      ..drawInside = (false);
   }
 }

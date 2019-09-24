@@ -170,7 +170,26 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
     }
 
     var desc = Description()..enabled = false;
-    lineChart = LineChart(lineData,
+    lineChart = LineChart(lineData, axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+//      ..setTypeface(tf)
+        ..setLabelCount2(6, false)
+        ..textColor = (ColorUtils.WHITE)
+        ..position = (YAxisLabelPosition.INSIDE_CHART)
+        ..drawGridLines = (false)
+        ..axisLineColor = (ColorUtils.WHITE);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight.enabled = (false);
+    }, legendSettingFunction: (legend, chart) {
+      (chart as LineChart).setViewPortOffsets(0, 0, 0, 0);
+      legend.enabled = (false);
+      var formatter = lineData.getDataSetByIndex(0).getFillFormatter();
+      if (formatter is A) {
+        formatter.setPainter(chart);
+      }
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis.enabled = (false);
+    },
         touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
@@ -180,35 +199,20 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
         pinchZoomEnabled: false,
         backgroundColor: Color.fromARGB(255, 104, 241, 175),
         description: desc);
-    lineChart.setViewPortOffsets(0, 0, 0, 0);
-    lineChart.xAxis.enabled = (false);
-    lineChart.axisLeft
-//      ..setTypeface(tf)
-      ..setLabelCount2(6, false)
-      ..textColor = (ColorUtils.WHITE)
-      ..position = (YAxisLabelPosition.INSIDE_CHART)
-      ..drawGridLines = (false)
-      ..axisLineColor = (ColorUtils.WHITE);
-    lineChart.axisRight.enabled = (false);
-    lineChart.legend.enabled = (false);
-    var formatter = lineData.getDataSetByIndex(0).getFillFormatter();
-    if (formatter is A) {
-      formatter.setPainter(lineChart.painter);
-    }
     lineChart.animator.animateXY1(2000, 2000);
   }
 }
 
 class A implements IFillFormatter {
-  LineChartPainter _painter;
+  LineChart _lineChart;
 
-  void setPainter(LineChartPainter painter) {
-    _painter = painter;
+  void setPainter(LineChart chart) {
+    _lineChart = chart;
   }
 
   @override
   double getFillLinePosition(
       ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return _painter?.axisLeft?.axisMinimum;
+    return _lineChart?.painter?.axisLeft?.axisMinimum;
   }
 }

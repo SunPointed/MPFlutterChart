@@ -170,6 +170,37 @@ class BarChartHorizontalState
     var desc = Description()..enabled = false;
     barChart = HorizontalBarChart(
       barData,
+      axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          //      ..setTypeface(tf)
+          ..drawAxisLine = true
+          ..drawGridLines = true
+          ..setAxisMinimum(0);
+      },
+      axisRightSettingFunction: (axisRight, chart) {
+        axisRight
+          //      ..setTypeface(tf)
+          ..drawAxisLine = true
+          ..drawGridLines = false
+          ..setAxisMinimum(0);
+      },
+      legendSettingFunction: (legend, chart) {
+        legend
+          ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+          ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
+          ..orientation = (LegendOrientation.HORIZONTAL)
+          ..drawInside = (false)
+          ..formSize = (8)
+          ..xEntrySpace = (4);
+      },
+      xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..position = XAxisPosition.BOTTOM
+//      ..setTypeface(tf)
+          ..drawAxisLine = true
+          ..drawGridLines = false
+          ..setGranularity(10);
+      },
       touchEnabled: true,
       drawGridBackground: false,
       dragXEnabled: true,
@@ -184,29 +215,6 @@ class BarChartHorizontalState
       drawValueAboveBar: false,
       fitBars: true,
     );
-    barChart.xAxis
-      ..position = XAxisPosition.BOTTOM
-//      ..setTypeface(tf)
-      ..drawAxisLine = true
-      ..drawGridLines = false
-      ..setGranularity(10);
-    barChart.axisLeft
-      //      ..setTypeface(tf)
-      ..drawAxisLine = true
-      ..drawGridLines = true
-      ..setAxisMinimum(0);
-    barChart.axisRight
-      //      ..setTypeface(tf)
-      ..drawAxisLine = true
-      ..drawGridLines = false
-      ..setAxisMinimum(0);
-    barChart.legend
-      ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-      ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
-      ..orientation = (LegendOrientation.HORIZONTAL)
-      ..drawInside = (false)
-      ..formSize = (8)
-      ..xEntrySpace = (4);
     barChart.animator.animateY1(2500);
   }
 

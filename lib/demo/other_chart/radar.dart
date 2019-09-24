@@ -119,7 +119,33 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     }
 
     var desc = Description()..enabled = false;
-    radarChart = RadarChart(radarData,
+    radarChart = RadarChart(radarData, yAxisSettingFunction: (yAxis, chart) {
+      yAxis
+//      ..setTypeface(tf)
+        ..setLabelCount2(5, false)
+        ..textSize = (9)
+        ..setAxisMinimum(0)
+        ..setAxisMaximum(80)
+        ..drawLabels = (false);
+    }, legendSettingFunction: (legend, chart) {
+      legend
+        ..verticalAlignment = (LegendVerticalAlignment.TOP)
+        ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
+        ..orientation = (LegendOrientation.HORIZONTAL)
+        ..drawInside = (false)
+//      ..setTypeface(tf)
+        ..xEntrySpace = (7)
+        ..yEntrySpace = (5)
+        ..textColor = (ColorUtils.WHITE);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        ..textSize = (9)
+//      ..setTypeface(tf)
+        ..yOffset = (0)
+        ..xOffset = (0)
+        ..textColor = (ColorUtils.WHITE)
+        ..setValueFormatter(A());
+    },
         webLineWidth: 1.0,
         webAlpha: 100,
         innerWebLineWidth: 1.0,
@@ -127,29 +153,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
         webColor: ColorUtils.LTGRAY,
         webColorInner: ColorUtils.LTGRAY,
         description: desc);
-    radarChart.xAxis
-      ..textSize = (9)
-//      ..setTypeface(tf)
-      ..yOffset = (0)
-      ..xOffset = (0)
-      ..textColor = (ColorUtils.WHITE)
-      ..setValueFormatter(A());
-    radarChart.yAxis
-//      ..setTypeface(tf)
-      ..setLabelCount2(5, false)
-      ..textSize = (9)
-      ..setAxisMinimum(0)
-      ..setAxisMaximum(80)
-      ..drawLabels = (false);
-    radarChart.legend
-      ..verticalAlignment = (LegendVerticalAlignment.TOP)
-      ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
-      ..orientation = (LegendOrientation.HORIZONTAL)
-      ..drawInside = (false)
-//      ..setTypeface(tf)
-      ..xEntrySpace = (7)
-      ..yEntrySpace = (5)
-      ..textColor = (ColorUtils.WHITE);
+
     radarChart.animator.animateXY2(1400, 1400, Easing.EaseInOutQuad);
   }
 }

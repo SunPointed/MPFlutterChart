@@ -161,6 +161,17 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
 
     barChart = BarChart(
       barData,
+      axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft.drawGridLines = false;
+      },
+      legendSettingFunction: (legend, chart) {
+        legend.enabled = false;
+      },
+      xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..position = XAxisPosition.BOTTOM
+          ..drawGridLines = false;
+      },
       touchEnabled: true,
       drawGridBackground: false,
       dragXEnabled: true,
@@ -172,11 +183,6 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
       description: desc,
       fitBars: true,
     );
-    barChart.xAxis
-      ..position = XAxisPosition.BOTTOM
-      ..drawGridLines = false;
-    barChart.axisLeft.drawGridLines = false;
-    barChart.legend.enabled = false;
     barChart.animator.animateY1(1500);
   }
 }

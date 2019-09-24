@@ -180,6 +180,20 @@ class OtherChartCandlestickState
 
     var desc = Description()..enabled = false;
     candlestickChart = CandlestickChart(candleData,
+        axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+        ..setLabelCount2(7, false)
+        ..drawGridLines = (false)
+        ..drawAxisLine = (false);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight.enabled = (false);
+    }, legendSettingFunction: (legend, chart) {
+      legend.enabled = (false);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        ..position = (XAxisPosition.BOTTOM)
+        ..drawGridLines = (true);
+    },
         touchEnabled: true,
         drawGridBackground: false,
         backgroundColor: ColorUtils.WHITE,
@@ -190,14 +204,5 @@ class OtherChartCandlestickState
         pinchZoomEnabled: false,
         maxVisibleCount: 60,
         description: desc);
-    candlestickChart.legend.enabled = (false);
-    candlestickChart.axisLeft
-      ..setLabelCount2(7, false)
-      ..drawGridLines = (false)
-      ..drawAxisLine = (false);
-    candlestickChart.axisRight.enabled = (false);
-    candlestickChart.xAxis
-      ..position = (XAxisPosition.BOTTOM)
-      ..drawGridLines = (true);
   }
 }

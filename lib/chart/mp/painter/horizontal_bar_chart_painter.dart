@@ -14,6 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/horizontal_bar_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
@@ -51,6 +52,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
+      DataRendererSettingFunction rendererSettingFunction,
       OnChartValueSelectedListener selectedListener,
       int maxVisibleCount,
       bool autoScaleMinMaxEnabled,
@@ -108,6 +110,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
             xAxis,
             legend,
             legendRenderer,
+            rendererSettingFunction,
             selectedListener,
             maxVisibleCount,
             autoScaleMinMaxEnabled,
@@ -170,13 +173,13 @@ class HorizontalBarChartPainter extends BarChartPainter {
 
     // offsets for y-labels
     if (axisLeft.needsOffset()) {
-      offsetTop += axisLeft
-          .getRequiredHeightSpace(axisRendererLeft.axisLabelPaint);
+      offsetTop +=
+          axisLeft.getRequiredHeightSpace(axisRendererLeft.axisLabelPaint);
     }
 
     if (axisRight.needsOffset()) {
-      offsetBottom += axisRight
-          .getRequiredHeightSpace(axisRendererRight.axisLabelPaint);
+      offsetBottom +=
+          axisRight.getRequiredHeightSpace(axisRendererRight.axisLabelPaint);
     }
 
     double xlabelwidth = xAxis.labelRotatedWidth.toDouble();

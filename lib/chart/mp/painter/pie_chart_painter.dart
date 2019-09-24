@@ -9,6 +9,7 @@ import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/pie_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_pie_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/pie_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
@@ -71,7 +72,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   /// array that holds the absolute angle in degrees of each slice
   List<double> _absoluteAngles = List(1);
 
-  MPPointF _centerTextOffset = MPPointF.getInstance1(0, 0);
+  MPPointF _centerTextOffset;
 
   PieChartPainter(
     PieData data,
@@ -95,6 +96,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
     XAxis xAxis,
     Legend legend,
     LegendRenderer legendRenderer,
+    DataRendererSettingFunction rendererSettingFunction,
     OnChartValueSelectedListener selectedListener,
     double rotationAngle,
     double rawRotationAngle,
@@ -106,6 +108,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
     bool usePercentValues,
     bool drawRoundedSlices,
     String centerText,
+    double centerTextOffsetX,
+    double centerTextOffsetY,
     double holeRadiusPercent,
     double transparentCircleRadiusPercent,
     bool drawCenterText,
@@ -123,6 +127,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
         _drawCenterText = drawCenterText,
         _centerTextRadiusPercent = centerTextRadiusPercent,
         _maxAngle = maxAngle,
+        _centerTextOffset =
+            MPPointF.getInstance1(centerTextOffsetX, centerTextOffsetY),
         _minAngleForSlices = minAngleForSlices,
         super(
           data,
@@ -146,6 +152,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
           xAxis,
           legend,
           legendRenderer,
+          rendererSettingFunction,
           selectedListener,
           rotationAngle,
           rawRotationAngle,
@@ -459,15 +466,6 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
     return MPPointF.getInstance1(_circleBox.center.dx, _circleBox.center.dy);
   }
 
-  /// Sets the offset the center text should have from it's original position in dp. Default x = 0, y = 0
-  ///
-  /// @param x
-  /// @param y
-  void setCenterTextOffset(double x, double y) {
-    _centerTextOffset.x = Utils.convertDpToPixel(x);
-    _centerTextOffset.y = Utils.convertDpToPixel(y);
-  }
-
   /// Returns the offset on the x- and y-axis the center text has in dp.
   ///
   /// @return
@@ -482,28 +480,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
     return _holeRadiusPercent;
   }
 
-  /// Sets the color the transparent-circle should have.
-  ///
-  /// @param color
-  void setTransparentCircleColor(Color color) {
-    Paint p = (renderer as PieChartRenderer).transparentCirclePaint;
-    p.color = Color.fromARGB(p.color?.alpha == null ? 255 : p.color?.alpha,
-        color.red, color.green, color.blue);
-  }
-
   double getTransparentCircleRadius() {
     return _transparentCircleRadiusPercent;
-  }
-
-  /// Sets the amount of transparency the transparent circle should have 0 = fully transparent,
-  /// 255 = fully opaque.
-  /// Default value is 100.
-  ///
-  /// @param alpha 0-255
-  void setTransparentCircleAlpha(int alpha) {
-    Color color = (renderer as PieChartRenderer).transparentCirclePaint.color;
-    (renderer as PieChartRenderer).transparentCirclePaint.color =
-        Color.fromARGB(alpha, color.red, color.green, color.blue);
   }
 
   /// Returns true if drawing the entry labels is enabled, false if not.
@@ -511,26 +489,6 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   /// @return
   bool isDrawEntryLabelsEnabled() {
     return _drawEntryLabels;
-  }
-
-  /// Sets the color the entry labels are drawn with.
-  ///
-  /// @param color
-  void setEntryLabelColor(Color color) {
-    (renderer as PieChartRenderer).entryLabelsPaint = PainterUtils.create(
-        (renderer as PieChartRenderer).entryLabelsPaint, null, color, null);
-  }
-
-  /// Sets the size of the entry labels in dp. Default: 13dp
-  ///
-  /// @param size
-  void setEntryLabelTextSize(double size) {
-    var style = (renderer as PieChartRenderer).entryLabelsPaint.text.style;
-    (renderer as PieChartRenderer).entryLabelsPaint = PainterUtils.create(
-        (renderer as PieChartRenderer).entryLabelsPaint,
-        null,
-        style?.color == null ? ColorUtils.WHITE : style?.color,
-        Utils.convertDpToPixel(size));
   }
 
   /// Returns true if the chart is set to draw each end of a pie-slice
@@ -553,9 +511,5 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   /// default 1.f (100%)
   double getCenterTextRadiusPercent() {
     return _centerTextRadiusPercent;
-  }
-
-  void setHoleColor(Color color) {
-    (renderer as PieChartRenderer).holePaint.color = color;
   }
 }

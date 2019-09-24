@@ -184,7 +184,25 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
     }
 
     var desc = Description()..enabled = false;
-    barChart = BarChart(barData,
+    barChart = BarChart(barData, axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+        ..setValueFormatter(MyValueFormatter("K"))
+        ..setAxisMinimum(0);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight.enabled = (false);
+    }, legendSettingFunction: (legend, chart) {
+      legend
+        ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+        ..orientation = (LegendOrientation.HORIZONTAL)
+        ..drawInside = (false)
+        ..shape = (LegendForm.SQUARE)
+        ..formSize = (8)
+        ..formToTextSpace = (4)
+        ..xEntrySpace = (6);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis.position = (XAxisPosition.TOP);
+    },
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -199,20 +217,6 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
         highlightFullBarEnabled: false,
         drawValueAboveBar: false,
         description: desc);
-    barChart.xAxis.position = (XAxisPosition.TOP);
-    barChart.axisLeft
-      ..setValueFormatter(MyValueFormatter("K"))
-      ..setAxisMinimum(0);
-    barChart.axisRight.enabled = (false);
-    barChart.legend
-      ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-      ..orientation = (LegendOrientation.HORIZONTAL)
-      ..drawInside = (false)
-      ..shape = (LegendForm.SQUARE)
-      ..formSize = (8)
-      ..formToTextSpace = (4)
-      ..xEntrySpace = (6);
   }
 
   @override

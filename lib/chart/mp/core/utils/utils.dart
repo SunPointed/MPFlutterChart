@@ -282,8 +282,7 @@ abstract class Utils {
 
   static int getDecimals(double number) {
     double i = roundToNextSignificant(number);
-
-    if (i.isInfinite) return 0;
+    if (i.isInfinite || i == 0.0) return 0;
 
     return (-log(i) / ln10).ceil().toInt() + 2;
   }

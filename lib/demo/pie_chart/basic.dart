@@ -14,6 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.d
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/pie_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/percent_formatter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
@@ -217,7 +218,24 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
     }
 
     var desc = Description()..enabled = false;
-    pieChart = PieChart(pieData,
+    pieChart = PieChart(pieData, legendSettingFunction: (legend, chart) {
+      _formatter.setPieChartPainter(pieChart);
+      legend
+        ..verticalAlignment = (LegendVerticalAlignment.TOP)
+        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+        ..orientation = (LegendOrientation.VERTICAL)
+        ..drawInside = (false)
+        ..xEntrySpace = (7)
+        ..yEntrySpace = (0)
+        ..yOffset = (0);
+    }, rendererSettingFunction: (renderer) {
+      (renderer as PieChartRenderer)
+        ..setHoleColor(ColorUtils.WHITE)
+        ..setTransparentCircleColor(ColorUtils.WHITE)
+        ..setTransparentCircleAlpha(110)
+        ..setEntryLabelColor(ColorUtils.WHITE)
+        ..setEntryLabelTextSize(12);
+    },
         rotateEnabled: true,
         drawHole: true,
         drawCenterText: true,
@@ -234,21 +252,6 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
         holeRadiusPercent: 58.0,
         transparentCircleRadiusPercent: 61,
         description: desc);
-    _formatter.setPieChartPainter(pieChart.painter);
-    pieChart.painter
-      ..setHoleColor(ColorUtils.WHITE)
-      ..setTransparentCircleColor(ColorUtils.WHITE)
-      ..setTransparentCircleAlpha(110)
-      ..setEntryLabelColor(ColorUtils.WHITE)
-      ..setEntryLabelTextSize(12);
-    pieChart.legend
-      ..verticalAlignment = (LegendVerticalAlignment.TOP)
-      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-      ..orientation = (LegendOrientation.VERTICAL)
-      ..drawInside = (false)
-      ..xEntrySpace = (7)
-      ..yEntrySpace = (0)
-      ..yOffset = (0);
   }
 
   @override

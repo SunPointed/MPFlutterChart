@@ -132,6 +132,17 @@ class LineChartPerformanceState
 
     var desc = Description()..enabled = false;
     _lineChart = LineChart(_lineData,
+        axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft.drawGridLines = (false);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight.enabled = (false);
+    }, legendSettingFunction: (legend, chart) {
+      legend.enabled = (false);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        ..drawGridLines = (true)
+        ..drawAxisLine = (false);
+    },
         touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
@@ -140,11 +151,5 @@ class LineChartPerformanceState
         scaleYEnabled: true,
         pinchZoomEnabled: false,
         description: desc);
-    _lineChart.axisLeft.drawGridLines = (false);
-    _lineChart.axisRight.enabled = (false);
-    _lineChart.xAxis
-      ..drawGridLines = (true)
-      ..drawAxisLine = (false);
-    _lineChart.legend.enabled = (false);
   }
 }

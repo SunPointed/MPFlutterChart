@@ -1,10 +1,11 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:mp_flutter_chart/chart/mp/chart/chart.dart';
+import 'package:mp_flutter_chart/chart/mp/chart/bar_line_scatter_candle_bubble_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/line_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/line_chart_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
@@ -16,6 +17,11 @@ class LineChart extends BarLineScatterCandleBubbleChart<LineChartPainter> {
   LineChart(LineData data,
       {IMarker marker,
       Description description,
+      AxisLeftSettingFunction axisLeftSettingFunction,
+      AxisRightSettingFunction axisRightSettingFunction,
+      XAxisSettingFunction xAxisSettingFunction,
+      LegendSettingFunction legendSettingFunction,
+      DataRendererSettingFunction rendererSettingFunction,
       OnChartValueSelectedListener selectionListener,
       Color backgroundColor,
       Color borderColor,
@@ -65,7 +71,11 @@ class LineChart extends BarLineScatterCandleBubbleChart<LineChartPainter> {
       Matrix4 zoomMatrixBuffer})
       : super(data,
             marker: marker,
-            backgroundColor:backgroundColor,
+            axisLeftSettingFunction: axisLeftSettingFunction,
+            axisRightSettingFunction: axisRightSettingFunction,
+            xAxisSettingFunction: xAxisSettingFunction,
+            legendSettingFunction: legendSettingFunction,
+            backgroundColor: backgroundColor,
             description: description,
             selectionListener: selectionListener,
             maxHighlightDistance: maxHighlightDistance,
@@ -144,6 +154,7 @@ class LineChart extends BarLineScatterCandleBubbleChart<LineChartPainter> {
         xAxis,
         legend,
         legendRenderer,
+        rendererSettingFunction,
         selectionListener,
         maxVisibleCount,
         autoScaleMinMaxEnabled,

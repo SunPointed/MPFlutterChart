@@ -99,7 +99,7 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
                     child: Center(
                         child: Slider(
                             value: _range,
-                            min: 0,
+                            min: 1,
                             max: 150,
                             onChanged: (value) {
                               _range = value;
@@ -192,6 +192,28 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
 
     var desc = Description()..enabled = false;
     _lineChart = LineChart(_lineData,
+        axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+        ..setAxisMaximum(900)
+        ..setAxisMinimum(-250)
+        ..drawAxisLine = (false)
+        ..setDrawZeroLine(false)
+        ..drawGridLines = (false);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight.enabled = (false);
+    }, legendSettingFunction: (legend, chart) {
+      legend.enabled = (false);
+      var formatter1 = _lineData.getDataSetByIndex(0).getFillFormatter();
+      if (formatter1 is A) {
+        formatter1.setPainter(chart);
+      }
+      var formatter2 = _lineData.getDataSetByIndex(1).getFillFormatter();
+      if (formatter2 is B) {
+        formatter2.setPainter(chart);
+      }
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis.enabled = (false);
+    },
         drawBorders: true,
         touchEnabled: true,
         drawGridBackground: true,
@@ -202,50 +224,33 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
         pinchZoomEnabled: false,
         backgroundColor: _fillColor,
         description: desc);
-    _lineChart.legend.enabled = (false);
-    _lineChart.xAxis.enabled = (false);
-    _lineChart.axisLeft
-      ..setAxisMaximum(900)
-      ..setAxisMinimum(-250)
-      ..drawAxisLine = (false)
-      ..setDrawZeroLine(false)
-      ..drawGridLines = (false);
-    _lineChart.axisRight.enabled = (false);
-    var formatter1 = _lineData.getDataSetByIndex(0).getFillFormatter();
-    if (formatter1 is A) {
-      formatter1.setPainter(_lineChart.painter);
-    }
-    var formatter2 = _lineData.getDataSetByIndex(1).getFillFormatter();
-    if (formatter2 is B) {
-      formatter2.setPainter(_lineChart.painter);
-    }
   }
 }
 
 class A implements IFillFormatter {
-  LineChartPainter _painter;
+  LineChart _lineChart;
 
-  void setPainter(LineChartPainter painter) {
-    _painter = painter;
+  void setPainter(LineChart chart) {
+    _lineChart = chart;
   }
 
   @override
   double getFillLinePosition(
       ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return _painter?.axisLeft?.axisMinimum;
+    return _lineChart?.painter?.axisLeft?.axisMinimum;
   }
 }
 
 class B implements IFillFormatter {
-  LineChartPainter _painter;
+  LineChart _lineChart;
 
-  void setPainter(LineChartPainter painter) {
-    _painter = painter;
+  void setPainter(LineChart chart) {
+    _lineChart = chart;
   }
 
   @override
   double getFillLinePosition(
       ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return _painter?.axisLeft?.axisMaximum;
+    return _lineChart?.painter?.axisLeft?.axisMaximum;
   }
 }

@@ -2,12 +2,14 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/gestures/scale.dart';
 import 'package:flutter/src/gestures/tap.dart';
+import 'package:mp_flutter_chart/chart/mp/chart/bar_line_scatter_candle_bubble_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/combined_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
@@ -28,6 +30,11 @@ class CombinedChart
   CombinedChart(CombinedData data,
       {IMarker marker,
       Description description,
+      AxisLeftSettingFunction axisLeftSettingFunction,
+      AxisRightSettingFunction axisRightSettingFunction,
+      XAxisSettingFunction xAxisSettingFunction,
+      LegendSettingFunction legendSettingFunction,
+      DataRendererSettingFunction rendererSettingFunction,
       OnChartValueSelectedListener selectionListener,
       Color backgroundColor,
       Color borderColor,
@@ -85,6 +92,11 @@ class CombinedChart
         fitBars = fitBars,
         super(data,
             marker: marker,
+            axisLeftSettingFunction: axisLeftSettingFunction,
+            axisRightSettingFunction: axisRightSettingFunction,
+            xAxisSettingFunction: xAxisSettingFunction,
+            legendSettingFunction: legendSettingFunction,
+            rendererSettingFunction: rendererSettingFunction,
             description: description,
             backgroundColor: backgroundColor,
             selectionListener: selectionListener,
@@ -163,6 +175,7 @@ class CombinedChart
         xAxis,
         legend,
         legendRenderer,
+        rendererSettingFunction,
         selectionListener,
         maxVisibleCount,
         autoScaleMinMaxEnabled,

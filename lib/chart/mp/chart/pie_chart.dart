@@ -1,13 +1,13 @@
 import 'dart:ui';
 
+import 'package:mp_flutter_chart/chart/mp/chart/pie_radar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/pie_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/bar_chart_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/pie_chart_painter.dart';
-
-import 'chart.dart';
 
 class PieChart extends PieRadarChart<PieChartPainter> {
   bool drawEntryLabels;
@@ -22,10 +22,15 @@ class PieChart extends PieRadarChart<PieChartPainter> {
   double centerTextRadiusPercent; // = 100.0
   double maxAngle; // = 360
   double minAngleForSlices; // = 0
+  double centerTextOffsetX;
+  double centerTextOffsetY;
 
   PieChart(PieData data,
       {IMarker marker,
       Description description,
+      XAxisSettingFunction xAxisSettingFunction,
+      LegendSettingFunction legendSettingFunction,
+      DataRendererSettingFunction rendererSettingFunction,
       OnChartValueSelectedListener selectionListener,
       double rotationAngle = 270,
       double rawRotationAngle = 270,
@@ -52,6 +57,8 @@ class PieChart extends PieRadarChart<PieChartPainter> {
       bool usePercentValues = false,
       bool drawRoundedSlices = false,
       String centerText = "",
+      double centerTextOffsetX = 0.0,
+      double centerTextOffsetY = 0.0,
       double holeRadiusPercent = 50,
       double transparentCircleRadiusPercent = 55,
       bool drawCenterText = true,
@@ -70,8 +77,13 @@ class PieChart extends PieRadarChart<PieChartPainter> {
         centerText = centerText,
         maxAngle = maxAngle,
         minAngleForSlices = minAngleForSlices,
+        centerTextOffsetX = centerTextOffsetX,
+        centerTextOffsetY = centerTextOffsetY,
         super(data,
             marker: marker,
+            xAxisSettingFunction: xAxisSettingFunction,
+            legendSettingFunction: legendSettingFunction,
+            rendererSettingFunction: rendererSettingFunction,
             description: description,
             selectionListener: selectionListener,
             maxHighlightDistance: maxHighlightDistance,
@@ -128,6 +140,7 @@ class PieChart extends PieRadarChart<PieChartPainter> {
       xAxis,
       legend,
       legendRenderer,
+      rendererSettingFunction,
       selectionListener,
       rotationAngle,
       rawRotationAngle,
@@ -139,6 +152,8 @@ class PieChart extends PieRadarChart<PieChartPainter> {
       usePercentValues,
       drawRoundedSlices,
       centerText,
+      centerTextOffsetX,
+      centerTextOffsetY,
       holeRadiusPercent,
       transparentCircleRadiusPercent,
       drawCenterText,

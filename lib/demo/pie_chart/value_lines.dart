@@ -15,6 +15,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/legend_vertical_alignment.d
 import 'package:mp_flutter_chart/chart/mp/core/enums/value_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
+import 'package:mp_flutter_chart/chart/mp/core/render/pie_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/percent_formatter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
@@ -221,7 +222,20 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
     }
 
     var desc = Description()..enabled = false;
-    pieChart = PieChart(pieData,
+    pieChart = PieChart(pieData, legendSettingFunction: (legend, chart) {
+      _formatter.setPieChartPainter(chart);
+      legend
+        ..verticalAlignment = (LegendVerticalAlignment.TOP)
+        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+        ..orientation = (LegendOrientation.VERTICAL)
+        ..drawInside = (false)
+        ..enabled = (false);
+    },rendererSettingFunction: (renderer) {
+      (renderer as PieChartRenderer)..setHoleColor(ColorUtils.WHITE)
+        ..setHoleColor(ColorUtils.WHITE)
+        ..setTransparentCircleColor(ColorUtils.WHITE)
+        ..setTransparentCircleAlpha(110);
+    },
         rotateEnabled: true,
         drawHole: true,
         drawCenterText: true,
@@ -235,21 +249,10 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
         dragDecelerationFrictionCoef: 0.95,
         holeRadiusPercent: 58,
         transparentCircleRadiusPercent: 61,
-        highLightPerTapEnabled: true,
+        highLightPerTapEnabled: false,
         selectionListener: this,
         description: desc);
-    _formatter.setPieChartPainter(pieChart.painter);
-    pieChart.painter
-      ..setHoleColor(ColorUtils.WHITE)
-      ..setTransparentCircleColor(ColorUtils.WHITE)
-      ..setTransparentCircleAlpha(110)
-      ..highlightValues(null);
-    pieChart.legend
-      ..verticalAlignment = (LegendVerticalAlignment.TOP)
-      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-      ..orientation = (LegendOrientation.VERTICAL)
-      ..drawInside = (false)
-      ..enabled = (false);
+
     pieChart.animator.animateY2(1400, Easing.EaseInOutQuad);
   }
 

@@ -115,6 +115,39 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
 
     var desc = Description()..enabled = false;
     barChart = HorizontalBarChart(barData,
+        axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft.enabled = (false);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight
+        ..setAxisMaximum(25)
+        ..setAxisMinimum(-25)
+        ..drawGridLines = (false)
+        ..setDrawZeroLine(true)
+        ..setLabelCount2(7, false)
+        ..setValueFormatter(A())
+        ..textSize = (9);
+    }, legendSettingFunction: (legend, chart) {
+      legend
+        ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+        ..orientation = (LegendOrientation.HORIZONTAL)
+        ..drawInside = (false)
+        ..formSize = (8)
+        ..formToTextSpace = (4)
+        ..xEntrySpace = (6);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        ..position = (XAxisPosition.BOTH_SIDED)
+        ..drawGridLines = (false)
+        ..drawAxisLine = (false)
+        ..textSize = (9)
+        ..setAxisMinimum(0)
+        ..setAxisMaximum(110)
+        ..centerAxisLabels = (true)
+        ..setLabelCount1(12)
+        ..setGranularity(10)
+        ..setValueFormatter(B());
+    },
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -127,34 +160,6 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
         drawValueAboveBar: true,
         highlightFullBarEnabled: false,
         description: desc);
-    barChart.axisLeft.enabled = (false);
-    barChart.axisRight
-      ..setAxisMaximum(25)
-      ..setAxisMinimum(-25)
-      ..drawGridLines = (false)
-      ..setDrawZeroLine(true)
-      ..setLabelCount2(7, false)
-      ..setValueFormatter(A())
-      ..textSize = (9);
-    barChart.xAxis
-      ..position = (XAxisPosition.BOTH_SIDED)
-      ..drawGridLines = (false)
-      ..drawAxisLine = (false)
-      ..textSize = (9)
-      ..setAxisMinimum(0)
-      ..setAxisMaximum(110)
-      ..centerAxisLabels = (true)
-      ..setLabelCount1(12)
-      ..setGranularity(10)
-      ..setValueFormatter(B());
-    barChart.legend
-      ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-      ..orientation = (LegendOrientation.HORIZONTAL)
-      ..drawInside = (false)
-      ..formSize = (8)
-      ..formToTextSpace = (4)
-      ..xEntrySpace = (6);
   }
 
   @override

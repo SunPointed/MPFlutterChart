@@ -1,25 +1,17 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:mp_flutter_chart/chart/mp/chart/chart.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/line_chart.dart';
-import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data/chart_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/line_data.dart';
-import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_line_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_form.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/limite_label_postion.dart';
-import 'package:mp_flutter_chart/chart/mp/core/enums/mode.dart';
 import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/limit_line.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
-import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class LineChartBasic extends StatefulWidget {
@@ -203,21 +195,6 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     }
 
     var desc = Description()..enabled = false;
-    lineChart = LineChart(lineData,
-        touchEnabled: true,
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: true,
-        description: desc);
-    lineChart.xAxis.enableGridDashedLine(10, 10, 0);
-    lineChart.axisRight.enabled = (false);
-    lineChart.axisLeft
-      ..enableGridDashedLine(10, 10, 0)
-      ..setAxisMaximum(200)
-      ..setAxisMinimum(-50);
     LimitLine llXAxis = LimitLine(9, "Index 10");
     llXAxis.setLineWidth(4);
     llXAxis.enableDashedLine(10, 10, 0);
@@ -233,12 +210,31 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     ll2.enableDashedLine(10, 10, 0);
     ll2.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
     ll2.textSize = (10);
-    // draw limit lines behind data instead of on top
-    lineChart.axisLeft.drawLimitLineBehindData = (true);
-    lineChart.xAxis.drawLimitLineBehindData = (true);
-    // add limit lines
-    lineChart.axisLeft..addLimitLine(ll1)..addLimitLine(ll2);
-    lineChart.legend.shape = (LegendForm.LINE);
+    lineChart = LineChart(lineData, axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+        ..drawLimitLineBehindData = true
+        ..enableGridDashedLine(10, 10, 0)
+        ..addLimitLine(ll1)
+        ..addLimitLine(ll2)
+        ..setAxisMaximum(200)
+        ..setAxisMinimum(-50);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight.enabled = (false);
+    }, legendSettingFunction: (legend, chart) {
+      legend.shape = (LegendForm.LINE);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        ..drawLimitLineBehindData = true
+        ..enableGridDashedLine(10, 10, 0);
+    },
+        touchEnabled: true,
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: true,
+        description: desc);
     lineChart.animator.animateX1(1500);
   }
 }

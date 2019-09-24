@@ -10,6 +10,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data_provider/bar_data_provider.d
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/bar_entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/bar_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
@@ -57,6 +58,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
+      DataRendererSettingFunction rendererSettingFunction,
       OnChartValueSelectedListener selectedListener,
       int maxVisibleCount,
       bool autoScaleMinMaxEnabled,
@@ -118,6 +120,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
             xAxis,
             legend,
             legendRenderer,
+            rendererSettingFunction,
             selectedListener,
             maxVisibleCount,
             autoScaleMinMaxEnabled,

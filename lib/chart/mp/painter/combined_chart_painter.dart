@@ -14,6 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_provider/combined_data_provider.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/combined_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
@@ -70,6 +71,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
+      DataRendererSettingFunction rendererSettingFunction,
       OnChartValueSelectedListener selectedListener,
       int maxVisibleCount,
       bool autoScaleMinMaxEnabled,
@@ -130,6 +132,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
             xAxis,
             legend,
             legendRenderer,
+            rendererSettingFunction,
             selectedListener,
             maxVisibleCount,
             autoScaleMinMaxEnabled,

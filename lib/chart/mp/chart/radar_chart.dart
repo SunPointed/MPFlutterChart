@@ -1,14 +1,14 @@
 import 'package:flutter/painting.dart';
+import 'package:mp_flutter_chart/chart/mp/chart/pie_radar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/y_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/radar_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/radar_chart_marker.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/radar_chart_painter.dart';
-
-import 'chart.dart';
 
 class RadarChart extends PieRadarChart<RadarChartPainter> {
   double webLineWidth;
@@ -20,9 +20,15 @@ class RadarChart extends PieRadarChart<RadarChartPainter> {
   int skipWebLineCount;
   YAxis yAxis;
 
+  YAxisSettingFunction _yAxisSettingFunction;
+
   RadarChart(RadarData data,
       {IMarker marker,
       Description description,
+      YAxisSettingFunction yAxisSettingFunction,
+      XAxisSettingFunction xAxisSettingFunction,
+      LegendSettingFunction legendSettingFunction,
+      DataRendererSettingFunction rendererSettingFunction,
       OnChartValueSelectedListener selectionListener,
       double rotationAngle = 270,
       double rawRotationAngle = 270,
@@ -58,8 +64,12 @@ class RadarChart extends PieRadarChart<RadarChartPainter> {
         skipWebLineCount = skipWebLineCount,
         webColorInner = webColorInner,
         webColor = webColor,
+        _yAxisSettingFunction = yAxisSettingFunction,
         super(data,
             marker: marker,
+            xAxisSettingFunction: xAxisSettingFunction,
+            legendSettingFunction: legendSettingFunction,
+            rendererSettingFunction: rendererSettingFunction,
             description: description,
             selectionListener: selectionListener,
             maxHighlightDistance: maxHighlightDistance,
@@ -88,6 +98,9 @@ class RadarChart extends PieRadarChart<RadarChartPainter> {
     this.webColor ??= Color.fromARGB(255, 122, 122, 122);
     this.webColorInner ??= Color.fromARGB(255, 122, 122, 122);
     this.yAxis = YAxis(position: AxisDependency.LEFT);
+    if (_yAxisSettingFunction != null) {
+      _yAxisSettingFunction(yAxis, this);
+    }
   }
 
   @override
@@ -124,6 +137,7 @@ class RadarChart extends PieRadarChart<RadarChartPainter> {
         xAxis,
         legend,
         legendRenderer,
+        rendererSettingFunction,
         selectionListener,
         rotationAngle,
         rawRotationAngle,

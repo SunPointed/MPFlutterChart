@@ -8,10 +8,10 @@ import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/radar_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
+import 'package:mp_flutter_chart/chart/mp/core/functions.dart';
 import 'package:mp_flutter_chart/chart/mp/core/highlight/radar_highlighter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/legend/legend.dart';
 import 'package:mp_flutter_chart/chart/mp/core/marker/i_marker.dart';
-import 'package:mp_flutter_chart/chart/mp/core/render/data_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/radar_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer_radar_chart.dart';
@@ -85,6 +85,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
       XAxis xAxis,
       Legend legend,
       LegendRenderer legendRenderer,
+      DataRendererSettingFunction rendererSettingFunction,
       OnChartValueSelectedListener selectedListener,
       double rotationAngle,
       double rawRotationAngle,
@@ -128,6 +129,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
           xAxis,
           legend,
           legendRenderer,
+          rendererSettingFunction,
           selectedListener,
           rotationAngle,
           rawRotationAngle,

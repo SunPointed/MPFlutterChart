@@ -369,6 +369,15 @@ class ScrollingChartViewPagerState
 
     var desc = Description()..enabled = false;
     _lineChart1 = LineChart(_lineData1,
+        axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+        ..setAxisMaximum(1.2)
+        ..setAxisMinimum(-1.2);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight.enabled = (false);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis.enabled = (false);
+    },
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -376,11 +385,6 @@ class ScrollingChartViewPagerState
         scaleXEnabled: true,
         scaleYEnabled: true,
         description: desc);
-    _lineChart1.axisLeft
-      ..setAxisMaximum(1.2)
-      ..setAxisMinimum(-1.2);
-    _lineChart1.axisRight.enabled = (false);
-    _lineChart1.xAxis.enabled = (false);
     _lineChart1.animator.animateX1(3000);
   }
 
@@ -391,6 +395,11 @@ class ScrollingChartViewPagerState
 
     var desc = Description()..enabled = false;
     _lineChart2 = LineChart(_lineData2,
+        axisRightSettingFunction: (axisRight, chart) {
+      axisRight.enabled = (false);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis.enabled = (false);
+    },
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -398,8 +407,6 @@ class ScrollingChartViewPagerState
         scaleXEnabled: true,
         scaleYEnabled: true,
         description: desc);
-    _lineChart2.axisRight.enabled = (false);
-    _lineChart2.xAxis.enabled = (false);
     _lineChart2.animator.animateX1(3000);
   }
 
@@ -409,7 +416,13 @@ class ScrollingChartViewPagerState
     }
 
     var desc = Description()..enabled = false;
-    _barChart = BarChart(_barData,
+    _barChart = BarChart(_barData, axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft.setAxisMinimum(0);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight.enabled = (false);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis.enabled = (false);
+    },
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -418,9 +431,6 @@ class ScrollingChartViewPagerState
         scaleYEnabled: true,
         drawBarShadow: false,
         description: desc);
-    _barChart.axisLeft.setAxisMinimum(0);
-    _barChart.axisRight.enabled = (false);
-    _barChart.xAxis.enabled = (false);
   }
 
   void _initScatterChart() {
@@ -430,6 +440,17 @@ class ScrollingChartViewPagerState
 
     var desc = Description()..enabled = false;
     _scatterChart = ScatterChart(_scatterData,
+        axisRightSettingFunction: (axisRight, chart) {
+      axisRight.drawGridLines = (false);
+    }, legendSettingFunction: (legend, chart) {
+      legend
+        ..wordWrapEnabled = (true)
+        ..formSize = (14)
+        ..textSize = (9)
+        ..yOffset = (13);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis.position = (XAxisPosition.BOTTOM);
+    },
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -438,13 +459,6 @@ class ScrollingChartViewPagerState
         scaleYEnabled: true,
         extraBottomOffset: 16,
         description: desc);
-    _scatterChart.axisRight.drawGridLines = (false);
-    _scatterChart.xAxis.position = (XAxisPosition.BOTTOM);
-    _scatterChart.legend
-      ..wordWrapEnabled = (true)
-      ..formSize = (14)
-      ..textSize = (9)
-      ..yOffset = (13);
   }
 
   void _initPieChart() {
@@ -453,17 +467,18 @@ class ScrollingChartViewPagerState
     }
 
     var desc = Description()..enabled = false;
-    _pieChart = PieChart(_pieData,
+    _pieChart = PieChart(_pieData, legendSettingFunction: (legend, chart) {
+      legend
+        ..verticalAlignment = (LegendVerticalAlignment.TOP)
+        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+        ..orientation = (LegendOrientation.VERTICAL)
+        ..drawInside = (false);
+    },
         touchEnabled: true,
         centerText: _generateCenterText(),
         holeRadiusPercent: 45,
         transparentCircleRadiusPercent: 50,
         description: desc);
-    _pieChart.legend
-      ..verticalAlignment = (LegendVerticalAlignment.TOP)
-      ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-      ..orientation = (LegendOrientation.VERTICAL)
-      ..drawInside = (false);
   }
 
   String _generateCenterText() {

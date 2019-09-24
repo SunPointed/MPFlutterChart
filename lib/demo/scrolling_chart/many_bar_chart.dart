@@ -97,7 +97,19 @@ class ScrollingChartManyBarState
     }
 
     var desc = Description()..enabled = false;
-    var barChart = BarChart(data,
+    var barChart = BarChart(data, axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+        ..setLabelCount2(5, false)
+        ..spacePercentTop = (15);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight
+        ..setLabelCount2(5, false)
+        ..spacePercentTop = (15);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        ..position = (XAxisPosition.BOTTOM)
+        ..drawGridLines = (false);
+    },
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -106,16 +118,7 @@ class ScrollingChartManyBarState
         scaleYEnabled: true,
         fitBars: true,
         description: desc);
-    barChart.axisLeft
-      ..setLabelCount2(5, false)
-      ..spacePercentTop = (15);
-    barChart.axisRight
-      ..setLabelCount2(5, false)
-      ..spacePercentTop = (15);
-    barChart.xAxis
-      ..position = (XAxisPosition.BOTTOM)
-      ..drawGridLines = (false);
-    barChart.animator.animateY1(700);
+    barChart.animator..animateY1(700);
     return Container(height: 200, child: barChart);
   }
 

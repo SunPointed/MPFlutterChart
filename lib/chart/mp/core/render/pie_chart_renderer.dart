@@ -1088,4 +1088,47 @@ class PieChartRenderer extends DataRenderer {
 //      mDrawBitmap = null;
 //    }
 //  }
+
+  void setHoleColor(Color color) {
+    holePaint.color = color;
+  }
+
+  /// Sets the color the transparent-circle should have.
+  ///
+  /// @param color
+  void setTransparentCircleColor(Color color) {
+    Paint p = transparentCirclePaint;
+    p.color = Color.fromARGB(p.color?.alpha == null ? 255 : p.color?.alpha,
+        color.red, color.green, color.blue);
+  }
+
+  /// Sets the amount of transparency the transparent circle should have 0 = fully transparent,
+  /// 255 = fully opaque.
+  /// Default value is 100.
+  ///
+  /// @param alpha 0-255
+  void setTransparentCircleAlpha(int alpha) {
+    Color color = transparentCirclePaint.color;
+    transparentCirclePaint.color =
+        Color.fromARGB(alpha, color.red, color.green, color.blue);
+  }
+
+  /// Sets the color the entry labels are drawn with.
+  ///
+  /// @param color
+  void setEntryLabelColor(Color color) {
+    entryLabelsPaint = PainterUtils.create(entryLabelsPaint, null, color, null);
+  }
+
+  /// Sets the size of the entry labels in dp. Default: 13dp
+  ///
+  /// @param size
+  void setEntryLabelTextSize(double size) {
+    var style = entryLabelsPaint.text.style;
+    entryLabelsPaint = PainterUtils.create(
+        entryLabelsPaint,
+        null,
+        style?.color == null ? ColorUtils.WHITE : style?.color,
+        Utils.convertDpToPixel(size));
+  }
 }

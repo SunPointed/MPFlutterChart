@@ -147,7 +147,35 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
     }
 
     var desc = Description()..enabled = false;
-    lineChart = LineChart(lineData,
+    lineChart = LineChart(lineData, axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+        ..position = (YAxisLabelPosition.INSIDE_CHART)
+//      ..setTypeface(tfLight)
+        ..textColor = (Color.fromARGB(255, 51, 181, 229))
+        ..drawGridLines = (true)
+        ..granularityEnabled = (true)
+        ..setAxisMinimum(0)
+        ..setAxisMaximum(170)
+        ..yOffset = (-9)
+        ..textColor = (Color.fromARGB(255, 255, 192, 56));
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight.enabled = (false);
+    }, legendSettingFunction: (legend, chart) {
+      (chart as LineChart).setViewPortOffsets(0, 0, 0, 0);
+      legend.enabled = (false);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        ..position = (XAxisPosition.TOP_INSIDE)
+//        ..setTypeface(tfLight)
+        ..textSize = (10)
+        ..textColor = (ColorUtils.WHITE)
+        ..drawAxisLine = (false)
+        ..drawGridLines = (true)
+        ..textColor = (Color.fromARGB(255, 255, 192, 56))
+        ..centerAxisLabels = (true)
+        ..setGranularity(1)
+        ..setValueFormatter(A());
+    },
         touchEnabled: false,
         dragDecelerationFrictionCoef: 0.9,
         highLightPerTapEnabled: true,
@@ -159,30 +187,6 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
         scaleYEnabled: true,
         pinchZoomEnabled: false,
         description: desc);
-    lineChart.setViewPortOffsets(0, 0, 0, 0);
-    lineChart.legend.enabled = (false);
-    lineChart.xAxis
-      ..position = (XAxisPosition.TOP_INSIDE)
-//        ..setTypeface(tfLight)
-      ..textSize = (10)
-      ..textColor = (ColorUtils.WHITE)
-      ..drawAxisLine = (false)
-      ..drawGridLines = (true)
-      ..textColor = (Color.fromARGB(255, 255, 192, 56))
-      ..centerAxisLabels = (true)
-      ..setGranularity(1)
-      ..setValueFormatter(A());
-    lineChart.axisLeft
-      ..position = (YAxisLabelPosition.INSIDE_CHART)
-//      ..setTypeface(tfLight)
-      ..textColor = (Color.fromARGB(255, 51, 181, 229))
-      ..drawGridLines = (true)
-      ..granularityEnabled = (true)
-      ..setAxisMinimum(0)
-      ..setAxisMaximum(170)
-      ..yOffset = (-9)
-      ..textColor = (Color.fromARGB(255, 255, 192, 56));
-    lineChart.axisRight.enabled = (false);
   }
 }
 

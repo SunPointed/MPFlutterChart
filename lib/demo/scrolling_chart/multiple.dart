@@ -206,7 +206,21 @@ class ScrollingChartMultipleState
 
   LineChart _getLineChart(LineData data) {
     var desc = Description()..enabled = false;
-    var chart = LineChart(data,
+    var chart = LineChart(data, axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeft
+        ..setLabelCount2(5, false)
+        ..setAxisMinimum(0);
+    }, axisRightSettingFunction: (axisRight, chart) {
+      axisRight
+        ..setLabelCount2(5, false)
+        ..drawGridLines = (false)
+        ..setAxisMinimum(0);
+    }, xAxisSettingFunction: (xAxis, chart) {
+      xAxis
+        ..position = (XAxisPosition.BOTTOM)
+        ..drawGridLines = (false)
+        ..drawAxisLine = (true);
+    },
         touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
@@ -214,17 +228,6 @@ class ScrollingChartMultipleState
         scaleXEnabled: true,
         scaleYEnabled: true,
         description: desc);
-    chart.axisLeft
-      ..setLabelCount2(5, false)
-      ..setAxisMinimum(0);
-    chart.axisRight
-      ..setLabelCount2(5, false)
-      ..drawGridLines = (false)
-      ..setAxisMinimum(0);
-    chart.xAxis
-      ..position = (XAxisPosition.BOTTOM)
-      ..drawGridLines = (false)
-      ..drawAxisLine = (true);
     chart.animator.animateX1(750);
     return chart;
   }
@@ -232,6 +235,10 @@ class ScrollingChartMultipleState
   BarChart _getBarChart(BarData data) {
     var desc = Description()..enabled = false;
     var chart = BarChart(data,
+        axisLeftSettingFunction: (axisLeft, chart) {},
+        axisRightSettingFunction: (axisRight, chart) {},
+        legendSettingFunction: (legend, chart) {},
+        xAxisSettingFunction: (xAxis, chart) {},
         drawBarShadow: false,
         fitBars: true,
         touchEnabled: true,
@@ -260,6 +267,8 @@ class ScrollingChartMultipleState
   PieChart _getPieChart(PieData data) {
     var desc = Description()..enabled = false;
     var chart = PieChart(data,
+        legendSettingFunction: (legend, chart) {},
+        xAxisSettingFunction: (xAxis, chart) {},
         touchEnabled: true,
         extraLeftOffset: 5,
         extraRightOffset: 50,
