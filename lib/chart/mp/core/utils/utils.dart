@@ -277,7 +277,7 @@ abstract class Utils {
   static double getLineSpacing2(TextPainter paint) {
     // todo return fontMetrics.ascent - fontMetrics.top + fontMetrics.bottom;
     paint.layout();
-    return paint.height * 1.5;
+    return paint.height * 0.5;
   }
 
   static int getDecimals(double number) {

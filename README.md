@@ -7,15 +7,13 @@ Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when
 ## todos
 **1.dashPathEffect is not currently available in flutter**
 <br/><br/>
-**2.flutter not support dash line now, try use path_drawing to implement this**
+**2.flutter text style(need to learn ttf file use in flutter)**
 <br/><br/>
-**3.flutter text style(need to learn ttf file use in flutter)**
+**3.save to local(try use channel to solve this)**
 <br/><br/>
-**4.save to local(try use channel to solve this)**
+**4.slide conflict in scroll views and chart(current solution is ugly, need to deep learn touch control and try other solutions)**
 <br/><br/>
-**5.slide conflict in scroll views and chart(current solution is ugly, need to deep learn touch control and try other solutions)**
-<br/><br/>
-**6.potential bugs fix**
+**5.potential bugs fix**
 
 ## More Examples
 **LineCharts**

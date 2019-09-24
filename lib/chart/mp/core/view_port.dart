@@ -121,6 +121,10 @@ class ViewPortHandler {
     return _contentRect.height;
   }
 
+  double chartWidth() => _chartWidth;
+
+  double chartHeight() => _chartHeight;
+
   Rect getContentRect() {
     return _contentRect;
   }

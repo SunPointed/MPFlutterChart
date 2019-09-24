@@ -42,12 +42,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
   /// maximum value
   bool _drawBarShadow = false;
 
-  List<DrawOrder> _drawOrder = List()
-    ..add(DrawOrder.BAR)
-    ..add(DrawOrder.BUBBLE)
-    ..add(DrawOrder.LINE)
-    ..add(DrawOrder.CANDLE)
-    ..add(DrawOrder.SCATTER);
+  List<DrawOrder> _drawOrder;
 
   CombinedChartPainter(
       CombinedData data,
@@ -106,10 +101,12 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       bool highlightFullBarEnabled,
       bool drawValueAboveBar,
       bool drawBarShadow,
-      bool fitBars)
+      bool fitBars,
+      List<DrawOrder> drawOrder)
       : _drawBarShadow = drawBarShadow,
         _highlightFullBarEnabled = highlightFullBarEnabled,
         _drawValueAboveBar = drawValueAboveBar,
+        _drawOrder = drawOrder,
         super(
             data,
             animator,
@@ -165,9 +162,19 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
             minimumScaleX,
             minimumScaleY);
 
+  List<DrawOrder> initDrawOrder() {
+    return List()
+      ..add(DrawOrder.BAR)
+      ..add(DrawOrder.BUBBLE)
+      ..add(DrawOrder.LINE)
+      ..add(DrawOrder.CANDLE)
+      ..add(DrawOrder.SCATTER);
+  }
+
   @override
   void initDefaultWithData() {
     super.initDefaultWithData();
+    _drawOrder ??= initDrawOrder();
     highlighter = CombinedHighlighter(this, this);
     renderer = CombinedChartRenderer(this, animator, viewPortHandler);
     (renderer as CombinedChartRenderer).createRenderers();

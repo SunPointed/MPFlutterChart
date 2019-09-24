@@ -101,13 +101,6 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
         ..drawGridLines = (false)
         ..setAxisMinimum(0);
     }, legendSettingFunction: (legend, chart) {
-      (chart as CombinedChart).painter
-        ..setDrawOrder(List()
-          ..add(DrawOrder.BAR)
-          ..add(DrawOrder.BUBBLE)
-          ..add(DrawOrder.CANDLE)
-          ..add(DrawOrder.LINE)
-          ..add(DrawOrder.SCATTER));
       legend
         ..wordWrapEnabled = (true)
         ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
@@ -132,7 +125,13 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
         scaleYEnabled: true,
         pinchZoomEnabled: false,
         maxVisibleCount: 60,
-        description: desc);
+        description: desc,
+        drawOrder: List()
+          ..add(DrawOrder.BAR)
+          ..add(DrawOrder.BUBBLE)
+          ..add(DrawOrder.CANDLE)
+          ..add(DrawOrder.LINE)
+          ..add(DrawOrder.SCATTER));
   }
 
   double getRandom(double range, double start) {

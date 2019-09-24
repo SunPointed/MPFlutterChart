@@ -26,6 +26,7 @@ class CombinedChart
   bool highlightFullBarEnabled;
   bool drawBarShadow;
   bool fitBars;
+  List<DrawOrder> drawOrder;
 
   CombinedChart(CombinedData data,
       {IMarker marker,
@@ -85,11 +86,13 @@ class CombinedChart
       bool highlightFullBarEnabled = true,
       bool drawValueAboveBar = false,
       bool drawBarShadow = false,
-      bool fitBars = true})
+      bool fitBars = true,
+      List<DrawOrder> drawOrder})
       : drawValueAboveBar = drawValueAboveBar,
         highlightFullBarEnabled = highlightFullBarEnabled,
         drawBarShadow = drawBarShadow,
         fitBars = fitBars,
+        drawOrder = drawOrder,
         super(data,
             marker: marker,
             axisLeftSettingFunction: axisLeftSettingFunction,
@@ -210,7 +213,8 @@ class CombinedChart
         highlightFullBarEnabled,
         drawValueAboveBar,
         drawBarShadow,
-        fitBars);
+        fitBars,
+        drawOrder);
   }
 }
 

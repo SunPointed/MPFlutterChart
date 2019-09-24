@@ -425,7 +425,7 @@ class LegendRenderer extends Renderer {
     }
   }
 
-  Path mLineFormPath = Path();
+  Path _lineFormPath = Path();
 
   /// Draws the Legend-form at the given position with the color at the given
   /// index.
@@ -491,13 +491,13 @@ class LegendRenderer extends Renderer {
             ..color = entry.formColor
             ..style = PaintingStyle.stroke
             ..strokeWidth = formLineWidth;
-          mLineFormPath.reset();
-          mLineFormPath.moveTo(x, y);
-          mLineFormPath.lineTo(x + formSize, y);
+          _lineFormPath.reset();
+          _lineFormPath.moveTo(x, y);
+          _lineFormPath.lineTo(x + formSize, y);
           if (formLineDashEffect != null) {
-            mLineFormPath = formLineDashEffect.convert2DashPath(mLineFormPath);
+            _lineFormPath = formLineDashEffect.convert2DashPath(_lineFormPath);
           }
-          c.drawPath(mLineFormPath, _legendFormPaint);
+          c.drawPath(_lineFormPath, _legendFormPaint);
         }
         break;
     }

@@ -392,7 +392,7 @@ class Legend extends ComponentBase {
           double labelLineSpacing =
               Utils.getLineSpacing1(labelpainter) + yEntrySpace;
           double contentWidth =
-              viewPortHandler.contentWidth() * _maxSizePercent;
+              viewPortHandler.chartWidth() * _maxSizePercent;
 
           // Start calculating layout
           double maxLineWidth = 0;
@@ -488,7 +488,6 @@ class Legend extends ComponentBase {
           break;
         }
     }
-
     _neededHeight += yOffset;
     _neededWidth += xOffset;
   }

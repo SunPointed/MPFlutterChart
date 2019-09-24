@@ -82,4 +82,9 @@ class LegendEntry {
   set formColor(Color value) {
     _formColor = value;
   }
+
+  @override
+  String toString() {
+    return 'LegendEntry{_form: $_form,\n _formSize: $_formSize,\n _formLineWidth: $_formLineWidth}';
+  }
 }
