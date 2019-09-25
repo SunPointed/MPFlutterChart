@@ -340,10 +340,9 @@ class YAxisRenderer extends AxisRenderer {
         double yOffset = l.lineWidth + labelLineHeight + l.yOffset;
 
         final LimitLabelPosition position = l.labelPosition;
-
         if (position == LimitLabelPosition.RIGHT_TOP) {
           TextPainter painter =
-              PainterUtils.create(null, null, l.textColor, l.textSize);
+              PainterUtils.create(null, label, l.textColor, l.textSize);
           painter.layout();
           painter.paint(
               c,
@@ -351,7 +350,7 @@ class YAxisRenderer extends AxisRenderer {
                   pts[1] - yOffset + labelLineHeight - painter.height));
         } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
           TextPainter painter =
-              PainterUtils.create(null, null, l.textColor, l.textSize);
+              PainterUtils.create(null, label, l.textColor, l.textSize);
           painter.layout();
           painter.paint(
               c,
@@ -359,7 +358,7 @@ class YAxisRenderer extends AxisRenderer {
                   pts[1] + yOffset - painter.height));
         } else if (position == LimitLabelPosition.LEFT_TOP) {
           TextPainter painter =
-              PainterUtils.create(null, null, l.textColor, l.textSize);
+              PainterUtils.create(null, label, l.textColor, l.textSize);
           painter.layout();
           painter.paint(
               c,
@@ -367,7 +366,7 @@ class YAxisRenderer extends AxisRenderer {
                   pts[1] - yOffset + labelLineHeight - painter.height));
         } else {
           TextPainter painter =
-              PainterUtils.create(null, null, l.textColor, l.textSize);
+              PainterUtils.create(null, label, l.textColor, l.textSize);
           painter.layout();
           painter.paint(
               c,
