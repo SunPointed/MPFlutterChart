@@ -1,5 +1,6 @@
 import 'package:flutter/painting.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
+import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
@@ -57,6 +58,12 @@ class XAxisRendererRadarChart extends XAxisRenderer {
     MPPointF.recycleInstance(center);
     MPPointF.recycleInstance(pOut);
     MPPointF.recycleInstance(drawLabelAnchor);
+  }
+
+  void drawLabel(Canvas c, String formattedLabel, double x, double y,
+      MPPointF anchor, double angleDegrees, XAxisPosition position) {
+    Utils.drawRadarXAxisValue(c, formattedLabel, x, y, axisLabelPaint, anchor,
+        angleDegrees, position);
   }
 
   /// XAxis LimitLines on RadarChart not yet supported.

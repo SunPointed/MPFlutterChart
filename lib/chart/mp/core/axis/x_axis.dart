@@ -1,5 +1,7 @@
+import 'package:flutter/src/painting/text_painter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/axis_base.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
+import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
 class XAxis extends AxisBase {
@@ -73,5 +75,14 @@ class XAxis extends AxisBase {
 
   set labelWidth(int value) {
     _labelWidth = value;
+  }
+
+
+  int getRequiredHeightSpace(TextPainter p) {
+    p = PainterUtils.create(p, null, null, textSize);
+
+    int height = Utils.calcTextHeight(p, "A");
+
+    return height;
   }
 }

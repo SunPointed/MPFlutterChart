@@ -262,20 +262,6 @@ abstract class BarLineChartBasePainter<
     // execute all drawing commands
     drawGridBackground(canvas);
 
-    if (_autoScaleMinMaxEnabled) {
-      autoScale();
-    }
-
-    if (_axisLeft.enabled)
-      _axisRendererLeft.computeAxis(
-          _axisLeft.axisMinimum, _axisLeft.axisMaximum, _axisLeft.inverted);
-
-    if (_axisRight.enabled)
-      _axisRendererRight.computeAxis(
-          _axisRight.axisMinimum, _axisRight.axisMaximum, _axisRight.inverted);
-    if (xAxis.enabled)
-      _xAxisRenderer.computeAxis(xAxis.axisMinimum, xAxis.axisMaximum, false);
-
     _xAxisRenderer.renderAxisLine(canvas);
     _axisRendererLeft.renderAxisLine(canvas);
     _axisRendererRight.renderAxisLine(canvas);
@@ -478,11 +464,33 @@ abstract class BarLineChartBasePainter<
     return offsets;
   }
 
+  void compute(){
+    if (_autoScaleMinMaxEnabled) {
+      autoScale();
+    }
+
+    if (_axisLeft.enabled) {
+      _axisRendererLeft.computeAxis(
+          _axisLeft.axisMinimum, _axisLeft.axisMaximum, _axisLeft.inverted);
+    }
+
+    if (_axisRight.enabled) {
+      _axisRendererRight.computeAxis(
+          _axisRight.axisMinimum, _axisRight.axisMaximum, _axisRight.inverted);
+    }
+
+    if (xAxis.enabled) {
+      _xAxisRenderer.computeAxis(xAxis.axisMinimum, xAxis.axisMaximum, false);
+    }
+  }
+
   @override
   void calculateOffsets() {
     if (legend != null) legendRenderer.computeLegend(getData());
     renderer?.initBuffers();
     calcMinMax();
+    compute();
+
     if (!_customViewPortEnabled) {
       double offsetLeft = 0, offsetRight = 0, offsetTop = 0, offsetBottom = 0;
 
@@ -505,7 +513,9 @@ abstract class BarLineChartBasePainter<
       }
 
       if (xAxis.enabled && xAxis.drawLabels) {
-        double xLabelHeight = xAxis.labelRotatedHeight + xAxis.yOffset;
+        double xLabelHeight = xAxis.labelRotatedHeight +
+            xAxis.yOffset +
+            xAxis.getRequiredHeightSpace(_xAxisRenderer.axisLabelPaint);
 
         // offsets for x-labels
         if (xAxis.position == XAxisPosition.BOTTOM) {

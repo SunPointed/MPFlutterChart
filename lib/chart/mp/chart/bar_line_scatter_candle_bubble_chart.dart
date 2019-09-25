@@ -192,12 +192,12 @@ abstract class BarLineScatterCandleBubbleChart<
     this.drawListener ??= initDrawListener();
     this.axisLeft = initAxisLeft();
     this.axisRight = initAxisRight();
-    this.leftAxisTransformer ??= initLeftAxisTransformer();
-    this.rightAxisTransformer ??= initRightAxisTransformer();
+    this.leftAxisTransformer = initLeftAxisTransformer();
+    this.rightAxisTransformer = initRightAxisTransformer();
     this.zoomMatrixBuffer ??= initZoomMatrixBuffer();
-    this.axisRendererLeft ??= initAxisRendererLeft();
-    this.axisRendererRight ??= initAxisRendererRight();
-    this.xAxisRenderer ??= initXAxisRenderer();
+    this.axisRendererLeft = initAxisRendererLeft();
+    this.axisRendererRight = initAxisRendererRight();
+    this.xAxisRenderer = initXAxisRenderer();
     if (_axisLeftSettingFunction != null) {
       _axisLeftSettingFunction(axisLeft, this);
     }

@@ -91,6 +91,58 @@ abstract class Utils {
     paint.textAlign = originalTextAlign;
   }
 
+  static void drawRadarXAxisValue(
+      Canvas c,
+      String text,
+      double x,
+      double y,
+      TextPainter paint,
+      MPPointF anchor,
+      double angleDegrees,
+      XAxisPosition position) {
+    var originalTextAlign = paint.textAlign;
+    paint.textAlign = TextAlign.left;
+    double drawOffsetX = 0;
+    double drawOffsetY = 0;
+    if (angleDegrees != 0) {
+      double translateX = x;
+      double translateY = y;
+
+      c.save();
+      c.translate(translateX, translateY);
+      c.rotate(angleDegrees);
+
+      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.layout();
+      switch (position) {
+        case XAxisPosition.BOTTOM:
+          paint.paint(c, Offset(drawOffsetX, drawOffsetY));
+          break;
+        case XAxisPosition.BOTTOM_INSIDE:
+          paint.paint(c, Offset(drawOffsetX, drawOffsetY));
+          break;
+        case XAxisPosition.TOP:
+          paint.paint(c, Offset(drawOffsetX, drawOffsetY));
+          break;
+        case XAxisPosition.TOP_INSIDE:
+          paint.paint(c, Offset(drawOffsetX, drawOffsetY));
+          break;
+        case XAxisPosition.BOTH_SIDED:
+          break;
+      }
+
+      c.restore();
+    } else {
+      drawOffsetX += x;
+      drawOffsetY += y;
+
+      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.layout();
+      paint.paint(c, Offset(drawOffsetX - paint.width / 2, drawOffsetY));
+    }
+    paint.textAlign = originalTextAlign;
+  }
+
   static void drawXAxisValueHorizontal(
       Canvas c,
       String text,

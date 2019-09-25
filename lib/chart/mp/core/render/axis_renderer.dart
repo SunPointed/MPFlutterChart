@@ -151,7 +151,7 @@ abstract class AxisRenderer extends Renderer {
       interval = (10 * intervalMagnitude).floorToDouble();
     }
 
-    int n = _axis.isCenterAxisLabelsEnabled() ? 1 : 0;
+    int num = _axis.isCenterAxisLabelsEnabled() ? 1 : 0;
 
     // force label count
     if (_axis.forceLabels) {
@@ -170,7 +170,7 @@ abstract class AxisRenderer extends Renderer {
         v += interval;
       }
 
-      n = labelCount;
+      num = labelCount;
 
       // no forced count
     } else {
@@ -189,19 +189,19 @@ abstract class AxisRenderer extends Renderer {
 
       if (interval != 0.0) {
         for (f = first; f <= last; f += interval) {
-          ++n;
+          ++num;
         }
       }
 
-      _axis.entryCount = n;
+      _axis.entryCount = num;
 
-      if (_axis.entries.length < n) {
+      if (_axis.entries.length < num) {
         // Ensure stops contains at least numStops elements.
-        _axis.entries = List(n);
+        _axis.entries = List(num);
       }
 
       i = 0;
-      for (f = first; i < n; f += interval, ++i) {
+      for (f = first; i < num; f += interval, ++i) {
         if (f ==
             0.0) // Fix for negative zero case (Where value == -0.0, and 0.0 == -0.0)
           f = 0.0;
@@ -218,13 +218,13 @@ abstract class AxisRenderer extends Renderer {
     }
 
     if (_axis.isCenterAxisLabelsEnabled()) {
-      if (_axis.centeredEntries.length < n) {
-        _axis.centeredEntries = List(n);
+      if (_axis.centeredEntries.length < num) {
+        _axis.centeredEntries = List(num);
       }
 
       int offset = interval ~/ 2;
 
-      for (int i = 0; i < n; i++) {
+      for (int i = 0; i < num; i++) {
         _axis.centeredEntries[i] = _axis.entries[i] + offset;
       }
     }
