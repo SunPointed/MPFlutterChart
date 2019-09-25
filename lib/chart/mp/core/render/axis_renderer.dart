@@ -222,7 +222,7 @@ abstract class AxisRenderer extends Renderer {
         _axis.centeredEntries = List(n);
       }
 
-      double offset = interval / 2.0;
+      int offset = interval ~/ 2;
 
       for (int i = 0; i < n; i++) {
         _axis.centeredEntries[i] = _axis.entries[i] + offset;
