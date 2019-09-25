@@ -218,7 +218,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
         ..verticalAlignment = (LegendVerticalAlignment.TOP)
         ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
         ..orientation = (LegendOrientation.VERTICAL)
-        ..drawInside = (false)
+        ..drawInside = true
 //        ..setTypeface(tfLight)
         ..yOffset = (0.0)
         ..xOffset = (10)
