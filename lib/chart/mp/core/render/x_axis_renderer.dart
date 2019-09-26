@@ -140,6 +140,7 @@ class XAxisRenderer extends AxisRenderer {
     if (!_xAxis.drawAxisLine || !_xAxis.enabled) return;
 
     axisLinePaint = Paint()
+      ..style = PaintingStyle.stroke
       ..color = _xAxis.axisLineColor
       ..strokeWidth = _xAxis.axisLineWidth;
 
@@ -171,12 +172,6 @@ class XAxisRenderer extends AxisRenderer {
             xAxis.axisLineDashPathEffect.convert2DashPath(_axisLinePath);
       }
       c.drawPath(_axisLinePath, axisLinePaint);
-//      c.drawLine(
-//          Offset(
-//              viewPortHandler.contentLeft(), viewPortHandler.contentBottom()),
-//          Offset(
-//              viewPortHandler.contentRight(), viewPortHandler.contentBottom()),
-//          axisLinePaint);
     }
   }
 
@@ -258,13 +253,19 @@ class XAxisRenderer extends AxisRenderer {
       positions[i] = _xAxis.entries[i ~/ 2];
       positions[i + 1] = _xAxis.entries[i ~/ 2];
     }
+    print(positions);
     trans.pointValuesToPixel(positions);
+    print(viewPortHandler.getMatrixTouch());
+    print(trans.matrixOffset);
+    print(trans.getValueMatrix());
+    print(positions);
 
     setupGridPaint();
 
     Path gridLinePath = mRenderGridLinesPath;
     gridLinePath.reset();
 
+    print("x ${positions.length}");
     for (int i = 0; i < positions.length; i += 2) {
       drawGridLine(c, positions[i], positions[i + 1], gridLinePath);
     }
@@ -297,6 +298,7 @@ class XAxisRenderer extends AxisRenderer {
     if (xAxis.gridDashPathEffect != null) {
       path = xAxis.gridDashPathEffect.convert2DashPath(path);
     }
+
     c.drawPath(path, gridPaint);
 
     path.reset();

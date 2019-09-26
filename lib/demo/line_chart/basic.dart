@@ -219,6 +219,7 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
       axisLeft
         ..drawLimitLineBehindData = true
         ..enableGridDashedLine(10, 10, 0)
+        ..enableAxisLineDashedLine(5, 5, 0)
         ..addLimitLine(ll1)
         ..addLimitLine(ll2)
         ..setAxisMaximum(200)
@@ -230,6 +231,7 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     }, xAxisSettingFunction: (xAxis, chart) {
       xAxis
         ..drawLimitLineBehindData = true
+        ..enableAxisLineDashedLine(5, 5, 0)
         ..enableGridDashedLine(10, 10, 0);
     },
         touchEnabled: true,
@@ -240,6 +242,6 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
         scaleYEnabled: true,
         pinchZoomEnabled: true,
         description: desc);
-    lineChart.animator.animateX1(1500);
+//    lineChart.animator.animateX1(1500);
   }
 }

@@ -43,8 +43,10 @@ abstract class AxisRenderer extends Renderer {
 
       _axisLabelPaint = PainterUtils.create(null, null, ColorUtils.BLACK, null);
 
+      _axisLinePaint = Paint()
+        ..style = PaintingStyle.stroke;
+
       _limitLinePaint = Paint()
-        ..isAntiAlias = true
         ..style = PaintingStyle.stroke;
     }
   }

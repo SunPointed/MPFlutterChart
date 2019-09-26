@@ -173,6 +173,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
     if (!xAxis.drawAxisLine || !xAxis.enabled) return;
 
     axisLinePaint = Paint()
+      ..style = PaintingStyle.stroke
       ..color = xAxis.axisLineColor
       ..strokeWidth = xAxis.axisLineWidth;
 

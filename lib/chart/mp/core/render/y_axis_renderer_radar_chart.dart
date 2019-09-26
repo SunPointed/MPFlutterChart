@@ -197,6 +197,7 @@ class YAxisRendererRadarChart extends YAxisRenderer {
       if (!l.enabled) continue;
 
       limitLinePaint
+        ..style = PaintingStyle.stroke
         ..color = (l.lineColor)
         ..strokeWidth = l.lineWidth;
 

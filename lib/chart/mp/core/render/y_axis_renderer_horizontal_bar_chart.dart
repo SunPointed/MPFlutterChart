@@ -89,6 +89,7 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
   void renderAxisLine(Canvas c) {
     if (!yAxis.enabled || !yAxis.drawAxisLine) return;
     axisLinePaint = Paint()
+      ..style = PaintingStyle.stroke
       ..color = yAxis.axisLineColor
       ..strokeWidth = yAxis.axisLineWidth;
 
@@ -175,12 +176,12 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
 
   @override
   Rect getGridClippingRect() {
-    mGridClippingRect = Rect.fromLTRB(
+    gridClippingRect = Rect.fromLTRB(
         viewPortHandler.getContentRect().left - axis.gridLineWidth,
         viewPortHandler.getContentRect().top - axis.gridLineWidth,
         viewPortHandler.getContentRect().right,
         viewPortHandler.getContentRect().bottom);
-    return mGridClippingRect;
+    return gridClippingRect;
   }
 
   @override
@@ -195,7 +196,7 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
   @override
   void drawZeroLine(Canvas c) {
     c.save();
-    mZeroLineClippingRect = Rect.fromLTRB(
+    zeroLineClippingRect = Rect.fromLTRB(
         viewPortHandler.getContentRect().left - yAxis.zeroLineWidth,
         viewPortHandler.getContentRect().top - yAxis.zeroLineWidth,
         viewPortHandler.getContentRect().right,

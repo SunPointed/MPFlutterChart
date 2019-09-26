@@ -28,7 +28,6 @@ class YAxisRenderer extends AxisRenderer {
           axisLabelPaint, null, ColorUtils.BLACK, Utils.convertDpToPixel(10));
 
       _zeroLinePaint = Paint()
-        ..isAntiAlias = true
         ..color = ColorUtils.GRAY
         ..strokeWidth = 1
         ..style = PaintingStyle.stroke;
@@ -81,21 +80,31 @@ class YAxisRenderer extends AxisRenderer {
     if (!_yAxis.enabled || !_yAxis.drawAxisLine) return;
 
     axisLinePaint = Paint()
+      ..style = PaintingStyle.stroke
       ..color = _yAxis.axisLineColor
       ..strokeWidth = _yAxis.axisLineWidth;
 
+    _renderGridLinesPath.reset();
     if (_yAxis.axisDependency == AxisDependency.LEFT) {
-      c.drawLine(
-          Offset(viewPortHandler.contentLeft(), viewPortHandler.contentTop()),
-          Offset(
-              viewPortHandler.contentLeft(), viewPortHandler.contentBottom()),
-          axisLinePaint);
+      _renderGridLinesPath.moveTo(
+          viewPortHandler.contentLeft(), viewPortHandler.contentTop());
+      _renderGridLinesPath.lineTo(
+          viewPortHandler.contentLeft(), viewPortHandler.contentBottom());
+      if (_yAxis.axisLineDashPathEffect != null) {
+        _renderGridLinesPath = _yAxis.axisLineDashPathEffect
+            .convert2DashPath(_renderGridLinesPath);
+      }
+      c.drawPath(_renderGridLinesPath, axisLinePaint);
     } else {
-      c.drawLine(
-          Offset(viewPortHandler.contentRight(), viewPortHandler.contentTop()),
-          Offset(
-              viewPortHandler.contentRight(), viewPortHandler.contentBottom()),
-          axisLinePaint);
+      _renderGridLinesPath.moveTo(
+          viewPortHandler.contentRight(), viewPortHandler.contentTop());
+      _renderGridLinesPath.lineTo(
+          viewPortHandler.contentRight(), viewPortHandler.contentBottom());
+      if (_yAxis.axisLineDashPathEffect != null) {
+        _renderGridLinesPath = _yAxis.axisLineDashPathEffect
+            .convert2DashPath(_renderGridLinesPath);
+      }
+      c.drawPath(_renderGridLinesPath, axisLinePaint);
     }
   }
 
@@ -149,7 +158,7 @@ class YAxisRenderer extends AxisRenderer {
     }
   }
 
-  Path mRenderGridLinesPath = Path();
+  Path _renderGridLinesPath = Path();
 
   @override
   void renderGridLines(Canvas c) {
@@ -162,12 +171,14 @@ class YAxisRenderer extends AxisRenderer {
       List<double> positions = getTransformedPositions();
 
       gridPaint
+        ..style = PaintingStyle.stroke
         ..color = _yAxis.gridColor
         ..strokeWidth = _yAxis.gridLineWidth;
 
-      Path gridLinePath = mRenderGridLinesPath;
+      Path gridLinePath = _renderGridLinesPath;
       gridLinePath.reset();
 
+      print("y ${positions.length}");
       // draw the grid
       for (int i = 0; i < positions.length; i += 2) {
         // draw a path because lines don't support dashing on lower android versions
@@ -190,15 +201,15 @@ class YAxisRenderer extends AxisRenderer {
     }
   }
 
-  Rect mGridClippingRect = Rect.zero;
+  Rect _gridClippingRect = Rect.zero;
 
   Rect getGridClippingRect() {
-    mGridClippingRect = Rect.fromLTRB(
+    _gridClippingRect = Rect.fromLTRB(
         viewPortHandler.getContentRect().left,
         viewPortHandler.getContentRect().top,
         viewPortHandler.getContentRect().right + axis.gridLineWidth,
         viewPortHandler.getContentRect().bottom + axis.gridLineWidth);
-    return mGridClippingRect;
+    return _gridClippingRect;
   }
 
   /// Calculates the path for a grid line.
@@ -236,27 +247,28 @@ class YAxisRenderer extends AxisRenderer {
     return positions;
   }
 
-  Path mDrawZeroLinePath = Path();
-  Rect mZeroLineClippingRect = Rect.zero;
+  Path _drawZeroLinePath = Path();
+  Rect _zeroLineClippingRect = Rect.zero;
 
   /// Draws the zero line.
   void drawZeroLine(Canvas c) {
     c.save();
-    mZeroLineClippingRect = Rect.fromLTRB(
+    _zeroLineClippingRect = Rect.fromLTRB(
         viewPortHandler.getContentRect().left,
         viewPortHandler.getContentRect().top,
         viewPortHandler.getContentRect().right + _yAxis.zeroLineWidth,
         viewPortHandler.getContentRect().bottom + _yAxis.zeroLineWidth);
-    c.clipRect(mZeroLineClippingRect);
+    c.clipRect(_zeroLineClippingRect);
 
     // draw zero line
     MPPointD pos = trans.getPixelForValues(0, 0);
 
     _zeroLinePaint
+      ..style = PaintingStyle.stroke
       ..color = _yAxis.zeroLineColor
       ..strokeWidth = _yAxis.zeroLineWidth;
 
-    Path zeroLinePath = mDrawZeroLinePath;
+    Path zeroLinePath = _drawZeroLinePath;
     zeroLinePath.reset();
 
     zeroLinePath.moveTo(viewPortHandler.contentLeft(), pos.y);
@@ -363,5 +375,17 @@ class YAxisRenderer extends AxisRenderer {
 
       c.restore();
     }
+  }
+
+  Rect get gridClippingRect => _gridClippingRect;
+
+  set gridClippingRect(Rect value) {
+    _gridClippingRect = value;
+  }
+
+  Rect get zeroLineClippingRect => _zeroLineClippingRect;
+
+  set zeroLineClippingRect(Rect value) {
+    _zeroLineClippingRect = value;
   }
 }
