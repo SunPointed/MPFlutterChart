@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:mp_flutter_chart/chart/mp/core/adapter_android_mp.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract class Util {
@@ -23,4 +26,12 @@ abstract class Util {
     }
   }
 
+  static TypeFace REGULAR =
+      TypeFace(fontFamily: "OpenSans", fontWeight: FontWeight.w400);
+
+  static TypeFace LIGHT =
+      TypeFace(fontFamily: "OpenSans", fontWeight: FontWeight.w300);
+
+  static TypeFace EXTRA_BOLD =
+      TypeFace(fontFamily: "OpenSans", fontWeight: FontWeight.w800);
 }

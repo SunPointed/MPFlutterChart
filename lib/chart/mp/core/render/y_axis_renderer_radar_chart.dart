@@ -162,7 +162,9 @@ class YAxisRendererRadarChart extends YAxisRenderer {
 
       String label = yAxis.getFormattedLabel(j);
       axisLabelPaint = PainterUtils.create(
-          axisLabelPaint, label, yAxis.textColor, yAxis.textSize);
+          axisLabelPaint, label, yAxis.textColor, yAxis.textSize,
+          fontWeight: yAxis.typeface?.fontWeight,
+          fontFamily: yAxis.typeface?.fontFamily);
       axisLabelPaint.layout();
       axisLabelPaint.paint(
           c,

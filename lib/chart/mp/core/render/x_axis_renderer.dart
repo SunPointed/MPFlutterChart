@@ -68,7 +68,9 @@ class XAxisRenderer extends AxisRenderer {
     String longest = _xAxis.getLongestLabel();
 
     axisLabelPaint = PainterUtils.create(
-        axisLabelPaint, null, axisLabelPaint.text.style.color, _xAxis.textSize);
+        axisLabelPaint, null, axisLabelPaint.text.style.color, _xAxis.textSize,
+        fontWeight: _xAxis.typeface?.fontWeight,
+        fontFamily: _xAxis.typeface?.fontFamily);
 
     final FSize labelSize = Utils.calcTextSize1(axisLabelPaint, longest);
 
@@ -93,7 +95,11 @@ class XAxisRenderer extends AxisRenderer {
     if (!_xAxis.enabled || !_xAxis.drawLabels) return;
 
     axisLabelPaint.text = TextSpan(
-        style: TextStyle(fontSize: _xAxis.textSize, color: _xAxis.textColor));
+        style: TextStyle(
+            fontSize: _xAxis.textSize,
+            color: _xAxis.textColor,
+            fontFamily: _xAxis.typeface?.fontFamily,
+            fontWeight: _xAxis.typeface?.fontWeight));
 
     MPPointF pointF = MPPointF.getInstance1(0, 0);
     if (_xAxis.position == XAxisPosition.TOP) {
@@ -372,7 +378,9 @@ class XAxisRenderer extends AxisRenderer {
     // if drawing the limit-value label is enabled
     if (label != null && label.isNotEmpty) {
       var painter = PainterUtils.create(
-          null, label, limitLine.textColor, limitLine.textSize);
+          null, label, limitLine.textColor, limitLine.textSize,
+          fontFamily: limitLine.typeface?.fontFamily,
+          fontWeight: limitLine.typeface?.fontWeight);
 
       double xOffset = limitLine.lineWidth + limitLine.xOffset;
 

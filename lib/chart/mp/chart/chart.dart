@@ -103,7 +103,9 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
     if (descTextColor == null) {
       descTextColor = ColorUtils.BLACK;
     }
-    descPaint = PainterUtils.create(null, null, descTextColor, descTextSize);
+    descPaint = PainterUtils.create(null, null, descTextColor, descTextSize,
+        fontFamily: description?.typeface?.fontFamily,
+        fontWeight: description?.typeface?.fontWeight);
     if (infoTextColor == null) {
       infoTextColor = ColorUtils.BLACK;
     }

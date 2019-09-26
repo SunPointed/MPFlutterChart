@@ -24,10 +24,10 @@ class XAxisRendererRadarChart extends XAxisRenderer {
     final double labelRotationAngleDegrees = xAxis.labelRotationAngle;
     final MPPointF drawLabelAnchor = MPPointF.getInstance1(0.5, 0.25);
 
-//    axisLabelPaint.setTypeface(xAxis.getTypeface()); todo
-
-    axisLabelPaint =
-        PainterUtils.create(null, null, xAxis.textColor, xAxis.textSize);
+    axisLabelPaint = PainterUtils.create(
+        null, null, xAxis.textColor, xAxis.textSize,
+        fontWeight: xAxis.typeface?.fontWeight,
+        fontFamily: xAxis.typeface?.fontFamily);
 
     double sliceangle = _painter.getSliceAngle();
 

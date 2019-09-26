@@ -56,7 +56,9 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     List<double> positions = getTransformedPositions();
 
     axisLabelPaint = PainterUtils.create(
-        axisLabelPaint, null, yAxis.textColor, yAxis.textSize);
+        axisLabelPaint, null, yAxis.textColor, yAxis.textSize,
+        fontFamily: yAxis.typeface?.fontFamily,
+        fontWeight: yAxis.typeface?.fontWeight);
 
 //    double baseYOffset = Utils.convertDpToPixel(2.5);
 //    double textHeight = Utils.calcTextHeight(axisLabelPaint, "Q").toDouble();
@@ -113,7 +115,9 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
   void drawYLabels(Canvas c, double fixedPosition, List<double> positions,
       AxisDependency axisDependency, YAxisLabelPosition position) {
     axisLabelPaint = PainterUtils.create(
-        axisLabelPaint, null, yAxis.textColor, yAxis.textSize);
+        axisLabelPaint, null, yAxis.textColor, yAxis.textSize,
+        fontWeight: yAxis.typeface?.fontWeight,
+        fontFamily: yAxis.typeface?.fontFamily);
 
     final int from = yAxis.drawBottomYLabelEntry ? 0 : 1;
     final int to =

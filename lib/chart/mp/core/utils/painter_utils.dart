@@ -29,13 +29,6 @@ abstract class PainterUtils {
     }
   }
 
-  static TextPainter createWithStyle(String text, TextStyle style) {
-    return TextPainter(
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr,
-        text: TextSpan(text: text, style: style));
-  }
-
   static TextPainter _create(String text, Color color, double fontSize,
       {String fontFamily, FontWeight fontWeight = FontWeight.w400}) {
     return TextPainter(
@@ -49,6 +42,9 @@ abstract class PainterUtils {
 
   static TextStyle createTextStyle(Color color, double fontSize,
       {String fontFamily, FontWeight fontWeight = FontWeight.w400}) {
+    if (fontWeight == null) {
+      fontWeight = FontWeight.w400;
+    }
     return TextStyle(
         color: color,
         fontSize: fontSize,

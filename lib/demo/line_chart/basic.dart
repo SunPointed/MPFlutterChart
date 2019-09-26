@@ -14,6 +14,7 @@ import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/limit_line.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class LineChartBasic extends StatefulWidget {
   @override
@@ -201,16 +202,19 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     llXAxis.enableDashedLine(10, 10, 0);
     llXAxis.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
     llXAxis.textSize = (10);
+    llXAxis.typeface = Util.REGULAR;
     LimitLine ll1 = LimitLine(150, "Upper Limit");
     ll1.setLineWidth(4);
     ll1.enableDashedLine(10, 10, 0);
     ll1.labelPosition = (LimitLabelPosition.RIGHT_TOP);
     ll1.textSize = (10);
+    ll1.typeface = Util.REGULAR;
     LimitLine ll2 = LimitLine(-30, "Lower Limit");
     ll2.setLineWidth(4);
     ll2.enableDashedLine(10, 10, 0);
     ll2.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
     ll2.textSize = (10);
+    ll2.typeface = Util.EXTRA_BOLD;
     lineChart = LineChart(lineData, axisLeftSettingFunction: (axisLeft, chart) {
       axisLeft
         ..drawLimitLineBehindData = true

@@ -27,6 +27,26 @@ class DashPathEffect {
   String toString() {
     return 'DashPathEffect{_circularIntervalList: $_circularIntervalList,\n _dashOffset: $_dashOffset}';
   }
+}
 
+class TypeFace {
+  String _fontFamily;
+  FontWeight _fontWeight;
 
+  TypeFace({String fontFamily, FontWeight fontWeight = FontWeight.w400}) {
+    _fontFamily = fontFamily;
+    _fontWeight = fontWeight;
+  }
+
+  FontWeight get fontWeight => _fontWeight;
+
+  set fontWeight(FontWeight value) {
+    _fontWeight = value;
+  }
+
+  String get fontFamily => _fontFamily;
+
+  set fontFamily(String value) {
+    _fontFamily = value;
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/painting.dart';
+import 'package:mp_flutter_chart/chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 
@@ -13,7 +14,7 @@ abstract class ComponentBase {
   double _yOffset = 5;
 
   /// the typeface used for the labels
-  TextStyle _typeface = null;
+  TypeFace _typeface = null;
 
   /// the text size of the labels
   double _textSize = Utils.convertDpToPixel(10);
@@ -39,9 +40,9 @@ abstract class ComponentBase {
     _yOffset = Utils.convertDpToPixel(value);
   }
 
-  TextStyle get typeface => _typeface;
+  TypeFace get typeface => _typeface;
 
-  set typeface(TextStyle value) {
+  set typeface(TypeFace value) {
     _typeface = value;
   }
 

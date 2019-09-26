@@ -170,7 +170,7 @@ class LegendRenderer extends Renderer {
       _legend.entries = (_computedEntries);
     }
 
-    _legendLabelPaint = PainterUtils.createWithStyle(null, getStyle());
+    _legendLabelPaint = getLabelPainter();
 
     // calculate all dimensions of the _legend
     _legend.calculateDimensions(_legendLabelPaint, viewPortHandler);
@@ -178,16 +178,19 @@ class LegendRenderer extends Renderer {
 
   // todo Paint.FontMetrics legendFontMetrics =  Paint.FontMetrics();
 
-  TextStyle getStyle() {
-    return _legend.typeface != null
-        ? _legend.typeface
-        : _legendLabelPaint.text.style;
+  TextPainter getLabelPainter() {
+    var color = _legendLabelPaint.text.style.color;
+    var fontSize = _legendLabelPaint.text.style.fontSize;
+    var fontFamily = _legend.typeface?.fontFamily;
+    var fontWeight = _legend.typeface?.fontWeight;
+    return PainterUtils.create(_legendLabelPaint, null, color, fontSize,
+        fontFamily: fontFamily, fontWeight: fontWeight);
   }
 
   void renderLegend(Canvas c) {
     if (!_legend.enabled) return;
 
-    _legendLabelPaint = PainterUtils.createWithStyle(null, getStyle());
+    _legendLabelPaint = getLabelPainter();
 
     double labelLineHeight = Utils.getLineHeight1(_legendLabelPaint);
     double labelLineSpacing = Utils.getLineSpacing1(_legendLabelPaint) +

@@ -55,24 +55,20 @@ class YAxisRenderer extends AxisRenderer {
 
     double xPos = 0;
 
+    axisLabelPaint = PainterUtils.create(
+        axisLabelPaint, null, _yAxis.textColor, _yAxis.textSize,
+        fontFamily: _yAxis.typeface?.fontFamily,
+        fontWeight: _yAxis.typeface?.fontWeight);
     if (dependency == AxisDependency.LEFT) {
       if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
-        axisLabelPaint = PainterUtils.create(
-            axisLabelPaint, null, _yAxis.textColor, _yAxis.textSize);
         xPos = viewPortHandler.offsetLeft();
       } else {
-        axisLabelPaint = PainterUtils.create(
-            axisLabelPaint, null, _yAxis.textColor, _yAxis.textSize);
         xPos = viewPortHandler.offsetLeft();
       }
     } else {
       if (labelPosition == YAxisLabelPosition.OUTSIDE_CHART) {
-        axisLabelPaint = PainterUtils.create(
-            axisLabelPaint, null, _yAxis.textColor, _yAxis.textSize);
         xPos = viewPortHandler.contentRight();
       } else {
-        axisLabelPaint = PainterUtils.create(
-            axisLabelPaint, null, _yAxis.textColor, _yAxis.textSize);
         xPos = viewPortHandler.contentRight();
       }
     }
@@ -332,42 +328,32 @@ class YAxisRenderer extends AxisRenderer {
 
       // if drawing the limit-value label is enabled
       if (label != null && label.isNotEmpty) {
-        TextPainter painter =
-            PainterUtils.create(null, null, l.textColor, l.textSize);
+        TextPainter painter = PainterUtils.create(
+            null, label, l.textColor, l.textSize,
+            fontWeight: l.typeface?.fontWeight,
+            fontFamily: l.typeface?.fontFamily);
         final double labelLineHeight =
             Utils.calcTextHeight(painter, label).toDouble();
         double xOffset = Utils.convertDpToPixel(4) + l.xOffset;
         double yOffset = l.lineWidth + labelLineHeight + l.yOffset;
-
+        painter.layout();
         final LimitLabelPosition position = l.labelPosition;
         if (position == LimitLabelPosition.RIGHT_TOP) {
-          TextPainter painter =
-              PainterUtils.create(null, label, l.textColor, l.textSize);
-          painter.layout();
           painter.paint(
               c,
               Offset(viewPortHandler.contentRight() - xOffset - painter.width,
                   pts[1] - yOffset + labelLineHeight - painter.height));
         } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
-          TextPainter painter =
-              PainterUtils.create(null, label, l.textColor, l.textSize);
-          painter.layout();
           painter.paint(
               c,
               Offset(viewPortHandler.contentRight() - xOffset - painter.width,
                   pts[1] + yOffset - painter.height));
         } else if (position == LimitLabelPosition.LEFT_TOP) {
-          TextPainter painter =
-              PainterUtils.create(null, label, l.textColor, l.textSize);
-          painter.layout();
           painter.paint(
               c,
               Offset(viewPortHandler.contentLeft() + xOffset - painter.width,
                   pts[1] - yOffset + labelLineHeight - painter.height));
         } else {
-          TextPainter painter =
-              PainterUtils.create(null, label, l.textColor, l.textSize);
-          painter.layout();
           painter.paint(
               c,
               Offset(viewPortHandler.offsetLeft() + xOffset - painter.width,

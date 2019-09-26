@@ -48,10 +48,12 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
     axisLabelPaint = PainterUtils.create(
         axisLabelPaint,
         null,
-        xAxis.typeface?.color == null
+        axisLabelPaint.text.style.color == null
             ? ColorUtils.HOLO_GREEN_DARK
-            : xAxis.typeface?.color,
-        xAxis.textSize);
+            : axisLabelPaint.text.style.color,
+        xAxis.textSize,
+        fontWeight: xAxis.typeface?.fontWeight,
+        fontFamily: xAxis.typeface?.fontFamily);
 
     String longest = xAxis.getLongestLabel();
 
@@ -77,10 +79,10 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
   void renderAxisLabels(Canvas c) {
     if (!xAxis.enabled || !xAxis.drawLabels) return;
 
-//    double xoffset = xAxis.xOffset;
-
     axisLabelPaint = PainterUtils.create(
-        axisLabelPaint, null, xAxis.textColor, xAxis.textSize);
+        axisLabelPaint, null, xAxis.textColor, xAxis.textSize,
+        fontFamily: xAxis.typeface?.fontFamily,
+        fontWeight: xAxis.typeface?.fontWeight);
 
     MPPointF pointF = MPPointF.getInstance1(0, 0);
 
@@ -239,7 +241,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
       limitLinePath.moveTo(viewPortHandler.contentLeft(), pts[1]);
       limitLinePath.lineTo(viewPortHandler.contentRight(), pts[1]);
 
-      if(l.dashPathEffect != null){
+      if (l.dashPathEffect != null) {
         limitLinePath = l.dashPathEffect.convert2DashPath(limitLinePath);
       }
       c.drawPath(limitLinePath, limitLinePaint);
