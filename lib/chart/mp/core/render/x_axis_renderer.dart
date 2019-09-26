@@ -253,19 +253,13 @@ class XAxisRenderer extends AxisRenderer {
       positions[i] = _xAxis.entries[i ~/ 2];
       positions[i + 1] = _xAxis.entries[i ~/ 2];
     }
-    print(positions);
     trans.pointValuesToPixel(positions);
-    print(viewPortHandler.getMatrixTouch());
-    print(trans.matrixOffset);
-    print(trans.getValueMatrix());
-    print(positions);
 
     setupGridPaint();
 
     Path gridLinePath = mRenderGridLinesPath;
     gridLinePath.reset();
 
-    print("x ${positions.length}");
     for (int i = 0; i < positions.length; i += 2) {
       drawGridLine(c, positions[i], positions[i + 1], gridLinePath);
     }

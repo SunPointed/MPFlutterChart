@@ -202,13 +202,13 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     llXAxis.enableDashedLine(10, 10, 0);
     llXAxis.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
     llXAxis.textSize = (10);
-    llXAxis.typeface = Util.REGULAR;
+    llXAxis.typeface = Util.EXTRA_BOLD;
     LimitLine ll1 = LimitLine(150, "Upper Limit");
     ll1.setLineWidth(4);
     ll1.enableDashedLine(10, 10, 0);
     ll1.labelPosition = (LimitLabelPosition.RIGHT_TOP);
     ll1.textSize = (10);
-    ll1.typeface = Util.REGULAR;
+    ll1.typeface = Util.EXTRA_BOLD;
     LimitLine ll2 = LimitLine(-30, "Lower Limit");
     ll2.setLineWidth(4);
     ll2.enableDashedLine(10, 10, 0);
@@ -242,6 +242,6 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
         scaleYEnabled: true,
         pinchZoomEnabled: true,
         description: desc);
-//    lineChart.animator.animateX1(1500);
+    lineChart.animator.animateX1(1500);
   }
 }

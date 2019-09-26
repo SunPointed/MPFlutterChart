@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 
+import 'package:mp_flutter_chart/chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
@@ -521,7 +522,7 @@ class ChartData<T extends IDataSet<Entry>> {
   /// contains.
   ///
   /// @param tf
-  void setValueTypeface(ui.TextStyle tf) {
+  void setValueTypeface(TypeFace tf) {
     for (IDataSet set in _dataSets) {
       set.setValueTypeface(tf);
     }

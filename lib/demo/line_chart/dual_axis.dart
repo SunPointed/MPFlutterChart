@@ -17,6 +17,7 @@ import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class LineChartDualAxis extends StatefulWidget {
   @override
@@ -231,7 +232,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
         ..textColor = (ColorUtils.HOLO_BLUE)
         ..setAxisMaximum(200.0)
         ..setAxisMinimum(0.0)
-        //    ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..drawGridLines = (true)
         ..drawAxisLine = (true)
         ..granularityEnabled = (true);
@@ -240,7 +241,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
         ..textColor = (ColorUtils.RED)
         ..setAxisMaximum(900.0)
         ..setAxisMinimum(-200)
-        //    ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..drawGridLines = (false)
         ..setDrawZeroLine(false)
         ..granularityEnabled = (false);
@@ -248,7 +249,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
       legend
         ..shape = (LegendForm.LINE)
         ..textSize = (11)
-        //      ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..textColor = (ColorUtils.WHITE)
         ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
         ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
@@ -256,7 +257,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
         ..drawInside = (false);
     }, xAxisSettingFunction: (xAxis, chart) {
       xAxis
-        //    ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..textColor = (ColorUtils.WHITE)
         ..textSize = (11)
         ..drawGridLines = (false)

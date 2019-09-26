@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:mp_flutter_chart/chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/core/color/gradient_color.dart';
@@ -7,8 +7,6 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/legend_form.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/rounding.dart';
 import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
-import 'dart:ui' as ui;
-
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 
 mixin IDataSet<T extends Entry> {
@@ -92,7 +90,7 @@ mixin IDataSet<T extends Entry> {
 
   void setValueTextColors(List<ui.Color> colors);
 
-  void setValueTypeface(TextStyle ts);
+  void setValueTypeface(TypeFace ts);
 
   void setValueTextSize(double size);
 
@@ -100,7 +98,7 @@ mixin IDataSet<T extends Entry> {
 
   ui.Color getValueTextColor2(int index);
 
-  TextStyle getValueTypeface();
+  TypeFace getValueTypeface();
 
   double getValueTextSize();
 

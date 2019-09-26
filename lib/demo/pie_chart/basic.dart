@@ -18,6 +18,7 @@ import 'package:mp_flutter_chart/chart/mp/core/render/pie_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/percent_formatter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class PieChartBasic extends StatefulWidget {
   @override
@@ -168,7 +169,6 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
         value: ((random.nextDouble() * range) + range / 5),
         label: PARTIES[i % PARTIES.length],
         icon: img,
-//          getResources().getDrawable(R.drawable.star)
       ));
     }
 
@@ -197,13 +197,12 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
     colors.add(ColorUtils.HOLO_BLUE);
 
     dataSet.setColors1(colors);
-    //dataSet.setSelectionShift(0f);
 
     pieData = PieData(dataSet);
     pieData.setValueFormatter(_formatter);
     pieData.setValueTextSize(11);
     pieData.setValueTextColor(ColorUtils.WHITE);
-//    data.setValueTypeface(tfLight);
+    pieData.setValueTypeface(Util.LIGHT);
 
     setState(() {});
   }

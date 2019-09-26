@@ -18,6 +18,7 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/large_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class BarChartMultiple extends StatefulWidget {
   @override
@@ -140,8 +141,6 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
     groupCount = count + 1;
     startYear = 1980;
     endYear = startYear + groupCount;
-//    tvX.setText(String.format(Locale.ENGLISH, "%d-%d", startYear, endYear));
-//    tvY.setText(String.valueOf(seekBarY.getProgress()));
 
     List<BarEntry> values1 = List();
     List<BarEntry> values2 = List();
@@ -181,7 +180,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
 
     barData = BarData(List()..add(set1)..add(set2)..add(set3)..add(set4));
     barData.setValueFormatter(LargeValueFormatter());
-//    barData.setValueTypeface(tfLight);
+    barData.setValueTypeface(Util.LIGHT);
 
     // specify the width each bar should have
     barData.barWidth = (0.2);
@@ -206,7 +205,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
     barChart = BarChart(barData, axisLeftSettingFunction: (axisLeft, chart) {
       ValueFormatter formatter = LargeValueFormatter();
       axisLeft
-//      ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..setValueFormatter(formatter)
         ..drawGridLines = (false)
         ..spacePercentTop = (35)
@@ -219,14 +218,14 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
         ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
         ..orientation = (LegendOrientation.VERTICAL)
         ..drawInside = true
-//        ..setTypeface(tfLight)
+        ..typeface = Util.LIGHT
         ..yOffset = (0.0)
         ..xOffset = (10)
         ..yEntrySpace = (0)
         ..textSize = (8);
     }, xAxisSettingFunction: (xAxis, chart) {
       xAxis
-//      ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..setGranularity(1.0)
         ..centerAxisLabels = true
         ..setAxisMinimum(startYear.toDouble())

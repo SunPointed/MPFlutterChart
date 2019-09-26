@@ -15,6 +15,7 @@ import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class OtherChartRadar extends StatefulWidget {
   @override
@@ -101,7 +102,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     sets.add(set2);
 
     radarData = RadarData.fromList(sets);
-//    radarData.setValueTypeface(tfLight);
+    radarData.setValueTypeface(Util.LIGHT);
     radarData.setValueTextSize(8);
     radarData.setDrawValues(false);
     radarData.setValueTextColor(ColorUtils.WHITE);
@@ -121,7 +122,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     var desc = Description()..enabled = false;
     radarChart = RadarChart(radarData, yAxisSettingFunction: (yAxis, chart) {
       yAxis
-//      ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..setLabelCount2(5, false)
         ..textSize = (9)
         ..setAxisMinimum(0)
@@ -133,14 +134,14 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
         ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
         ..orientation = (LegendOrientation.HORIZONTAL)
         ..drawInside = (false)
-//      ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..xEntrySpace = (7)
         ..yEntrySpace = (5)
         ..textColor = (ColorUtils.WHITE);
     }, xAxisSettingFunction: (xAxis, chart) {
       xAxis
         ..textSize = (9)
-//      ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..yOffset = (0)
         ..xOffset = (0)
         ..textColor = (ColorUtils.WHITE)

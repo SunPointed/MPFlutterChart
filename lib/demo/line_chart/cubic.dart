@@ -15,6 +15,7 @@ import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/line_chart_painter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class LineChartCubic extends StatefulWidget {
   @override
@@ -153,7 +154,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
 
     // create a data object with the data sets
     lineData = LineData.fromList(List()..add(set1))
-//    ..setValueTypeface(tfLight)
+      ..setValueTypeface(Util.LIGHT)
       ..setValueTextSize(9)
       ..setDrawValues(false);
 
@@ -172,7 +173,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
     var desc = Description()..enabled = false;
     lineChart = LineChart(lineData, axisLeftSettingFunction: (axisLeft, chart) {
       axisLeft
-//      ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..setLabelCount2(6, false)
         ..textColor = (ColorUtils.WHITE)
         ..position = (YAxisLabelPosition.INSIDE_CHART)

@@ -178,7 +178,6 @@ class YAxisRenderer extends AxisRenderer {
       Path gridLinePath = _renderGridLinesPath;
       gridLinePath.reset();
 
-      print("y ${positions.length}");
       // draw the grid
       for (int i = 0; i < positions.length; i += 2) {
         // draw a path because lines don't support dashing on lower android versions

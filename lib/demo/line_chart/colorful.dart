@@ -8,6 +8,7 @@ import 'package:mp_flutter_chart/chart/mp/core/description.dart';
 import 'package:mp_flutter_chart/chart/mp/core/entry/entry.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class LineChartColorful extends StatefulWidget {
   @override
@@ -81,10 +82,9 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
   }
 
   void _initLineData(int count, double range) {
-//    Typeface mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Bold.ttf");
     for (int i = 0; i < _lineDatas.length; i++) {
       _lineDatas[i] = _getData(36, 100);
-//      data.setValueTypeface(mTf);
+      _lineDatas[i].setValueTypeface(Util.BOLD);
     }
   }
 

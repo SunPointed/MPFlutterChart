@@ -11,6 +11,7 @@ import 'package:mp_flutter_chart/chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class BarChartNegative extends StatefulWidget {
   @override
@@ -86,10 +87,10 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
     set.setValueTextColors(colors);
 
     _barData = BarData(List()..add(set));
-    _barData.setValueTextSize(13);
-//    _barData.setValueTypeface(tfRegular);
-    _barData.setValueFormatter(Formatter());
-    _barData.barWidth = (0.8);
+    _barData..setValueTextSize(13)
+      ..setValueTypeface(Util.REGULAR)
+    ..setValueFormatter(Formatter())
+    ..barWidth = (0.8);
   }
 
   void _initBarChart() {
@@ -126,7 +127,7 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
       xAxisSettingFunction: (xAxis, chart) {
         xAxis
           ..position = (XAxisPosition.BOTTOM)
-//        ..setTypeface(tf)
+          ..typeface = Util.LIGHT
           ..drawGridLines = (false)
           ..drawAxisLine = (false)
           ..textColor = (ColorUtils.LTGRAY)

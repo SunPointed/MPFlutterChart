@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/painting.dart';
+import 'package:mp_flutter_chart/chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/pie_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data_interfaces/i_pie_data_set.dart';
@@ -49,7 +50,8 @@ class PieChartRenderer extends DataRenderer {
 //   Canvas mBitmapCanvas;
 
   PieChartRenderer(PieChartPainter chart, ChartAnimator animator,
-      ViewPortHandler viewPortHandler)
+      ViewPortHandler viewPortHandler,
+      {TypeFace centerTextTypeface, TypeFace entryLabelTypeface})
       : super(animator, viewPortHandler) {
     _painter = chart;
 
@@ -65,13 +67,17 @@ class PieChartRenderer extends DataRenderer {
       ..style = PaintingStyle.fill;
 
     _centerTextPaint = PainterUtils.create(
-        null, null, ColorUtils.BLACK, Utils.convertDpToPixel(12));
+        null, null, ColorUtils.BLACK, Utils.convertDpToPixel(12),
+        fontFamily: centerTextTypeface?.fontFamily,
+        fontWeight: centerTextTypeface?.fontWeight);
 
     valuePaint = PainterUtils.create(
         null, null, ColorUtils.WHITE, Utils.convertDpToPixel(9));
 
     _entryLabelsPaint = PainterUtils.create(
-        null, null, ColorUtils.WHITE, Utils.convertDpToPixel(10));
+        null, null, ColorUtils.WHITE, Utils.convertDpToPixel(10),
+        fontWeight: entryLabelTypeface?.fontWeight,
+        fontFamily: entryLabelTypeface?.fontFamily);
 
     _valueLinePaint = Paint()
       ..isAntiAlias = true

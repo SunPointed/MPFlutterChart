@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:mp_flutter_chart/chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
@@ -74,6 +75,9 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
 
   MPPointF _centerTextOffset;
 
+  TypeFace _centerTextTypeface;
+  TypeFace _entryLabelTypeface;
+
   PieChartPainter(
     PieData data,
     ChartAnimator animator,
@@ -110,6 +114,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
     String centerText,
     double centerTextOffsetX,
     double centerTextOffsetY,
+    TypeFace entryLabelTypeface,
+    TypeFace centerTextTypeface,
     double holeRadiusPercent,
     double transparentCircleRadiusPercent,
     bool drawCenterText,
@@ -130,6 +136,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
         _centerTextOffset =
             MPPointF.getInstance1(centerTextOffsetX, centerTextOffsetY),
         _minAngleForSlices = minAngleForSlices,
+        _centerTextTypeface = centerTextTypeface,
+        _entryLabelTypeface = entryLabelTypeface,
         super(
           data,
           animator,
@@ -163,7 +171,9 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   @override
   void initDefaultWithData() {
     super.initDefaultWithData();
-    renderer = PieChartRenderer(this, animator, viewPortHandler);
+    renderer = PieChartRenderer(this, animator, viewPortHandler,
+        centerTextTypeface: _centerTextTypeface,
+        entryLabelTypeface: _entryLabelTypeface);
     highlighter = PieHighlighter(this);
   }
 

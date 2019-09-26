@@ -15,6 +15,7 @@ import 'package:mp_flutter_chart/chart/mp/core/render/pie_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/percent_formatter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class PieChartHalfPie extends StatefulWidget {
   @override
@@ -111,9 +112,8 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
 
     _pieData = PieData(dataSet)
       ..setValueFormatter(new PercentFormatter())
-//      ..setValueTextSize(11)
-      ..setValueTextColor(ColorUtils.WHITE);
-//    data.setValueTypeface(tfLight);
+      ..setValueTextColor(ColorUtils.WHITE)
+      ..setValueTypeface(Util.LIGHT);
 
     setState(() {});
   }
@@ -159,6 +159,8 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
         centerText: "half pie",
         centerTextOffsetX: 0,
         centerTextOffsetY: -20,
+        centerTextTypeface: Util.LIGHT,
+        entryLabelTypeface: Util.LIGHT,
         holeRadiusPercent: 58,
         transparentCircleRadiusPercent: 61,
         description: desc);

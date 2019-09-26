@@ -118,7 +118,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
 
     barData = BarData(List()..add(set));
     barData.setValueTextSize(10);
-//    barData.setValueTypeface(tfLight);
+    barData.setValueTypeface(Util.LIGHT);
     barData.setDrawValues(false);
     barData.barWidth = (0.8);
 
@@ -138,7 +138,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
     barChart = BarChart(barData, axisLeftSettingFunction: (axisLeft, chart) {
       axisLeft
         ..setLabelCount2(6, false)
-//        ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..setAxisMaximum(2.5)
         ..setAxisMinimum(-2.5)
         ..granularityEnabled = (true)
@@ -146,7 +146,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
     }, axisRightSettingFunction: (axisRight, chart) {
       axisRight
         ..drawGridLines = (false)
-//      ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..setLabelCount2(6, false)
         ..setAxisMinimum(-2.5)
         ..setAxisMaximum(2.5)

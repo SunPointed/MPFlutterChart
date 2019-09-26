@@ -19,6 +19,7 @@ import 'package:mp_flutter_chart/chart/mp/core/render/i_shape_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class OtherChartScatterPlot extends StatefulWidget {
   @override
@@ -181,7 +182,7 @@ class OtherChartScatterPlotState
 
     // create a data object with the data sets
     scatterData = ScatterData.fromList(dataSets);
-//    scatterData.setValueTypeface(tfLight);
+    scatterData.setValueTypeface(Util.LIGHT);
 
     setState(() {});
   }
@@ -198,8 +199,9 @@ class OtherChartScatterPlotState
     var desc = Description()..enabled = false;
     scatterChart = ScatterChart(scatterData,
         axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft.setAxisMinimum(0);
-      //      ..setTypeface(tf)
+      axisLeft
+        ..setAxisMinimum(0)
+        ..typeface = Util.LIGHT;
     }, axisRightSettingFunction: (axisRight, chart) {
       axisRight.enabled = (false);
     }, legendSettingFunction: (legend, chart) {
@@ -208,11 +210,12 @@ class OtherChartScatterPlotState
         ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
         ..orientation = (LegendOrientation.VERTICAL)
         ..drawInside = (false)
-//      ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..xOffset = (5);
     }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis.drawGridLines = (false);
-//      ..setTypeface(tf)
+      xAxis
+        ..drawGridLines = (false)
+        ..typeface = Util.LIGHT;
     },
         touchEnabled: true,
         drawGridBackground: false,

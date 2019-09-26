@@ -7,7 +7,8 @@ abstract class PainterUtils {
       TextPainter painter, String text, Color color, double fontSize,
       {String fontFamily, FontWeight fontWeight = FontWeight.w400}) {
     if (painter == null) {
-      return _create(text, color, fontSize);
+      return _create(text, color, fontSize,
+          fontFamily: fontFamily, fontWeight: fontWeight);
     }
 
     if (painter.text != null && (painter.text is TextSpan)) {

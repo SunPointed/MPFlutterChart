@@ -17,6 +17,7 @@ import 'package:mp_flutter_chart/chart/mp/core/highlight/highlight.dart';
 import 'package:mp_flutter_chart/chart/mp/core/image_loader.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class BarChartHorizontal extends StatefulWidget {
   @override
@@ -150,7 +151,7 @@ class BarChartHorizontalState
 
     barData = BarData(dataSets);
     barData.setValueTextSize(10);
-//      data.setValueTypeface(tfLight);
+    barData.setValueTypeface(Util.LIGHT);
     barData.barWidth = barWidth;
 
     setState(() {});
@@ -172,14 +173,14 @@ class BarChartHorizontalState
       barData,
       axisLeftSettingFunction: (axisLeft, chart) {
         axisLeft
-          //      ..setTypeface(tf)
+          ..typeface = Util.LIGHT
           ..drawAxisLine = true
           ..drawGridLines = true
           ..setAxisMinimum(0);
       },
       axisRightSettingFunction: (axisRight, chart) {
         axisRight
-          //      ..setTypeface(tf)
+          ..typeface = Util.LIGHT
           ..drawAxisLine = true
           ..drawGridLines = false
           ..setAxisMinimum(0);
@@ -196,7 +197,7 @@ class BarChartHorizontalState
       xAxisSettingFunction: (xAxis, chart) {
         xAxis
           ..position = XAxisPosition.BOTTOM
-//      ..setTypeface(tf)
+          ..typeface = Util.LIGHT
           ..drawAxisLine = true
           ..drawGridLines = false
           ..setGranularity(10);

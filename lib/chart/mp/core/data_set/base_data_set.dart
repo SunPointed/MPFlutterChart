@@ -36,7 +36,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   ValueFormatter _valueFormatter;
 
   /// the typeface used for the value text
-  ui.TextStyle _valueTypeface;
+  TypeFace _valueTypeface;
 
   LegendForm _form = LegendForm.DEFAULT;
   double _formSize = double.nan;
@@ -256,7 +256,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   }
 
   @override
-  void setValueTypeface(ui.TextStyle tf) {
+  void setValueTypeface(TypeFace tf) {
     _valueTypeface = tf;
   }
 
@@ -276,7 +276,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   }
 
   @override
-  ui.TextStyle getValueTypeface() {
+  TypeFace getValueTypeface() {
     return _valueTypeface;
   }
 

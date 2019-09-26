@@ -28,6 +28,7 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/combined_chart_painter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class OtherChartCombined extends StatefulWidget {
   @override
@@ -78,7 +79,7 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
     combinedData.setData5(generateBubbleData());
     combinedData.setData3(generateScatterData());
     combinedData.setData4(generateCandleData());
-//    data.setValueTypeface(tfLight);
+    combinedData.setValueTypeface(Util.LIGHT);
   }
 
   void _initCombinedChart() {

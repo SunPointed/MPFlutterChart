@@ -19,6 +19,7 @@ import 'package:mp_flutter_chart/chart/mp/core/render/pie_chart_renderer.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/percent_formatter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class PieChartValueLines extends StatefulWidget {
   @override
@@ -193,21 +194,19 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
     colors.add(ColorUtils.HOLO_BLUE);
 
     dataSet.setColors1(colors);
-    //dataSet.setSelectionShift(0f);
+    dataSet.setSelectionShift(0);
 
     dataSet.setValueLinePart1OffsetPercentage(80.0);
     dataSet.setValueLinePart1Length(0.2);
     dataSet.setValueLinePart2Length(0.4);
-    //dataSet.setUsingSliceColorAsValueLineColor(true);
 
-    //dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
     dataSet.setYValuePosition(ValuePosition.OUTSIDE_SLICE);
 
     pieData = PieData(dataSet)
       ..setValueFormatter(_formatter)
       ..setValueTextSize(11)
-      ..setValueTextColor(ColorUtils.BLACK);
-//    ..setValueTypeface(tf);
+      ..setValueTextColor(ColorUtils.BLACK)
+      ..setValueTypeface(Util.REGULAR);
 
     setState(() {});
   }
@@ -230,8 +229,9 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
         ..orientation = (LegendOrientation.VERTICAL)
         ..drawInside = (false)
         ..enabled = (false);
-    },rendererSettingFunction: (renderer) {
-      (renderer as PieChartRenderer)..setHoleColor(ColorUtils.WHITE)
+    }, rendererSettingFunction: (renderer) {
+      (renderer as PieChartRenderer)
+        ..setHoleColor(ColorUtils.WHITE)
         ..setHoleColor(ColorUtils.WHITE)
         ..setTransparentCircleColor(ColorUtils.WHITE)
         ..setTransparentCircleAlpha(110);

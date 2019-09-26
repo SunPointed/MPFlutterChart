@@ -19,6 +19,7 @@ import 'package:mp_flutter_chart/chart/mp/core/poolable/point.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class OtherChartBubble extends StatefulWidget {
   @override
@@ -182,7 +183,7 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
     // create a data object with the data sets
     bubbleData = BubbleData.fromList(dataSets);
     bubbleData.setDrawValues(false);
-//    bubbleData.setValueTypeface(tfLight);
+    bubbleData.setValueTypeface(Util.LIGHT);
     bubbleData.setValueTextSize(8);
     bubbleData.setValueTextColor(ColorUtils.WHITE);
     bubbleData.setHighlightCircleWidth(1.5);
@@ -205,20 +206,21 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
       axisLeft
         ..spacePercentTop = (30)
         ..spacePercentBottom = (30)
+        ..typeface = Util.LIGHT
         ..setDrawZeroLine(false);
-//      ..setTypeface(tf)
     }, axisRightSettingFunction: (axisRight, chart) {
       axisRight.enabled = (false);
     }, legendSettingFunction: (legend, chart) {
       legend
-        //      ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..verticalAlignment = (LegendVerticalAlignment.TOP)
         ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
         ..orientation = (LegendOrientation.VERTICAL)
         ..drawInside = (false);
     }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis.position = (XAxisPosition.BOTTOM);
-//      ..setTypeface(tf)
+      xAxis
+        ..position = (XAxisPosition.BOTTOM)
+        ..typeface = Util.LIGHT;
     },
         touchEnabled: true,
         drawGridBackground: false,

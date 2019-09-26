@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:mp_flutter_chart/chart/mp/chart/pie_radar_chart.dart';
+import 'package:mp_flutter_chart/chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/chart/mp/core/data/pie_data.dart';
 import 'package:mp_flutter_chart/chart/mp/core/description.dart';
@@ -24,6 +25,8 @@ class PieChart extends PieRadarChart<PieChartPainter> {
   double minAngleForSlices; // = 0
   double centerTextOffsetX;
   double centerTextOffsetY;
+  TypeFace centerTextTypeface;
+  TypeFace entryLabelTypeface;
 
   PieChart(PieData data,
       {IMarker marker,
@@ -59,6 +62,8 @@ class PieChart extends PieRadarChart<PieChartPainter> {
       String centerText = "",
       double centerTextOffsetX = 0.0,
       double centerTextOffsetY = 0.0,
+      TypeFace entryLabelTypeface,
+      TypeFace centerTextTypeface,
       double holeRadiusPercent = 50,
       double transparentCircleRadiusPercent = 55,
       bool drawCenterText = true,
@@ -79,6 +84,8 @@ class PieChart extends PieRadarChart<PieChartPainter> {
         minAngleForSlices = minAngleForSlices,
         centerTextOffsetX = centerTextOffsetX,
         centerTextOffsetY = centerTextOffsetY,
+        entryLabelTypeface = entryLabelTypeface,
+        centerTextTypeface = centerTextTypeface,
         super(data,
             marker: marker,
             xAxisSettingFunction: xAxisSettingFunction,
@@ -154,6 +161,8 @@ class PieChart extends PieRadarChart<PieChartPainter> {
       centerText,
       centerTextOffsetX,
       centerTextOffsetY,
+      entryLabelTypeface,
+      centerTextTypeface,
       holeRadiusPercent,
       transparentCircleRadiusPercent,
       drawCenterText,

@@ -22,6 +22,7 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/day_axis_value_formatter.dart';
 import 'package:mp_flutter_chart/chart/mp/core/value_formatter/my_value_formatter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/util.dart';
 
 class BarChartBasic extends StatefulWidget {
   @override
@@ -182,7 +183,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
 
     barData = BarData(dataSets);
     barData.setValueTextSize(10);
-//    barData.setValueTypeface(tfLight);
+    barData.setValueTypeface(Util.LIGHT);
     barData.barWidth = 0.9;
   }
 
@@ -207,7 +208,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     barChart = BarChart(barData, axisLeftSettingFunction: (axisLeft, chart) {
       axisLeft
         ..setLabelCount2(8, false)
-//      ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..setValueFormatter(MyValueFormatter("\$"))
         ..position = YAxisLabelPosition.OUTSIDE_CHART
         ..spacePercentTop = 15
@@ -215,7 +216,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     }, axisRightSettingFunction: (axisRight, chart) {
       axisRight
         ..drawGridLines = false
-//      ..setTypeface(tf)
+        ..typeface = Util.LIGHT
         ..setLabelCount2(8, false)
         ..setValueFormatter(MyValueFormatter("\$"))
         ..spacePercentTop = 15
@@ -231,6 +232,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
         ..xEntrySpace = 4;
     }, xAxisSettingFunction: (xAxis, chart) {
       xAxis
+        ..typeface = Util.LIGHT
         ..position = XAxisPosition.BOTTOM
         ..drawGridLines = false
         ..setGranularity(1.0)
