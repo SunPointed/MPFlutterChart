@@ -1,0 +1,4 @@
+#Fri Sep 27 10:26:20 CST 2019
+base.0=/Users/lqy/Documents/GitHub/mp_flutter_chart/build/app/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex

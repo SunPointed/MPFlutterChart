@@ -1,0 +1,5 @@
+version: "Apple Swift version 5.0.1 (swiftlang-1001.0.82.4 clang-1001.0.46.5)"
+options: "e51e2018b7526bad35eb92f4eb2e6a09"
+build_time: [1569554553, 454910000]
+inputs:
+  "/Users/lqy/Documents/GitHub/mp_flutter_chart/ios/File.swift": [1569554551, 748229505]
