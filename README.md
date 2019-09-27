@@ -5,11 +5,9 @@ flutter charts just like [**MPAndroidChart**](https://github.com/PhilJay/MPAndro
 Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when translate this library to flutter I learned a lot about matrix use in animation.
 
 ## todos
-**1.save to local(try use channel to solve this)**
+**1.slide conflict in scroll views and chart(current solution is ugly, need to deep learn touch control and try other solutions)**
 <br/><br/>
-**2.slide conflict in scroll views and chart(current solution is ugly, need to deep learn touch control and try other solutions)**
-<br/><br/>
-**3.potential bugs fix**
+**2.potential bugs fix**
 
 ## More Examples
 **LineCharts**

@@ -1,10 +1,8 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/bar_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/bubble_chart.dart';
 import 'package:mp_flutter_chart/chart/mp/chart/candlestick_chart.dart';
@@ -36,9 +34,7 @@ import 'package:mp_flutter_chart/chart/mp/core/data_set/scatter_data_set.dart';
 import 'package:mp_flutter_chart/chart/mp/core/enums/mode.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/demo/util.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:screenshot/screenshot.dart';
 
 PopupMenuItem item(String text, String id) {
   return PopupMenuItem<String>(
@@ -58,9 +54,6 @@ PopupMenuItem item(String text, String id) {
 }
 
 abstract class ActionState<T extends StatefulWidget> extends State<T> {
-  final ScreenshotController _screenshotController = ScreenshotController();
-  bool isCapturing = false;
-
   @override
   Widget build(BuildContext context) {
     chartInit();
@@ -77,11 +70,7 @@ abstract class ActionState<T extends StatefulWidget> extends State<T> {
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
             title: Text(getTitle())),
-        body: Screenshot(
-            controller: _screenshotController,
-            child: Container(
-                decoration: BoxDecoration(color: Colors.white),
-                child: getBody())));
+        body: getBody());
   }
 
   void itemClick(String action);
@@ -94,7 +83,7 @@ abstract class ActionState<T extends StatefulWidget> extends State<T> {
 
   PopupMenuItemBuilder<String> getBuilder();
 
-  void captureImg() async {
+  void captureImg(CaptureCallback callback) {
     PermissionHandler()
         .checkPermissionStatus(PermissionGroup.storage)
         .then((permission) {
@@ -107,41 +96,18 @@ abstract class ActionState<T extends StatefulWidget> extends State<T> {
                 ((permissions[PermissionGroup.storage] ==
                         PermissionStatus.unknown) &&
                     Platform.isIOS)) {
-              _capture();
+              callback();
             }
           }
         });
       } else {
-        _capture();
+        callback();
       }
     });
   }
-
-  void _capture() async {
-    if (isCapturing) return;
-    isCapturing = true;
-    String directory = "";
-    if (Platform.isAndroid) {
-      directory = (await getExternalStorageDirectory()).path;
-    } else if (Platform.isIOS) {
-      directory = (await getApplicationDocumentsDirectory()).path;
-    } else {
-      return;
-    }
-
-    String fileName = DateTime.now().toIso8601String();
-    String path = '$directory/$fileName.png';
-    _screenshotController.capture(path: path, pixelRatio: 3.0).then((imgFile) {
-      ImageGallerySaver.saveImage(Uint8List.fromList(imgFile.readAsBytesSync()))
-          .then((value) {
-        imgFile.delete();
-      });
-      isCapturing = false;
-    }).catchError((error) {
-      isCapturing = false;
-    });
-  }
 }
+
+typedef CaptureCallback = void Function();
 
 abstract class SimpleActionState<T extends StatefulWidget>
     extends ActionState<T> {
@@ -298,7 +264,9 @@ abstract class LineActionState<T extends StatefulWidget>
           ..animateXY1(2000, 2000);
         break;
       case 'O':
-        captureImg();
+        captureImg(() {
+          state.capture();
+        });
         break;
     }
   }
@@ -389,7 +357,9 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
           ..animateXY1(2000, 2000);
         break;
       case 'K':
-        captureImg();
+        captureImg(() {
+          state.capture();
+        });
         break;
     }
   }
@@ -479,7 +449,9 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
           ..animateXY1(2000, 2000);
         break;
       case 'K':
-        captureImg();
+        captureImg(() {
+          state.capture();
+        });
         break;
     }
   }
@@ -587,7 +559,9 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
           ..animateXY1(1400, 1400);
         break;
       case 'N':
-        captureImg();
+        captureImg(() {
+          state.capture();
+        });
         break;
     }
   }
@@ -727,7 +701,9 @@ abstract class ScatterActionState<T extends StatefulWidget>
         state.setStateIfNotDispose();
         break;
       case 'J':
-        captureImg();
+        captureImg(() {
+          state.capture();
+        });
         break;
     }
   }
@@ -807,7 +783,9 @@ abstract class BubbleActionState<T extends StatefulWidget>
         state.setStateIfNotDispose();
         break;
       case 'J':
-        captureImg();
+        captureImg(() {
+          state.capture();
+        });
         break;
     }
   }
@@ -888,7 +866,9 @@ abstract class CandlestickActionState<T extends StatefulWidget>
         state.setStateIfNotDispose();
         break;
       case 'J':
-        captureImg();
+        captureImg(() {
+          state.capture();
+        });
         break;
       case 'K':
         for (ICandleDataSet set in candlestickChart.data.dataSets) {
@@ -1006,7 +986,9 @@ abstract class RadarActionState<T extends StatefulWidget>
           ..animateXY1(1400, 1400);
         break;
       case 'N':
-        captureImg();
+        captureImg(() {
+          state.capture();
+        });
         break;
     }
   }

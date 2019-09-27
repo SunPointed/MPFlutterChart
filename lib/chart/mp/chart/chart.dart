@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/widgets.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:mp_flutter_chart/chart/mp/core/animator.dart';
 import 'package:mp_flutter_chart/chart/mp/core/axis/x_axis.dart';
 import 'package:mp_flutter_chart/chart/mp/core/common_interfaces.dart';
@@ -13,6 +17,8 @@ import 'package:mp_flutter_chart/chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/utils/utils.dart';
 import 'package:mp_flutter_chart/chart/mp/core/view_port.dart';
 import 'package:mp_flutter_chart/chart/mp/painter/painter.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
 
 abstract class Chart<P extends ChartPainter> extends StatefulWidget
     implements AnimatorUpdateListener {
@@ -171,6 +177,8 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
 }
 
 abstract class ChartState<T extends Chart> extends State<T> {
+  final ScreenshotController _screenshotController = ScreenshotController();
+  bool isCapturing = false;
   bool _singleTap = false;
 
   void setStateIfNotDispose() {
@@ -181,45 +189,75 @@ abstract class ChartState<T extends Chart> extends State<T> {
 
   void updatePainter();
 
+  void capture() async {
+    if (isCapturing) return;
+    isCapturing = true;
+    String directory = "";
+    if (Platform.isAndroid) {
+      directory = (await getExternalStorageDirectory()).path;
+    } else if (Platform.isIOS) {
+      directory = (await getApplicationDocumentsDirectory()).path;
+    } else {
+      return;
+    }
+
+    String fileName = DateTime.now().toIso8601String();
+    String path = '$directory/$fileName.png';
+    _screenshotController.capture(path: path, pixelRatio: 3.0).then((imgFile) {
+      ImageGallerySaver.saveImage(Uint8List.fromList(imgFile.readAsBytesSync()))
+          .then((value) {
+        imgFile.delete();
+      });
+      isCapturing = false;
+    }).catchError((error) {
+      isCapturing = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     widget.doneBeforePainterInit();
     widget.initialPainter();
     updatePainter();
-    return Stack(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        children: [
-          ConstrainedBox(
-              constraints: BoxConstraints(
-                  minHeight: double.infinity, minWidth: double.infinity),
-              child: GestureDetector(
-                  onTapDown: (detail) {
-                    _singleTap = true;
-                    onTapDown(detail);
-                  },
-                  onTapUp: (detail) {
-                    if (_singleTap) {
-                      _singleTap = false;
-                      onSingleTapUp(detail);
-                    }
-                  },
-                  onDoubleTap: () {
-                    _singleTap = false;
-                    onDoubleTap();
-                  },
-                  onScaleStart: (detail) {
-                    onScaleStart(detail);
-                  },
-                  onScaleUpdate: (detail) {
-                    _singleTap = false;
-                    onScaleUpdate(detail);
-                  },
-                  onScaleEnd: (detail) {
-                    onScaleEnd(detail);
-                  },
-                  child: CustomPaint(painter: widget.painter))),
-        ]);
+    return Screenshot(
+        controller: _screenshotController,
+        child: Container(
+            decoration: BoxDecoration(color: ColorUtils.WHITE),
+            child: Stack(
+                // Center is a layout widget. It takes a single child and positions it
+                // in the middle of the parent.
+                children: [
+                  ConstrainedBox(
+                      constraints: BoxConstraints(
+                          minHeight: double.infinity,
+                          minWidth: double.infinity),
+                      child: GestureDetector(
+                          onTapDown: (detail) {
+                            _singleTap = true;
+                            onTapDown(detail);
+                          },
+                          onTapUp: (detail) {
+                            if (_singleTap) {
+                              _singleTap = false;
+                              onSingleTapUp(detail);
+                            }
+                          },
+                          onDoubleTap: () {
+                            _singleTap = false;
+                            onDoubleTap();
+                          },
+                          onScaleStart: (detail) {
+                            onScaleStart(detail);
+                          },
+                          onScaleUpdate: (detail) {
+                            _singleTap = false;
+                            onScaleUpdate(detail);
+                          },
+                          onScaleEnd: (detail) {
+                            onScaleEnd(detail);
+                          },
+                          child: CustomPaint(painter: widget.painter))),
+                ])));
   }
 
   @override
