@@ -101,10 +101,14 @@ abstract class ActionState<T extends StatefulWidget> extends State<T> {
       if (permission.value != PermissionStatus.granted) {
         PermissionHandler()
             .requestPermissions([PermissionGroup.storage]).then((permissions) {
-          if (permissions.containsKey(PermissionGroup.storage) &&
-              permissions[PermissionGroup.storage] ==
-                  PermissionStatus.granted) {
-            _capture();
+          if (permissions.containsKey(PermissionGroup.storage)) {
+            if (permissions[PermissionGroup.storage] ==
+                    PermissionStatus.granted ||
+                ((permissions[PermissionGroup.storage] ==
+                        PermissionStatus.unknown) &&
+                    Platform.isIOS)) {
+              _capture();
+            }
           }
         });
       } else {

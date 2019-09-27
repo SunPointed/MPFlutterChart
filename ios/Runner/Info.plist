@@ -41,8 +41,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<!-- Permission options for the `photos` group -->
-     <key>NSPhotoLibraryUsageDescription</key>
-     <string>photos</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>photos</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>save to gallery  needs permission to write photos</string>
 </dict>
 </plist>
