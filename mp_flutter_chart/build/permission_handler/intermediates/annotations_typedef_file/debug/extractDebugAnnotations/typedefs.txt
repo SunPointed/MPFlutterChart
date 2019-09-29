@@ -1,3 +1,0 @@
-D com/baseflow/permissionhandler/PermissionHandlerPlugin$PermissionGroup
-D com/baseflow/permissionhandler/PermissionHandlerPlugin$PermissionStatus
-D com/baseflow/permissionhandler/PermissionHandlerPlugin$ServiceStatus
