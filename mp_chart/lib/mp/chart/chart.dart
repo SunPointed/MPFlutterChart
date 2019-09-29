@@ -206,6 +206,7 @@ abstract class ChartState<T extends Chart> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
+    widget._state ??= this;
     widget.doneBeforePainterInit();
     widget.initialPainter();
     updatePainter();
