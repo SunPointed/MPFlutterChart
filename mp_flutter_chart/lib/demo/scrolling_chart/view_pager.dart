@@ -86,11 +86,14 @@ class ScrollingChartViewPagerState
                 _preTime = Util.currentTimeMillis();
               },
               onPointerMove: (e) {
-                if (_preTime + 500 < Util.currentTimeMillis()) {
-                  if ((_curX - e.localPosition.dx) < 5) {
-                    _isParentMove = false;
-                    if (mounted) {
-                      setState(() {});
+                if (_isParentMove) {
+                  var diff = Util.currentTimeMillis() - _preTime;
+                  if (diff >= 500 && diff <= 600) {
+                    if ((_curX - e.localPosition.dx).abs() < 5) {
+                      _isParentMove = false;
+                      if (mounted) {
+                        setState(() {});
+                      }
                     }
                   }
                 }

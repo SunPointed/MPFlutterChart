@@ -36,6 +36,7 @@ class ScrollingChartMultiple extends StatefulWidget {
 class ScrollingChartMultipleState
     extends SimpleActionState<ScrollingChartMultiple> {
   List<ChartData> _chartDatas = List();
+  List<Chart> _charts;
 
   var random = Random(1);
 
@@ -70,11 +71,14 @@ class ScrollingChartMultipleState
               _preTime = Util.currentTimeMillis();
             },
             onPointerMove: (e) {
-              if (_preTime + 500 < Util.currentTimeMillis()) {
-                if ((_curX - e.localPosition.dx) < 5) {
-                  _isParentMove = false;
-                  if (mounted) {
-                    setState(() {});
+              if (_isParentMove) {
+                var diff = Util.currentTimeMillis() - _preTime;
+                if (diff >= 500 && diff <= 600) {
+                  if ((_curX - e.localPosition.dx).abs() < 5) {
+                    _isParentMove = false;
+                    if (mounted) {
+                      setState(() {});
+                    }
                   }
                 }
               }
@@ -110,14 +114,13 @@ class ScrollingChartMultipleState
       );
     }
 
-    var desc = Description()..enabled = false;
     Chart chart;
     if (data is LineData) {
-      chart = _getLineChart(data);
+      chart = _getLineChart(data, index);
     } else if (data is BarData) {
-      chart = _getBarChart(data);
+      chart = _getBarChart(data, index);
     } else {
-      chart = _getPieChart(data);
+      chart = _getPieChart(data, index);
     }
 
     return Container(height: 200, child: chart);
@@ -134,6 +137,7 @@ class ScrollingChartMultipleState
         _chartDatas.add(_generateDataPie());
       }
     }
+    _charts = List(_chartDatas.length);
   }
 
   LineData _generateDataLine(int cnt) {
@@ -204,89 +208,102 @@ class ScrollingChartMultipleState
     return PieData(d);
   }
 
-  LineChart _getLineChart(LineData data) {
-    var desc = Description()..enabled = false;
-    var chart = LineChart(data, axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..setLabelCount2(5, false)
-        ..setAxisMinimum(0);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight
-        ..setLabelCount2(5, false)
-        ..drawGridLines = (false)
-        ..setAxisMinimum(0);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis
-        ..position = (XAxisPosition.BOTTOM)
-        ..drawGridLines = (false)
-        ..drawAxisLine = (true);
-    },
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        description: desc);
-    chart.animator.animateX1(750);
-    return chart;
+  LineChart _getLineChart(LineData data, int index) {
+    if(_charts[index] == null) {
+      var desc = Description()
+        ..enabled = false;
+      _charts[index] = LineChart(data, axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..setLabelCount2(5, false)
+          ..setAxisMinimum(0);
+      },
+          axisRightSettingFunction: (axisRight, chart) {
+            axisRight
+              ..setLabelCount2(5, false)
+              ..drawGridLines = (false)
+              ..setAxisMinimum(0);
+          },
+          xAxisSettingFunction: (xAxis, chart) {
+            xAxis
+              ..position = (XAxisPosition.BOTTOM)
+              ..drawGridLines = (false)
+              ..drawAxisLine = (true);
+          },
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          description: desc);
+      _charts[index].animator.animateX1(750);
+    }
+    return _charts[index];
   }
 
-  BarChart _getBarChart(BarData data) {
-    var desc = Description()..enabled = false;
-    var chart = BarChart(data, axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..setLabelCount2(5, false)
-        ..setAxisMinimum(0)
-        ..spacePercentTop = (20);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight
-        ..setLabelCount2(5, false)
-        ..setAxisMinimum(0)
-        ..spacePercentTop = (20);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis
-        ..position = (XAxisPosition.BOTTOM)
-        ..drawAxisLine = (true)
-        ..drawGridLines = (false);
-    },
-        drawBarShadow: false,
-        fitBars: true,
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        description: desc);
-    chart.animator.animateY1(700);
-    return chart;
+  BarChart _getBarChart(BarData data, int index) {
+    if(_charts[index] == null) {
+      var desc = Description()
+        ..enabled = false;
+      _charts[index] = BarChart(data, axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..setLabelCount2(5, false)
+          ..setAxisMinimum(0)
+          ..spacePercentTop = (20);
+      },
+          axisRightSettingFunction: (axisRight, chart) {
+            axisRight
+              ..setLabelCount2(5, false)
+              ..setAxisMinimum(0)
+              ..spacePercentTop = (20);
+          },
+          xAxisSettingFunction: (xAxis, chart) {
+            xAxis
+              ..position = (XAxisPosition.BOTTOM)
+              ..drawAxisLine = (true)
+              ..drawGridLines = (false);
+          },
+          drawBarShadow: false,
+          fitBars: true,
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          description: desc);
+      _charts[index].animator.animateY1(700);
+    }
+    return _charts[index];
   }
 
-  PieChart _getPieChart(PieData data) {
-    data
-      ..setValueFormatter(PercentFormatter())
-      ..setValueTextSize(11)
-      ..setValueTextColor(ColorUtils.WHITE);
-    var desc = Description()..enabled = false;
-    var chart = PieChart(data, legendSettingFunction: (legend, chart) {
-      legend
-        ..verticalAlignment = (LegendVerticalAlignment.TOP)
-        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-        ..orientation = (LegendOrientation.VERTICAL)
-        ..drawInside = (false)
-        ..yEntrySpace = (0)
-        ..yOffset = (0);
-    },
-        extraLeftOffset: 5,
-        extraRightOffset: 50,
-        extraTopOffset: 10,
-        extraBottomOffset: 10,
-        holeRadiusPercent: 52,
-        transparentCircleRadiusPercent: 57,
-        centerText: generateCenterText(),
-        usePercentValues: true,
-        description: desc);
-    chart.animator.animateY1(900);
-    return chart;
+  PieChart _getPieChart(PieData data, int index) {
+    if(_charts[index] == null) {
+      data
+        ..setValueFormatter(PercentFormatter())
+        ..setValueTextSize(11)
+        ..setValueTextColor(ColorUtils.WHITE);
+      var desc = Description()
+        ..enabled = false;
+      _charts[index] = PieChart(data, legendSettingFunction: (legend, chart) {
+        legend
+          ..verticalAlignment = (LegendVerticalAlignment.TOP)
+          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+          ..orientation = (LegendOrientation.VERTICAL)
+          ..drawInside = (false)
+          ..yEntrySpace = (0)
+          ..yOffset = (0);
+      },
+          extraLeftOffset: 5,
+          extraRightOffset: 50,
+          extraTopOffset: 10,
+          extraBottomOffset: 10,
+          holeRadiusPercent: 52,
+          transparentCircleRadiusPercent: 57,
+          centerText: generateCenterText(),
+          usePercentValues: true,
+          description: desc);
+      _charts[index].animator.animateY1(900);
+    }
+    return _charts[index];
   }
 
   String generateCenterText() {

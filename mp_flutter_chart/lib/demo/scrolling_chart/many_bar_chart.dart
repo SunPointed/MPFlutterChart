@@ -22,6 +22,7 @@ class ScrollingChartManyBar extends StatefulWidget {
 class ScrollingChartManyBarState
     extends SimpleActionState<ScrollingChartManyBar> {
   List<BarData> _barDatas = List();
+  List<BarChart> _barCharts;
 
   var random = Random(1);
 
@@ -56,11 +57,14 @@ class ScrollingChartManyBarState
               _preTime = Util.currentTimeMillis();
             },
             onPointerMove: (e) {
-              if (_preTime + 500 < Util.currentTimeMillis()) {
-                if ((_curX - e.localPosition.dx) < 5) {
-                  _isParentMove = false;
-                  if (mounted) {
-                    setState(() {});
+              if (_isParentMove) {
+                var diff = Util.currentTimeMillis() - _preTime;
+                if (diff >= 500 && diff <= 600) {
+                  if ((_curX - e.localPosition.dx).abs() < 5) {
+                    _isParentMove = false;
+                    if (mounted) {
+                      setState(() {});
+                    }
                   }
                 }
               }
@@ -96,29 +100,32 @@ class ScrollingChartManyBarState
       );
     }
 
-    var desc = Description()..enabled = false;
-    var barChart = BarChart(data, axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..setLabelCount2(5, false)
-        ..spacePercentTop = (15);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight
-        ..setLabelCount2(5, false)
-        ..spacePercentTop = (15);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis
-        ..position = (XAxisPosition.BOTTOM)
-        ..drawGridLines = (false);
-    },
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        fitBars: true,
-        description: desc);
-    barChart.animator..animateY1(700);
-    return Container(height: 200, child: barChart);
+    if (_barCharts[index] == null) {
+      var desc = Description()..enabled = false;
+      _barCharts[index] = BarChart(data,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..setLabelCount2(5, false)
+          ..spacePercentTop = (15);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight
+          ..setLabelCount2(5, false)
+          ..spacePercentTop = (15);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..position = (XAxisPosition.BOTTOM)
+          ..drawGridLines = (false);
+      },
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          fitBars: true,
+          description: desc);
+      _barCharts[index].animator..animateY1(700);
+    }
+    return Container(height: 200, child: _barCharts[index]);
   }
 
   void _initBarDatas() {
@@ -126,6 +133,7 @@ class ScrollingChartManyBarState
     for (int i = 0; i < 20; i++) {
       _barDatas.add(generateData(i + 1));
     }
+    _barCharts = List(_barDatas.length);
   }
 
   BarData generateData(int cnt) {

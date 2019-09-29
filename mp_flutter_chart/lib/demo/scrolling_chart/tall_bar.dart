@@ -22,6 +22,7 @@ class ScrollingChartTallBar extends StatefulWidget {
 class ScrollingChartTallBarState
     extends SimpleActionState<ScrollingChartTallBar> {
   BarData _barData;
+  BarChart _barChart;
 
   var random = Random(1);
 
@@ -56,11 +57,14 @@ class ScrollingChartTallBarState
               _preTime = Util.currentTimeMillis();
             },
             onPointerMove: (e) {
-              if (_preTime + 500 < Util.currentTimeMillis()) {
-                if ((_curX - e.localPosition.dx) < 5) {
-                  _isParentMove = false;
-                  if (mounted) {
-                    setState(() {});
+              if (_isParentMove) {
+                var diff = Util.currentTimeMillis() - _preTime;
+                if (diff >= 500 && diff <= 600) {
+                  if ((_curX - e.localPosition.dx).abs() < 5) {
+                    _isParentMove = false;
+                    if (mounted) {
+                      setState(() {});
+                    }
                   }
                 }
               }
@@ -95,27 +99,29 @@ class ScrollingChartTallBarState
       );
     }
 
-    var desc = Description()..enabled = false;
-    var barChart = BarChart(_barData,
-        axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft.drawGridLines = (false);
-    }, legendSettingFunction: (legend, chart) {
-      legend.enabled = (false);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis
-        ..position = (XAxisPosition.BOTTOM)
-        ..drawGridLines = (false);
-    },
-        pinchZoomEnabled: false,
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        fitBars: true,
-        drawBarShadow: false,
-        description: desc);
-    barChart.animator.animateY1(800);
+    if (_barChart == null) {
+      var desc = Description()..enabled = false;
+      _barChart = BarChart(_barData,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft.drawGridLines = (false);
+      }, legendSettingFunction: (legend, chart) {
+        legend.enabled = (false);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..position = (XAxisPosition.BOTTOM)
+          ..drawGridLines = (false);
+      },
+          pinchZoomEnabled: false,
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          fitBars: true,
+          drawBarShadow: false,
+          description: desc);
+      _barChart.animator.animateY1(800);
+    }
     return Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,7 +142,7 @@ class ScrollingChartTallBarState
               height: 1000,
               child: Padding(
                   padding: EdgeInsets.only(top: 100, bottom: 100),
-                  child: barChart)),
+                  child: _barChart)),
           Container(
               padding: EdgeInsets.all(15.0),
               child: Center(
