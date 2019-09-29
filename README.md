@@ -5,7 +5,7 @@ flutter charts just like [**MPAndroidChart**](https://github.com/PhilJay/MPAndro
 Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when translate this library to flutter I learned a lot about matrix use in animation.
 
 ## todos
-**1.slide conflict in scroll views and chart(current solution is ugly, need to deep learn touch control and try other solutions)**
+**1.In the design of flutter, the change of the widget can only be refreshed by its parent widget, so the parent widget needs to save all the data of its child widget. Now Chart saves the data by itself, so Chart is single instance in the example. It doesn't feel like any of the other flutter widgets, so I need to learn the design model of flutter, and then save the data needed for the Chart into another class(maybe a controller).When we use Chart, let the parent widget of the Chart hold that class's(controller's) instance, which may be better to use**
 <br/><br/>
 **2.potential bugs fix**
 

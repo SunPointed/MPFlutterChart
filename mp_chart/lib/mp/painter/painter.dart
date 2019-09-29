@@ -90,7 +90,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   /// default value-formatter, number of digits depends on provided chart-data
   DefaultValueFormatter _defaultValueFormatter = DefaultValueFormatter(0);
 
-  bool isInit = false;
+  bool _isInit = false;
 
   XAxis get xAxis => _xAxis;
 
@@ -169,7 +169,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
       _rendererSettingFunction(renderer);
     }
     init();
-    isInit = true;
+    _isInit = true;
   }
 
   void initDefaultWithData() {
@@ -224,7 +224,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   void paint(Canvas canvas, Size size) {
     _size = size;
 
-    if (!isInit) {
+    if (!_isInit) {
       MPPointF c = getCenter(size);
       _infoPaint.layout();
       _infoPaint.paint(canvas,
