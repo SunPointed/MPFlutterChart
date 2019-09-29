@@ -40,24 +40,10 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   /// Flag that indicates if highlighting per tap (touch) is enabled
   final bool _highLightPerTapEnabled;
 
-  /// If set to true, chart continues to scroll after touch up
-  final bool _dragDecelerationEnabled;
-
-  /// Deceleration friction coefficient in [0 ; 1] interval, higher values
-  /// indicate that speed will decrease slowly, for example if it set to 0, it
-  /// will stop immediately. 1 is an invalid value, and will be converted to
-  /// 0.999f automatically.
-  final double _dragDecelerationFrictionCoef;
   final double _extraTopOffset,
       _extraRightOffset,
       _extraBottomOffset,
       _extraLeftOffset;
-
-  /// text that is displayed when the chart is empty
-  final String _noDataText;
-
-  /// if true, touch gestures are enabled on the chart
-  final bool _touchEnabled;
 
   /// the view that represents the marker
   final IMarker _marker;
@@ -140,14 +126,10 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
       ViewPortHandler viewPortHandler,
       double maxHighlightDistance,
       bool highLightPerTapEnabled,
-      bool dragDecelerationEnabled,
-      double dragDecelerationFrictionCoef,
       double extraLeftOffset,
       double extraTopOffset,
       double extraRightOffset,
       double extraBottomOffset,
-      String noDataText,
-      bool touchEnabled,
       IMarker marker,
       Description desc,
       bool drawMarkers,
@@ -163,14 +145,10 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
         _animator = animator,
         _maxHighlightDistance = maxHighlightDistance,
         _highLightPerTapEnabled = highLightPerTapEnabled,
-        _dragDecelerationEnabled = dragDecelerationEnabled,
-        _dragDecelerationFrictionCoef = dragDecelerationFrictionCoef,
         _extraLeftOffset = extraLeftOffset,
         _extraTopOffset = extraTopOffset,
         _extraRightOffset = extraRightOffset,
         _extraBottomOffset = extraBottomOffset,
-        _noDataText = noDataText,
-        _touchEnabled = touchEnabled,
         _marker = marker,
         _description = desc,
         _drawMarkers = drawMarkers,
@@ -395,20 +373,6 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
     }
   }
 
-//  void setOnChartValueSelectedListener(OnChartValueSelectedListener l) {
-//    this._selectionListener = l;
-//  }
-
-//  OnChartGestureListener _gestureListener;
-
-//  void setOnChartGestureListener(OnChartGestureListener l) {
-//    this._gestureListener = l;
-//  }
-//
-//  OnChartGestureListener getOnChartGestureListener() {
-//    return _gestureListener;
-//  }
-
   /// Returns the Highlight object (contains x-index and DataSet index) of the
   /// selected value at the given touch point inside the Line-, Scatter-, or
   /// CandleStick-Chart.
@@ -460,20 +424,6 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   List<double> getMarkerPosition(Highlight high) {
     return List<double>()..add(high.drawX)..add(high.drawY);
   }
-
-//  /// returns the current y-max value across all DataSets
-//  ///
-//  /// @return
-//  double getYMax() {
-//    return _data.getYMax1();
-//  }
-//
-//  /// returns the current y-min value across all DataSets
-//  ///
-//  /// @return
-//  double getYMin() {
-//    return _data.getYMin1();
-//  }
 
   @override
   ChartData<IDataSet<Entry>> getData() {

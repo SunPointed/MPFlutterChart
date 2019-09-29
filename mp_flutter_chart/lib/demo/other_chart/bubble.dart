@@ -222,7 +222,6 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
         ..position = (XAxisPosition.BOTTOM)
         ..typeface = Util.LIGHT;
     },
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,

@@ -243,8 +243,6 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
         extraRightOffset: 5,
         extraBottomOffset: 5,
         usePercentValues: true,
-        touchEnabled: true,
-        dragDecelerationFrictionCoef: 0.95,
         centerText: _generateCenterSpannableText(),
         highLightPerTapEnabled: true,
         selectionListener: this,

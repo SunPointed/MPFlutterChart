@@ -234,7 +234,6 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
         ..enableAxisLineDashedLine(5, 5, 0)
         ..enableGridDashedLine(10, 10, 0);
     },
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,

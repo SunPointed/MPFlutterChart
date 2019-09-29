@@ -202,7 +202,6 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
     }, xAxisSettingFunction: (xAxis, chart) {
       xAxis.position = (XAxisPosition.TOP);
     },
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,

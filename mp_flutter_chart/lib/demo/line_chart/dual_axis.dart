@@ -263,7 +263,6 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
         ..drawGridLines = (false)
         ..drawAxisLine = (false);
     },
-        touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
         dragYEnabled: true,
@@ -271,7 +270,6 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
         scaleYEnabled: true,
         pinchZoomEnabled: true,
         selectionListener: this,
-        dragDecelerationFrictionCoef: 0.9,
         highLightPerTapEnabled: true,
         backgroundColor: ColorUtils.LTGRAY,
         description: desc);

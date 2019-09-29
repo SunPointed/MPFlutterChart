@@ -143,7 +143,6 @@ class LineChartPerformanceState
         ..drawGridLines = (true)
         ..drawAxisLine = (false);
     },
-        touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
         dragYEnabled: true,

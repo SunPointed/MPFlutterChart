@@ -221,7 +221,6 @@ class ScrollingChartMultipleState
         ..drawGridLines = (false)
         ..drawAxisLine = (true);
     },
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,
@@ -252,7 +251,6 @@ class ScrollingChartMultipleState
     },
         drawBarShadow: false,
         fitBars: true,
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,
@@ -278,7 +276,6 @@ class ScrollingChartMultipleState
         ..yEntrySpace = (0)
         ..yOffset = (0);
     },
-        touchEnabled: true,
         extraLeftOffset: 5,
         extraRightOffset: 50,
         extraTopOffset: 10,

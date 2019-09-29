@@ -217,7 +217,6 @@ class OtherChartScatterPlotState
         ..drawGridLines = (false)
         ..typeface = Util.LIGHT;
     },
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,

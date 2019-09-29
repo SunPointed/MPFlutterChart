@@ -224,7 +224,6 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
         ..drawAxisLine = (false)
         ..drawGridLines = (false);
     },
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,

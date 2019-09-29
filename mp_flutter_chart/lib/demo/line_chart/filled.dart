@@ -215,7 +215,6 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
       xAxis.enabled = (false);
     },
         drawBorders: true,
-        touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
         dragYEnabled: true,

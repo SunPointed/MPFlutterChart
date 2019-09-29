@@ -194,7 +194,6 @@ class OtherChartCandlestickState
         ..position = (XAxisPosition.BOTTOM)
         ..drawGridLines = (true);
     },
-        touchEnabled: true,
         drawGridBackground: false,
         backgroundColor: ColorUtils.WHITE,
         dragXEnabled: true,

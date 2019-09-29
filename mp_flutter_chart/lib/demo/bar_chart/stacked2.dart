@@ -148,7 +148,6 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
         ..setGranularity(10)
         ..setValueFormatter(B());
     },
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,

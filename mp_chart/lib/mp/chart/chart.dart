@@ -35,11 +35,7 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
   ////// option
   double maxHighlightDistance;
   bool highLightPerTapEnabled;
-  bool dragDecelerationEnabled;
-  double dragDecelerationFrictionCoef;
   double extraTopOffset, extraRightOffset, extraBottomOffset, extraLeftOffset;
-  String noDataText;
-  bool touchEnabled;
   bool drawMarkers;
 
   ////// split child property
@@ -75,14 +71,11 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
       OnChartValueSelectedListener selectionListener,
       double maxHighlightDistance = 100.0,
       bool highLightPerTapEnabled = true,
-      bool dragDecelerationEnabled = true,
-      double dragDecelerationFrictionCoef = 0.9,
       double extraTopOffset = 0.0,
       double extraRightOffset = 0.0,
       double extraBottomOffset = 0.0,
       double extraLeftOffset = 0.0,
       String noDataText = "No chart data available.",
-      bool touchEnabled = true,
       bool drawMarkers = true,
       double descTextSize = 12,
       double infoTextSize = 12,
@@ -91,14 +84,10 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
       : data = data,
         maxHighlightDistance = maxHighlightDistance,
         highLightPerTapEnabled = highLightPerTapEnabled,
-        dragDecelerationEnabled = dragDecelerationEnabled,
-        dragDecelerationFrictionCoef = dragDecelerationFrictionCoef,
         extraLeftOffset = extraLeftOffset,
         extraTopOffset = extraTopOffset,
         extraRightOffset = extraRightOffset,
         extraBottomOffset = extraBottomOffset,
-        noDataText = noDataText,
-        touchEnabled = touchEnabled,
         drawMarkers = drawMarkers,
         marker = marker,
         description = description,
@@ -115,7 +104,8 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
     if (infoTextColor == null) {
       infoTextColor = ColorUtils.BLACK;
     }
-    infoPaint = PainterUtils.create(null, null, infoTextColor, infoTextSize);
+    infoPaint =
+        PainterUtils.create(null, noDataText, infoTextColor, infoTextSize);
 
     if (maxHighlightDistance == 0.0) {
       maxHighlightDistance = Utils.convertDpToPixel(500);

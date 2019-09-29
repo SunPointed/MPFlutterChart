@@ -115,7 +115,6 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
 
     var desc = Description()..enabled = false;
     lineChart = LineChart(lineData,
-        touchEnabled: true,
         noDataText:
             "No chart data available. \nUse the menu to add entries and data sets!",
         drawGridBackground: false,

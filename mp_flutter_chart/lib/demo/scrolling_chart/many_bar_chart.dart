@@ -110,7 +110,6 @@ class ScrollingChartManyBarState
         ..position = (XAxisPosition.BOTTOM)
         ..drawGridLines = (false);
     },
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,

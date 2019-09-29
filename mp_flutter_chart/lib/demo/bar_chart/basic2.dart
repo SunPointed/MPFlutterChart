@@ -172,7 +172,6 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
           ..position = XAxisPosition.BOTTOM
           ..drawGridLines = false;
       },
-      touchEnabled: true,
       drawGridBackground: false,
       dragXEnabled: true,
       dragYEnabled: true,

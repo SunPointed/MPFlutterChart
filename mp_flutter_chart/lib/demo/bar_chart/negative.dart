@@ -137,7 +137,6 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
           ..setValueFormatter(A(_data))
           ..setGranularity(1);
       },
-      touchEnabled: true,
       drawGridBackground: false,
       dragXEnabled: true,
       dragYEnabled: true,

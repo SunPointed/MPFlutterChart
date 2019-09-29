@@ -119,7 +119,6 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
         drawGridBackground: false,
         drawBarShadow: false,
         highlightFullBarEnabled: false,
-        touchEnabled: true,
         dragXEnabled: true,
         dragYEnabled: true,
         scaleXEnabled: true,

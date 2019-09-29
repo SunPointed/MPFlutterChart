@@ -150,7 +150,6 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
         webLineWidth: 1.0,
         webAlpha: 100,
         innerWebLineWidth: 1.0,
-        touchEnabled: true,
         webColor: ColorUtils.LTGRAY,
         webColorInner: ColorUtils.LTGRAY,
         backgroundColor: ColorUtils.DKGRAY,

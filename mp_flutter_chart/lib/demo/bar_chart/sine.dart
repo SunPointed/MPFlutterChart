@@ -164,7 +164,6 @@ class BarChartSineState extends BarActionState<BarChartSine> {
     }, xAxisSettingFunction: (xAxis, chart) {
       xAxis.enabled = (false);
     },
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,

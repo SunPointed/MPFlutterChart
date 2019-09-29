@@ -191,7 +191,6 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
     }, xAxisSettingFunction: (xAxis, chart) {
       xAxis.enabled = (false);
     },
-        touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
         dragYEnabled: true,

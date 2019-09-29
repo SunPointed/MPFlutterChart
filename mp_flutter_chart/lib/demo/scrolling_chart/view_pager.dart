@@ -378,7 +378,6 @@ class ScrollingChartViewPagerState
     }, xAxisSettingFunction: (xAxis, chart) {
       xAxis.enabled = (false);
     },
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,
@@ -400,7 +399,6 @@ class ScrollingChartViewPagerState
     }, xAxisSettingFunction: (xAxis, chart) {
       xAxis.enabled = (false);
     },
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,
@@ -423,7 +421,6 @@ class ScrollingChartViewPagerState
     }, xAxisSettingFunction: (xAxis, chart) {
       xAxis.enabled = (false);
     },
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,
@@ -451,7 +448,6 @@ class ScrollingChartViewPagerState
     }, xAxisSettingFunction: (xAxis, chart) {
       xAxis.position = (XAxisPosition.BOTTOM);
     },
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,
@@ -474,7 +470,6 @@ class ScrollingChartViewPagerState
         ..orientation = (LegendOrientation.VERTICAL)
         ..drawInside = (false);
     },
-        touchEnabled: true,
         centerText: _generateCenterText(),
         holeRadiusPercent: 45,
         transparentCircleRadiusPercent: 50,

@@ -139,7 +139,6 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
     }, xAxisSettingFunction: (xAxis, chart) {
       xAxis.enabled = (false);
     },
-        touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
         dragYEnabled: true,

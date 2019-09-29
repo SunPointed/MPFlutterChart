@@ -202,7 +202,6 @@ class BarChartHorizontalState
           ..drawGridLines = false
           ..setGranularity(10);
       },
-      touchEnabled: true,
       drawGridBackground: false,
       dragXEnabled: true,
       dragYEnabled: true,

@@ -235,7 +235,6 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
       // (0.2 + 0.03) * 4 + 0.08 = 1.00 -> interval per "group"
       (chart as BarChart).groupBars(startYear.toDouble(), groupSpace, barSpace);
     },
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,

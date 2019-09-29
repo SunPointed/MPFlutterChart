@@ -186,7 +186,6 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
         ..avoidFirstLastClipping = (true)
         ..setAxisMinimum(0);
     },
-        touchEnabled: true,
         drawGridBackground: true,
         dragXEnabled: true,
         dragYEnabled: true,

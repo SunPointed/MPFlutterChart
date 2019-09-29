@@ -242,7 +242,6 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
         selectionListener: this,
         drawBarShadow: false,
         drawValueAboveBar: true,
-        touchEnabled: true,
         drawGridBackground: false,
         dragXEnabled: true,
         dragYEnabled: true,

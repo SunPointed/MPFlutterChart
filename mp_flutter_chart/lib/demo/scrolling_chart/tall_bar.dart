@@ -106,7 +106,6 @@ class ScrollingChartTallBarState
         ..position = (XAxisPosition.BOTTOM)
         ..drawGridLines = (false);
     },
-        touchEnabled: true,
         pinchZoomEnabled: false,
         drawGridBackground: false,
         dragXEnabled: true,

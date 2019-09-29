@@ -176,8 +176,6 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
         ..setGranularity(1)
         ..setValueFormatter(A());
     },
-        touchEnabled: false,
-        dragDecelerationFrictionCoef: 0.9,
         highLightPerTapEnabled: true,
         backgroundColor: ColorUtils.WHITE,
         drawGridBackground: false,
