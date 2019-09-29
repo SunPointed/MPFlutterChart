@@ -29,6 +29,7 @@
 .pub/
 /build/
 /mp_flutter_chart/build/
+/mp_chart/build/
 
 # Android related
 **/android/**/gradle-wrapper.jar
