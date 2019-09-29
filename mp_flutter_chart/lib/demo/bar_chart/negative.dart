@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mp_chart/mp/chart/bar_chart.dart';
+import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
 import 'package:mp_chart/mp/core/data/bar_data.dart';
 import 'package:mp_chart/mp/core/data_set/bar_data_set.dart';
 import 'package:mp_chart/mp/core/description.dart';
@@ -21,8 +22,8 @@ class BarChartNegative extends StatefulWidget {
 }
 
 class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
-  BarChart _barChart;
   BarData _barData;
+  BarChartController _controller;
   List<Data> _data = List();
 
   @override
@@ -42,11 +43,6 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
   String getTitle() => "Bar Chart Negative";
 
   @override
-  void chartInit() {
-    _initBarChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
@@ -55,7 +51,7 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
           left: 0,
           top: 0,
           bottom: 0,
-          child: _barChart == null ? Center(child: Text("no data")) : _barChart,
+          child: _initBarChart(),
         ),
       ],
     );
@@ -87,27 +83,22 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
     set.setValueTextColors(colors);
 
     _barData = BarData(List()..add(set));
-    _barData..setValueTextSize(13)
+    _barData
+      ..setValueTextSize(13)
       ..setValueTypeface(Util.REGULAR)
-    ..setValueFormatter(Formatter())
-    ..barWidth = (0.8);
+      ..setValueFormatter(Formatter())
+      ..barWidth = (0.8);
   }
 
-  void _initBarChart() {
+  Widget _initBarChart() {
     if (_barData == null) {
-      return;
+      return Center(child: Text("no data"));
     }
 
-    if (_barChart != null) {
-      _barChart?.data = _barData;
-      _barChart?.getState()?.setStateIfNotDispose();
-      return;
-    }
-
-    var desc = Description()..enabled = false;
-    _barChart = BarChart(
-      _barData,
-      axisLeftSettingFunction: (axisLeft, chart) {
+    if (_controller == null) {
+      var desc = Description()..enabled = false;
+      _controller = BarChartController(_barData,
+          axisLeftSettingFunction: (axisLeft, chart) {
         axisLeft
           ..drawLabels = (false)
           ..spacePercentTop = (25)
@@ -117,14 +108,11 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
           ..setDrawZeroLine(false)
           ..zeroLineColor = ColorUtils.GRAY
           ..zeroLineWidth = 0.7;
-      },
-      axisRightSettingFunction: (axisRight, chart) {
+      }, axisRightSettingFunction: (axisRight, chart) {
         axisRight.enabled = (false);
-      },
-      legendSettingFunction: (legend, chart) {
+      }, legendSettingFunction: (legend, chart) {
         legend.enabled = (false);
-      },
-      xAxisSettingFunction: (xAxis, chart) {
+      }, xAxisSettingFunction: (xAxis, chart) {
         xAxis
           ..position = (XAxisPosition.BOTTOM)
           ..typeface = Util.LIGHT
@@ -137,20 +125,21 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
           ..setValueFormatter(A(_data))
           ..setGranularity(1);
       },
-      drawGridBackground: false,
-      dragXEnabled: true,
-      dragYEnabled: true,
-      scaleXEnabled: true,
-      scaleYEnabled: true,
-      pinchZoomEnabled: false,
-      description: desc,
-      extraTopOffset: -30,
-      extraBottomOffset: 10,
-      extraLeftOffset: 70,
-      extraRightOffset: 70,
-      drawBarShadow: false,
-      drawValueAboveBar: true,
-    );
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          pinchZoomEnabled: false,
+          description: desc,
+          extraTopOffset: -30,
+          extraBottomOffset: 10,
+          extraLeftOffset: 70,
+          extraRightOffset: 70,
+          drawBarShadow: false,
+          drawValueAboveBar: true);
+    }
+    return BarChart(_controller);
   }
 }
 

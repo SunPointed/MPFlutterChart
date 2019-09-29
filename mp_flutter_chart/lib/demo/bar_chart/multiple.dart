@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 
+import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/bar_chart.dart';
@@ -32,16 +33,12 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
   var random = Random(1);
   int _count = 10;
   double _range = 100.0;
+  BarData barData;
 
   @override
   void initState() {
     _initBarData(_count, _range);
     super.initState();
-  }
-
-  @override
-  void chartInit() {
-    _initBarChart();
   }
 
   @override
@@ -56,7 +53,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
           left: 0,
           top: 0,
           bottom: 100,
-          child: barChart == null ? Center(child: Text("no data")) : barChart,
+          child: _initBarChart(),
         ),
         Positioned(
           left: 0,
@@ -188,63 +185,62 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
     setState(() {});
   }
 
-  void _initBarChart() {
+  Widget _initBarChart() {
     if (barData == null) {
-      return;
+      return Center(child: Text("no data"));
     }
 
-    if (barChart != null) {
-      barChart?.data = barData;
-      barChart?.getState()?.setStateIfNotDispose();
-      return;
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      double groupSpace = 0.08;
+      double barSpace = 0.03;
+      controller = BarChartController(barData,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        ValueFormatter formatter = LargeValueFormatter();
+        axisLeft
+          ..typeface = Util.LIGHT
+          ..setValueFormatter(formatter)
+          ..drawGridLines = (false)
+          ..spacePercentTop = (35)
+          ..setAxisMinimum(0);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight.enabled = (false);
+      }, legendSettingFunction: (legend, chart) {
+        legend
+          ..verticalAlignment = (LegendVerticalAlignment.TOP)
+          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+          ..orientation = (LegendOrientation.VERTICAL)
+          ..drawInside = true
+          ..typeface = Util.LIGHT
+          ..yOffset = (0.0)
+          ..xOffset = (10)
+          ..yEntrySpace = (0)
+          ..textSize = (8);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..typeface = Util.LIGHT
+          ..setGranularity(1.0)
+          ..centerAxisLabels = true
+          ..setAxisMinimum(startYear.toDouble())
+          ..setAxisMaximum(startYear +
+              barData.getGroupWidth(groupSpace, barSpace) * groupCount)
+          ..setValueFormatter(A());
+        // (0.2 + 0.03) * 4 + 0.08 = 1.00 -> interval per "group"
+        (chart as BarChart)
+            .groupBars(startYear.toDouble(), groupSpace, barSpace);
+      },
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          pinchZoomEnabled: false,
+          maxVisibleCount: 60,
+          selectionListener: this,
+          drawBarShadow: false,
+          description: desc);
     }
-
-    var desc = Description()..enabled = false;
-    double groupSpace = 0.08;
-    double barSpace = 0.03; // x4 DataSet/ x4 DataSet
-    barChart = BarChart(barData, axisLeftSettingFunction: (axisLeft, chart) {
-      ValueFormatter formatter = LargeValueFormatter();
-      axisLeft
-        ..typeface = Util.LIGHT
-        ..setValueFormatter(formatter)
-        ..drawGridLines = (false)
-        ..spacePercentTop = (35)
-        ..setAxisMinimum(0);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight.enabled = (false);
-    }, legendSettingFunction: (legend, chart) {
-      legend
-        ..verticalAlignment = (LegendVerticalAlignment.TOP)
-        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-        ..orientation = (LegendOrientation.VERTICAL)
-        ..drawInside = true
-        ..typeface = Util.LIGHT
-        ..yOffset = (0.0)
-        ..xOffset = (10)
-        ..yEntrySpace = (0)
-        ..textSize = (8);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis
-        ..typeface = Util.LIGHT
-        ..setGranularity(1.0)
-        ..centerAxisLabels = true
-        ..setAxisMinimum(startYear.toDouble())
-        ..setAxisMaximum(startYear +
-            barData.getGroupWidth(groupSpace, barSpace) * groupCount)
-        ..setValueFormatter(A());
-      // (0.2 + 0.03) * 4 + 0.08 = 1.00 -> interval per "group"
-      (chart as BarChart).groupBars(startYear.toDouble(), groupSpace, barSpace);
-    },
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: false,
-        maxVisibleCount: 60,
-        selectionListener: this,
-        drawBarShadow: false,
-        description: desc);
+    return BarChart(controller);
   }
 
   @override

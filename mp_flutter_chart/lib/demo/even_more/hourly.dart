@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:mp_chart/mp/chart/line_chart.dart';
+import 'package:mp_chart/mp/controller/line_chart_controller.dart';
 import 'package:mp_chart/mp/core/data/line_data.dart';
 import 'package:mp_chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_chart/mp/core/description.dart';
@@ -26,6 +27,7 @@ class EvenMoreHourly extends StatefulWidget {
 class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
   var random = Random(1);
   int _count = 100;
+  LineData lineData;
 
   @override
   void initState() {
@@ -37,11 +39,6 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
   String getTitle() => "Even More Hourly";
 
   @override
-  void chartInit() {
-    _initLineChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
@@ -50,7 +47,7 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
           left: 0,
           top: 0,
           bottom: 100,
-          child: lineChart == null ? Center(child: Text("no data")) : lineChart,
+          child: _initLineChart(),
         ),
         Positioned(
           left: 0,
@@ -137,54 +134,52 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
     return (random.nextDouble() * range) + start;
   }
 
-  void _initLineChart() {
-    if (lineData == null) return;
+  Widget _initLineChart() {
+    if (lineData == null) return Center(child: Text("no data"));
 
-    if (lineChart != null) {
-      lineChart?.data = lineData;
-      lineChart?.getState()?.setStateIfNotDispose();
-      return;
-    }
-
-    var desc = Description()..enabled = false;
-    lineChart = LineChart(lineData, axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..position = (YAxisLabelPosition.INSIDE_CHART)
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      controller = LineChartController(lineData,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..position = (YAxisLabelPosition.INSIDE_CHART)
 //      ..setTypeface(tfLight)
-        ..textColor = (Color.fromARGB(255, 51, 181, 229))
-        ..drawGridLines = (true)
-        ..granularityEnabled = (true)
-        ..setAxisMinimum(0)
-        ..setAxisMaximum(170)
-        ..yOffset = (-9)
-        ..textColor = (Color.fromARGB(255, 255, 192, 56));
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight.enabled = (false);
-    }, legendSettingFunction: (legend, chart) {
-      (chart as LineChart).setViewPortOffsets(0, 0, 0, 0);
-      legend.enabled = (false);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis
-        ..position = (XAxisPosition.TOP_INSIDE)
+          ..textColor = (Color.fromARGB(255, 51, 181, 229))
+          ..drawGridLines = (true)
+          ..granularityEnabled = (true)
+          ..setAxisMinimum(0)
+          ..setAxisMaximum(170)
+          ..yOffset = (-9)
+          ..textColor = (Color.fromARGB(255, 255, 192, 56));
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight.enabled = (false);
+      }, legendSettingFunction: (legend, chart) {
+        (chart as LineChart).setViewPortOffsets(0, 0, 0, 0);
+        legend.enabled = (false);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..position = (XAxisPosition.TOP_INSIDE)
 //        ..setTypeface(tfLight)
-        ..textSize = (10)
-        ..textColor = (ColorUtils.WHITE)
-        ..drawAxisLine = (false)
-        ..drawGridLines = (true)
-        ..textColor = (Color.fromARGB(255, 255, 192, 56))
-        ..centerAxisLabels = (true)
-        ..setGranularity(1)
-        ..setValueFormatter(A());
-    },
-        highLightPerTapEnabled: true,
-        backgroundColor: ColorUtils.WHITE,
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: false,
-        description: desc);
+          ..textSize = (10)
+          ..textColor = (ColorUtils.WHITE)
+          ..drawAxisLine = (false)
+          ..drawGridLines = (true)
+          ..textColor = (Color.fromARGB(255, 255, 192, 56))
+          ..centerAxisLabels = (true)
+          ..setGranularity(1)
+          ..setValueFormatter(A());
+      },
+          highLightPerTapEnabled: true,
+          backgroundColor: ColorUtils.WHITE,
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          pinchZoomEnabled: false,
+          description: desc);
+    }
+    return LineChart(controller);
   }
 }
 

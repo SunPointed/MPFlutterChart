@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:mp_chart/mp/controller/controller.dart';
 import 'package:mp_chart/mp/core/animator.dart';
 import 'package:mp_chart/mp/core/axis/x_axis.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
@@ -20,39 +21,17 @@ import 'package:mp_chart/mp/painter/painter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
-abstract class Chart<P extends ChartPainter> extends StatefulWidget
-    implements AnimatorUpdateListener {
-  ////// needed
-  ChartData data;
-  IMarker marker;
-  Description description;
-  ViewPortHandler viewPortHandler;
-  XAxis xAxis;
-  Legend legend;
-  LegendRenderer legendRenderer;
-  OnChartValueSelectedListener selectionListener;
-
-  ////// option
-  double maxHighlightDistance;
-  bool highLightPerTapEnabled;
-  double extraTopOffset, extraRightOffset, extraBottomOffset, extraLeftOffset;
-  bool drawMarkers;
-
-  ////// split child property
-  TextPainter descPaint;
-  TextPainter infoPaint;
-
-  ChartState _state;
-  XAxisSettingFunction _xAxisSettingFunction;
-  LegendSettingFunction _legendSettingFunction;
-  DataRendererSettingFunction rendererSettingFunction;
+abstract class Chart<P extends ChartPainter, C extends Controller>
+    extends StatefulWidget implements AnimatorUpdateListener {
+  final C controller;
 
   P _painter;
-  ChartAnimator animator;
+  ChartAnimator _animator;
+  ChartState _state;
 
-  ChartState getState() {
-    return _state;
-  }
+  ChartAnimator get animator => _animator;
+
+  ChartState get state => _state;
 
   ChartState createChartState();
 
@@ -62,62 +41,9 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
     return _state;
   }
 
-  Chart(ChartData data,
-      {IMarker marker,
-      Description description,
-      XAxisSettingFunction xAxisSettingFunction,
-      LegendSettingFunction legendSettingFunction,
-      DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectionListener,
-      double maxHighlightDistance = 100.0,
-      bool highLightPerTapEnabled = true,
-      double extraTopOffset = 0.0,
-      double extraRightOffset = 0.0,
-      double extraBottomOffset = 0.0,
-      double extraLeftOffset = 0.0,
-      String noDataText = "No chart data available.",
-      bool drawMarkers = true,
-      double descTextSize = 12,
-      double infoTextSize = 12,
-      Color descTextColor,
-      Color infoTextColor})
-      : data = data,
-        maxHighlightDistance = maxHighlightDistance,
-        highLightPerTapEnabled = highLightPerTapEnabled,
-        extraLeftOffset = extraLeftOffset,
-        extraTopOffset = extraTopOffset,
-        extraRightOffset = extraRightOffset,
-        extraBottomOffset = extraBottomOffset,
-        drawMarkers = drawMarkers,
-        marker = marker,
-        description = description,
-        _xAxisSettingFunction = xAxisSettingFunction,
-        _legendSettingFunction = legendSettingFunction,
-        rendererSettingFunction = rendererSettingFunction,
-        selectionListener = selectionListener {
-    if (descTextColor == null) {
-      descTextColor = ColorUtils.BLACK;
-    }
-    descPaint = PainterUtils.create(null, null, descTextColor, descTextSize,
-        fontFamily: description?.typeface?.fontFamily,
-        fontWeight: description?.typeface?.fontWeight);
-    if (infoTextColor == null) {
-      infoTextColor = ColorUtils.BLACK;
-    }
-    infoPaint =
-        PainterUtils.create(null, noDataText, infoTextColor, infoTextSize);
-
-    if (maxHighlightDistance == 0.0) {
-      maxHighlightDistance = Utils.convertDpToPixel(500);
-    }
-
-    this.viewPortHandler ??= initViewPortHandler();
-    this.marker ??= initMarker();
-    this.description ??= initDescription();
-    this.selectionListener ??= initSelectionListener();
-
-    this.animator = ChartAnimator(this);
-
+  Chart(this.controller) {
+    controller.attachChart(this);
+    _animator = ChartAnimator(this);
     doneBeforePainterInit();
     initialPainter();
   }
@@ -130,21 +56,6 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
   @override
   void onRotateUpdate(double angle) {}
 
-  IMarker initMarker() => null;
-
-  Description initDescription() => Description();
-
-  ViewPortHandler initViewPortHandler() => ViewPortHandler();
-
-  XAxis initXAxis() => XAxis();
-
-  Legend initLegend() => Legend();
-
-  LegendRenderer initLegendRenderer() =>
-      LegendRenderer(viewPortHandler, legend);
-
-  OnChartValueSelectedListener initSelectionListener() => null;
-
   ChartPainter get painter => _painter;
 
   set painter(P value) {
@@ -152,14 +63,14 @@ abstract class Chart<P extends ChartPainter> extends StatefulWidget
   }
 
   void doneBeforePainterInit() {
-    this.legend = initLegend();
-    this.legendRenderer = initLegendRenderer();
-    xAxis = initXAxis();
-    if (_legendSettingFunction != null) {
-      _legendSettingFunction(legend, this);
+    controller.legend = controller.initLegend();
+    controller.legendRenderer = controller.initLegendRenderer();
+    controller.xAxis = controller.initXAxis();
+    if (controller.legendSettingFunction != null) {
+      controller.legendSettingFunction(controller.legend, this);
     }
-    if (_xAxisSettingFunction != null) {
-      _xAxisSettingFunction(xAxis, this);
+    if (controller.xAxisSettingFunction != null) {
+      controller.xAxisSettingFunction(controller.xAxis, this);
     }
   }
 
@@ -205,8 +116,14 @@ abstract class ChartState<T extends Chart> extends State<T> {
   }
 
   @override
+  void didUpdateWidget(T oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    widget._animator = oldWidget._animator;
+    widget._state = this;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    widget._state ??= this;
     widget.doneBeforePainterInit();
     widget.initialPainter();
     updatePainter();
@@ -254,7 +171,7 @@ abstract class ChartState<T extends Chart> extends State<T> {
   @override
   void reassemble() {
     super.reassemble();
-    widget.animator?.reset();
+    widget._animator?.reset();
     widget.painter?.reassemble();
   }
 

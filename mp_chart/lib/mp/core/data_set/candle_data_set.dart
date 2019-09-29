@@ -138,16 +138,6 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
     return _showCandleBar;
   }
 
-  // TODO
-  /**
-   * It is necessary to implement ColorsList class that will encapsulate
-   * colors list functionality, because It's wrong to copy paste setColor,
-   * addColor, ... resetColors for each time when we want to add a coloring
-   * options for one of objects
-   *
-   * @author Mesrop
-   */
-
   /** BELOW THIS COLOR HANDLING */
 
   /// Sets the one and ONLY color that should be used for this DataSet when
@@ -239,7 +229,6 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
 
   @override
   DashPathEffect getDashPathEffectHighlight() {
-    // TODO: implement getDashPathEffectHighlight
     return null;
   }
 }

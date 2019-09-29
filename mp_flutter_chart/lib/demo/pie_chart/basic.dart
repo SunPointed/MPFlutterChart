@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/pie_chart.dart';
+import 'package:mp_chart/mp/controller/pie_chart_controller.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/data/pie_data.dart';
 import 'package:mp_chart/mp/core/data_set/pie_data_set.dart';
@@ -33,6 +34,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
   var random = Random(1);
   int _count = 4;
   double _range = 10.0;
+  PieData pieData;
 
   @override
   void initState() {
@@ -44,21 +46,11 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
   String getTitle() => "Pie Chart Basic";
 
   @override
-  void chartInit() {
-    _initPieChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
         Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 100,
-          child: pieChart == null ? Center(child: Text("no data")) : pieChart,
-        ),
+            right: 0, left: 0, top: 0, bottom: 100, child: _initPieChart()),
         Positioned(
           left: 0,
           right: 0,
@@ -207,48 +199,46 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
     setState(() {});
   }
 
-  void _initPieChart() {
-    if (pieData == null) return;
+  Widget _initPieChart() {
+    if (pieData == null) return Center(child: Text("no data"));
 
-    if (pieChart != null) {
-      pieChart.data = pieData;
-      pieChart.getState()?.setStateIfNotDispose();
-      return;
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      controller = PieChartController(pieData,
+          legendSettingFunction: (legend, chart) {
+        _formatter.setPieChartPainter(chart);
+        legend
+          ..verticalAlignment = (LegendVerticalAlignment.TOP)
+          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+          ..orientation = (LegendOrientation.VERTICAL)
+          ..drawInside = (false)
+          ..xEntrySpace = (7)
+          ..yEntrySpace = (0)
+          ..yOffset = (0);
+      }, rendererSettingFunction: (renderer) {
+        (renderer as PieChartRenderer)
+          ..setHoleColor(ColorUtils.WHITE)
+          ..setTransparentCircleColor(ColorUtils.WHITE)
+          ..setTransparentCircleAlpha(110)
+          ..setEntryLabelColor(ColorUtils.WHITE)
+          ..setEntryLabelTextSize(12);
+      },
+          rotateEnabled: true,
+          drawHole: true,
+          drawCenterText: true,
+          extraLeftOffset: 5,
+          extraTopOffset: 10,
+          extraRightOffset: 5,
+          extraBottomOffset: 5,
+          usePercentValues: true,
+          centerText: _generateCenterSpannableText(),
+          highLightPerTapEnabled: true,
+          selectionListener: this,
+          holeRadiusPercent: 58.0,
+          transparentCircleRadiusPercent: 61,
+          description: desc);
     }
-
-    var desc = Description()..enabled = false;
-    pieChart = PieChart(pieData, legendSettingFunction: (legend, chart) {
-      _formatter.setPieChartPainter(pieChart);
-      legend
-        ..verticalAlignment = (LegendVerticalAlignment.TOP)
-        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-        ..orientation = (LegendOrientation.VERTICAL)
-        ..drawInside = (false)
-        ..xEntrySpace = (7)
-        ..yEntrySpace = (0)
-        ..yOffset = (0);
-    }, rendererSettingFunction: (renderer) {
-      (renderer as PieChartRenderer)
-        ..setHoleColor(ColorUtils.WHITE)
-        ..setTransparentCircleColor(ColorUtils.WHITE)
-        ..setTransparentCircleAlpha(110)
-        ..setEntryLabelColor(ColorUtils.WHITE)
-        ..setEntryLabelTextSize(12);
-    },
-        rotateEnabled: true,
-        drawHole: true,
-        drawCenterText: true,
-        extraLeftOffset: 5,
-        extraTopOffset: 10,
-        extraRightOffset: 5,
-        extraBottomOffset: 5,
-        usePercentValues: true,
-        centerText: _generateCenterSpannableText(),
-        highLightPerTapEnabled: true,
-        selectionListener: this,
-        holeRadiusPercent: 58.0,
-        transparentCircleRadiusPercent: 61,
-        description: desc);
+    return PieChart(controller);
   }
 
   @override

@@ -5,6 +5,10 @@ import 'package:mp_chart/mp/chart/bar_chart.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
 import 'package:mp_chart/mp/chart/pie_chart.dart';
 import 'package:mp_chart/mp/chart/scatter_chart.dart';
+import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
+import 'package:mp_chart/mp/controller/line_chart_controller.dart';
+import 'package:mp_chart/mp/controller/pie_chart_controller.dart';
+import 'package:mp_chart/mp/controller/scatter_chart_controller.dart';
 import 'package:mp_chart/mp/core/data/bar_data.dart';
 import 'package:mp_chart/mp/core/data/line_data.dart';
 import 'package:mp_chart/mp/core/data/pie_data.dart';
@@ -38,11 +42,11 @@ class ScrollingChartViewPager extends StatefulWidget {
 
 class ScrollingChartViewPagerState
     extends SimpleActionState<ScrollingChartViewPager> {
-  LineChart _lineChart1;
-  LineChart _lineChart2;
-  BarChart _barChart;
-  ScatterChart _scatterChart;
-  PieChart _pieChart;
+  LineChartController _lineChartController1;
+  LineChartController _lineChartController2;
+  BarChartController _barChartController;
+  ScatterChartController _scatterChartController;
+  PieChartController _pieChartController;
   LineData _lineData1;
   LineData _lineData2;
   BarData _barData;
@@ -67,9 +71,6 @@ class ScrollingChartViewPagerState
 
   @override
   String getTitle() => "Scrolling Chart View Pager";
-
-  @override
-  void chartInit() {}
 
   @override
   Widget getBody() {
@@ -115,27 +116,27 @@ class ScrollingChartViewPagerState
                     case 0:
                       {
                         _initLineChart1();
-                        return _lineChart1;
+                        return LineChart(_lineChartController1);
                       }
                     case 1:
                       {
                         _initLineChart2();
-                        return _lineChart2;
+                        return LineChart(_lineChartController2);
                       }
                     case 2:
                       {
                         _initBarChart();
-                        return _barChart;
+                        return BarChart(_barChartController);
                       }
                     case 3:
                       {
                         _initScatterChart();
-                        return _scatterChart;
+                        return ScatterChart(_scatterChartController);
                       }
                     default:
                       {
                         _initPieChart();
-                        return _pieChart;
+                        return PieChart(_pieChartController);
                       }
                   }
                 },
@@ -365,118 +366,141 @@ class ScrollingChartViewPagerState
 //    _pieData.setValueTypeface(tf);
   }
 
-  void _initLineChart1() {
-    if (_lineData1 == null || _lineChart1 != null) {
-      return;
+  Widget _initLineChart1() {
+    if (_lineData1 == null) {
+      return Center(child: Text("no data"));
     }
 
-    var desc = Description()..enabled = false;
-    _lineChart1 = LineChart(_lineData1,
-        axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..setAxisMaximum(1.2)
-        ..setAxisMinimum(-1.2);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight.enabled = (false);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis.enabled = (false);
-    },
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        description: desc);
-    _lineChart1.animator.animateX1(3000);
+    if (_lineChartController1 == null) {
+      var desc = Description()..enabled = false;
+      _lineChartController1 = LineChartController(_lineData1,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..setAxisMaximum(1.2)
+          ..setAxisMinimum(-1.2);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight.enabled = (false);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis.enabled = (false);
+      },
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          description: desc);
+      var lineChart = LineChart(_lineChartController1);
+      _lineChartController1.getAnimator().animateX1(3000);
+      return lineChart;
+    } else {
+      return LineChart(_lineChartController1);
+    }
   }
 
-  void _initLineChart2() {
-    if (_lineData2 == null || _lineChart2 != null) {
-      return;
+  Widget _initLineChart2() {
+    if (_lineData2 == null) {
+      return Center(child: Text("no data"));
     }
 
-    var desc = Description()..enabled = false;
-    _lineChart2 = LineChart(_lineData2,
-        axisRightSettingFunction: (axisRight, chart) {
-      axisRight.enabled = (false);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis.enabled = (false);
-    },
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        description: desc);
-    _lineChart2.animator.animateX1(3000);
+    if (_lineChartController2 == null) {
+      var desc = Description()..enabled = false;
+      _lineChartController2 = LineChartController(_lineData2,
+          axisRightSettingFunction: (axisRight, chart) {
+        axisRight.enabled = (false);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis.enabled = (false);
+      },
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          description: desc);
+      var lineChart = LineChart(_lineChartController2);
+      _lineChartController2.getAnimator().animateX1(3000);
+      return lineChart;
+    } else {
+      return LineChart(_lineChartController2);
+    }
   }
 
-  void _initBarChart() {
-    if (_barData == null || _barChart != null) {
-      return;
+  Widget _initBarChart() {
+    if (_barData == null) {
+      return Center(child: Text("no data"));
     }
 
-    var desc = Description()..enabled = false;
-    _barChart = BarChart(_barData, axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft.setAxisMinimum(0);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight.enabled = (false);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis.enabled = (false);
-    },
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        drawBarShadow: false,
-        description: desc);
+    if (_barChartController == null) {
+      var desc = Description()..enabled = false;
+      _barChartController = BarChartController(_barData,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft.setAxisMinimum(0);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight.enabled = (false);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis.enabled = (false);
+      },
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          drawBarShadow: false,
+          description: desc);
+    }
+    return BarChart(_barChartController);
   }
 
-  void _initScatterChart() {
-    if (_scatterData == null || _scatterChart != null) {
-      return;
+  Widget _initScatterChart() {
+    if (_scatterData == null) {
+      return Center(child: Text("no data"));
     }
 
-    var desc = Description()..enabled = false;
-    _scatterChart = ScatterChart(_scatterData,
-        axisRightSettingFunction: (axisRight, chart) {
-      axisRight.drawGridLines = (false);
-    }, legendSettingFunction: (legend, chart) {
-      legend
-        ..wordWrapEnabled = (true)
-        ..formSize = (14)
-        ..textSize = (9)
-        ..yOffset = (13);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis.position = (XAxisPosition.BOTTOM);
-    },
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        extraBottomOffset: 16,
-        description: desc);
+    if (_scatterChartController == null) {
+      var desc = Description()..enabled = false;
+      _scatterChartController = ScatterChartController(_scatterData,
+          axisRightSettingFunction: (axisRight, chart) {
+        axisRight.drawGridLines = (false);
+      }, legendSettingFunction: (legend, chart) {
+        legend
+          ..wordWrapEnabled = (true)
+          ..formSize = (14)
+          ..textSize = (9)
+          ..yOffset = (13);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis.position = (XAxisPosition.BOTTOM);
+      },
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          extraBottomOffset: 16,
+          description: desc);
+    }
+    return ScatterChart(_scatterChartController);
   }
 
-  void _initPieChart() {
-    if (_pieData == null || _pieChart != null) {
-      return;
+  Widget _initPieChart() {
+    if (_pieData == null) {
+      return Center(child: Text("no data"));
     }
 
-    var desc = Description()..enabled = false;
-    _pieChart = PieChart(_pieData, legendSettingFunction: (legend, chart) {
-      legend
-        ..verticalAlignment = (LegendVerticalAlignment.TOP)
-        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-        ..orientation = (LegendOrientation.VERTICAL)
-        ..drawInside = (false);
-    },
-        centerText: _generateCenterText(),
-        holeRadiusPercent: 45,
-        transparentCircleRadiusPercent: 50,
-        description: desc);
+    if (_pieChartController == null) {
+      var desc = Description()..enabled = false;
+      _pieChartController = PieChartController(_pieData,
+          legendSettingFunction: (legend, chart) {
+        legend
+          ..verticalAlignment = (LegendVerticalAlignment.TOP)
+          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+          ..orientation = (LegendOrientation.VERTICAL)
+          ..drawInside = (false);
+      },
+          centerText: _generateCenterText(),
+          holeRadiusPercent: 45,
+          transparentCircleRadiusPercent: 50,
+          description: desc);
+    }
+    return PieChart(_pieChartController);
   }
 
   String _generateCenterText() {

@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/scatter_chart.dart';
+import 'package:mp_chart/mp/controller/scatter_chart_controller.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/data/scatter_data.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_scatter_data_set.dart';
@@ -34,6 +35,7 @@ class OtherChartScatterPlotState
   var random = Random(1);
   int _count = 45;
   double _range = 100.0;
+  ScatterData scatterData;
 
   @override
   void initState() {
@@ -45,23 +47,11 @@ class OtherChartScatterPlotState
   String getTitle() => "Other Chart Scatter Plot";
 
   @override
-  void chartInit() {
-    _initScatterChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
         Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 100,
-          child: scatterChart == null
-              ? Center(child: Text("no data"))
-              : scatterChart,
-        ),
+            right: 0, left: 0, top: 0, bottom: 100, child: _initScatterChart()),
         Positioned(
           left: 0,
           right: 0,
@@ -187,46 +177,43 @@ class OtherChartScatterPlotState
     setState(() {});
   }
 
-  void _initScatterChart() {
-    if (scatterData == null) return;
+  Widget _initScatterChart() {
+    if (scatterData == null) return Center(child: Text("no data"));
 
-    if (scatterChart != null) {
-      scatterChart.data = scatterData;
-      scatterChart.getState()?.setStateIfNotDispose();
-      return;
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      controller = ScatterChartController(scatterData,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..setAxisMinimum(0)
+          ..typeface = Util.LIGHT;
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight.enabled = (false);
+      }, legendSettingFunction: (legend, chart) {
+        legend
+          ..verticalAlignment = (LegendVerticalAlignment.TOP)
+          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+          ..orientation = (LegendOrientation.VERTICAL)
+          ..drawInside = (false)
+          ..typeface = Util.LIGHT
+          ..xOffset = (5);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..drawGridLines = (false)
+          ..typeface = Util.LIGHT;
+      },
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          pinchZoomEnabled: true,
+          maxVisibleCount: 200,
+          maxHighlightDistance: 50,
+          selectionListener: this,
+          description: desc);
     }
-
-    var desc = Description()..enabled = false;
-    scatterChart = ScatterChart(scatterData,
-        axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..setAxisMinimum(0)
-        ..typeface = Util.LIGHT;
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight.enabled = (false);
-    }, legendSettingFunction: (legend, chart) {
-      legend
-        ..verticalAlignment = (LegendVerticalAlignment.TOP)
-        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-        ..orientation = (LegendOrientation.VERTICAL)
-        ..drawInside = (false)
-        ..typeface = Util.LIGHT
-        ..xOffset = (5);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis
-        ..drawGridLines = (false)
-        ..typeface = Util.LIGHT;
-    },
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: true,
-        maxVisibleCount: 200,
-        maxHighlightDistance: 50,
-        selectionListener: this,
-        description: desc);
+    return ScatterChart(controller);
   }
 
   @override

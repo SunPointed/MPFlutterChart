@@ -37,8 +37,8 @@ class Transformer {
   /// @param deltaX
   /// @param deltaY
   /// @param yChartMin
-  void prepareMatrixValuePx(
-      double xChartMin, double deltaX, double deltaY, double yChartMin) {
+  void prepareMatrixValuePx(double xChartMin, double deltaX, double deltaY,
+      double yChartMin) {
     double scaleX = ((_viewPortHandler.contentWidth()) / deltaX);
     double scaleY = ((_viewPortHandler.contentHeight()) / deltaY);
 
@@ -80,9 +80,10 @@ class Transformer {
   ///
   /// @param data
   /// @return
-  List<double> generateTransformedValuesScatter(
-      IScatterDataSet data, double phaseX, double phaseY, int from, int to) {
-    final int count = (((to - from) * phaseX + 1) * 2).toInt();
+  List<double> generateTransformedValuesScatter(IScatterDataSet data,
+      double phaseX, double phaseY, int from, int to) {
+    int count = (((to - from) * phaseX + 1) * 2).toInt();
+    count = count % 2 == 0 ? count : count - 1;
 
     if (_valuePointsForGenerateTransformedValuesScatter.length != count) {
       _valuePointsForGenerateTransformedValuesScatter = List(count);
@@ -113,8 +114,8 @@ class Transformer {
   ///
   /// @param data
   /// @return
-  List<double> generateTransformedValuesBubble(
-      IBubbleDataSet data, double phaseY, int from, int to) {
+  List<double> generateTransformedValuesBubble(IBubbleDataSet data,
+      double phaseY, int from, int to) {
     final int count =
         (to - from + 1) * 2; // (int) Math.ceil((to - from) * phaseX) * 2;
 
@@ -147,8 +148,8 @@ class Transformer {
   ///
   /// @param data
   /// @return
-  List<double> generateTransformedValuesLine(
-      ILineDataSet data, double phaseX, double phaseY, int min, int max) {
+  List<double> generateTransformedValuesLine(ILineDataSet data, double phaseX,
+      double phaseY, int min, int max) {
     final int count = ((((max - min) * phaseX) + 1).toInt() * 2);
 
     if (_valuePointsForGenerateTransformedValuesLine.length != count) {
@@ -180,9 +181,10 @@ class Transformer {
   ///
   /// @param data
   /// @return
-  List<double> generateTransformedValuesCandle(
-      ICandleDataSet data, double phaseX, double phaseY, int from, int to) {
-    final int count = (((to - from) * phaseX + 1) * 2).toInt();
+  List<double> generateTransformedValuesCandle(ICandleDataSet data,
+      double phaseX, double phaseY, int from, int to) {
+    int count = (((to - from) * phaseX + 1) * 2).toInt();
+    count = count % 2 == 0 ? count : count - 1;
 
     if (_valuePointsForGenerateTransformedValuesCandle.length != count) {
       _valuePointsForGenerateTransformedValuesCandle = List(count);

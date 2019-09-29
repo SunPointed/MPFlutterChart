@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
+import 'package:mp_chart/mp/controller/line_chart_controller.dart';
 import 'package:mp_chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_chart/mp/core/data/line_data.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_line_data_set.dart';
@@ -27,16 +28,12 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
   var random = Random(1);
   int _count = 45;
   double _range = 180.0;
+  LineData lineData;
 
   @override
   void initState() {
     _initLineData(_count, _range);
     super.initState();
-  }
-
-  @override
-  void chartInit() {
-    _initLineChart();
   }
 
   @override
@@ -48,7 +45,7 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
           left: 0,
           top: 0,
           bottom: 100,
-          child: lineChart == null ? Center(child: Text("no data")) : lineChart,
+          child: _initLineChart(),
         ),
         Positioned(
           left: 0,
@@ -185,62 +182,63 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     setState(() {});
   }
 
-  void _initLineChart() {
+  Widget _initLineChart() {
     if (lineData == null) {
-      return;
+      return Center(child: Text("no data"));
     }
 
-    if (lineChart != null) {
-      lineChart?.data = lineData;
-      lineChart?.getState()?.setStateIfNotDispose();
-      return;
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      LimitLine llXAxis = LimitLine(9, "Index 10");
+      llXAxis.setLineWidth(4);
+      llXAxis.enableDashedLine(10, 10, 0);
+      llXAxis.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
+      llXAxis.textSize = (10);
+      llXAxis.typeface = Util.EXTRA_BOLD;
+      LimitLine ll1 = LimitLine(150, "Upper Limit");
+      ll1.setLineWidth(4);
+      ll1.enableDashedLine(10, 10, 0);
+      ll1.labelPosition = (LimitLabelPosition.RIGHT_TOP);
+      ll1.textSize = (10);
+      ll1.typeface = Util.EXTRA_BOLD;
+      LimitLine ll2 = LimitLine(-30, "Lower Limit");
+      ll2.setLineWidth(4);
+      ll2.enableDashedLine(10, 10, 0);
+      ll2.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
+      ll2.textSize = (10);
+      ll2.typeface = Util.EXTRA_BOLD;
+      controller = LineChartController(lineData,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..drawLimitLineBehindData = true
+          ..enableGridDashedLine(10, 10, 0)
+          ..enableAxisLineDashedLine(5, 5, 0)
+          ..addLimitLine(ll1)
+          ..addLimitLine(ll2)
+          ..setAxisMaximum(200)
+          ..setAxisMinimum(-50);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight.enabled = (false);
+      }, legendSettingFunction: (legend, chart) {
+        legend.shape = (LegendForm.LINE);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..drawLimitLineBehindData = true
+          ..enableAxisLineDashedLine(5, 5, 0)
+          ..enableGridDashedLine(10, 10, 0);
+      },
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          pinchZoomEnabled: true,
+          description: desc);
+      var lineChart = LineChart(controller);
+      controller.getAnimator().animateX1(1500);
+      return lineChart;
+    } else {
+      return LineChart(controller);
     }
-
-    var desc = Description()..enabled = false;
-    LimitLine llXAxis = LimitLine(9, "Index 10");
-    llXAxis.setLineWidth(4);
-    llXAxis.enableDashedLine(10, 10, 0);
-    llXAxis.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
-    llXAxis.textSize = (10);
-    llXAxis.typeface = Util.EXTRA_BOLD;
-    LimitLine ll1 = LimitLine(150, "Upper Limit");
-    ll1.setLineWidth(4);
-    ll1.enableDashedLine(10, 10, 0);
-    ll1.labelPosition = (LimitLabelPosition.RIGHT_TOP);
-    ll1.textSize = (10);
-    ll1.typeface = Util.EXTRA_BOLD;
-    LimitLine ll2 = LimitLine(-30, "Lower Limit");
-    ll2.setLineWidth(4);
-    ll2.enableDashedLine(10, 10, 0);
-    ll2.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
-    ll2.textSize = (10);
-    ll2.typeface = Util.EXTRA_BOLD;
-    lineChart = LineChart(lineData, axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..drawLimitLineBehindData = true
-        ..enableGridDashedLine(10, 10, 0)
-        ..enableAxisLineDashedLine(5, 5, 0)
-        ..addLimitLine(ll1)
-        ..addLimitLine(ll2)
-        ..setAxisMaximum(200)
-        ..setAxisMinimum(-50);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight.enabled = (false);
-    }, legendSettingFunction: (legend, chart) {
-      legend.shape = (LegendForm.LINE);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis
-        ..drawLimitLineBehindData = true
-        ..enableAxisLineDashedLine(5, 5, 0)
-        ..enableGridDashedLine(10, 10, 0);
-    },
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: true,
-        description: desc);
-    lineChart.animator.animateX1(1500);
   }
 }

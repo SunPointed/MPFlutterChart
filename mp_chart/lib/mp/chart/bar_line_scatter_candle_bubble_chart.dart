@@ -1,20 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:mp_chart/mp/chart/chart.dart';
 import 'package:mp_chart/mp/chart/horizontal_bar_chart.dart';
-import 'package:mp_chart/mp/core/axis/y_axis.dart';
-import 'package:mp_chart/mp/core/common_interfaces.dart';
-import 'package:mp_chart/mp/core/data/chart_data.dart';
+import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_data_set.dart';
-import 'package:mp_chart/mp/core/description.dart';
-import 'package:mp_chart/mp/core/entry/entry.dart';
-import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
-import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/highlight/highlight.dart';
-import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
-import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
-import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
-import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/utils/highlight_utils.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
@@ -22,213 +12,49 @@ import 'package:mp_chart/mp/core/view_port.dart';
 import 'package:mp_chart/mp/painter/bar_line_chart_painter.dart';
 
 abstract class BarLineScatterCandleBubbleChart<
-    P extends BarLineChartBasePainter> extends Chart<P> {
-  int maxVisibleCount;
-  bool autoScaleMinMaxEnabled;
-  bool pinchZoomEnabled;
-  bool doubleTapToZoomEnabled;
-  bool highlightPerDragEnabled;
-  bool dragXEnabled;
-  bool dragYEnabled;
-  bool scaleXEnabled;
-  bool scaleYEnabled;
-  bool drawGridBackground;
-  bool drawBorders;
-  bool clipValuesToContent;
-  double minOffset;
-  bool keepPositionOnRotation;
-  OnDrawListener drawListener;
-  YAxis axisLeft;
-  YAxis axisRight;
-  YAxisRenderer axisRendererLeft;
-  YAxisRenderer axisRendererRight;
-  Transformer leftAxisTransformer;
-  Transformer rightAxisTransformer;
-  XAxisRenderer xAxisRenderer;
-  bool customViewPortEnabled;
-  Matrix4 zoomMatrixBuffer;
-  double minXRange;
-  double maxXRange;
-  double minimumScaleX;
-  double minimumScaleY;
-
-  //////
-  Paint gridBackgroundPaint;
-  Paint borderPaint;
-
-  Color backgroundColor;
-  Color borderColor;
-  double borderStrokeWidth;
-
-  AxisLeftSettingFunction _axisLeftSettingFunction;
-  AxisRightSettingFunction _axisRightSettingFunction;
-
-  BarLineScatterCandleBubbleChart(
-    ChartData<IDataSet<Entry>> data, {
-    IMarker marker,
-    Description description,
-    AxisLeftSettingFunction axisLeftSettingFunction,
-    AxisRightSettingFunction axisRightSettingFunction,
-    XAxisSettingFunction xAxisSettingFunction,
-    LegendSettingFunction legendSettingFunction,
-    DataRendererSettingFunction rendererSettingFunction,
-    OnChartValueSelectedListener selectionListener,
-    Color backgroundColor,
-    Color borderColor,
-    double borderStrokeWidth = 1.0,
-    int maxVisibleCount = 100,
-    bool autoScaleMinMaxEnabled = true,
-    bool pinchZoomEnabled = true,
-    bool doubleTapToZoomEnabled = true,
-    bool highlightPerDragEnabled = true,
-    bool dragXEnabled = true,
-    bool dragYEnabled = true,
-    bool scaleXEnabled = true,
-    bool scaleYEnabled = true,
-    bool drawGridBackground = false,
-    bool drawBorders = false,
-    bool clipValuesToContent = false,
-    double minOffset = 30,
-    bool keepPositionOnRotation = false,
-    bool customViewPortEnabled = false,
-    double minXRange = 1.0,
-    double maxXRange = 1.0,
-    double minimumScaleX = 1.0,
-    double minimumScaleY = 1.0,
-    double maxHighlightDistance = 100.0,
-    bool highLightPerTapEnabled = true,
-    double extraTopOffset = 0.0,
-    double extraRightOffset = 0.0,
-    double extraBottomOffset = 0.0,
-    double extraLeftOffset = 0.0,
-    bool drawMarkers = true,
-    double descTextSize = 12,
-    double infoTextSize = 12,
-    Color descTextColor,
-    Color infoTextColor,
-    OnDrawListener drawListener,
-    String noDataText = "No chart data available.",
-    YAxis axisLeft,
-    YAxis axisRight,
-    YAxisRenderer axisRendererLeft,
-    YAxisRenderer axisRendererRight,
-    Transformer leftAxisTransformer,
-    Transformer rightAxisTransformer,
-    XAxisRenderer xAxisRenderer,
-    Matrix4 zoomMatrixBuffer,
-  })  : maxVisibleCount = maxVisibleCount,
-        autoScaleMinMaxEnabled = autoScaleMinMaxEnabled,
-        pinchZoomEnabled = pinchZoomEnabled,
-        doubleTapToZoomEnabled = doubleTapToZoomEnabled,
-        highlightPerDragEnabled = highlightPerDragEnabled,
-        dragXEnabled = dragXEnabled,
-        dragYEnabled = dragYEnabled,
-        scaleXEnabled = scaleXEnabled,
-        scaleYEnabled = scaleYEnabled,
-        drawGridBackground = drawGridBackground,
-        drawBorders = drawBorders,
-        clipValuesToContent = clipValuesToContent,
-        minOffset = minOffset,
-        keepPositionOnRotation = keepPositionOnRotation,
-        drawListener = drawListener,
-        axisLeft = axisLeft,
-        axisRight = axisRight,
-        axisRendererLeft = axisRendererLeft,
-        axisRendererRight = axisRendererRight,
-        leftAxisTransformer = leftAxisTransformer,
-        rightAxisTransformer = rightAxisTransformer,
-        xAxisRenderer = xAxisRenderer,
-        customViewPortEnabled = customViewPortEnabled,
-        zoomMatrixBuffer = zoomMatrixBuffer,
-        minXRange = minXRange,
-        maxXRange = maxXRange,
-        minimumScaleX = minimumScaleX,
-        minimumScaleY = minimumScaleY,
-        backgroundColor = backgroundColor,
-        borderColor = borderColor,
-        borderStrokeWidth = borderStrokeWidth,
-        _axisLeftSettingFunction = axisLeftSettingFunction,
-        _axisRightSettingFunction = axisRightSettingFunction,
-        super(data,
-            marker: marker,
-            description: description,
-            noDataText: noDataText,
-            xAxisSettingFunction: xAxisSettingFunction,
-            legendSettingFunction: legendSettingFunction,
-            rendererSettingFunction: rendererSettingFunction,
-            selectionListener: selectionListener,
-            maxHighlightDistance: maxHighlightDistance,
-            highLightPerTapEnabled: highLightPerTapEnabled,
-            extraTopOffset: extraTopOffset,
-            extraRightOffset: extraRightOffset,
-            extraBottomOffset: extraBottomOffset,
-            extraLeftOffset: extraLeftOffset,
-            drawMarkers: drawMarkers,
-            descTextSize: descTextSize,
-            infoTextSize: infoTextSize,
-            descTextColor: descTextColor,
-            infoTextColor: infoTextColor);
+    P extends BarLineChartBasePainter,
+    C extends BarLineScatterCandleBubbleController> extends Chart<P, C> {
+  BarLineScatterCandleBubbleChart(C controller) : super(controller);
 
   @override
   void doneBeforePainterInit() {
     super.doneBeforePainterInit();
-    gridBackgroundPaint = Paint()
-      ..color = backgroundColor == null
+    controller.gridBackgroundPaint = Paint()
+      ..color = controller.backgroundColor == null
           ? Color.fromARGB(255, 240, 240, 240)
-          : backgroundColor
+          : controller.backgroundColor
       ..style = PaintingStyle.fill;
 
-    borderPaint = Paint()
-      ..color = borderColor == null ? ColorUtils.BLACK : borderColor
+    controller.borderPaint = Paint()
+      ..color = controller.borderColor == null
+          ? ColorUtils.BLACK
+          : controller.borderColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = Utils.convertDpToPixel(borderStrokeWidth);
+      ..strokeWidth = Utils.convertDpToPixel(controller.borderStrokeWidth);
 
-    this.drawListener ??= initDrawListener();
-    this.axisLeft = initAxisLeft();
-    this.axisRight = initAxisRight();
-    this.leftAxisTransformer ??= initLeftAxisTransformer();
-    this.rightAxisTransformer ??= initRightAxisTransformer();
-    this.zoomMatrixBuffer ??= initZoomMatrixBuffer();
-    this.axisRendererLeft = initAxisRendererLeft();
-    this.axisRendererRight = initAxisRendererRight();
-    this.xAxisRenderer = initXAxisRenderer();
-    if (_axisLeftSettingFunction != null) {
-      _axisLeftSettingFunction(axisLeft, this);
+    controller.drawListener ??= controller.initDrawListener();
+    controller.axisLeft = controller.initAxisLeft();
+    controller.axisRight = controller.initAxisRight();
+    controller.leftAxisTransformer ??= controller.initLeftAxisTransformer();
+    controller.rightAxisTransformer ??= controller.initRightAxisTransformer();
+    controller.zoomMatrixBuffer ??= controller.initZoomMatrixBuffer();
+    controller.axisRendererLeft = controller.initAxisRendererLeft();
+    controller.axisRendererRight = controller.initAxisRendererRight();
+    controller.xAxisRenderer = controller.initXAxisRenderer();
+    if (controller.axisLeftSettingFunction != null) {
+      controller.axisLeftSettingFunction(controller.axisLeft, this);
     }
-    if (_axisRightSettingFunction != null) {
-      _axisRightSettingFunction(axisRight, this);
+    if (controller.axisRightSettingFunction != null) {
+      controller.axisRightSettingFunction(controller.axisRight, this);
     }
   }
-
-  OnDrawListener initDrawListener() {
-    return null;
-  }
-
-  YAxis initAxisLeft() => YAxis(position: AxisDependency.LEFT);
-
-  YAxis initAxisRight() => YAxis(position: AxisDependency.RIGHT);
-
-  Transformer initLeftAxisTransformer() => Transformer(viewPortHandler);
-
-  Transformer initRightAxisTransformer() => Transformer(viewPortHandler);
-
-  YAxisRenderer initAxisRendererLeft() =>
-      YAxisRenderer(viewPortHandler, axisLeft, leftAxisTransformer);
-
-  YAxisRenderer initAxisRendererRight() =>
-      YAxisRenderer(viewPortHandler, axisRight, rightAxisTransformer);
-
-  XAxisRenderer initXAxisRenderer() =>
-      XAxisRenderer(viewPortHandler, xAxis, leftAxisTransformer);
-
-  Matrix4 initZoomMatrixBuffer() => Matrix4.identity();
 
   BarLineChartBasePainter get painter => super.painter;
 
   void setViewPortOffsets(final double left, final double top,
       final double right, final double bottom) {
-    customViewPortEnabled = true;
-    viewPortHandler.restrainViewPort(left, top, right, bottom);
+    controller.customViewPortEnabled = true;
+    controller.viewPortHandler.restrainViewPort(left, top, right, bottom);
   }
 }
 
@@ -260,11 +86,13 @@ abstract class BarLineScatterCandleBubbleState<
   }
 
   bool _inverted() {
-    return (_closestDataSetToTouch == null &&
-            widget.painter.isAnyAxisInverted()) ||
+    var res = (_closestDataSetToTouch == null &&
+        widget.painter.isAnyAxisInverted()) ||
         (_closestDataSetToTouch != null &&
             widget.painter
                 .isInverted(_closestDataSetToTouch.getAxisDependency()));
+    print(res);
+    return res;
   }
 
   @override

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/combined_chart.dart';
+import 'package:mp_chart/mp/controller/combined_chart_controller.dart';
 import 'package:mp_chart/mp/core/data/bar_data.dart';
 import 'package:mp_chart/mp/core/data/bubble_data.dart';
 import 'package:mp_chart/mp/core/data/candle_data.dart';
@@ -40,6 +41,7 @@ class OtherChartCombined extends StatefulWidget {
 class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   int _count = 12;
   var random = Random(1);
+  CombinedData combinedData;
 
   @override
   void initState() {
@@ -51,23 +53,11 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   String getTitle() => "Other Chart Combined";
 
   @override
-  void chartInit() {
-    _initCombinedChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
         Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 0,
-          child: combinedChart == null
-              ? Center(child: Text("no data"))
-              : combinedChart,
-        ),
+            right: 0, left: 0, top: 0, bottom: 0, child: _initCombinedChart()),
       ],
     );
   }
@@ -82,56 +72,53 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
     combinedData.setValueTypeface(Util.LIGHT);
   }
 
-  void _initCombinedChart() {
-    if (combinedData == null) return;
+  Widget _initCombinedChart() {
+    if (combinedData == null) return Center(child: Text("no data"));
 
-    if (combinedChart != null) {
-      combinedChart.data = combinedData;
-      combinedChart.getState()?.setStateIfNotDispose();
-      return;
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      controller = CombinedChartController(combinedData,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..drawGridLines = (false)
+          ..setAxisMinimum(0);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight
+          ..drawGridLines = (false)
+          ..setAxisMinimum(0);
+      }, legendSettingFunction: (legend, chart) {
+        legend
+          ..wordWrapEnabled = (true)
+          ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+          ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
+          ..orientation = (LegendOrientation.HORIZONTAL)
+          ..drawInside = (false);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..position = (XAxisPosition.BOTH_SIDED)
+          ..setAxisMinimum(0)
+          ..setGranularity(1)
+          ..setValueFormatter(A())
+          ..setAxisMaximum(combinedData == null ? 0 : combinedData.xMax + 0.25);
+      },
+          drawGridBackground: false,
+          drawBarShadow: false,
+          highlightFullBarEnabled: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          pinchZoomEnabled: false,
+          maxVisibleCount: 60,
+          description: desc,
+          drawOrder: List()
+            ..add(DrawOrder.BAR)
+            ..add(DrawOrder.BUBBLE)
+            ..add(DrawOrder.CANDLE)
+            ..add(DrawOrder.LINE)
+            ..add(DrawOrder.SCATTER));
     }
-
-    var desc = Description()..enabled = false;
-    combinedChart = CombinedChart(combinedData,
-        axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..drawGridLines = (false)
-        ..setAxisMinimum(0);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight
-        ..drawGridLines = (false)
-        ..setAxisMinimum(0);
-    }, legendSettingFunction: (legend, chart) {
-      legend
-        ..wordWrapEnabled = (true)
-        ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-        ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
-        ..orientation = (LegendOrientation.HORIZONTAL)
-        ..drawInside = (false);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis
-        ..position = (XAxisPosition.BOTH_SIDED)
-        ..setAxisMinimum(0)
-        ..setGranularity(1)
-        ..setValueFormatter(A())
-        ..setAxisMaximum(combinedData == null ? 0 : combinedData.xMax + 0.25);
-    },
-        drawGridBackground: false,
-        drawBarShadow: false,
-        highlightFullBarEnabled: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: false,
-        maxVisibleCount: 60,
-        description: desc,
-        drawOrder: List()
-          ..add(DrawOrder.BAR)
-          ..add(DrawOrder.BUBBLE)
-          ..add(DrawOrder.CANDLE)
-          ..add(DrawOrder.LINE)
-          ..add(DrawOrder.SCATTER));
+    return CombinedChart(controller);
   }
 
   double getRandom(double range, double start) {

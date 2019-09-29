@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
+import 'package:mp_chart/mp/controller/line_chart_controller.dart';
 import 'package:mp_chart/mp/core/data/line_data.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_line_data_set.dart';
 import 'package:mp_chart/mp/core/data_provider/line_data_provider.dart';
@@ -11,7 +12,6 @@ import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_chart/mp/core/fill_formatter/i_fill_formatter.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
-import 'package:mp_chart/mp/painter/line_chart_painter.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class LineChartFilled extends StatefulWidget {
@@ -22,8 +22,8 @@ class LineChartFilled extends StatefulWidget {
 }
 
 class LineChartFilledState extends SimpleActionState<LineChartFilled> {
-  LineChart _lineChart;
   LineData _lineData;
+  LineChartController _controller;
   var random = Random(1);
 
   int _count = 45;
@@ -39,11 +39,6 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
   String getTitle() => "Line Chart Filled";
 
   @override
-  void chartInit() {
-    _initLineChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
@@ -52,8 +47,7 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
           left: 0,
           top: 0,
           bottom: 100,
-          child:
-              _lineChart == null ? Center(child: Text("no data")) : _lineChart,
+          child: _initLineChart(),
         ),
         Positioned(
           left: 0,
@@ -181,48 +175,45 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
 
   Color _fillColor = Color.fromARGB(150, 51, 181, 229);
 
-  void _initLineChart() {
-    if (_lineData == null) return;
+  Widget _initLineChart() {
+    if (_lineData == null) return Center(child: Text("no data"));
 
-    if (_lineChart != null) {
-      _lineChart?.data = _lineData;
-      _lineChart?.getState()?.setStateIfNotDispose();
-      return;
+    if (_controller == null) {
+      var desc = Description()..enabled = false;
+      _controller = LineChartController(_lineData,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..setAxisMaximum(900)
+          ..setAxisMinimum(-250)
+          ..drawAxisLine = (false)
+          ..setDrawZeroLine(false)
+          ..drawGridLines = (false);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight.enabled = (false);
+      }, legendSettingFunction: (legend, chart) {
+        legend.enabled = (false);
+        var formatter1 = _lineData.getDataSetByIndex(0).getFillFormatter();
+        if (formatter1 is A) {
+          formatter1.setPainter(chart);
+        }
+        var formatter2 = _lineData.getDataSetByIndex(1).getFillFormatter();
+        if (formatter2 is B) {
+          formatter2.setPainter(chart);
+        }
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis.enabled = (false);
+      },
+          drawBorders: true,
+          drawGridBackground: true,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          pinchZoomEnabled: false,
+          backgroundColor: _fillColor,
+          description: desc);
     }
-
-    var desc = Description()..enabled = false;
-    _lineChart = LineChart(_lineData,
-        axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..setAxisMaximum(900)
-        ..setAxisMinimum(-250)
-        ..drawAxisLine = (false)
-        ..setDrawZeroLine(false)
-        ..drawGridLines = (false);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight.enabled = (false);
-    }, legendSettingFunction: (legend, chart) {
-      legend.enabled = (false);
-      var formatter1 = _lineData.getDataSetByIndex(0).getFillFormatter();
-      if (formatter1 is A) {
-        formatter1.setPainter(chart);
-      }
-      var formatter2 = _lineData.getDataSetByIndex(1).getFillFormatter();
-      if (formatter2 is B) {
-        formatter2.setPainter(chart);
-      }
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis.enabled = (false);
-    },
-        drawBorders: true,
-        drawGridBackground: true,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: false,
-        backgroundColor: _fillColor,
-        description: desc);
+    return LineChart(_controller);
   }
 }
 

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/candlestick_chart.dart';
+import 'package:mp_chart/mp/controller/candlestick_chart_controller.dart';
 import 'package:mp_chart/mp/core/data/candle_data.dart';
 import 'package:mp_chart/mp/core/data_set/candle_data_set.dart';
 import 'package:mp_chart/mp/core/description.dart';
@@ -24,6 +25,7 @@ class OtherChartCandlestickState
   var random = Random(1);
   int _count = 40;
   double _range = 100.0;
+  CandleData candleData;
 
   @override
   void initState() {
@@ -35,23 +37,11 @@ class OtherChartCandlestickState
   String getTitle() => "Other Chart Candlestick";
 
   @override
-  void chartInit() {
-    _initCandleChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
         Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 100,
-          child: candlestickChart == null
-              ? Center(child: Text("no data"))
-              : candlestickChart,
-        ),
+            right: 0, left: 0, top: 0, bottom: 100, child: _initCandleChart()),
         Positioned(
           left: 0,
           right: 0,
@@ -169,39 +159,36 @@ class OtherChartCandlestickState
     setState(() {});
   }
 
-  void _initCandleChart() {
-    if (candleData == null) return;
+  Widget _initCandleChart() {
+    if (candleData == null) return Center(child: Text("no data"));
 
-    if (candlestickChart != null) {
-      candlestickChart.data = candleData;
-      candlestickChart.getState()?.setStateIfNotDispose();
-      return;
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      controller = CandlestickChartController(candleData,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..setLabelCount2(7, false)
+          ..drawGridLines = (false)
+          ..drawAxisLine = (false);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight.enabled = (false);
+      }, legendSettingFunction: (legend, chart) {
+        legend.enabled = (false);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..position = (XAxisPosition.BOTTOM)
+          ..drawGridLines = (true);
+      },
+          drawGridBackground: false,
+          backgroundColor: ColorUtils.WHITE,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          pinchZoomEnabled: false,
+          maxVisibleCount: 60,
+          description: desc);
     }
-
-    var desc = Description()..enabled = false;
-    candlestickChart = CandlestickChart(candleData,
-        axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..setLabelCount2(7, false)
-        ..drawGridLines = (false)
-        ..drawAxisLine = (false);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight.enabled = (false);
-    }, legendSettingFunction: (legend, chart) {
-      legend.enabled = (false);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis
-        ..position = (XAxisPosition.BOTTOM)
-        ..drawGridLines = (true);
-    },
-        drawGridBackground: false,
-        backgroundColor: ColorUtils.WHITE,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: false,
-        maxVisibleCount: 60,
-        description: desc);
+    return CandlestickChart(controller);
   }
 }

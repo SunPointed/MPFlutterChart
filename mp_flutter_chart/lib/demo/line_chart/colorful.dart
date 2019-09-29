@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
+import 'package:mp_chart/mp/controller/line_chart_controller.dart';
 import 'package:mp_chart/mp/core/data/line_data.dart';
 import 'package:mp_chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_chart/mp/core/description.dart';
@@ -18,7 +19,7 @@ class LineChartColorful extends StatefulWidget {
 }
 
 class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
-  List<LineChart> _lineCharts = List(4);
+  List<LineChartController> _controllers = List(4);
   List<LineData> _lineDatas = List(4);
   var random = Random(1);
 
@@ -41,12 +42,8 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
   String getTitle() => "Line Chart Colorful";
 
   @override
-  void chartInit() {
-    _initLineChart();
-  }
-
-  @override
   Widget getBody() {
+    _initLineChart();
     return Stack(
       children: <Widget>[
         Positioned(
@@ -59,21 +56,21 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
-                  child: _lineCharts[0] == null
+                  child: _controllers[0] == null
                       ? Center(child: Text("no data"))
-                      : _lineCharts[0]),
+                      : LineChart(_controllers[0])),
               Expanded(
-                  child: _lineCharts[1] == null
+                  child: _controllers[1] == null
                       ? Center(child: Text("no data"))
-                      : _lineCharts[1]),
+                      : LineChart(_controllers[1])),
               Expanded(
-                  child: _lineCharts[2] == null
+                  child: _controllers[2] == null
                       ? Center(child: Text("no data"))
-                      : _lineCharts[2]),
+                      : LineChart(_controllers[2])),
               Expanded(
-                  child: _lineCharts[3] == null
+                  child: _controllers[3] == null
                       ? Center(child: Text("no data"))
-                      : _lineCharts[3]),
+                      : LineChart(_controllers[3])),
             ],
           ),
         )
@@ -98,8 +95,8 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
 
     // create a dataset and give it a type
     LineDataSet set1 = new LineDataSet(values, "DataSet 1");
-    // set1.setFillAlpha(110);
-    // set1.setFillColor(Color.RED);
+    set1.setFillAlpha(110);
+    set1.setFillColor(ColorUtils.RED);
 
     set1.setLineWidth(1.75);
     set1.setCircleRadius(5);
@@ -116,17 +113,19 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
   void _initLineChart() {
     for (int i = 0; i < _lineDatas.length; i++) {
       // add some transparency to the color with "& 0x90FFFFFF"
-      if (_lineDatas[i] != null) {
-        _lineCharts[i] =
-            _setupChart(_lineDatas[i], _colors[i % _colors.length]);
+      if (_lineDatas[i] != null && _controllers[i] == null) {
+        _controllers[i] =
+            _setupChartController(_lineDatas[i], _colors[i % _colors.length]);
+//        _controllers[i].getAnimator().animateX1(2500); todo
       }
     }
   }
 
-  LineChart _setupChart(LineData data, Color color) {
+  LineChartController _setupChartController(LineData data, Color color) {
     (data.getDataSetByIndex(0) as LineDataSet).setCircleHoleColor(color);
     var desc = Description()..enabled = false;
-    var lineChart = LineChart(data, axisLeftSettingFunction: (axisLeft, chart) {
+    return LineChartController(data,
+        axisLeftSettingFunction: (axisLeft, chart) {
       axisLeft
         ..enabled = (false)
         ..spacePercentTop = (40)
@@ -147,8 +146,5 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
         pinchZoomEnabled: false,
         backgroundColor: color,
         description: desc);
-    // animate calls invalidate()...
-    lineChart.animator.animateX1(2500);
-    return lineChart;
   }
 }

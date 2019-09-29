@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:mp_chart/mp/controller/horizontal_bar_chart_controller.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/horizontal_bar_chart.dart';
@@ -32,6 +33,7 @@ class BarChartHorizontalState
   var random = Random(1);
   int _count = 12;
   double _range = 50.0;
+  BarData barData;
 
   @override
   void initState() {
@@ -43,11 +45,6 @@ class BarChartHorizontalState
   String getTitle() => "Bar Chart Horizontal";
 
   @override
-  void chartInit() {
-    _initBarChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
@@ -56,7 +53,7 @@ class BarChartHorizontalState
           left: 0,
           top: 0,
           bottom: 100,
-          child: barChart == null ? Center(child: Text("no data")) : barChart,
+          child: _initBarChart(),
         ),
         Positioned(
           left: 0,
@@ -157,35 +154,27 @@ class BarChartHorizontalState
     setState(() {});
   }
 
-  void _initBarChart() {
+  Widget _initBarChart() {
     if (barData == null) {
-      return;
+      return Center(child: Text("no data"));
     }
 
-    if (barChart != null) {
-      barChart?.data = barData;
-      barChart?.getState()?.setStateIfNotDispose();
-      return;
-    }
-
-    var desc = Description()..enabled = false;
-    barChart = HorizontalBarChart(
-      barData,
-      axisLeftSettingFunction: (axisLeft, chart) {
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      controller = HorizontalBarChartController(barData,
+          axisLeftSettingFunction: (axisLeft, chart) {
         axisLeft
           ..typeface = Util.LIGHT
           ..drawAxisLine = true
           ..drawGridLines = true
           ..setAxisMinimum(0);
-      },
-      axisRightSettingFunction: (axisRight, chart) {
+      }, axisRightSettingFunction: (axisRight, chart) {
         axisRight
           ..typeface = Util.LIGHT
           ..drawAxisLine = true
           ..drawGridLines = false
           ..setAxisMinimum(0);
-      },
-      legendSettingFunction: (legend, chart) {
+      }, legendSettingFunction: (legend, chart) {
         legend
           ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
           ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
@@ -193,8 +182,7 @@ class BarChartHorizontalState
           ..drawInside = (false)
           ..formSize = (8)
           ..xEntrySpace = (4);
-      },
-      xAxisSettingFunction: (xAxis, chart) {
+      }, xAxisSettingFunction: (xAxis, chart) {
         xAxis
           ..position = XAxisPosition.BOTTOM
           ..typeface = Util.LIGHT
@@ -202,20 +190,24 @@ class BarChartHorizontalState
           ..drawGridLines = false
           ..setGranularity(10);
       },
-      drawGridBackground: false,
-      dragXEnabled: true,
-      dragYEnabled: true,
-      scaleXEnabled: true,
-      scaleYEnabled: true,
-      pinchZoomEnabled: false,
-      maxVisibleCount: 60,
-      description: desc,
-      selectionListener: this,
-      drawBarShadow: false,
-      drawValueAboveBar: false,
-      fitBars: true,
-    );
-    barChart.animator.animateY1(2500);
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          pinchZoomEnabled: false,
+          maxVisibleCount: 60,
+          description: desc,
+          selectionListener: this,
+          drawBarShadow: false,
+          drawValueAboveBar: false,
+          fitBars: true);
+      var barChart = HorizontalBarChart(controller);
+      controller.getAnimator().animateY1(2500);
+      return barChart;
+    } else {
+      return HorizontalBarChart(controller);
+    }
   }
 
   @override

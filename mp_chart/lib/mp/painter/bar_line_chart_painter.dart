@@ -344,7 +344,7 @@ abstract class BarLineChartBasePainter<
 
   /// Performs auto scaling of the axis by recalculating the minimum and maximum y-values based on the entries currently in view.
   void autoScale() {
-    // todo
+    // todo autoScale
   }
 
   @override

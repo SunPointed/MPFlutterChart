@@ -1,117 +1,9 @@
-import 'dart:ui';
-
 import 'package:mp_chart/mp/chart/pie_radar_chart.dart';
-import 'package:mp_chart/mp/core/adapter_android_mp.dart';
-import 'package:mp_chart/mp/core/common_interfaces.dart';
-import 'package:mp_chart/mp/core/data/pie_data.dart';
-import 'package:mp_chart/mp/core/description.dart';
-import 'package:mp_chart/mp/core/functions.dart';
-import 'package:mp_chart/mp/core/marker/bar_chart_marker.dart';
-import 'package:mp_chart/mp/core/marker/i_marker.dart';
+import 'package:mp_chart/mp/controller/pie_chart_controller.dart';
 import 'package:mp_chart/mp/painter/pie_chart_painter.dart';
 
-class PieChart extends PieRadarChart<PieChartPainter> {
-  bool drawEntryLabels;
-  bool drawHole;
-  bool drawSlicesUnderHole;
-  bool usePercentValues;
-  bool drawRoundedSlices;
-  String centerText;
-  double holeRadiusPercent; // = 50
-  double transparentCircleRadiusPercent; //= 55
-  bool drawCenterText; // = true
-  double centerTextRadiusPercent; // = 100.0
-  double maxAngle; // = 360
-  double minAngleForSlices; // = 0
-  double centerTextOffsetX;
-  double centerTextOffsetY;
-  TypeFace centerTextTypeface;
-  TypeFace entryLabelTypeface;
-  Color backgroundColor;
-
-  PieChart(PieData data,
-      {IMarker marker,
-      Description description,
-      XAxisSettingFunction xAxisSettingFunction,
-      LegendSettingFunction legendSettingFunction,
-      DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectionListener,
-      double rotationAngle = 270,
-      double rawRotationAngle = 270,
-      bool rotateEnabled = true,
-      double minOffset = 30.0,
-      String noDataText = "No chart data available.",
-      double maxHighlightDistance = 100.0,
-      bool highLightPerTapEnabled = true,
-      double extraTopOffset = 0.0,
-      double extraRightOffset = 0.0,
-      double extraBottomOffset = 0.0,
-      double extraLeftOffset = 0.0,
-      bool drawMarkers = true,
-      double descTextSize = 12,
-      double infoTextSize = 12,
-      Color descTextColor,
-      Color infoTextColor,
-      Color backgroundColor,
-      bool drawEntryLabels = true,
-      bool drawHole = true,
-      bool drawSlicesUnderHole = false,
-      bool usePercentValues = false,
-      bool drawRoundedSlices = false,
-      String centerText = "",
-      double centerTextOffsetX = 0.0,
-      double centerTextOffsetY = 0.0,
-      TypeFace entryLabelTypeface,
-      TypeFace centerTextTypeface,
-      double holeRadiusPercent = 50,
-      double transparentCircleRadiusPercent = 55,
-      bool drawCenterText = true,
-      double centerTextRadiusPercent = 100.0,
-      double maxAngle = 360,
-      double minAngleForSlices = 0})
-      : drawCenterText = drawCenterText,
-        drawEntryLabels = drawEntryLabels,
-        drawHole = drawHole,
-        drawSlicesUnderHole = drawSlicesUnderHole,
-        usePercentValues = usePercentValues,
-        drawRoundedSlices = drawRoundedSlices,
-        holeRadiusPercent = holeRadiusPercent,
-        transparentCircleRadiusPercent = transparentCircleRadiusPercent,
-        centerTextRadiusPercent = centerTextRadiusPercent,
-        centerText = centerText,
-        maxAngle = maxAngle,
-        minAngleForSlices = minAngleForSlices,
-        centerTextOffsetX = centerTextOffsetX,
-        centerTextOffsetY = centerTextOffsetY,
-        entryLabelTypeface = entryLabelTypeface,
-        centerTextTypeface = centerTextTypeface,
-        backgroundColor = backgroundColor,
-        super(data,
-            marker: marker,
-            noDataText: noDataText,
-            xAxisSettingFunction: xAxisSettingFunction,
-            legendSettingFunction: legendSettingFunction,
-            rendererSettingFunction: rendererSettingFunction,
-            description: description,
-            selectionListener: selectionListener,
-            maxHighlightDistance: maxHighlightDistance,
-            highLightPerTapEnabled: highLightPerTapEnabled,
-            extraTopOffset: extraTopOffset,
-            extraRightOffset: extraRightOffset,
-            extraBottomOffset: extraBottomOffset,
-            extraLeftOffset: extraLeftOffset,
-            drawMarkers: drawMarkers,
-            descTextSize: descTextSize,
-            infoTextSize: infoTextSize,
-            descTextColor: descTextColor,
-            infoTextColor: infoTextColor,
-            rotationAngle: rotationAngle,
-            rawRotationAngle: rawRotationAngle,
-            rotateEnabled: rotateEnabled,
-            minOffset: minOffset);
-
-  @override
-  IMarker initMarker() => BarChartMarker();
+class PieChart extends PieRadarChart<PieChartPainter, PieChartController> {
+  PieChart(PieChartController controller) : super(controller);
 
   @override
   PieChartState createChartState() {
@@ -123,46 +15,46 @@ class PieChart extends PieRadarChart<PieChartPainter> {
   @override
   void initialPainter() {
     painter = PieChartPainter(
-      data,
+      controller.data,
       animator,
-      viewPortHandler,
-      maxHighlightDistance,
-      highLightPerTapEnabled,
-      extraLeftOffset,
-      extraTopOffset,
-      extraRightOffset,
-      extraBottomOffset,
-      marker,
-      description,
-      drawMarkers,
-      infoPaint,
-      descPaint,
-      xAxis,
-      legend,
-      legendRenderer,
-      rendererSettingFunction,
-      selectionListener,
-      rotationAngle,
-      rawRotationAngle,
-      rotateEnabled,
-      minOffset,
-      drawEntryLabels,
-      drawHole,
-      drawSlicesUnderHole,
-      usePercentValues,
-      drawRoundedSlices,
-      centerText,
-      centerTextOffsetX,
-      centerTextOffsetY,
-      entryLabelTypeface,
-      centerTextTypeface,
-      holeRadiusPercent,
-      transparentCircleRadiusPercent,
-      drawCenterText,
-      centerTextRadiusPercent,
-      maxAngle,
-      minAngleForSlices,
-      backgroundColor,
+      controller.viewPortHandler,
+      controller.maxHighlightDistance,
+      controller.highLightPerTapEnabled,
+      controller.extraLeftOffset,
+      controller.extraTopOffset,
+      controller.extraRightOffset,
+      controller.extraBottomOffset,
+      controller.marker,
+      controller.description,
+      controller.drawMarkers,
+      controller.infoPaint,
+      controller.descPaint,
+      controller.xAxis,
+      controller.legend,
+      controller.legendRenderer,
+      controller.rendererSettingFunction,
+      controller.selectionListener,
+      controller.rotationAngle,
+      controller.rawRotationAngle,
+      controller.rotateEnabled,
+      controller.minOffset,
+      controller.drawEntryLabels,
+      controller.drawHole,
+      controller.drawSlicesUnderHole,
+      controller.usePercentValues,
+      controller.drawRoundedSlices,
+      controller.centerText,
+      controller.centerTextOffsetX,
+      controller.centerTextOffsetY,
+      controller.entryLabelTypeface,
+      controller.centerTextTypeface,
+      controller.holeRadiusPercent,
+      controller.transparentCircleRadiusPercent,
+      controller.drawCenterText,
+      controller.centerTextRadiusPercent,
+      controller.maxAngle,
+      controller.minAngleForSlices,
+      controller.backgroundColor,
     );
   }
 }

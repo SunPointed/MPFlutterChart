@@ -3,6 +3,8 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/bubble_chart.dart';
+import 'package:mp_chart/mp/controller/bubble_chart_controller.dart';
+import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/data/bubble_data.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_bubble_data_set.dart';
 import 'package:mp_chart/mp/core/data_set/bubble_data_set.dart';
@@ -17,7 +19,6 @@ import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/image_loader.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
-import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
 import 'package:mp_flutter_chart/demo/util.dart';
 
@@ -33,6 +34,7 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
   var random = Random(1);
   int _count = 10;
   double _range = 50.0;
+  BubbleData bubbleData;
 
   @override
   void initState() {
@@ -44,23 +46,11 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
   String getTitle() => "Other Chart Bubble";
 
   @override
-  void chartInit() {
-    _initBubbleChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
         Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 100,
-          child: bubbleChart == null
-              ? Center(child: Text("no data"))
-              : bubbleChart,
-        ),
+            right: 0, left: 0, top: 0, bottom: 100, child: _initBubbleChart()),
         Positioned(
           left: 0,
           right: 0,
@@ -191,46 +181,43 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
     setState(() {});
   }
 
-  void _initBubbleChart() {
-    if (bubbleData == null) return;
+  Widget _initBubbleChart() {
+    if (bubbleData == null) return Center(child: Text("no data"));
 
-    if (bubbleChart != null) {
-      bubbleChart?.data = bubbleData;
-      bubbleChart?.getState()?.setStateIfNotDispose();
-      return;
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      controller = BubbleChartController(bubbleData,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..spacePercentTop = (30)
+          ..spacePercentBottom = (30)
+          ..typeface = Util.LIGHT
+          ..setDrawZeroLine(false);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight.enabled = (false);
+      }, legendSettingFunction: (legend, chart) {
+        legend
+          ..typeface = Util.LIGHT
+          ..verticalAlignment = (LegendVerticalAlignment.TOP)
+          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+          ..orientation = (LegendOrientation.VERTICAL)
+          ..drawInside = (false);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..position = (XAxisPosition.BOTTOM)
+          ..typeface = Util.LIGHT;
+      },
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          pinchZoomEnabled: true,
+          maxVisibleCount: 200,
+          selectionListener: this,
+          description: desc);
     }
-
-    var desc = Description()..enabled = false;
-    bubbleChart = BubbleChart(bubbleData,
-        axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..spacePercentTop = (30)
-        ..spacePercentBottom = (30)
-        ..typeface = Util.LIGHT
-        ..setDrawZeroLine(false);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight.enabled = (false);
-    }, legendSettingFunction: (legend, chart) {
-      legend
-        ..typeface = Util.LIGHT
-        ..verticalAlignment = (LegendVerticalAlignment.TOP)
-        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-        ..orientation = (LegendOrientation.VERTICAL)
-        ..drawInside = (false);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis
-        ..position = (XAxisPosition.BOTTOM)
-        ..typeface = Util.LIGHT;
-    },
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: true,
-        maxVisibleCount: 200,
-        selectionListener: this,
-        description: desc);
+    return BubbleChart(controller);
   }
 
   @override

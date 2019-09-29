@@ -69,7 +69,6 @@ class BarData extends BarLineScatterCandleBubbleData<IBarDataSet> {
       }
     }
 
-    // maybe todo
     notifyDataChanged();
   }
 

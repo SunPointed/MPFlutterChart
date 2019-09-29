@@ -5,6 +5,10 @@ import 'package:mp_chart/mp/chart/bar_chart.dart';
 import 'package:mp_chart/mp/chart/chart.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
 import 'package:mp_chart/mp/chart/pie_chart.dart';
+import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
+import 'package:mp_chart/mp/controller/controller.dart';
+import 'package:mp_chart/mp/controller/line_chart_controller.dart';
+import 'package:mp_chart/mp/controller/pie_chart_controller.dart';
 import 'package:mp_chart/mp/core/data/bar_data.dart';
 import 'package:mp_chart/mp/core/data/chart_data.dart';
 import 'package:mp_chart/mp/core/data/line_data.dart';
@@ -36,7 +40,7 @@ class ScrollingChartMultiple extends StatefulWidget {
 class ScrollingChartMultipleState
     extends SimpleActionState<ScrollingChartMultiple> {
   List<ChartData> _chartDatas = List();
-  List<Chart> _charts;
+  List<Controller> _controllers;
 
   var random = Random(1);
 
@@ -52,9 +56,6 @@ class ScrollingChartMultipleState
 
   @override
   String getTitle() => "Scrolling Chart Multiple";
-
-  @override
-  void chartInit() {}
 
   @override
   Widget getBody() {
@@ -137,7 +138,7 @@ class ScrollingChartMultipleState
         _chartDatas.add(_generateDataPie());
       }
     }
-    _charts = List(_chartDatas.length);
+    _controllers = List(_chartDatas.length);
   }
 
   LineData _generateDataLine(int cnt) {
@@ -209,59 +210,55 @@ class ScrollingChartMultipleState
   }
 
   LineChart _getLineChart(LineData data, int index) {
-    if(_charts[index] == null) {
-      var desc = Description()
-        ..enabled = false;
-      _charts[index] = LineChart(data, axisLeftSettingFunction: (axisLeft, chart) {
+    if (_controllers[index] == null) {
+      var desc = Description()..enabled = false;
+      _controllers[index] = LineChartController(data,
+          axisLeftSettingFunction: (axisLeft, chart) {
         axisLeft
           ..setLabelCount2(5, false)
           ..setAxisMinimum(0);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight
+          ..setLabelCount2(5, false)
+          ..drawGridLines = (false)
+          ..setAxisMinimum(0);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..position = (XAxisPosition.BOTTOM)
+          ..drawGridLines = (false)
+          ..drawAxisLine = (true);
       },
-          axisRightSettingFunction: (axisRight, chart) {
-            axisRight
-              ..setLabelCount2(5, false)
-              ..drawGridLines = (false)
-              ..setAxisMinimum(0);
-          },
-          xAxisSettingFunction: (xAxis, chart) {
-            xAxis
-              ..position = (XAxisPosition.BOTTOM)
-              ..drawGridLines = (false)
-              ..drawAxisLine = (true);
-          },
           drawGridBackground: false,
           dragXEnabled: true,
           dragYEnabled: true,
           scaleXEnabled: true,
           scaleYEnabled: true,
           description: desc);
-      _charts[index].animator.animateX1(750);
+      _controllers[index].getAnimator().animateX1(750);
     }
-    return _charts[index];
+    return LineChart(_controllers[index]);
   }
 
   BarChart _getBarChart(BarData data, int index) {
-    if(_charts[index] == null) {
-      var desc = Description()
-        ..enabled = false;
-      _charts[index] = BarChart(data, axisLeftSettingFunction: (axisLeft, chart) {
+    if (_controllers[index] == null) {
+      var desc = Description()..enabled = false;
+      _controllers[index] = BarChartController(data,
+          axisLeftSettingFunction: (axisLeft, chart) {
         axisLeft
           ..setLabelCount2(5, false)
           ..setAxisMinimum(0)
           ..spacePercentTop = (20);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight
+          ..setLabelCount2(5, false)
+          ..setAxisMinimum(0)
+          ..spacePercentTop = (20);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..position = (XAxisPosition.BOTTOM)
+          ..drawAxisLine = (true)
+          ..drawGridLines = (false);
       },
-          axisRightSettingFunction: (axisRight, chart) {
-            axisRight
-              ..setLabelCount2(5, false)
-              ..setAxisMinimum(0)
-              ..spacePercentTop = (20);
-          },
-          xAxisSettingFunction: (xAxis, chart) {
-            xAxis
-              ..position = (XAxisPosition.BOTTOM)
-              ..drawAxisLine = (true)
-              ..drawGridLines = (false);
-          },
           drawBarShadow: false,
           fitBars: true,
           drawGridBackground: false,
@@ -270,20 +267,20 @@ class ScrollingChartMultipleState
           scaleXEnabled: true,
           scaleYEnabled: true,
           description: desc);
-      _charts[index].animator.animateY1(700);
+      _controllers[index].getAnimator().animateY1(700);
     }
-    return _charts[index];
+    return BarChart(_controllers[index]);
   }
 
   PieChart _getPieChart(PieData data, int index) {
-    if(_charts[index] == null) {
+    if (_controllers[index] == null) {
       data
         ..setValueFormatter(PercentFormatter())
         ..setValueTextSize(11)
         ..setValueTextColor(ColorUtils.WHITE);
-      var desc = Description()
-        ..enabled = false;
-      _charts[index] = PieChart(data, legendSettingFunction: (legend, chart) {
+      var desc = Description()..enabled = false;
+      _controllers[index] = PieChartController(data,
+          legendSettingFunction: (legend, chart) {
         legend
           ..verticalAlignment = (LegendVerticalAlignment.TOP)
           ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
@@ -301,9 +298,9 @@ class ScrollingChartMultipleState
           centerText: generateCenterText(),
           usePercentValues: true,
           description: desc);
-      _charts[index].animator.animateY1(900);
+      _controllers[index].getAnimator().animateY1(900);
     }
-    return _charts[index];
+    return PieChart(_controllers[index]);
   }
 
   String generateCenterText() {

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
+import 'package:mp_chart/mp/controller/line_chart_controller.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/data/line_data.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_line_data_set.dart';
@@ -24,13 +25,8 @@ class EvenMoreDynamic extends StatefulWidget {
 
 class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
     implements OnChartValueSelectedListener {
-  LineChart lineChart;
+  LineChartController controller;
   LineData lineData;
-
-  @override
-  void chartInit() {
-    _initLineChart();
-  }
 
   @override
   Widget getBody() {
@@ -41,11 +37,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
           left: 0,
           top: 0,
           bottom: 0,
-          child: lineChart == null
-              ? Center(
-                  child: Text(
-                      "No chart data available. \nUse the menu to add entries and data sets!"))
-              : lineChart,
+          child: _initLineChart(),
         ),
       ],
     );
@@ -71,8 +63,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
 
   @override
   void itemClick(String action) {
-    var state = lineChart?.getState() as LineChartState;
-    if (state == null) {
+    if (controller.getState() == null) {
       return;
     }
 
@@ -82,23 +73,23 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
         break;
       case 'B':
         _addEntry();
-        state.setStateIfNotDispose();
+        controller.getState().setStateIfNotDispose();
         break;
       case 'C':
         _removeLastEntry();
-        state.setStateIfNotDispose();
+        controller.getState().setStateIfNotDispose();
         break;
       case 'D':
         _addDataSet();
-        state.setStateIfNotDispose();
+        controller.getState().setStateIfNotDispose();
         break;
       case 'E':
         _removeDataSet();
-        state.setStateIfNotDispose();
+        controller.getState().setStateIfNotDispose();
         break;
       case 'F':
-        lineChart.data = null;
-        state.setStateIfNotDispose();
+        controller.data = null;
+        controller.getState().setStateIfNotDispose();
         break;
       case 'G':
         // todo save
@@ -106,25 +97,22 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
     }
   }
 
-  void _initLineChart() {
-    if (lineChart != null) {
-      lineChart?.data = lineData;
-      lineChart?.getState()?.setStateIfNotDispose();
-      return;
+  Widget _initLineChart() {
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      controller = LineChartController(lineData,
+          noDataText:
+              "No chart data available. \nUse the menu to add entries and data sets!",
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          selectionListener: this,
+          pinchZoomEnabled: true,
+          description: desc);
     }
-
-    var desc = Description()..enabled = false;
-    lineChart = LineChart(lineData,
-        noDataText:
-            "No chart data available. \nUse the menu to add entries and data sets!",
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        selectionListener: this,
-        pinchZoomEnabled: true,
-        description: desc);
+    return LineChart(controller);
   }
 
   @override
@@ -137,11 +125,11 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   var random = Random(1);
 
   void _addEntry() {
-    LineData data = lineChart.data;
+    LineData data = controller?.data;
 
     if (data == null) {
       data = LineData();
-      lineChart.data = data;
+      controller.data = data;
     }
 
     ILineDataSet set = data.getDataSetByIndex(0);
@@ -183,7 +171,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   }
 
   void _removeLastEntry() {
-    LineData data = lineChart.data;
+    LineData data = controller?.data;
     if (data != null) {
       ILineDataSet set = data.getDataSetByIndex(0);
       if (set != null) {
@@ -195,9 +183,9 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   }
 
   void _addDataSet() {
-    LineData data = lineChart.data;
+    LineData data = controller?.data;
     if (data == null) {
-      lineChart.data = LineData();
+      controller.data = LineData();
     } else {
       int count = (data.getDataSetCount() + 1);
       int amount = data.getDataSetByIndex(0).getEntryCount();
@@ -220,7 +208,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   }
 
   void _removeDataSet() {
-    LineData data = lineChart.data;
+    LineData data = controller.data;
     if (data != null) {
       data.removeDataSet1(data.getDataSetByIndex(data.getDataSetCount() - 1));
     }

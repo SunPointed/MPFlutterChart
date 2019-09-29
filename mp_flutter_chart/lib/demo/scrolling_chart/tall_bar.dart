@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/bar_chart.dart';
+import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
 import 'package:mp_chart/mp/core/data/bar_data.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_bar_data_set.dart';
 import 'package:mp_chart/mp/core/data_set/bar_data_set.dart';
@@ -22,7 +23,7 @@ class ScrollingChartTallBar extends StatefulWidget {
 class ScrollingChartTallBarState
     extends SimpleActionState<ScrollingChartTallBar> {
   BarData _barData;
-  BarChart _barChart;
+  BarChartController _controller;
 
   var random = Random(1);
 
@@ -38,9 +39,6 @@ class ScrollingChartTallBarState
 
   @override
   String getTitle() => "Scrolling Chart Tall Bar";
-
-  @override
-  void chartInit() {}
 
   @override
   Widget getBody() {
@@ -99,9 +97,9 @@ class ScrollingChartTallBarState
       );
     }
 
-    if (_barChart == null) {
+    if (_controller == null) {
       var desc = Description()..enabled = false;
-      _barChart = BarChart(_barData,
+      _controller = BarChartController(_barData,
           axisLeftSettingFunction: (axisLeft, chart) {
         axisLeft.drawGridLines = (false);
       }, legendSettingFunction: (legend, chart) {
@@ -120,7 +118,7 @@ class ScrollingChartTallBarState
           fitBars: true,
           drawBarShadow: false,
           description: desc);
-      _barChart.animator.animateY1(800);
+      _controller.getAnimator().animateY1(800);
     }
     return Column(
         mainAxisSize: MainAxisSize.max,
@@ -142,7 +140,7 @@ class ScrollingChartTallBarState
               height: 1000,
               child: Padding(
                   padding: EdgeInsets.only(top: 100, bottom: 100),
-                  child: _barChart)),
+                  child: BarChart(_controller))),
           Container(
               padding: EdgeInsets.all(15.0),
               child: Center(

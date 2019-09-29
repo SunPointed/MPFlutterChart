@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/pie_chart.dart';
+import 'package:mp_chart/mp/controller/pie_chart_controller.dart';
 import 'package:mp_chart/mp/core/animator.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/data/pie_data.dart';
@@ -33,6 +34,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
   var random = Random(1);
   int _count = 4;
   double _range = 100.0;
+  PieData pieData;
 
   @override
   void initState() {
@@ -44,11 +46,6 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
   String getTitle() => "Pie Chart Value Lines";
 
   @override
-  void chartInit() {
-    _initPieChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
@@ -57,7 +54,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
           left: 0,
           top: 0,
           bottom: 100,
-          child: pieChart == null ? Center(child: Text("no data")) : pieChart,
+          child: _initPieChart(),
         ),
         Positioned(
           left: 0,
@@ -211,47 +208,47 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
     setState(() {});
   }
 
-  void _initPieChart() {
-    if (pieData == null) return;
+  Widget _initPieChart() {
+    if (pieData == null) return Center(child: Text("no data"));
 
-    if (pieChart != null) {
-      pieChart.data = pieData;
-      pieChart.getState()?.setStateIfNotDispose();
-      return;
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      controller = PieChartController(pieData,
+          legendSettingFunction: (legend, chart) {
+        _formatter.setPieChartPainter(chart);
+        legend
+          ..verticalAlignment = (LegendVerticalAlignment.TOP)
+          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+          ..orientation = (LegendOrientation.VERTICAL)
+          ..drawInside = (false)
+          ..enabled = (false);
+      }, rendererSettingFunction: (renderer) {
+        (renderer as PieChartRenderer)
+          ..setHoleColor(ColorUtils.WHITE)
+          ..setHoleColor(ColorUtils.WHITE)
+          ..setTransparentCircleColor(ColorUtils.WHITE)
+          ..setTransparentCircleAlpha(110);
+      },
+          rotateEnabled: true,
+          drawHole: true,
+          drawCenterText: true,
+          extraLeftOffset: 20,
+          extraTopOffset: 0,
+          extraRightOffset: 20,
+          extraBottomOffset: 0,
+          usePercentValues: true,
+          centerText: "value lines",
+          holeRadiusPercent: 58,
+          transparentCircleRadiusPercent: 61,
+          highLightPerTapEnabled: false,
+          selectionListener: this,
+          description: desc);
+      var pieChart = PieChart(controller);
+      controller.getAnimator().animateY2(1400, Easing.EaseInOutQuad);
+      return pieChart;
+    } else {
+      return PieChart(controller);
     }
-
-    var desc = Description()..enabled = false;
-    pieChart = PieChart(pieData, legendSettingFunction: (legend, chart) {
-      _formatter.setPieChartPainter(chart);
-      legend
-        ..verticalAlignment = (LegendVerticalAlignment.TOP)
-        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-        ..orientation = (LegendOrientation.VERTICAL)
-        ..drawInside = (false)
-        ..enabled = (false);
-    }, rendererSettingFunction: (renderer) {
-      (renderer as PieChartRenderer)
-        ..setHoleColor(ColorUtils.WHITE)
-        ..setHoleColor(ColorUtils.WHITE)
-        ..setTransparentCircleColor(ColorUtils.WHITE)
-        ..setTransparentCircleAlpha(110);
-    },
-        rotateEnabled: true,
-        drawHole: true,
-        drawCenterText: true,
-        extraLeftOffset: 20,
-        extraTopOffset: 0,
-        extraRightOffset: 20,
-        extraBottomOffset: 0,
-        usePercentValues: true,
-        centerText: "value lines",
-        holeRadiusPercent: 58,
-        transparentCircleRadiusPercent: 61,
-        highLightPerTapEnabled: false,
-        selectionListener: this,
-        description: desc);
-
-    pieChart.animator.animateY2(1400, Easing.EaseInOutQuad);
   }
 
   @override

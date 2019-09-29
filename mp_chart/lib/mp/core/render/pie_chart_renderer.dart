@@ -99,9 +99,7 @@ class PieChartRenderer extends DataRenderer {
   }
 
   @override
-  void initBuffers() {
-    // TODO Auto-generated method stub
-  }
+  void initBuffers() {}
 
   @override
   void drawData(Canvas c) {
@@ -822,15 +820,10 @@ class PieChartRenderer extends DataRenderer {
     }
   }
 
-  Rect mDrawHighlightedRectF = Rect.zero;
+  Rect _drawHighlightedRectF = Rect.zero;
 
   @override
   void drawHighlighted(Canvas c, List<Highlight> indices) {
-    /* Skip entirely if using rounded circle slices, because it doesn't make sense to highlight
-         * in this way.
-         * TODO: add support for changing slice color with highlighting rather than only shifting the slice
-         */
-
     final bool drawInnerArc = _painter.isDrawHoleEnabled() &&
         !_painter.isDrawSlicesUnderHoleEnabled();
     if (drawInnerArc && _painter.isDrawRoundedSlicesEnabled()) return;
@@ -848,8 +841,8 @@ class PieChartRenderer extends DataRenderer {
     final double userInnerRadius =
         drawInnerArc ? radius * (_painter.getHoleRadius() / 100.0) : 0.0;
 
-//    final Rect highlightedCircleBox = mDrawHighlightedRectF;
-    mDrawHighlightedRectF = Rect.zero;
+//    final Rect highlightedCircleBox = _drawHighlightedRectF;
+    _drawHighlightedRectF = Rect.zero;
 
     for (int i = 0; i < indices.length; i++) {
       // get the index to highlight
@@ -884,7 +877,7 @@ class PieChartRenderer extends DataRenderer {
 
       double shift = set.getSelectionShift();
       final double highlightedRadius = radius + shift;
-      mDrawHighlightedRectF = Rect.fromLTRB(
+      _drawHighlightedRectF = Rect.fromLTRB(
           _painter.getCircleBox().left - shift,
           _painter.getCircleBox().top - shift,
           _painter.getCircleBox().right + shift,
@@ -934,7 +927,7 @@ class PieChartRenderer extends DataRenderer {
                 highlightedRadius * sin(startAngleShifted * Utils.FDEG2RAD));
 
         mPathBuffer.arcTo(
-            mDrawHighlightedRectF,
+            _drawHighlightedRectF,
             startAngleShifted * Utils.FDEG2RAD,
             sweepAngleShifted * Utils.FDEG2RAD,
             false);

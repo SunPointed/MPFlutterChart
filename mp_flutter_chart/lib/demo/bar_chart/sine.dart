@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/bar_chart.dart';
+import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
 import 'package:mp_chart/mp/core/data/bar_data.dart';
 import 'package:mp_chart/mp/core/data_set/bar_data_set.dart';
 import 'package:mp_chart/mp/core/description.dart';
@@ -25,6 +26,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
   List<BarEntry> _data;
   var random = Random(1);
   int _count = 150;
+  BarData barData;
 
   @override
   void initState() {
@@ -47,11 +49,6 @@ class BarChartSineState extends BarActionState<BarChartSine> {
   String getTitle() => "Bar Chart Sine";
 
   @override
-  void chartInit() {
-    _initBarChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
@@ -60,7 +57,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
           left: 0,
           top: 0,
           bottom: 100,
-          child: barChart == null ? Center(child: Text("no data")) : barChart,
+          child: _initBarChart(),
         ),
         Positioned(
           left: 0,
@@ -125,55 +122,56 @@ class BarChartSineState extends BarActionState<BarChartSine> {
     setState(() {});
   }
 
-  void _initBarChart() {
-    if (barData == null) return;
+  Widget _initBarChart() {
+    if (barData == null) return Center(child: Text("no data"));
 
-    if (barChart != null) {
-      barChart?.data = barData;
-      barChart?.getState()?.setStateIfNotDispose();
-      return;
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      controller = BarChartController(barData,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..setLabelCount2(6, false)
+          ..typeface = Util.LIGHT
+          ..setAxisMaximum(2.5)
+          ..setAxisMinimum(-2.5)
+          ..granularityEnabled = (true)
+          ..setGranularity(0.1);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight
+          ..drawGridLines = (false)
+          ..typeface = Util.LIGHT
+          ..setLabelCount2(6, false)
+          ..setAxisMinimum(-2.5)
+          ..setAxisMaximum(2.5)
+          ..setGranularity(0.1);
+      }, legendSettingFunction: (legend, chart) {
+        legend
+          ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+          ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
+          ..orientation = (LegendOrientation.HORIZONTAL)
+          ..drawInside = (false)
+          ..shape = (LegendForm.SQUARE)
+          ..formSize = (9)
+          ..textSize = (11)
+          ..xEntrySpace = (4);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis.enabled = (false);
+      },
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          pinchZoomEnabled: false,
+          maxVisibleCount: 60,
+          drawBarShadow: false,
+          drawValueAboveBar: true,
+          description: desc);
+      var barChart = BarChart(controller);
+      controller.getAnimator().animateXY1(1500, 1500);
+      return barChart;
+    } else {
+      return BarChart(controller);
     }
-
-    var desc = Description()..enabled = false;
-    barChart = BarChart(barData, axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..setLabelCount2(6, false)
-        ..typeface = Util.LIGHT
-        ..setAxisMaximum(2.5)
-        ..setAxisMinimum(-2.5)
-        ..granularityEnabled = (true)
-        ..setGranularity(0.1);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight
-        ..drawGridLines = (false)
-        ..typeface = Util.LIGHT
-        ..setLabelCount2(6, false)
-        ..setAxisMinimum(-2.5)
-        ..setAxisMaximum(2.5)
-        ..setGranularity(0.1);
-    }, legendSettingFunction: (legend, chart) {
-      legend
-        ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-        ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
-        ..orientation = (LegendOrientation.HORIZONTAL)
-        ..drawInside = (false)
-        ..shape = (LegendForm.SQUARE)
-        ..formSize = (9)
-        ..textSize = (11)
-        ..xEntrySpace = (4);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis.enabled = (false);
-    },
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: false,
-        maxVisibleCount: 60,
-        drawBarShadow: false,
-        drawValueAboveBar: true,
-        description: desc);
-    barChart.animator.animateXY1(1500, 1500);
   }
 }

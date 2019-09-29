@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
+import 'package:mp_chart/mp/controller/line_chart_controller.dart';
+import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/data/line_data.dart';
 import 'package:mp_chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_chart/mp/core/description.dart';
@@ -10,7 +12,6 @@ import 'package:mp_chart/mp/core/enums/legend_form.dart';
 import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/image_loader.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
-import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
 
 class LineChartInvertAxis extends StatefulWidget {
@@ -25,6 +26,7 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
   var random = Random(1);
   int _count = 25;
   double _range = 50.0;
+  LineData lineData;
 
   @override
   void initState() {
@@ -36,21 +38,11 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
   String getTitle() => "Line Chart Invert Axis";
 
   @override
-  void chartInit() {
-    _initLineChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
         Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 100,
-          child: lineChart == null ? Center(child: Text("no data")) : lineChart,
-        ),
+            right: 0, left: 0, top: 0, bottom: 100, child: _initLineChart()),
         Positioned(
           left: 0,
           right: 0,
@@ -163,36 +155,34 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
     setState(() {});
   }
 
-  void _initLineChart() {
-    if (lineData == null) return;
+  Widget _initLineChart() {
+    if (lineData == null) return Center(child: Text("no data"));
 
-    if (lineChart != null) {
-      lineChart?.data = lineData;
-      lineChart?.getState()?.setStateIfNotDispose();
-      return;
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      controller = LineChartController(lineData,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..setAxisMinimum(0)
+          ..inverted = (true);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight.enabled = (false);
+      }, legendSettingFunction: (legend, chart) {
+        legend.shape = (LegendForm.LINE);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..avoidFirstLastClipping = (true)
+          ..setAxisMinimum(0);
+      },
+          drawGridBackground: true,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          pinchZoomEnabled: true,
+          selectionListener: this,
+          description: desc);
     }
-
-    var desc = Description()..enabled = false;
-    lineChart = LineChart(lineData, axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..setAxisMinimum(0)
-        ..inverted = (true);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight.enabled = (false);
-    }, legendSettingFunction: (legend, chart) {
-      legend.shape = (LegendForm.LINE);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis
-        ..avoidFirstLastClipping = (true)
-        ..setAxisMinimum(0);
-    },
-        drawGridBackground: true,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: true,
-        selectionListener: this,
-        description: desc);
+    return LineChart(controller);
   }
 }

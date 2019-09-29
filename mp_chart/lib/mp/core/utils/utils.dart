@@ -312,12 +312,10 @@ abstract class Utils {
   }
 
   static double getLineHeight1(TextPainter paint) {
-    //todo
     return getLineHeight2(paint);
   }
 
   static double getLineHeight2(TextPainter paint) {
-    //todo
     paint.layout();
     return paint.height;
   }

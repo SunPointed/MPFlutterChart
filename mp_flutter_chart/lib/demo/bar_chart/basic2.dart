@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/bar_chart.dart';
+import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
 import 'package:mp_chart/mp/core/data/bar_data.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_bar_data_set.dart';
 import 'package:mp_chart/mp/core/data_set/bar_data_set.dart';
@@ -23,6 +24,7 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
   var random = Random(1);
   int _count = 10;
   double _range = 100.0;
+  BarData barData;
 
   @override
   void initState() {
@@ -34,11 +36,6 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
   String getTitle() => "Bar Chart Basic2";
 
   @override
-  void chartInit() {
-    _initBarChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
@@ -47,7 +44,7 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
           left: 0,
           top: 0,
           bottom: 100,
-          child: barChart == null ? Center(child: Text("no data")) : barChart,
+          child: _initBarChart(),
         ),
         Positioned(
           left: 0,
@@ -146,42 +143,41 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
     setState(() {});
   }
 
-  void _initBarChart() {
+  Widget _initBarChart() {
     if (barData == null) {
-      return;
+      return Center(child: Text("no data"));
     }
 
-    if (barChart != null) {
-      barChart?.data = barData;
-      barChart?.getState()?.setStateIfNotDispose();
-      return;
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      controller = BarChartController(
+        barData,
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft.drawGridLines = false;
+        },
+        legendSettingFunction: (legend, chart) {
+          legend.enabled = false;
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..position = XAxisPosition.BOTTOM
+            ..drawGridLines = false;
+        },
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: false,
+        maxVisibleCount: 60,
+        description: desc,
+        fitBars: true,
+      );
+      var barChart = BarChart(controller);
+      controller.getAnimator().animateY1(1500);
+      return barChart;
+    } else {
+      return BarChart(controller);
     }
-
-    var desc = Description()..enabled = false;
-
-    barChart = BarChart(
-      barData,
-      axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft.drawGridLines = false;
-      },
-      legendSettingFunction: (legend, chart) {
-        legend.enabled = false;
-      },
-      xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..position = XAxisPosition.BOTTOM
-          ..drawGridLines = false;
-      },
-      drawGridBackground: false,
-      dragXEnabled: true,
-      dragYEnabled: true,
-      scaleXEnabled: true,
-      scaleYEnabled: true,
-      pinchZoomEnabled: false,
-      maxVisibleCount: 60,
-      description: desc,
-      fitBars: true,
-    );
-    barChart.animator.animateY1(1500);
   }
 }

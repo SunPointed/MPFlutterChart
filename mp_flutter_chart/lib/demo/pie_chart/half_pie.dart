@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/pie_chart.dart';
+import 'package:mp_chart/mp/controller/pie_chart_controller.dart';
 import 'package:mp_chart/mp/core/animator.dart';
 import 'package:mp_chart/mp/core/data/pie_data.dart';
 import 'package:mp_chart/mp/core/data_set/pie_data_set.dart';
@@ -25,8 +26,8 @@ class PieChartHalfPie extends StatefulWidget {
 }
 
 class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
-  PieChart _pieChart;
   PieData _pieData;
+  PieChartController _controller;
 
   var random = Random(1);
 
@@ -40,21 +41,10 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
   String getTitle() => "Pie Chart Half Pie";
 
   @override
-  void chartInit() {
-    _initPieChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
-        Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 0,
-          child: _pieChart == null ? Center(child: Text("no data")) : _pieChart,
-        )
+        Positioned(right: 0, left: 0, top: 0, bottom: 0, child: _initPieChart())
       ],
     );
   }
@@ -118,50 +108,51 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
     setState(() {});
   }
 
-  void _initPieChart() {
-    if (_pieData == null) return;
+  Widget _initPieChart() {
+    if (_pieData == null) return Center(child: Text("no data"));
 
-    if (_pieChart != null) {
-      _pieChart.data = _pieData;
-      _pieChart.getState()?.setStateIfNotDispose();
-      return;
+    if (_controller == null) {
+      var desc = Description()..enabled = false;
+      _controller = PieChartController(_pieData,
+          legendSettingFunction: (legend, chart) {
+        _formatter.setPieChartPainter(chart);
+        legend
+          ..verticalAlignment = (LegendVerticalAlignment.TOP)
+          ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
+          ..orientation = (LegendOrientation.HORIZONTAL)
+          ..drawInside = (false)
+          ..xEntrySpace = (7)
+          ..yEntrySpace = (0)
+          ..yOffset = (0);
+      }, rendererSettingFunction: (renderer) {
+        (renderer as PieChartRenderer)
+          ..setHoleColor(ColorUtils.WHITE)
+          ..setTransparentCircleColor(ColorUtils.WHITE)
+          ..setTransparentCircleAlpha(110)
+          ..setEntryLabelColor(ColorUtils.WHITE)
+          ..setEntryLabelTextSize(12);
+      },
+          rotateEnabled: false,
+          drawHole: true,
+          usePercentValues: true,
+          drawCenterText: true,
+          highLightPerTapEnabled: true,
+          maxAngle: 180,
+          rawRotationAngle: 180,
+          rotationAngle: 180,
+          centerText: "half pie",
+          centerTextOffsetX: 0,
+          centerTextOffsetY: -20,
+          centerTextTypeface: Util.LIGHT,
+          entryLabelTypeface: Util.LIGHT,
+          holeRadiusPercent: 58,
+          transparentCircleRadiusPercent: 61,
+          description: desc);
+      var pieChart = PieChart(_controller);
+      _controller.getAnimator().animateY2(1400, Easing.EaseInOutQuad);
+      return pieChart;
+    } else {
+      return PieChart(_controller);
     }
-
-    var desc = Description()..enabled = false;
-    _pieChart = PieChart(_pieData, legendSettingFunction: (legend, chart) {
-      _formatter.setPieChartPainter(chart);
-      legend
-        ..verticalAlignment = (LegendVerticalAlignment.TOP)
-        ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
-        ..orientation = (LegendOrientation.HORIZONTAL)
-        ..drawInside = (false)
-        ..xEntrySpace = (7)
-        ..yEntrySpace = (0)
-        ..yOffset = (0);
-    }, rendererSettingFunction: (renderer) {
-      (renderer as PieChartRenderer)
-        ..setHoleColor(ColorUtils.WHITE)
-        ..setTransparentCircleColor(ColorUtils.WHITE)
-        ..setTransparentCircleAlpha(110)
-        ..setEntryLabelColor(ColorUtils.WHITE)
-        ..setEntryLabelTextSize(12);
-    },
-        rotateEnabled: false,
-        drawHole: true,
-        usePercentValues: true,
-        drawCenterText: true,
-        highLightPerTapEnabled: true,
-        maxAngle: 180,
-        rawRotationAngle: 180,
-        rotationAngle: 180,
-        centerText: "half pie",
-        centerTextOffsetX: 0,
-        centerTextOffsetY: -20,
-        centerTextTypeface: Util.LIGHT,
-        entryLabelTypeface: Util.LIGHT,
-        holeRadiusPercent: 58,
-        transparentCircleRadiusPercent: 61,
-        description: desc);
-    _pieChart.animator.animateY2(1400, Easing.EaseInOutQuad);
   }
 }

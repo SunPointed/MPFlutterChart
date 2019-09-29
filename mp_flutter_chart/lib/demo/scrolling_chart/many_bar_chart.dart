@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/bar_chart.dart';
+import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
 import 'package:mp_chart/mp/core/data/bar_data.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_bar_data_set.dart';
 import 'package:mp_chart/mp/core/data_set/bar_data_set.dart';
@@ -22,7 +23,7 @@ class ScrollingChartManyBar extends StatefulWidget {
 class ScrollingChartManyBarState
     extends SimpleActionState<ScrollingChartManyBar> {
   List<BarData> _barDatas = List();
-  List<BarChart> _barCharts;
+  List<BarChartController> _controllers;
 
   var random = Random(1);
 
@@ -38,9 +39,6 @@ class ScrollingChartManyBarState
 
   @override
   String getTitle() => "Scrolling Chart Many Bar";
-
-  @override
-  void chartInit() {}
 
   @override
   Widget getBody() {
@@ -100,9 +98,9 @@ class ScrollingChartManyBarState
       );
     }
 
-    if (_barCharts[index] == null) {
+    if (_controllers[index] == null) {
       var desc = Description()..enabled = false;
-      _barCharts[index] = BarChart(data,
+      _controllers[index] = BarChartController(data,
           axisLeftSettingFunction: (axisLeft, chart) {
         axisLeft
           ..setLabelCount2(5, false)
@@ -123,9 +121,9 @@ class ScrollingChartManyBarState
           scaleYEnabled: true,
           fitBars: true,
           description: desc);
-      _barCharts[index].animator..animateY1(700);
+      _controllers[index].getAnimator().animateY1(700);
     }
-    return Container(height: 200, child: _barCharts[index]);
+    return Container(height: 200, child: BarChart(_controllers[index]));
   }
 
   void _initBarDatas() {
@@ -133,7 +131,7 @@ class ScrollingChartManyBarState
     for (int i = 0; i < 20; i++) {
       _barDatas.add(generateData(i + 1));
     }
-    _barCharts = List(_barDatas.length);
+    _controllers = List(_barDatas.length);
   }
 
   BarData generateData(int cnt) {

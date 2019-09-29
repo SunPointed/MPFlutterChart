@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
+import 'package:mp_chart/mp/controller/line_chart_controller.dart';
 import 'package:mp_chart/mp/core/data/line_data.dart';
 import 'package:mp_chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_chart/mp/core/description.dart';
@@ -19,8 +20,8 @@ class LineChartPerformance extends StatefulWidget {
 
 class LineChartPerformanceState
     extends SimpleActionState<LineChartPerformance> {
-  LineChart _lineChart;
   LineData _lineData;
+  LineChartController _controller;
   var random = Random(1);
 
   double _range = 100.0;
@@ -36,22 +37,11 @@ class LineChartPerformanceState
   String getTitle() => "Line Chart Performance";
 
   @override
-  void chartInit() {
-    _initLineChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
         Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 100,
-          child:
-              _lineChart == null ? Center(child: Text("no data")) : _lineChart,
-        ),
+            right: 0, left: 0, top: 0, bottom: 100, child: _initLineChart()),
         Positioned(
           left: 0,
           right: 0,
@@ -121,34 +111,31 @@ class LineChartPerformanceState
     setState(() {});
   }
 
-  void _initLineChart() {
-    if (_lineData == null) return;
+  Widget _initLineChart() {
+    if (_lineData == null) return Center(child: Text("no data"));
 
-    if (_lineChart != null) {
-      _lineChart?.data = _lineData;
-      _lineChart?.getState()?.setStateIfNotDispose();
-      return;
+    if (_controller == null) {
+      var desc = Description()..enabled = false;
+      _controller = LineChartController(_lineData,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft.drawGridLines = (false);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight.enabled = (false);
+      }, legendSettingFunction: (legend, chart) {
+        legend.enabled = (false);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..drawGridLines = (true)
+          ..drawAxisLine = (false);
+      },
+          drawGridBackground: true,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          pinchZoomEnabled: false,
+          description: desc);
     }
-
-    var desc = Description()..enabled = false;
-    _lineChart = LineChart(_lineData,
-        axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft.drawGridLines = (false);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight.enabled = (false);
-    }, legendSettingFunction: (legend, chart) {
-      legend.enabled = (false);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis
-        ..drawGridLines = (true)
-        ..drawAxisLine = (false);
-    },
-        drawGridBackground: true,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: false,
-        description: desc);
+    return LineChart(_controller);
   }
 }

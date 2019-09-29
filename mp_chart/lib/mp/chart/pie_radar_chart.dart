@@ -1,76 +1,22 @@
 import 'package:flutter/widgets.dart';
 import 'package:mp_chart/mp/chart/chart.dart';
-import 'package:mp_chart/mp/core/common_interfaces.dart';
-import 'package:mp_chart/mp/core/data/chart_data.dart';
-import 'package:mp_chart/mp/core/data_interfaces/i_data_set.dart';
-import 'package:mp_chart/mp/core/description.dart';
-import 'package:mp_chart/mp/core/entry/entry.dart';
-import 'package:mp_chart/mp/core/functions.dart';
+import 'package:mp_chart/mp/controller/pie_radar_controller.dart';
 import 'package:mp_chart/mp/core/highlight/highlight.dart';
-import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/utils/highlight_utils.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 import 'package:mp_chart/mp/painter/pie_redar_chart_painter.dart';
 
-abstract class PieRadarChart<P extends PieRadarChartPainter> extends Chart<P> {
-  double rotationAngle;
-  double rawRotationAngle;
-  bool rotateEnabled;
-  double minOffset;
-
-  PieRadarChart(ChartData<IDataSet<Entry>> data,
-      {IMarker marker,
-      Description description,
-      XAxisSettingFunction xAxisSettingFunction,
-      LegendSettingFunction legendSettingFunction,
-      DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectionListener,
-      double rotationAngle = 270,
-      double rawRotationAngle = 270,
-      bool rotateEnabled = true,
-      double minOffset = 30.0,
-      String noDataText = "No chart data available.",
-      double maxHighlightDistance = 100.0,
-      bool highLightPerTapEnabled = true,
-      double extraTopOffset = 0.0,
-      double extraRightOffset = 0.0,
-      double extraBottomOffset = 0.0,
-      double extraLeftOffset = 0.0,
-      bool drawMarkers = true,
-      double descTextSize = 12,
-      double infoTextSize = 12,
-      Color descTextColor,
-      Color infoTextColor})
-      : rotationAngle = rotationAngle,
-        rawRotationAngle = rawRotationAngle,
-        rotateEnabled = rotateEnabled,
-        minOffset = minOffset,
-        super(data,
-            marker: marker,
-            noDataText: noDataText,
-            xAxisSettingFunction: xAxisSettingFunction,
-            legendSettingFunction: legendSettingFunction,
-            rendererSettingFunction: rendererSettingFunction,
-            description: description,
-            selectionListener: selectionListener,
-            maxHighlightDistance: maxHighlightDistance,
-            highLightPerTapEnabled: highLightPerTapEnabled,
-            extraTopOffset: extraTopOffset,
-            extraRightOffset: extraRightOffset,
-            extraBottomOffset: extraBottomOffset,
-            extraLeftOffset: extraLeftOffset,
-            drawMarkers: drawMarkers,
-            descTextSize: descTextSize,
-            infoTextSize: infoTextSize,
-            descTextColor: descTextColor,
-            infoTextColor: infoTextColor);
+abstract class PieRadarChart<P extends PieRadarChartPainter,
+    C extends PieRadarController> extends Chart<P, C> {
+  PieRadarChart(C controller) : super(controller);
 
   @override
   void onRotateUpdate(double angle) {
-    rawRotationAngle = angle;
-    rotationAngle = Utils.getNormalizedAngle(rawRotationAngle);
-    getState().setStateIfNotDispose();
+    controller.rawRotationAngle = angle;
+    controller.rotationAngle =
+        Utils.getNormalizedAngle(controller.rawRotationAngle);
+    state.setStateIfNotDispose();
   }
 
   PieRadarChartPainter get painter => super.painter;
@@ -89,8 +35,9 @@ abstract class PieRadarChartState<T extends PieRadarChart>
 
   void _updateGestureRotation(double x, double y) {
     double angle = widget.painter.getAngleForPoint(x, y) - _startAngle;
-    widget.rawRotationAngle = angle;
-    widget.rotationAngle = Utils.getNormalizedAngle(widget.rawRotationAngle);
+    widget.controller.rawRotationAngle = angle;
+    widget.controller.rotationAngle =
+        Utils.getNormalizedAngle(widget.controller.rawRotationAngle);
   }
 
   @override

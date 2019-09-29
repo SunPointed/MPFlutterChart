@@ -176,8 +176,6 @@ class LegendRenderer extends Renderer {
     _legend.calculateDimensions(_legendLabelPaint, viewPortHandler);
   }
 
-  // todo Paint.FontMetrics legendFontMetrics =  Paint.FontMetrics();
-
   TextPainter getLabelPainter() {
     var color = _legendLabelPaint.text.style.color;
     var fontSize = _legendLabelPaint.text.style.fontSize;

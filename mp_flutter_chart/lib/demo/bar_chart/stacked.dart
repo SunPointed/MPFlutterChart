@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/bar_chart.dart';
+import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/data/bar_data.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_bar_data_set.dart';
@@ -33,6 +34,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
   var random = Random(1);
   int _count = 12;
   double _range = 100.0;
+  BarData barData;
 
   @override
   void initState() {
@@ -44,11 +46,6 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
   String getTitle() => "Bar Chart Stacked";
 
   @override
-  void chartInit() {
-    _initBarChart();
-  }
-
-  @override
   Widget getBody() {
     return Stack(
       children: <Widget>[
@@ -57,7 +54,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
           left: 0,
           top: 0,
           bottom: 100,
-          child: barChart == null ? Center(child: Text("no data")) : barChart,
+          child: _initBarChart(),
         ),
         Positioned(
           left: 0,
@@ -171,50 +168,48 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
       ..add(ColorUtils.MATERIAL_COLORS[2]);
   }
 
-  void _initBarChart() {
+  Widget _initBarChart() {
     if (barData == null) {
-      return;
+      return Center(child: Text("no data"));
     }
 
-    if (barChart != null) {
-      barChart?.data = barData;
-      barChart?.getState()?.setStateIfNotDispose();
-      return;
+    if (controller == null) {
+      var desc = Description()..enabled = false;
+      controller = BarChartController(barData,
+          axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft
+          ..setValueFormatter(MyValueFormatter("K"))
+          ..setAxisMinimum(0);
+      }, axisRightSettingFunction: (axisRight, chart) {
+        axisRight.enabled = (false);
+      }, legendSettingFunction: (legend, chart) {
+        legend
+          ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+          ..orientation = (LegendOrientation.HORIZONTAL)
+          ..drawInside = (false)
+          ..shape = (LegendForm.SQUARE)
+          ..formSize = (8)
+          ..formToTextSpace = (4)
+          ..xEntrySpace = (6);
+      }, xAxisSettingFunction: (xAxis, chart) {
+        xAxis.position = (XAxisPosition.TOP);
+      },
+          drawGridBackground: false,
+          dragXEnabled: true,
+          dragYEnabled: true,
+          scaleXEnabled: true,
+          scaleYEnabled: true,
+          pinchZoomEnabled: false,
+          maxVisibleCount: 60,
+          fitBars: true,
+          selectionListener: this,
+          drawBarShadow: false,
+          highlightFullBarEnabled: false,
+          drawValueAboveBar: false,
+          description: desc);
     }
-
-    var desc = Description()..enabled = false;
-    barChart = BarChart(barData, axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..setValueFormatter(MyValueFormatter("K"))
-        ..setAxisMinimum(0);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight.enabled = (false);
-    }, legendSettingFunction: (legend, chart) {
-      legend
-        ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-        ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-        ..orientation = (LegendOrientation.HORIZONTAL)
-        ..drawInside = (false)
-        ..shape = (LegendForm.SQUARE)
-        ..formSize = (8)
-        ..formToTextSpace = (4)
-        ..xEntrySpace = (6);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis.position = (XAxisPosition.TOP);
-    },
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: false,
-        maxVisibleCount: 60,
-        fitBars: true,
-        selectionListener: this,
-        drawBarShadow: false,
-        highlightFullBarEnabled: false,
-        drawValueAboveBar: false,
-        description: desc);
+    return BarChart(controller);
   }
 
   @override
