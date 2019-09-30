@@ -47,20 +47,14 @@ class ScrollingChartViewPagerState
   BarChartController _barChartController;
   ScatterChartController _scatterChartController;
   PieChartController _pieChartController;
-  LineData _lineData1;
-  LineData _lineData2;
-  BarData _barData;
-  ScatterData _scatterData;
-  PieData _pieData;
-
   var random = Random(1);
-
   bool _isParentMove = true;
   double _curX = 0.0;
   int _preTime = 0;
 
   @override
   void initState() {
+    _initController();
     _initLineData1();
     _initLineData2();
     _initBarData();
@@ -147,6 +141,96 @@ class ScrollingChartViewPagerState
     );
   }
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+
+    _lineChartController1 = LineChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..setAxisMaximum(1.2)
+            ..setAxisMinimum(-1.2);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis.enabled = (false);
+        },
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        description: desc);
+
+    _lineChartController2 = LineChartController(
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis.enabled = (false);
+        },
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        description: desc);
+
+    _barChartController = BarChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft.setAxisMinimum(0);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis.enabled = (false);
+        },
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        drawBarShadow: false,
+        description: desc);
+
+    _scatterChartController = ScatterChartController(
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.drawGridLines = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend
+            ..wordWrapEnabled = (true)
+            ..formSize = (14)
+            ..textSize = (9)
+            ..yOffset = (13);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis.position = (XAxisPosition.BOTTOM);
+        },
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        extraBottomOffset: 16,
+        description: desc);
+
+    _pieChartController = PieChartController(
+        legendSettingFunction: (legend, chart) {
+          legend
+            ..verticalAlignment = (LegendVerticalAlignment.TOP)
+            ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+            ..orientation = (LegendOrientation.VERTICAL)
+            ..drawInside = (false);
+        },
+        centerText: _generateCenterText(),
+        holeRadiusPercent: 45,
+        transparentCircleRadiusPercent: 50,
+        description: desc);
+  }
+
   void _initLineData1() {
     List<ILineDataSet> sets = List();
 
@@ -165,7 +249,7 @@ class ScrollingChartViewPagerState
       ds1.setColor1(ColorUtils.VORDIPLOM_COLORS[0]);
       sets.add(ds1);
       if (sets.length == 2) {
-        _lineData1 = LineData.fromList(sets);
+        _lineChartController1.updateData(LineData.fromList(sets));
         //    _lineData1.setValueTypeface(tf);
         setState(() {});
       }
@@ -186,7 +270,7 @@ class ScrollingChartViewPagerState
       ds2.setColor1(ColorUtils.VORDIPLOM_COLORS[1]);
       sets.add(ds2);
       if (sets.length == 2) {
-        _lineData1 = LineData.fromList(sets);
+        _lineChartController1.updateData(LineData.fromList(sets));
         //    _lineData1.setValueTypeface(tf);
         setState(() {});
       }
@@ -213,7 +297,7 @@ class ScrollingChartViewPagerState
       ds.setCircleColor(ColorUtils.VORDIPLOM_COLORS[0]);
       sets.add(ds);
       if (sets.length == 4) {
-        _lineData2 = LineData.fromList(sets);
+        _lineChartController2.updateData(LineData.fromList(sets));
         //    _lineData1.setValueTypeface(tf);
         setState(() {});
       }
@@ -236,7 +320,7 @@ class ScrollingChartViewPagerState
       ds.setCircleColor(ColorUtils.VORDIPLOM_COLORS[1]);
       sets.add(ds);
       if (sets.length == 4) {
-        _lineData2 = LineData.fromList(sets);
+        _lineChartController2.updateData(LineData.fromList(sets));
         //    _lineData1.setValueTypeface(tf);
         setState(() {});
       }
@@ -259,7 +343,7 @@ class ScrollingChartViewPagerState
       ds.setCircleColor(ColorUtils.VORDIPLOM_COLORS[2]);
       sets.add(ds);
       if (sets.length == 4) {
-        _lineData2 = LineData.fromList(sets);
+        _lineChartController2.updateData(LineData.fromList(sets));
         //    _lineData1.setValueTypeface(tf);
         setState(() {});
       }
@@ -282,7 +366,7 @@ class ScrollingChartViewPagerState
       ds.setCircleColor(ColorUtils.VORDIPLOM_COLORS[3]);
       sets.add(ds);
       if (sets.length == 4) {
-        _lineData2 = LineData.fromList(sets);
+        _lineChartController2.updateData(LineData.fromList(sets));
         //    _lineData1.setValueTypeface(tf);
         setState(() {});
       }
@@ -314,7 +398,7 @@ class ScrollingChartViewPagerState
       sets.add(ds);
     }
 
-    _barData = BarData(sets);
+    _barChartController.updateData(BarData(sets));
 //    _barData.setValueTypeface(tf);
   }
 
@@ -342,7 +426,7 @@ class ScrollingChartViewPagerState
       sets.add(ds);
     }
 
-    _scatterData = ScatterData.fromList(sets);
+    _scatterChartController.updateData(ScatterData.fromList(sets));
 //    _scatterData.setValueTypeface(tf);
   }
 
@@ -362,144 +446,35 @@ class ScrollingChartViewPagerState
     ds1.setValueTextColor(ColorUtils.WHITE);
     ds1.setValueTextSize(12);
 
-    _pieData = PieData(ds1);
+    _pieChartController.updateData(PieData(ds1));
 //    _pieData.setValueTypeface(tf);
   }
 
   Widget _initLineChart1() {
-    if (_lineData1 == null) {
-      return Center(child: Text("no data"));
-    }
-
-    if (_lineChartController1 == null) {
-      var desc = Description()..enabled = false;
-      _lineChartController1 = LineChartController(_lineData1,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..setAxisMaximum(1.2)
-          ..setAxisMinimum(-1.2);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight.enabled = (false);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis.enabled = (false);
-      },
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          description: desc);
-      var lineChart = LineChart(_lineChartController1);
-      _lineChartController1.getAnimator().animateX1(3000);
-      return lineChart;
-    } else {
-      return LineChart(_lineChartController1);
-    }
+    var lineChart = LineChart(_lineChartController1);
+    _lineChartController1.getAnimator()
+      ..reset()
+      ..animateX1(3000);
+    return lineChart;
   }
 
   Widget _initLineChart2() {
-    if (_lineData2 == null) {
-      return Center(child: Text("no data"));
-    }
-
-    if (_lineChartController2 == null) {
-      var desc = Description()..enabled = false;
-      _lineChartController2 = LineChartController(_lineData2,
-          axisRightSettingFunction: (axisRight, chart) {
-        axisRight.enabled = (false);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis.enabled = (false);
-      },
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          description: desc);
-      var lineChart = LineChart(_lineChartController2);
-      _lineChartController2.getAnimator().animateX1(3000);
-      return lineChart;
-    } else {
-      return LineChart(_lineChartController2);
-    }
+    var lineChart = LineChart(_lineChartController2);
+    _lineChartController2.getAnimator()
+      ..reset()
+      ..animateX1(3000);
+    return lineChart;
   }
 
   Widget _initBarChart() {
-    if (_barData == null) {
-      return Center(child: Text("no data"));
-    }
-
-    if (_barChartController == null) {
-      var desc = Description()..enabled = false;
-      _barChartController = BarChartController(_barData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft.setAxisMinimum(0);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight.enabled = (false);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis.enabled = (false);
-      },
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          drawBarShadow: false,
-          description: desc);
-    }
     return BarChart(_barChartController);
   }
 
   Widget _initScatterChart() {
-    if (_scatterData == null) {
-      return Center(child: Text("no data"));
-    }
-
-    if (_scatterChartController == null) {
-      var desc = Description()..enabled = false;
-      _scatterChartController = ScatterChartController(_scatterData,
-          axisRightSettingFunction: (axisRight, chart) {
-        axisRight.drawGridLines = (false);
-      }, legendSettingFunction: (legend, chart) {
-        legend
-          ..wordWrapEnabled = (true)
-          ..formSize = (14)
-          ..textSize = (9)
-          ..yOffset = (13);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis.position = (XAxisPosition.BOTTOM);
-      },
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          extraBottomOffset: 16,
-          description: desc);
-    }
     return ScatterChart(_scatterChartController);
   }
 
   Widget _initPieChart() {
-    if (_pieData == null) {
-      return Center(child: Text("no data"));
-    }
-
-    if (_pieChartController == null) {
-      var desc = Description()..enabled = false;
-      _pieChartController = PieChartController(_pieData,
-          legendSettingFunction: (legend, chart) {
-        legend
-          ..verticalAlignment = (LegendVerticalAlignment.TOP)
-          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-          ..orientation = (LegendOrientation.VERTICAL)
-          ..drawInside = (false);
-      },
-          centerText: _generateCenterText(),
-          holeRadiusPercent: 45,
-          transparentCircleRadiusPercent: 50,
-          description: desc);
-    }
     return PieChart(_pieChartController);
   }
 

@@ -22,15 +22,14 @@ class LineChartFilled extends StatefulWidget {
 }
 
 class LineChartFilledState extends SimpleActionState<LineChartFilled> {
-  LineData _lineData;
   LineChartController _controller;
   var random = Random(1);
-
   int _count = 45;
   double _range = 100.0;
 
   @override
   void initState() {
+    _initController();
     _initLineData(_count, _range);
     super.initState();
   }
@@ -47,7 +46,7 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
           left: 0,
           top: 0,
           bottom: 100,
-          child: _initLineChart(),
+          child: LineChart(_controller),
         ),
         Positioned(
           left: 0,
@@ -120,6 +119,47 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
     );
   }
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    _controller = LineChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..setAxisMaximum(900)
+            ..setAxisMinimum(-250)
+            ..drawAxisLine = (false)
+            ..setDrawZeroLine(false)
+            ..drawGridLines = (false);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend.enabled = (false);
+          var formatter1 =
+              _controller.data.getDataSetByIndex(0).getFillFormatter();
+          if (formatter1 is A) {
+            formatter1.setPainter(chart);
+          }
+          var formatter2 =
+              _controller.data.getDataSetByIndex(1).getFillFormatter();
+          if (formatter2 is B) {
+            formatter2.setPainter(chart);
+          }
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis.enabled = (false);
+        },
+        drawBorders: true,
+        drawGridBackground: true,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: false,
+        backgroundColor: _fillColor,
+        description: desc);
+  }
+
   void _initLineData(int count, double range) {
     List<Entry> values1 = new List();
 
@@ -167,54 +207,13 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
     set2.setFillFormatter(B());
 
     // create a data object with the data sets
-    _lineData = LineData.fromList(List()..add(set1)..add(set2));
-    _lineData.setDrawValues(false);
+    _controller.updateData(LineData.fromList(List()..add(set1)..add(set2)));
+    _controller.data.setDrawValues(false);
 
     setState(() {});
   }
 
   Color _fillColor = Color.fromARGB(150, 51, 181, 229);
-
-  Widget _initLineChart() {
-    if (_lineData == null) return Center(child: Text("no data"));
-
-    if (_controller == null) {
-      var desc = Description()..enabled = false;
-      _controller = LineChartController(_lineData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..setAxisMaximum(900)
-          ..setAxisMinimum(-250)
-          ..drawAxisLine = (false)
-          ..setDrawZeroLine(false)
-          ..drawGridLines = (false);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight.enabled = (false);
-      }, legendSettingFunction: (legend, chart) {
-        legend.enabled = (false);
-        var formatter1 = _lineData.getDataSetByIndex(0).getFillFormatter();
-        if (formatter1 is A) {
-          formatter1.setPainter(chart);
-        }
-        var formatter2 = _lineData.getDataSetByIndex(1).getFillFormatter();
-        if (formatter2 is B) {
-          formatter2.setPainter(chart);
-        }
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis.enabled = (false);
-      },
-          drawBorders: true,
-          drawGridBackground: true,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: false,
-          backgroundColor: _fillColor,
-          description: desc);
-    }
-    return LineChart(_controller);
-  }
 }
 
 class A implements IFillFormatter {

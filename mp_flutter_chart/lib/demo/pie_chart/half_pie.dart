@@ -26,13 +26,12 @@ class PieChartHalfPie extends StatefulWidget {
 }
 
 class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
-  PieData _pieData;
   PieChartController _controller;
-
   var random = Random(1);
 
   @override
   void initState() {
+    _initController();
     _initPieData();
     super.initState();
   }
@@ -77,6 +76,46 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
     ..add("Party Y")
     ..add("Party Z");
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    _controller = PieChartController(
+        legendSettingFunction: (legend, chart) {
+          _formatter.setPieChartPainter(chart);
+          legend
+            ..verticalAlignment = (LegendVerticalAlignment.TOP)
+            ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
+            ..orientation = (LegendOrientation.HORIZONTAL)
+            ..drawInside = (false)
+            ..xEntrySpace = (7)
+            ..yEntrySpace = (0)
+            ..yOffset = (0);
+        },
+        rendererSettingFunction: (renderer) {
+          (renderer as PieChartRenderer)
+            ..setHoleColor(ColorUtils.WHITE)
+            ..setTransparentCircleColor(ColorUtils.WHITE)
+            ..setTransparentCircleAlpha(110)
+            ..setEntryLabelColor(ColorUtils.WHITE)
+            ..setEntryLabelTextSize(12);
+        },
+        rotateEnabled: false,
+        drawHole: true,
+        usePercentValues: true,
+        drawCenterText: true,
+        highLightPerTapEnabled: true,
+        maxAngle: 180,
+        rawRotationAngle: 180,
+        rotationAngle: 180,
+        centerText: "half pie",
+        centerTextOffsetX: 0,
+        centerTextOffsetY: -20,
+        centerTextTypeface: Util.LIGHT,
+        entryLabelTypeface: Util.LIGHT,
+        holeRadiusPercent: 58,
+        transparentCircleRadiusPercent: 61,
+        description: desc);
+  }
+
   PercentFormatter _formatter = PercentFormatter();
 
   void _initPieData() async {
@@ -100,59 +139,17 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
     dataSet.setColors1(ColorUtils.MATERIAL_COLORS);
     //dataSet.setSelectionShift(0f);
 
-    _pieData = PieData(dataSet)
+    _controller.updateData(PieData(dataSet)
       ..setValueFormatter(new PercentFormatter())
       ..setValueTextColor(ColorUtils.WHITE)
-      ..setValueTypeface(Util.LIGHT);
+      ..setValueTypeface(Util.LIGHT));
 
     setState(() {});
   }
 
   Widget _initPieChart() {
-    if (_pieData == null) return Center(child: Text("no data"));
-
-    if (_controller == null) {
-      var desc = Description()..enabled = false;
-      _controller = PieChartController(_pieData,
-          legendSettingFunction: (legend, chart) {
-        _formatter.setPieChartPainter(chart);
-        legend
-          ..verticalAlignment = (LegendVerticalAlignment.TOP)
-          ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
-          ..orientation = (LegendOrientation.HORIZONTAL)
-          ..drawInside = (false)
-          ..xEntrySpace = (7)
-          ..yEntrySpace = (0)
-          ..yOffset = (0);
-      }, rendererSettingFunction: (renderer) {
-        (renderer as PieChartRenderer)
-          ..setHoleColor(ColorUtils.WHITE)
-          ..setTransparentCircleColor(ColorUtils.WHITE)
-          ..setTransparentCircleAlpha(110)
-          ..setEntryLabelColor(ColorUtils.WHITE)
-          ..setEntryLabelTextSize(12);
-      },
-          rotateEnabled: false,
-          drawHole: true,
-          usePercentValues: true,
-          drawCenterText: true,
-          highLightPerTapEnabled: true,
-          maxAngle: 180,
-          rawRotationAngle: 180,
-          rotationAngle: 180,
-          centerText: "half pie",
-          centerTextOffsetX: 0,
-          centerTextOffsetY: -20,
-          centerTextTypeface: Util.LIGHT,
-          entryLabelTypeface: Util.LIGHT,
-          holeRadiusPercent: 58,
-          transparentCircleRadiusPercent: 61,
-          description: desc);
-      var pieChart = PieChart(_controller);
-      _controller.getAnimator().animateY2(1400, Easing.EaseInOutQuad);
-      return pieChart;
-    } else {
-      return PieChart(_controller);
-    }
+    var pieChart = PieChart(_controller);
+    _controller.getAnimator().animateY2(1400, Easing.EaseInOutQuad);
+    return pieChart;
   }
 }

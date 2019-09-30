@@ -22,17 +22,15 @@ class ScrollingChartTallBar extends StatefulWidget {
 
 class ScrollingChartTallBarState
     extends SimpleActionState<ScrollingChartTallBar> {
-  BarData _barData;
   BarChartController _controller;
-
   var random = Random(1);
-
   bool _isParentMove = true;
   double _curX = 0.0;
   int _preTime = 0;
 
   @override
   void initState() {
+    _initController();
     _initBarData();
     super.initState();
   }
@@ -90,36 +88,10 @@ class ScrollingChartTallBarState
   }
 
   Widget _renderItem() {
-    if (_barData == null) {
-      return Container(
-        child: Center(child: Text("no data")),
-        height: 200,
-      );
-    }
-
-    if (_controller == null) {
-      var desc = Description()..enabled = false;
-      _controller = BarChartController(_barData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft.drawGridLines = (false);
-      }, legendSettingFunction: (legend, chart) {
-        legend.enabled = (false);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..position = (XAxisPosition.BOTTOM)
-          ..drawGridLines = (false);
-      },
-          pinchZoomEnabled: false,
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          fitBars: true,
-          drawBarShadow: false,
-          description: desc);
-      _controller.getAnimator().animateY1(800);
-    }
+    var barChart = BarChart(_controller);
+    _controller.getAnimator()
+      ..reset()
+      ..animateY1(800);
     return Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,7 +112,7 @@ class ScrollingChartTallBarState
               height: 1000,
               child: Padding(
                   padding: EdgeInsets.only(top: 100, bottom: 100),
-                  child: BarChart(_controller))),
+                  child: barChart)),
           Container(
               padding: EdgeInsets.all(15.0),
               child: Center(
@@ -156,8 +128,33 @@ class ScrollingChartTallBarState
         ]);
   }
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    _controller = BarChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft.drawGridLines = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend.enabled = (false);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..position = (XAxisPosition.BOTTOM)
+            ..drawGridLines = (false);
+        },
+        pinchZoomEnabled: false,
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        fitBars: true,
+        drawBarShadow: false,
+        description: desc);
+  }
+
   void _initBarData() {
-    _barData = (generateData());
+    _controller.updateData(generateData());
   }
 
   BarData generateData() {

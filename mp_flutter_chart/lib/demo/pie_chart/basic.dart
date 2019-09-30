@@ -34,10 +34,10 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
   var random = Random(1);
   int _count = 4;
   double _range = 10.0;
-  PieData pieData;
 
   @override
   void initState() {
+    _initController();
     _initPieData(_count, _range);
     super.initState();
   }
@@ -50,7 +50,11 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
     return Stack(
       children: <Widget>[
         Positioned(
-            right: 0, left: 0, top: 0, bottom: 100, child: _initPieChart()),
+            right: 0,
+            left: 0,
+            top: 0,
+            bottom: 100,
+            child: PieChart(controller)),
         Positioned(
           left: 0,
           right: 0,
@@ -150,6 +154,44 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
     ..add("Party Y")
     ..add("Party Z");
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = PieChartController(
+        legendSettingFunction: (legend, chart) {
+          _formatter.setPieChartPainter(chart);
+          legend
+            ..verticalAlignment = (LegendVerticalAlignment.TOP)
+            ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+            ..orientation = (LegendOrientation.VERTICAL)
+            ..drawInside = (false)
+            ..xEntrySpace = (7)
+            ..yEntrySpace = (0)
+            ..yOffset = (0);
+        },
+        rendererSettingFunction: (renderer) {
+          (renderer as PieChartRenderer)
+            ..setHoleColor(ColorUtils.WHITE)
+            ..setTransparentCircleColor(ColorUtils.WHITE)
+            ..setTransparentCircleAlpha(110)
+            ..setEntryLabelColor(ColorUtils.WHITE)
+            ..setEntryLabelTextSize(12);
+        },
+        rotateEnabled: true,
+        drawHole: true,
+        drawCenterText: true,
+        extraLeftOffset: 5,
+        extraTopOffset: 10,
+        extraRightOffset: 5,
+        extraBottomOffset: 5,
+        usePercentValues: true,
+        centerText: _generateCenterSpannableText(),
+        highLightPerTapEnabled: true,
+        selectionListener: this,
+        holeRadiusPercent: 58.0,
+        transparentCircleRadiusPercent: 61,
+        description: desc);
+  }
+
   void _initPieData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     List<PieEntry> entries = List();
@@ -173,72 +215,23 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
     dataSet.setSelectionShift(5);
 
     // add a lot of colors
-
     List<Color> colors = List();
-
     for (Color c in ColorUtils.VORDIPLOM_COLORS) colors.add(c);
-
     for (Color c in ColorUtils.JOYFUL_COLORS) colors.add(c);
-
     for (Color c in ColorUtils.COLORFUL_COLORS) colors.add(c);
-
     for (Color c in ColorUtils.LIBERTY_COLORS) colors.add(c);
-
     for (Color c in ColorUtils.PASTEL_COLORS) colors.add(c);
-
     colors.add(ColorUtils.HOLO_BLUE);
-
     dataSet.setColors1(colors);
 
-    pieData = PieData(dataSet);
-    pieData.setValueFormatter(_formatter);
-    pieData.setValueTextSize(11);
-    pieData.setValueTextColor(ColorUtils.WHITE);
-    pieData.setValueTypeface(Util.LIGHT);
+    controller.updateData(PieData(dataSet));
+    controller.data
+      ..setValueFormatter(_formatter)
+      ..setValueTextSize(11)
+      ..setValueTextColor(ColorUtils.WHITE)
+      ..setValueTypeface(Util.LIGHT);
 
     setState(() {});
-  }
-
-  Widget _initPieChart() {
-    if (pieData == null) return Center(child: Text("no data"));
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = PieChartController(pieData,
-          legendSettingFunction: (legend, chart) {
-        _formatter.setPieChartPainter(chart);
-        legend
-          ..verticalAlignment = (LegendVerticalAlignment.TOP)
-          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-          ..orientation = (LegendOrientation.VERTICAL)
-          ..drawInside = (false)
-          ..xEntrySpace = (7)
-          ..yEntrySpace = (0)
-          ..yOffset = (0);
-      }, rendererSettingFunction: (renderer) {
-        (renderer as PieChartRenderer)
-          ..setHoleColor(ColorUtils.WHITE)
-          ..setTransparentCircleColor(ColorUtils.WHITE)
-          ..setTransparentCircleAlpha(110)
-          ..setEntryLabelColor(ColorUtils.WHITE)
-          ..setEntryLabelTextSize(12);
-      },
-          rotateEnabled: true,
-          drawHole: true,
-          drawCenterText: true,
-          extraLeftOffset: 5,
-          extraTopOffset: 10,
-          extraRightOffset: 5,
-          extraBottomOffset: 5,
-          usePercentValues: true,
-          centerText: _generateCenterSpannableText(),
-          highLightPerTapEnabled: true,
-          selectionListener: this,
-          holeRadiusPercent: 58.0,
-          transparentCircleRadiusPercent: 61,
-          description: desc);
-    }
-    return PieChart(controller);
   }
 
   @override

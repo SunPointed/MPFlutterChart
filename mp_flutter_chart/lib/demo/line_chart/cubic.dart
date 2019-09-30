@@ -28,10 +28,10 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
   var random = Random(1);
   int _count = 45;
   double _range = 100.0;
-  LineData lineData;
 
   @override
   void initState() {
+    _initController();
     _initLineData(_count, _range);
     super.initState();
   }
@@ -121,6 +121,43 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
     );
   }
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = LineChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..typeface = Util.LIGHT
+            ..setLabelCount2(6, false)
+            ..textColor = (ColorUtils.WHITE)
+            ..position = (YAxisLabelPosition.INSIDE_CHART)
+            ..drawGridLines = (false)
+            ..axisLineColor = (ColorUtils.WHITE);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          (chart as LineChart).setViewPortOffsets(0, 0, 0, 0);
+          legend.enabled = (false);
+          var formatter =
+              controller.data.getDataSetByIndex(0).getFillFormatter();
+          if (formatter is A) {
+            formatter.setPainter(chart);
+          }
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis.enabled = (false);
+        },
+        drawGridBackground: true,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: false,
+        backgroundColor: Color.fromARGB(255, 104, 241, 175),
+        description: desc);
+  }
+
   void _initLineData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     List<Entry> values = List();
@@ -149,54 +186,20 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
     set1.setFillFormatter(A());
 
     // create a data object with the data sets
-    lineData = LineData.fromList(List()..add(set1))
+    controller.updateData(LineData.fromList(List()..add(set1))
       ..setValueTypeface(Util.LIGHT)
       ..setValueTextSize(9)
-      ..setDrawValues(false);
+      ..setDrawValues(false));
 
     setState(() {});
   }
 
   Widget _initLineChart() {
-    if (lineData == null) return Center(child: Text("no data"));
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = LineChartController(lineData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..typeface = Util.LIGHT
-          ..setLabelCount2(6, false)
-          ..textColor = (ColorUtils.WHITE)
-          ..position = (YAxisLabelPosition.INSIDE_CHART)
-          ..drawGridLines = (false)
-          ..axisLineColor = (ColorUtils.WHITE);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight.enabled = (false);
-      }, legendSettingFunction: (legend, chart) {
-        (chart as LineChart).setViewPortOffsets(0, 0, 0, 0);
-        legend.enabled = (false);
-        var formatter = lineData.getDataSetByIndex(0).getFillFormatter();
-        if (formatter is A) {
-          formatter.setPainter(chart);
-        }
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis.enabled = (false);
-      },
-          drawGridBackground: true,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: false,
-          backgroundColor: Color.fromARGB(255, 104, 241, 175),
-          description: desc);
-      var lineChart = LineChart(controller);
-      controller.getAnimator().animateXY1(2000, 2000);
-      return lineChart;
-    } else {
-      return LineChart(controller);
-    }
+    var lineChart = LineChart(controller);
+    controller.getAnimator()
+      ..reset()
+      ..animateXY1(2000, 2000);
+    return lineChart;
   }
 }
 

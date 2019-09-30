@@ -35,10 +35,10 @@ class OtherChartScatterPlotState
   var random = Random(1);
   int _count = 45;
   double _range = 100.0;
-  ScatterData scatterData;
 
   @override
   void initState() {
+    _initController();
     _initScatterData(_count, _range);
     super.initState();
   }
@@ -51,7 +51,11 @@ class OtherChartScatterPlotState
     return Stack(
       children: <Widget>[
         Positioned(
-            right: 0, left: 0, top: 0, bottom: 100, child: _initScatterChart()),
+            right: 0,
+            left: 0,
+            top: 0,
+            bottom: 100,
+            child: ScatterChart(controller)),
         Positioned(
           left: 0,
           right: 0,
@@ -123,6 +127,43 @@ class OtherChartScatterPlotState
     );
   }
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = ScatterChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..setAxisMinimum(0)
+            ..typeface = Util.LIGHT;
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend
+            ..verticalAlignment = (LegendVerticalAlignment.TOP)
+            ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+            ..orientation = (LegendOrientation.VERTICAL)
+            ..drawInside = (false)
+            ..typeface = Util.LIGHT
+            ..xOffset = (5);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..drawGridLines = (false)
+            ..typeface = Util.LIGHT;
+        },
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: true,
+        maxVisibleCount: 200,
+        maxHighlightDistance: 50,
+        selectionListener: this,
+        description: desc);
+  }
+
   void _initScatterData(int count, double range) async {
     List<ui.Image> imgs = List(3);
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
@@ -171,49 +212,10 @@ class OtherChartScatterPlotState
     dataSets.add(set3);
 
     // create a data object with the data sets
-    scatterData = ScatterData.fromList(dataSets);
-    scatterData.setValueTypeface(Util.LIGHT);
+    controller.updateData(ScatterData.fromList(dataSets));
+    controller.data.setValueTypeface(Util.LIGHT);
 
     setState(() {});
-  }
-
-  Widget _initScatterChart() {
-    if (scatterData == null) return Center(child: Text("no data"));
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = ScatterChartController(scatterData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..setAxisMinimum(0)
-          ..typeface = Util.LIGHT;
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight.enabled = (false);
-      }, legendSettingFunction: (legend, chart) {
-        legend
-          ..verticalAlignment = (LegendVerticalAlignment.TOP)
-          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-          ..orientation = (LegendOrientation.VERTICAL)
-          ..drawInside = (false)
-          ..typeface = Util.LIGHT
-          ..xOffset = (5);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..drawGridLines = (false)
-          ..typeface = Util.LIGHT;
-      },
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: true,
-          maxVisibleCount: 200,
-          maxHighlightDistance: 50,
-          selectionListener: this,
-          description: desc);
-    }
-    return ScatterChart(controller);
   }
 
   @override

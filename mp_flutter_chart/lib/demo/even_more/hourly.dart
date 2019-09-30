@@ -27,10 +27,10 @@ class EvenMoreHourly extends StatefulWidget {
 class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
   var random = Random(1);
   int _count = 100;
-  LineData lineData;
 
   @override
   void initState() {
+    _initController();
     _initLineData(_count.toDouble());
     super.initState();
   }
@@ -47,7 +47,7 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
           left: 0,
           top: 0,
           bottom: 100,
-          child: _initLineChart(),
+          child: LineChart(controller),
         ),
         Positioned(
           left: 0,
@@ -92,6 +92,52 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
     );
   }
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = LineChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..position = (YAxisLabelPosition.INSIDE_CHART)
+//      ..setTypeface(tfLight)
+            ..textColor = (Color.fromARGB(255, 51, 181, 229))
+            ..drawGridLines = (true)
+            ..granularityEnabled = (true)
+            ..setAxisMinimum(0)
+            ..setAxisMaximum(170)
+            ..yOffset = (-9)
+            ..textColor = (Color.fromARGB(255, 255, 192, 56));
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          (chart as LineChart).setViewPortOffsets(0, 0, 0, 0);
+          legend.enabled = (false);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..position = (XAxisPosition.TOP_INSIDE)
+//        ..setTypeface(tfLight)
+            ..textSize = (10)
+            ..textColor = (ColorUtils.WHITE)
+            ..drawAxisLine = (false)
+            ..drawGridLines = (true)
+            ..textColor = (Color.fromARGB(255, 255, 192, 56))
+            ..centerAxisLabels = (true)
+            ..setGranularity(1)
+            ..setValueFormatter(A());
+        },
+        highLightPerTapEnabled: true,
+        backgroundColor: ColorUtils.WHITE,
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: false,
+        description: desc);
+  }
+
   void _initLineData(double count) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     double range = 50;
@@ -123,63 +169,16 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
     set1.setDrawCircleHole(false);
 
     // create a data object with the data sets
-    lineData = LineData.fromList(List()..add(set1));
-    lineData.setValueTextColor(ColorUtils.getHoloBlue());
-    lineData.setValueTextSize(9);
+    controller.updateData(LineData.fromList(List()..add(set1)));
+    controller.data
+      ..setValueTextColor(ColorUtils.getHoloBlue())
+      ..setValueTextSize(9);
 
     setState(() {});
   }
 
   double _getRandom(double range, double start) {
     return (random.nextDouble() * range) + start;
-  }
-
-  Widget _initLineChart() {
-    if (lineData == null) return Center(child: Text("no data"));
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = LineChartController(lineData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..position = (YAxisLabelPosition.INSIDE_CHART)
-//      ..setTypeface(tfLight)
-          ..textColor = (Color.fromARGB(255, 51, 181, 229))
-          ..drawGridLines = (true)
-          ..granularityEnabled = (true)
-          ..setAxisMinimum(0)
-          ..setAxisMaximum(170)
-          ..yOffset = (-9)
-          ..textColor = (Color.fromARGB(255, 255, 192, 56));
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight.enabled = (false);
-      }, legendSettingFunction: (legend, chart) {
-        (chart as LineChart).setViewPortOffsets(0, 0, 0, 0);
-        legend.enabled = (false);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..position = (XAxisPosition.TOP_INSIDE)
-//        ..setTypeface(tfLight)
-          ..textSize = (10)
-          ..textColor = (ColorUtils.WHITE)
-          ..drawAxisLine = (false)
-          ..drawGridLines = (true)
-          ..textColor = (Color.fromARGB(255, 255, 192, 56))
-          ..centerAxisLabels = (true)
-          ..setGranularity(1)
-          ..setValueFormatter(A());
-      },
-          highLightPerTapEnabled: true,
-          backgroundColor: ColorUtils.WHITE,
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: false,
-          description: desc);
-    }
-    return LineChart(controller);
   }
 }
 

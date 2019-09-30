@@ -34,10 +34,10 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
   var random = Random(1);
   int _count = 4;
   double _range = 100.0;
-  PieData pieData;
 
   @override
   void initState() {
+    _initController();
     _initPieData(_count, _range);
     super.initState();
   }
@@ -155,6 +155,41 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
     ..add("Party Y")
     ..add("Party Z");
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = PieChartController(
+        legendSettingFunction: (legend, chart) {
+          _formatter.setPieChartPainter(chart);
+          legend
+            ..verticalAlignment = (LegendVerticalAlignment.TOP)
+            ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+            ..orientation = (LegendOrientation.VERTICAL)
+            ..drawInside = (false)
+            ..enabled = (false);
+        },
+        rendererSettingFunction: (renderer) {
+          (renderer as PieChartRenderer)
+            ..setHoleColor(ColorUtils.WHITE)
+            ..setHoleColor(ColorUtils.WHITE)
+            ..setTransparentCircleColor(ColorUtils.WHITE)
+            ..setTransparentCircleAlpha(110);
+        },
+        rotateEnabled: true,
+        drawHole: true,
+        drawCenterText: true,
+        extraLeftOffset: 20,
+        extraTopOffset: 0,
+        extraRightOffset: 20,
+        extraBottomOffset: 0,
+        usePercentValues: true,
+        centerText: "value lines",
+        holeRadiusPercent: 58,
+        transparentCircleRadiusPercent: 61,
+        highLightPerTapEnabled: false,
+        selectionListener: this,
+        description: desc);
+  }
+
   PercentFormatter _formatter = PercentFormatter();
 
   void _initPieData(int count, double range) async {
@@ -175,21 +210,13 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
     dataSet.setSelectionShift(5);
 
     // add a lot of colors
-
     List<Color> colors = List();
-
     for (Color c in ColorUtils.VORDIPLOM_COLORS) colors.add(c);
-
     for (Color c in ColorUtils.JOYFUL_COLORS) colors.add(c);
-
     for (Color c in ColorUtils.COLORFUL_COLORS) colors.add(c);
-
     for (Color c in ColorUtils.LIBERTY_COLORS) colors.add(c);
-
     for (Color c in ColorUtils.PASTEL_COLORS) colors.add(c);
-
     colors.add(ColorUtils.HOLO_BLUE);
-
     dataSet.setColors1(colors);
     dataSet.setSelectionShift(0);
 
@@ -199,56 +226,21 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
 
     dataSet.setYValuePosition(ValuePosition.OUTSIDE_SLICE);
 
-    pieData = PieData(dataSet)
+    controller.updateData(PieData(dataSet)
       ..setValueFormatter(_formatter)
       ..setValueTextSize(11)
       ..setValueTextColor(ColorUtils.BLACK)
-      ..setValueTypeface(Util.REGULAR);
+      ..setValueTypeface(Util.REGULAR));
 
     setState(() {});
   }
 
   Widget _initPieChart() {
-    if (pieData == null) return Center(child: Text("no data"));
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = PieChartController(pieData,
-          legendSettingFunction: (legend, chart) {
-        _formatter.setPieChartPainter(chart);
-        legend
-          ..verticalAlignment = (LegendVerticalAlignment.TOP)
-          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-          ..orientation = (LegendOrientation.VERTICAL)
-          ..drawInside = (false)
-          ..enabled = (false);
-      }, rendererSettingFunction: (renderer) {
-        (renderer as PieChartRenderer)
-          ..setHoleColor(ColorUtils.WHITE)
-          ..setHoleColor(ColorUtils.WHITE)
-          ..setTransparentCircleColor(ColorUtils.WHITE)
-          ..setTransparentCircleAlpha(110);
-      },
-          rotateEnabled: true,
-          drawHole: true,
-          drawCenterText: true,
-          extraLeftOffset: 20,
-          extraTopOffset: 0,
-          extraRightOffset: 20,
-          extraBottomOffset: 0,
-          usePercentValues: true,
-          centerText: "value lines",
-          holeRadiusPercent: 58,
-          transparentCircleRadiusPercent: 61,
-          highLightPerTapEnabled: false,
-          selectionListener: this,
-          description: desc);
-      var pieChart = PieChart(controller);
-      controller.getAnimator().animateY2(1400, Easing.EaseInOutQuad);
-      return pieChart;
-    } else {
-      return PieChart(controller);
-    }
+    var pieChart = PieChart(controller);
+    controller.getAnimator()
+      ..reset()
+      ..animateY2(1400, Easing.EaseInOutQuad);
+    return pieChart;
   }
 
   @override

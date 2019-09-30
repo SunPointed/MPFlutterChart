@@ -22,17 +22,15 @@ class ScrollingChartManyBar extends StatefulWidget {
 
 class ScrollingChartManyBarState
     extends SimpleActionState<ScrollingChartManyBar> {
-  List<BarData> _barDatas = List();
-  List<BarChartController> _controllers;
-
+  List<BarChartController> _controllers = List();
   var random = Random(1);
-
   bool _isParentMove = true;
   double _curX = 0.0;
   int _preTime = 0;
 
   @override
   void initState() {
+    _initController();
     _initBarDatas();
     super.initState();
   }
@@ -76,7 +74,7 @@ class ScrollingChartManyBarState
               }
             },
             child: ListView.builder(
-                itemCount: _barDatas.length,
+                itemCount: _controllers.length,
                 itemBuilder: (context, index) {
                   return _renderItem(index);
                 },
@@ -89,49 +87,48 @@ class ScrollingChartManyBarState
     );
   }
 
-  Widget _renderItem(int index) {
-    var data = _barDatas[index];
-    if (data == null) {
-      return Container(
-        child: Center(child: Text("no data")),
-        height: 200,
-      );
-    }
-
-    if (_controllers[index] == null) {
-      var desc = Description()..enabled = false;
-      _controllers[index] = BarChartController(data,
+  void _initController() {
+    _controllers.clear();
+    var desc = Description()..enabled = false;
+    for (int i = 0; i < 20; i++) {
+      _controllers.add(BarChartController(
           axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..setLabelCount2(5, false)
-          ..spacePercentTop = (15);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight
-          ..setLabelCount2(5, false)
-          ..spacePercentTop = (15);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..position = (XAxisPosition.BOTTOM)
-          ..drawGridLines = (false);
-      },
+            axisLeft
+              ..setLabelCount2(5, false)
+              ..spacePercentTop = (15);
+          },
+          axisRightSettingFunction: (axisRight, chart) {
+            axisRight
+              ..setLabelCount2(5, false)
+              ..spacePercentTop = (15);
+          },
+          xAxisSettingFunction: (xAxis, chart) {
+            xAxis
+              ..position = (XAxisPosition.BOTTOM)
+              ..drawGridLines = (false);
+          },
           drawGridBackground: false,
           dragXEnabled: true,
           dragYEnabled: true,
           scaleXEnabled: true,
           scaleYEnabled: true,
           fitBars: true,
-          description: desc);
-      _controllers[index].getAnimator().animateY1(700);
+          description: desc));
     }
-    return Container(height: 200, child: BarChart(_controllers[index]));
+  }
+
+  Widget _renderItem(int index) {
+    var barChart = BarChart(_controllers[index]);
+    _controllers[index].getAnimator()
+      ..reset()
+      ..animateY1(700);
+    return Container(height: 200, child: barChart);
   }
 
   void _initBarDatas() {
-    _barDatas.clear();
-    for (int i = 0; i < 20; i++) {
-      _barDatas.add(generateData(i + 1));
+    for (int i = 0; i < _controllers.length; i++) {
+      _controllers[i].updateData(generateData(i + 1));
     }
-    _controllers = List(_barDatas.length);
   }
 
   BarData generateData(int cnt) {

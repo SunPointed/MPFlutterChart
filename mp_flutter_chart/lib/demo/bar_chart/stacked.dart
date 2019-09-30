@@ -34,10 +34,10 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
   var random = Random(1);
   int _count = 12;
   double _range = 100.0;
-  BarData barData;
 
   @override
   void initState() {
+    _initController();
     _initBarData(_count, _range);
     super.initState();
   }
@@ -54,7 +54,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
           left: 0,
           top: 0,
           bottom: 100,
-          child: _initBarChart(),
+          child: BarChart(controller),
         ),
         Positioned(
           left: 0,
@@ -154,9 +154,10 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
     List<IBarDataSet> dataSets = List();
     dataSets.add(set1);
 
-    barData = BarData(dataSets);
-    barData.setValueFormatter(StackedValueFormatter(false, "", 1));
-    barData.setValueTextColor(ColorUtils.WHITE);
+    controller.updateData(BarData(dataSets));
+    controller.data
+      ..setValueFormatter(StackedValueFormatter(false, "", 1))
+      ..setValueTextColor(ColorUtils.WHITE);
 
     setState(() {});
   }
@@ -168,48 +169,44 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
       ..add(ColorUtils.MATERIAL_COLORS[2]);
   }
 
-  Widget _initBarChart() {
-    if (barData == null) {
-      return Center(child: Text("no data"));
-    }
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = BarChartController(barData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..setValueFormatter(MyValueFormatter("K"))
-          ..setAxisMinimum(0);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight.enabled = (false);
-      }, legendSettingFunction: (legend, chart) {
-        legend
-          ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-          ..orientation = (LegendOrientation.HORIZONTAL)
-          ..drawInside = (false)
-          ..shape = (LegendForm.SQUARE)
-          ..formSize = (8)
-          ..formToTextSpace = (4)
-          ..xEntrySpace = (6);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis.position = (XAxisPosition.TOP);
-      },
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: false,
-          maxVisibleCount: 60,
-          fitBars: true,
-          selectionListener: this,
-          drawBarShadow: false,
-          highlightFullBarEnabled: false,
-          drawValueAboveBar: false,
-          description: desc);
-    }
-    return BarChart(controller);
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = BarChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..setValueFormatter(MyValueFormatter("K"))
+            ..setAxisMinimum(0);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend
+            ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+            ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+            ..orientation = (LegendOrientation.HORIZONTAL)
+            ..drawInside = (false)
+            ..shape = (LegendForm.SQUARE)
+            ..formSize = (8)
+            ..formToTextSpace = (4)
+            ..xEntrySpace = (6);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis.position = (XAxisPosition.TOP);
+        },
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: false,
+        maxVisibleCount: 60,
+        fitBars: true,
+        selectionListener: this,
+        drawBarShadow: false,
+        highlightFullBarEnabled: false,
+        drawValueAboveBar: false,
+        description: desc);
   }
 
   @override

@@ -28,10 +28,8 @@ class LineChartMultiple extends StatefulWidget {
 class LineChartMultipleState extends LineActionState<LineChartMultiple>
     implements OnChartValueSelectedListener, OnChartGestureListener {
   var random = Random(1);
-
   int _count = 20;
   double _range = 100.0;
-  LineData lineData;
 
   List<Color> colors = List()
     ..add(ColorUtils.VORDIPLOM_COLORS[0])
@@ -71,6 +69,7 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
 
   @override
   void initState() {
+    _initController();
     _initLineData(_count, _range);
     super.initState();
   }
@@ -83,7 +82,11 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
     return Stack(
       children: <Widget>[
         Positioned(
-            right: 0, left: 0, top: 0, bottom: 100, child: _initLineChart()),
+            right: 0,
+            left: 0,
+            top: 0,
+            bottom: 100,
+            child: LineChart(controller)),
         Positioned(
           left: 0,
           right: 0,
@@ -155,6 +158,40 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
     );
   }
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = LineChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft.enabled = (false);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight
+            ..drawAxisLine = (false)
+            ..drawGridLines = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend
+            ..verticalAlignment = (LegendVerticalAlignment.TOP)
+            ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+            ..orientation = (LegendOrientation.VERTICAL)
+            ..drawInside = (false);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..drawAxisLine = (false)
+            ..drawGridLines = (false);
+        },
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: false,
+        selectionListener: this,
+        drawBorders: false,
+        description: desc);
+  }
+
   void _initLineData(int count, double range) async {
     List<ui.Image> imgs = List(3);
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
@@ -186,43 +223,8 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
     (dataSets[0] as LineDataSet).setColors1(ColorUtils.VORDIPLOM_COLORS);
     (dataSets[0] as LineDataSet).setCircleColors(ColorUtils.VORDIPLOM_COLORS);
 
-    lineData = LineData.fromList(dataSets);
+    controller.updateData(LineData.fromList(dataSets));
 
     setState(() {});
-  }
-
-  Widget _initLineChart() {
-    if (lineData == null) return Center(child: Text("no data"));
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = LineChartController(lineData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft.enabled = (false);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight
-          ..drawAxisLine = (false)
-          ..drawGridLines = (false);
-      }, legendSettingFunction: (legend, chart) {
-        legend
-          ..verticalAlignment = (LegendVerticalAlignment.TOP)
-          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-          ..orientation = (LegendOrientation.VERTICAL)
-          ..drawInside = (false);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..drawAxisLine = (false)
-          ..drawGridLines = (false);
-      },
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: false,
-          selectionListener: this,
-          drawBorders: false,
-          description: desc);
-    }
-    return LineChart(controller);
   }
 }

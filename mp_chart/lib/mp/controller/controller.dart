@@ -16,9 +16,9 @@ import 'package:mp_chart/mp/core/view_port.dart';
 
 abstract class Controller {
   Chart _chart;
+  ChartData _data;
 
   ////// needed
-  ChartData data;
   IMarker marker;
   Description description;
   ViewPortHandler viewPortHandler;
@@ -41,7 +41,7 @@ abstract class Controller {
   LegendSettingFunction legendSettingFunction;
   DataRendererSettingFunction rendererSettingFunction;
 
-  Controller(this.data,
+  Controller(
       {this.marker,
       this.description,
       this.viewPortHandler,
@@ -106,6 +106,12 @@ abstract class Controller {
   void attachChart(Chart chart) {
     _chart = chart;
   }
+
+  void updateData(ChartData data) {
+    _data = data;
+  }
+
+  ChartData get data => _data;
 
   ChartState getState() {
     return _chart?.state;

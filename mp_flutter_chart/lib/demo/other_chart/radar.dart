@@ -27,10 +27,10 @@ class OtherChartRadar extends StatefulWidget {
 
 class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
   var random = Random(1);
-  RadarData radarData;
 
   @override
   void initState() {
+    _initController();
     _initRadarData();
     super.initState();
   }
@@ -52,6 +52,47 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
                 child: _initCandleChart()),
           ],
         ));
+  }
+
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = RadarChartController(
+        yAxisSettingFunction: (yAxis, chart) {
+          yAxis
+            ..typeface = Util.LIGHT
+            ..setLabelCount2(5, false)
+            ..textSize = (9)
+            ..setAxisMinimum(0)
+            ..setAxisMaximum(80)
+            ..drawLabels = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend
+            ..verticalAlignment = (LegendVerticalAlignment.TOP)
+            ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
+            ..orientation = (LegendOrientation.HORIZONTAL)
+            ..drawInside = (false)
+            ..typeface = Util.LIGHT
+            ..xEntrySpace = (7)
+            ..yEntrySpace = (5)
+            ..textColor = (ColorUtils.WHITE);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..textSize = (9)
+            ..typeface = Util.LIGHT
+            ..yOffset = (0)
+            ..xOffset = (0)
+            ..textColor = (ColorUtils.WHITE)
+            ..setValueFormatter(A());
+        },
+        webLineWidth: 1.0,
+        webAlpha: 100,
+        innerWebLineWidth: 1.0,
+        webColor: ColorUtils.LTGRAY,
+        webColorInner: ColorUtils.LTGRAY,
+        backgroundColor: ColorUtils.DKGRAY,
+        description: desc);
   }
 
   void _initRadarData() async {
@@ -95,61 +136,22 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     sets.add(set1);
     sets.add(set2);
 
-    radarData = RadarData.fromList(sets);
-    radarData.setValueTypeface(Util.LIGHT);
-    radarData.setValueTextSize(8);
-    radarData.setDrawValues(false);
-    radarData.setValueTextColor(ColorUtils.WHITE);
+    controller.updateData(RadarData.fromList(sets));
+    controller.data
+      ..setValueTypeface(Util.LIGHT)
+      ..setValueTextSize(8)
+      ..setDrawValues(false)
+      ..setValueTextColor(ColorUtils.WHITE);
 
     setState(() {});
   }
 
   Widget _initCandleChart() {
-    if (radarData == null) return Center(child: Text("no data"));
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = RadarChartController(radarData,
-          yAxisSettingFunction: (yAxis, chart) {
-        yAxis
-          ..typeface = Util.LIGHT
-          ..setLabelCount2(5, false)
-          ..textSize = (9)
-          ..setAxisMinimum(0)
-          ..setAxisMaximum(80)
-          ..drawLabels = (false);
-      }, legendSettingFunction: (legend, chart) {
-        legend
-          ..verticalAlignment = (LegendVerticalAlignment.TOP)
-          ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
-          ..orientation = (LegendOrientation.HORIZONTAL)
-          ..drawInside = (false)
-          ..typeface = Util.LIGHT
-          ..xEntrySpace = (7)
-          ..yEntrySpace = (5)
-          ..textColor = (ColorUtils.WHITE);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..textSize = (9)
-          ..typeface = Util.LIGHT
-          ..yOffset = (0)
-          ..xOffset = (0)
-          ..textColor = (ColorUtils.WHITE)
-          ..setValueFormatter(A());
-      },
-          webLineWidth: 1.0,
-          webAlpha: 100,
-          innerWebLineWidth: 1.0,
-          webColor: ColorUtils.LTGRAY,
-          webColorInner: ColorUtils.LTGRAY,
-          backgroundColor: ColorUtils.DKGRAY,
-          description: desc);
-      var radarChart = RadarChart(controller);
-      controller.getAnimator().animateXY2(1400, 1400, Easing.EaseInOutQuad);
-      return radarChart;
-    } else {
-      return RadarChart(controller);
-    }
+    var radarChart = RadarChart(controller);
+    controller.getAnimator()
+      ..reset()
+      ..animateXY2(1400, 1400, Easing.EaseInOutQuad);
+    return radarChart;
   }
 }
 

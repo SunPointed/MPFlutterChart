@@ -18,8 +18,7 @@ class CombinedChartController extends BarLineScatterCandleBubbleController {
   bool fitBars;
   List<DrawOrder> drawOrder;
 
-  CombinedChartController(
-    CombinedData data, {
+  CombinedChartController({
     this.drawValueAboveBar = false,
     this.highlightFullBarEnabled = true,
     this.drawBarShadow = false,
@@ -78,7 +77,7 @@ class CombinedChartController extends BarLineScatterCandleBubbleController {
     double infoTextSize = 12,
     Color descTextColor,
     Color infoTextColor,
-  }) : super(data,
+  }) : super(
             marker: marker,
             description: description,
             noDataText: noDataText,
@@ -132,4 +131,6 @@ class CombinedChartController extends BarLineScatterCandleBubbleController {
             borderStrokeWidth: borderStrokeWidth,
             axisLeftSettingFunction: axisLeftSettingFunction,
             axisRightSettingFunction: axisRightSettingFunction);
+
+  CombinedData get data => super.data;
 }

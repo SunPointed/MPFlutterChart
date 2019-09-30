@@ -25,10 +25,10 @@ class OtherChartCandlestickState
   var random = Random(1);
   int _count = 40;
   double _range = 100.0;
-  CandleData candleData;
 
   @override
   void initState() {
+    _initController();
     _initCandleData(_count, _range);
     super.initState();
   }
@@ -41,7 +41,11 @@ class OtherChartCandlestickState
     return Stack(
       children: <Widget>[
         Positioned(
-            right: 0, left: 0, top: 0, bottom: 100, child: _initCandleChart()),
+            right: 0,
+            left: 0,
+            top: 0,
+            bottom: 100,
+            child: CandlestickChart(controller)),
         Positioned(
           left: 0,
           right: 0,
@@ -113,6 +117,37 @@ class OtherChartCandlestickState
     );
   }
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = CandlestickChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..setLabelCount2(7, false)
+            ..drawGridLines = (false)
+            ..drawAxisLine = (false);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend.enabled = (false);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..position = (XAxisPosition.BOTTOM)
+            ..drawGridLines = (true);
+        },
+        drawGridBackground: false,
+        backgroundColor: ColorUtils.WHITE,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: false,
+        maxVisibleCount: 60,
+        description: desc);
+  }
+
   void _initCandleData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
 //    chart.resetTracking();
@@ -154,41 +189,8 @@ class OtherChartCandlestickState
     set1.setNeutralColor(ColorUtils.BLUE);
     //set1.setHighlightLineWidth(1f);
 
-    candleData = CandleData.fromList(List()..add(set1));
+    controller.updateData(CandleData.fromList(List()..add(set1)));
 
     setState(() {});
-  }
-
-  Widget _initCandleChart() {
-    if (candleData == null) return Center(child: Text("no data"));
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = CandlestickChartController(candleData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..setLabelCount2(7, false)
-          ..drawGridLines = (false)
-          ..drawAxisLine = (false);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight.enabled = (false);
-      }, legendSettingFunction: (legend, chart) {
-        legend.enabled = (false);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..position = (XAxisPosition.BOTTOM)
-          ..drawGridLines = (true);
-      },
-          drawGridBackground: false,
-          backgroundColor: ColorUtils.WHITE,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: false,
-          maxVisibleCount: 60,
-          description: desc);
-    }
-    return CandlestickChart(controller);
   }
 }

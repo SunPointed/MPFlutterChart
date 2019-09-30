@@ -24,10 +24,10 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
   var random = Random(1);
   int _count = 10;
   double _range = 100.0;
-  BarData barData;
 
   @override
   void initState() {
+    _initController();
     _initBarData(_count, _range);
     super.initState();
   }
@@ -136,48 +136,45 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
     List<IBarDataSet> dataSets = List();
     dataSets.add(set1);
 
-    barData = BarData(dataSets);
-    barData.setValueTextSize(10);
-    barData.barWidth = 0.9;
+    controller.updateData(BarData(dataSets));
+    controller.data
+      ..setValueTextSize(10)
+      ..barWidth = 0.9;
 
     setState(() {});
   }
 
-  Widget _initBarChart() {
-    if (barData == null) {
-      return Center(child: Text("no data"));
-    }
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = BarChartController(
+      axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeft.drawGridLines = false;
+      },
+      legendSettingFunction: (legend, chart) {
+        legend.enabled = false;
+      },
+      xAxisSettingFunction: (xAxis, chart) {
+        xAxis
+          ..position = XAxisPosition.BOTTOM
+          ..drawGridLines = false;
+      },
+      drawGridBackground: false,
+      dragXEnabled: true,
+      dragYEnabled: true,
+      scaleXEnabled: true,
+      scaleYEnabled: true,
+      pinchZoomEnabled: false,
+      maxVisibleCount: 60,
+      description: desc,
+      fitBars: true,
+    );
+  }
 
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = BarChartController(
-        barData,
-        axisLeftSettingFunction: (axisLeft, chart) {
-          axisLeft.drawGridLines = false;
-        },
-        legendSettingFunction: (legend, chart) {
-          legend.enabled = false;
-        },
-        xAxisSettingFunction: (xAxis, chart) {
-          xAxis
-            ..position = XAxisPosition.BOTTOM
-            ..drawGridLines = false;
-        },
-        drawGridBackground: false,
-        dragXEnabled: true,
-        dragYEnabled: true,
-        scaleXEnabled: true,
-        scaleYEnabled: true,
-        pinchZoomEnabled: false,
-        maxVisibleCount: 60,
-        description: desc,
-        fitBars: true,
-      );
-      var barChart = BarChart(controller);
-      controller.getAnimator().animateY1(1500);
-      return barChart;
-    } else {
-      return BarChart(controller);
-    }
+  Widget _initBarChart() {
+    var barChart = BarChart(controller);
+    controller.getAnimator()
+      ..reset()
+      ..animateY1(1500);
+    return barChart;
   }
 }

@@ -34,10 +34,10 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
   var random = Random(1);
   int _count = 10;
   double _range = 50.0;
-  BubbleData bubbleData;
 
   @override
   void initState() {
+    _initController();
     _initBubbleData(_count, _range);
     super.initState();
   }
@@ -50,7 +50,11 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
     return Stack(
       children: <Widget>[
         Positioned(
-            right: 0, left: 0, top: 0, bottom: 100, child: _initBubbleChart()),
+            right: 0,
+            left: 0,
+            top: 0,
+            bottom: 100,
+            child: BubbleChart(controller)),
         Positioned(
           left: 0,
           right: 0,
@@ -122,6 +126,43 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
     );
   }
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = BubbleChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..spacePercentTop = (30)
+            ..spacePercentBottom = (30)
+            ..typeface = Util.LIGHT
+            ..setDrawZeroLine(false);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend
+            ..typeface = Util.LIGHT
+            ..verticalAlignment = (LegendVerticalAlignment.TOP)
+            ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+            ..orientation = (LegendOrientation.VERTICAL)
+            ..drawInside = (false);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..position = (XAxisPosition.BOTTOM)
+            ..typeface = Util.LIGHT;
+        },
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: true,
+        maxVisibleCount: 200,
+        selectionListener: this,
+        description: desc);
+  }
+
   void _initBubbleData(int count, double range) async {
     List<ui.Image> imgs = List(3);
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
@@ -171,53 +212,15 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
     dataSets.add(set3);
 
     // create a data object with the data sets
-    bubbleData = BubbleData.fromList(dataSets);
-    bubbleData.setDrawValues(false);
-    bubbleData.setValueTypeface(Util.LIGHT);
-    bubbleData.setValueTextSize(8);
-    bubbleData.setValueTextColor(ColorUtils.WHITE);
-    bubbleData.setHighlightCircleWidth(1.5);
+    controller.updateData(BubbleData.fromList(dataSets));
+    controller.data
+      ..setDrawValues(false)
+      ..setValueTypeface(Util.LIGHT)
+      ..setValueTextSize(8)
+      ..setValueTextColor(ColorUtils.WHITE)
+      ..setHighlightCircleWidth(1.5);
 
     setState(() {});
-  }
-
-  Widget _initBubbleChart() {
-    if (bubbleData == null) return Center(child: Text("no data"));
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = BubbleChartController(bubbleData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..spacePercentTop = (30)
-          ..spacePercentBottom = (30)
-          ..typeface = Util.LIGHT
-          ..setDrawZeroLine(false);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight.enabled = (false);
-      }, legendSettingFunction: (legend, chart) {
-        legend
-          ..typeface = Util.LIGHT
-          ..verticalAlignment = (LegendVerticalAlignment.TOP)
-          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-          ..orientation = (LegendOrientation.VERTICAL)
-          ..drawInside = (false);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..position = (XAxisPosition.BOTTOM)
-          ..typeface = Util.LIGHT;
-      },
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: true,
-          maxVisibleCount: 200,
-          selectionListener: this,
-          description: desc);
-    }
-    return BubbleChart(controller);
   }
 
   @override

@@ -26,10 +26,10 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
   var random = Random(1);
   int _count = 25;
   double _range = 50.0;
-  LineData lineData;
 
   @override
   void initState() {
+    _initController();
     _initLineData(_count, _range);
     super.initState();
   }
@@ -42,7 +42,11 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
     return Stack(
       children: <Widget>[
         Positioned(
-            right: 0, left: 0, top: 0, bottom: 100, child: _initLineChart()),
+            right: 0,
+            left: 0,
+            top: 0,
+            bottom: 100,
+            child: LineChart(controller)),
         Positioned(
           left: 0,
           right: 0,
@@ -120,6 +124,35 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
   @override
   void onValueSelected(Entry e, Highlight h) {}
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = LineChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..setAxisMinimum(0)
+            ..inverted = (true);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend.shape = (LegendForm.LINE);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..avoidFirstLastClipping = (true)
+            ..setAxisMinimum(0);
+        },
+        drawGridBackground: true,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: true,
+        selectionListener: this,
+        description: desc);
+  }
+
   void _initLineData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     List<Entry> entries = List();
@@ -150,39 +183,8 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
     set1.setCircleRadius(4);
 
     // create a data object with the data sets
-    lineData = LineData.fromList(List()..add(set1));
+    controller.updateData(LineData.fromList(List()..add(set1)));
 
     setState(() {});
-  }
-
-  Widget _initLineChart() {
-    if (lineData == null) return Center(child: Text("no data"));
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = LineChartController(lineData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..setAxisMinimum(0)
-          ..inverted = (true);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight.enabled = (false);
-      }, legendSettingFunction: (legend, chart) {
-        legend.shape = (LegendForm.LINE);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..avoidFirstLastClipping = (true)
-          ..setAxisMinimum(0);
-      },
-          drawGridBackground: true,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: true,
-          selectionListener: this,
-          description: desc);
-    }
-    return LineChart(controller);
   }
 }

@@ -2,10 +2,7 @@ import 'package:flutter/rendering.dart';
 import 'package:mp_chart/mp/controller/controller.dart';
 import 'package:mp_chart/mp/core/axis/y_axis.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
-import 'package:mp_chart/mp/core/data/chart_data.dart';
-import 'package:mp_chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_chart/mp/core/description.dart';
-import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
@@ -54,8 +51,7 @@ class BarLineScatterCandleBubbleController extends Controller {
   AxisLeftSettingFunction axisLeftSettingFunction;
   AxisRightSettingFunction axisRightSettingFunction;
 
-  BarLineScatterCandleBubbleController(
-    ChartData<IDataSet<Entry>> data, {
+  BarLineScatterCandleBubbleController({
     this.maxVisibleCount = 100,
     this.autoScaleMinMaxEnabled = true,
     this.doubleTapToZoomEnabled = true,
@@ -109,7 +105,7 @@ class BarLineScatterCandleBubbleController extends Controller {
     double infoTextSize = 12,
     Color descTextColor,
     Color infoTextColor,
-  }) : super(data,
+  }) : super(
             marker: marker,
             description: description,
             noDataText: noDataText,

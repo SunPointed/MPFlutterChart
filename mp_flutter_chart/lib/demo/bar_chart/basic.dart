@@ -37,10 +37,10 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
   var random = Random(1);
   int _count = 12;
   double _range = 50.0;
-  BarData barData;
 
   @override
   void initState() {
+    _initController();
     _initBarData(_count, _range);
     super.initState();
   }
@@ -54,7 +54,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
           left: 0,
           top: 0,
           bottom: 100,
-          child: _initBarChart(),
+          child: BarChart(controller),
         ),
         Positioned(
           left: 0,
@@ -132,6 +132,59 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     return "Bar Chart Basic";
   }
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = BarChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..setLabelCount2(8, false)
+            ..typeface = Util.LIGHT
+            ..setValueFormatter(MyValueFormatter("\$"))
+            ..position = YAxisLabelPosition.OUTSIDE_CHART
+            ..spacePercentTop = 15
+            ..setAxisMinimum(0);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight
+            ..drawGridLines = false
+            ..typeface = Util.LIGHT
+            ..setLabelCount2(8, false)
+            ..setValueFormatter(MyValueFormatter("\$"))
+            ..spacePercentTop = 15
+            ..setAxisMinimum(0);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend
+            ..verticalAlignment = LegendVerticalAlignment.BOTTOM
+            ..orientation = LegendOrientation.HORIZONTAL
+            ..drawInside = false
+            ..shape = LegendForm.SQUARE
+            ..formSize = 9
+            ..textSize = 11
+            ..xEntrySpace = 4;
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..typeface = Util.LIGHT
+            ..position = XAxisPosition.BOTTOM
+            ..drawGridLines = false
+            ..setGranularity(1.0)
+            ..setLabelCount1(7)
+            ..setValueFormatter(DayAxisValueFormatter(chart));
+        },
+        selectionListener: this,
+        drawBarShadow: false,
+        drawValueAboveBar: true,
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: false,
+        maxVisibleCount: 60,
+        description: desc);
+  }
+
   void _initData(int count, double range, ui.Image img) {
     double start = 1;
 
@@ -178,77 +231,17 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     List<IBarDataSet> dataSets = List();
     dataSets.add(set1);
 
-    barData = BarData(dataSets);
-    barData.setValueTextSize(10);
-    barData.setValueTypeface(Util.LIGHT);
-    barData.barWidth = 0.9;
+    controller.updateData(BarData(dataSets));
+    controller.data
+      ..setValueTextSize(10)
+      ..setValueTypeface(Util.LIGHT)
+      ..barWidth = 0.9;
   }
 
   void _initBarData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     _initData(count, range, img);
     setState(() {});
-  }
-
-  Widget _initBarChart() {
-    if (barData == null) {
-      return Center(child: Text("no data"));
-    }
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = BarChartController(barData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..setLabelCount2(8, false)
-          ..typeface = Util.LIGHT
-          ..setValueFormatter(MyValueFormatter("\$"))
-          ..position = YAxisLabelPosition.OUTSIDE_CHART
-          ..spacePercentTop = 15
-          ..setAxisMinimum(0);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight
-          ..drawGridLines = false
-          ..typeface = Util.LIGHT
-          ..setLabelCount2(8, false)
-          ..setValueFormatter(MyValueFormatter("\$"))
-          ..spacePercentTop = 15
-          ..setAxisMinimum(0);
-      }, legendSettingFunction: (legend, chart) {
-        legend
-          ..verticalAlignment = LegendVerticalAlignment.BOTTOM
-          ..orientation = LegendOrientation.HORIZONTAL
-          ..drawInside = false
-          ..shape = LegendForm.SQUARE
-          ..formSize = 9
-          ..textSize = 11
-          ..xEntrySpace = 4;
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..typeface = Util.LIGHT
-          ..position = XAxisPosition.BOTTOM
-          ..drawGridLines = false
-          ..setGranularity(1.0)
-          ..setLabelCount1(7)
-          ..setValueFormatter(DayAxisValueFormatter(chart));
-      },
-          selectionListener: this,
-          drawBarShadow: false,
-          drawValueAboveBar: true,
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: false,
-          maxVisibleCount: 60,
-          description: desc);
-      var barChart = BarChart(controller);
-      controller.getAnimator().animateY1(3000);
-      return barChart;
-    } else {
-      return BarChart(controller);
-    }
   }
 
   @override

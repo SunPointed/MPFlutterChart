@@ -20,9 +20,7 @@ class LineChartColorful extends StatefulWidget {
 
 class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
   List<LineChartController> _controllers = List(4);
-  List<LineData> _lineDatas = List(4);
   var random = Random(1);
-
   int _count = 36;
   double _range = 100.0;
 
@@ -34,6 +32,7 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
 
   @override
   void initState() {
+    _initController();
     _initLineData(_count, _range);
     super.initState();
   }
@@ -43,7 +42,6 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
 
   @override
   Widget getBody() {
-    _initLineChart();
     return Stack(
       children: <Widget>[
         Positioned(
@@ -55,22 +53,10 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Expanded(
-                  child: _controllers[0] == null
-                      ? Center(child: Text("no data"))
-                      : LineChart(_controllers[0])),
-              Expanded(
-                  child: _controllers[1] == null
-                      ? Center(child: Text("no data"))
-                      : LineChart(_controllers[1])),
-              Expanded(
-                  child: _controllers[2] == null
-                      ? Center(child: Text("no data"))
-                      : LineChart(_controllers[2])),
-              Expanded(
-                  child: _controllers[3] == null
-                      ? Center(child: Text("no data"))
-                      : LineChart(_controllers[3])),
+              Expanded(child: getLineChart(_controllers[0])),
+              Expanded(child: getLineChart(_controllers[1])),
+              Expanded(child: getLineChart(_controllers[2])),
+              Expanded(child: getLineChart(_controllers[3])),
             ],
           ),
         )
@@ -78,10 +64,18 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
     );
   }
 
+  void _initController() {
+    for (int i = 0; i < _controllers.length; i++) {
+      _controllers[i] = _setupChartController(_colors[i % _colors.length]);
+    }
+  }
+
   void _initLineData(int count, double range) {
-    for (int i = 0; i < _lineDatas.length; i++) {
-      _lineDatas[i] = _getData(36, 100);
-      _lineDatas[i].setValueTypeface(Util.BOLD);
+    for (int i = 0; i < _controllers.length; i++) {
+      _controllers[i].updateData(_getData(36, 100));
+      _controllers[i].data.setValueTypeface(Util.BOLD);
+      (_controllers[i].data.getDataSetByIndex(0) as LineDataSet)
+          .setCircleHoleColor(_colors[i % _colors.length]);
     }
   }
 
@@ -110,34 +104,25 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
     return LineData.fromList(List()..add(set1));
   }
 
-  void _initLineChart() {
-    for (int i = 0; i < _lineDatas.length; i++) {
-      // add some transparency to the color with "& 0x90FFFFFF"
-      if (_lineDatas[i] != null && _controllers[i] == null) {
-        _controllers[i] =
-            _setupChartController(_lineDatas[i], _colors[i % _colors.length]);
-//        _controllers[i].getAnimator().animateX1(2500); todo
-      }
-    }
-  }
-
-  LineChartController _setupChartController(LineData data, Color color) {
-    (data.getDataSetByIndex(0) as LineDataSet).setCircleHoleColor(color);
+  LineChartController _setupChartController(Color color) {
     var desc = Description()..enabled = false;
-    return LineChartController(data,
+    return LineChartController(
         axisLeftSettingFunction: (axisLeft, chart) {
-      axisLeft
-        ..enabled = (false)
-        ..spacePercentTop = (40)
-        ..spacePercentBottom = (40);
-    }, axisRightSettingFunction: (axisRight, chart) {
-      axisRight.enabled = (false);
-    }, legendSettingFunction: (legend, chart) {
-      legend.enabled = (false);
-      (chart as LineChart).setViewPortOffsets(0, 0, 0, 0);
-    }, xAxisSettingFunction: (xAxis, chart) {
-      xAxis.enabled = (false);
-    },
+          axisLeft
+            ..enabled = (false)
+            ..spacePercentTop = (40)
+            ..spacePercentBottom = (40);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend.enabled = (false);
+          (chart as LineChart).setViewPortOffsets(0, 0, 0, 0);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis.enabled = (false);
+        },
         drawGridBackground: true,
         dragXEnabled: true,
         dragYEnabled: true,
@@ -146,5 +131,13 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
         pinchZoomEnabled: false,
         backgroundColor: color,
         description: desc);
+  }
+
+  Widget getLineChart(LineChartController controller) {
+    var lineChart = LineChart(controller);
+    controller.getAnimator()
+      ..reset()
+      ..animateX1(2500);
+    return lineChart;
   }
 }

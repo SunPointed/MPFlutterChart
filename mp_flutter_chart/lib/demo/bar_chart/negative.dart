@@ -22,12 +22,12 @@ class BarChartNegative extends StatefulWidget {
 }
 
 class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
-  BarData _barData;
   BarChartController _controller;
   List<Data> _data = List();
 
   @override
   void initState() {
+    _initController();
     _data.clear();
     _data
       ..add(Data(0, -224.1, "12-29"))
@@ -51,7 +51,7 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
           left: 0,
           top: 0,
           bottom: 0,
-          child: _initBarChart(),
+          child: BarChart(_controller),
         ),
       ],
     );
@@ -82,64 +82,60 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
     set.setColors1(colors);
     set.setValueTextColors(colors);
 
-    _barData = BarData(List()..add(set));
-    _barData
+    _controller.updateData(BarData(List()..add(set)));
+    _controller.data
       ..setValueTextSize(13)
       ..setValueTypeface(Util.REGULAR)
       ..setValueFormatter(Formatter())
       ..barWidth = (0.8);
   }
 
-  Widget _initBarChart() {
-    if (_barData == null) {
-      return Center(child: Text("no data"));
-    }
-
-    if (_controller == null) {
-      var desc = Description()..enabled = false;
-      _controller = BarChartController(_barData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..drawLabels = (false)
-          ..spacePercentTop = (25)
-          ..spacePercentBottom = (25)
-          ..drawAxisLine = (false)
-          ..drawGridLines = (false)
-          ..setDrawZeroLine(false)
-          ..zeroLineColor = ColorUtils.GRAY
-          ..zeroLineWidth = 0.7;
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight.enabled = (false);
-      }, legendSettingFunction: (legend, chart) {
-        legend.enabled = (false);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..position = (XAxisPosition.BOTTOM)
-          ..typeface = Util.LIGHT
-          ..drawGridLines = (false)
-          ..drawAxisLine = (false)
-          ..textColor = (ColorUtils.LTGRAY)
-          ..textSize = (13)
-          ..setLabelCount1(5)
-          ..centerAxisLabels = (true)
-          ..setValueFormatter(A(_data))
-          ..setGranularity(1);
-      },
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: false,
-          description: desc,
-          extraTopOffset: -30,
-          extraBottomOffset: 10,
-          extraLeftOffset: 70,
-          extraRightOffset: 70,
-          drawBarShadow: false,
-          drawValueAboveBar: true);
-    }
-    return BarChart(_controller);
+  void _initController() {
+    var desc = Description()..enabled = false;
+    _controller = BarChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..drawLabels = (false)
+            ..spacePercentTop = (25)
+            ..spacePercentBottom = (25)
+            ..drawAxisLine = (false)
+            ..drawGridLines = (false)
+            ..setDrawZeroLine(false)
+            ..zeroLineColor = ColorUtils.GRAY
+            ..zeroLineWidth = 0.7;
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend.enabled = (false);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..position = (XAxisPosition.BOTTOM)
+            ..typeface = Util.LIGHT
+            ..drawGridLines = (false)
+            ..drawAxisLine = (false)
+            ..textColor = (ColorUtils.LTGRAY)
+            ..textSize = (13)
+            ..setLabelCount1(5)
+            ..centerAxisLabels = (true)
+            ..setValueFormatter(A(_data))
+            ..setGranularity(1);
+        },
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: false,
+        description: desc,
+        extraTopOffset: -30,
+        extraBottomOffset: 10,
+        extraLeftOffset: 70,
+        extraRightOffset: 70,
+        drawBarShadow: false,
+        drawValueAboveBar: true);
   }
 }
 

@@ -32,10 +32,10 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
   var random = Random(1);
   int _count = 20;
   double _range = 30.0;
-  LineData lineData;
 
   @override
   void initState() {
+    _initController();
     _initLineData(_count, _range);
     super.initState();
   }
@@ -136,6 +136,60 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
 //        .getAxisDependency(), 500);
   }
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = LineChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..textColor = (ColorUtils.HOLO_BLUE)
+            ..setAxisMaximum(200.0)
+            ..setAxisMinimum(0.0)
+            ..typeface = Util.LIGHT
+            ..drawGridLines = (true)
+            ..drawAxisLine = (true)
+            ..granularityEnabled = (true);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight
+            ..textColor = (ColorUtils.RED)
+            ..setAxisMaximum(900.0)
+            ..setAxisMinimum(-200)
+            ..typeface = Util.LIGHT
+            ..drawGridLines = (false)
+            ..setDrawZeroLine(false)
+            ..granularityEnabled = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend
+            ..shape = (LegendForm.LINE)
+            ..textSize = (11)
+            ..typeface = Util.LIGHT
+            ..textColor = (ColorUtils.WHITE)
+            ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+            ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
+            ..orientation = (LegendOrientation.HORIZONTAL)
+            ..drawInside = (false);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..typeface = Util.LIGHT
+            ..textColor = (ColorUtils.WHITE)
+            ..textSize = (11)
+            ..drawGridLines = (false)
+            ..drawAxisLine = (false);
+        },
+        drawGridBackground: true,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: true,
+        selectionListener: this,
+        highLightPerTapEnabled: true,
+        backgroundColor: ColorUtils.LTGRAY,
+        description: desc);
+  }
+
   void _initLineData(int count, double range) async {
     List<ui.Image> imgs = List(3);
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
@@ -207,70 +261,20 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
     set3.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
 
     // create a data object with the data sets
-    lineData = LineData.fromList(List()..add(set1)..add(set2)..add(set3));
-    lineData.setValueTextColor(ColorUtils.WHITE);
-    lineData.setValueTextSize(9);
+    controller
+        .updateData(LineData.fromList(List()..add(set1)..add(set2)..add(set3)));
+    controller.data
+      ..setValueTextColor(ColorUtils.WHITE)
+      ..setValueTextSize(9);
 
     setState(() {});
   }
 
   Widget _initLineChart() {
-    if (lineData == null) return Center(child: Text("no data"));
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = LineChartController(lineData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..textColor = (ColorUtils.HOLO_BLUE)
-          ..setAxisMaximum(200.0)
-          ..setAxisMinimum(0.0)
-          ..typeface = Util.LIGHT
-          ..drawGridLines = (true)
-          ..drawAxisLine = (true)
-          ..granularityEnabled = (true);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight
-          ..textColor = (ColorUtils.RED)
-          ..setAxisMaximum(900.0)
-          ..setAxisMinimum(-200)
-          ..typeface = Util.LIGHT
-          ..drawGridLines = (false)
-          ..setDrawZeroLine(false)
-          ..granularityEnabled = (false);
-      }, legendSettingFunction: (legend, chart) {
-        legend
-          ..shape = (LegendForm.LINE)
-          ..textSize = (11)
-          ..typeface = Util.LIGHT
-          ..textColor = (ColorUtils.WHITE)
-          ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-          ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
-          ..orientation = (LegendOrientation.HORIZONTAL)
-          ..drawInside = (false);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..typeface = Util.LIGHT
-          ..textColor = (ColorUtils.WHITE)
-          ..textSize = (11)
-          ..drawGridLines = (false)
-          ..drawAxisLine = (false);
-      },
-          drawGridBackground: true,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: true,
-          selectionListener: this,
-          highLightPerTapEnabled: true,
-          backgroundColor: ColorUtils.LTGRAY,
-          description: desc);
-      var lineChart = LineChart(controller);
-      controller.getAnimator().animateX1(1500);
-      return lineChart;
-    } else {
-      return LineChart(controller);
-    }
+    var lineChart = LineChart(controller);
+    controller.getAnimator()
+      ..reset()
+      ..animateX1(1500);
+    return lineChart;
   }
 }

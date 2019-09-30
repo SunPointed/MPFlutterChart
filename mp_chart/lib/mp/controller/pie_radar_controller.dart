@@ -1,16 +1,9 @@
 import 'package:flutter/painting.dart';
 import 'package:mp_chart/mp/controller/controller.dart';
-import 'package:mp_chart/mp/core/axis/x_axis.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
-import 'package:mp_chart/mp/core/data/chart_data.dart';
-import 'package:mp_chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_chart/mp/core/description.dart';
-import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/functions.dart';
-import 'package:mp_chart/mp/core/legend/legend.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
-import 'package:mp_chart/mp/core/render/legend_renderer.dart';
-import 'package:mp_chart/mp/core/view_port.dart';
 
 class PieRadarController extends Controller {
   double rotationAngle;
@@ -18,7 +11,7 @@ class PieRadarController extends Controller {
   bool rotateEnabled;
   double minOffset;
 
-  PieRadarController(ChartData<IDataSet<Entry>> data,
+  PieRadarController(
       {this.rotationAngle = 270,
       this.rawRotationAngle = 270,
       this.rotateEnabled = true,
@@ -41,7 +34,7 @@ class PieRadarController extends Controller {
       XAxisSettingFunction xAxisSettingFunction,
       LegendSettingFunction legendSettingFunction,
       DataRendererSettingFunction rendererSettingFunction})
-      : super(data,
+      : super(
             marker: marker,
             noDataText: noDataText,
             xAxisSettingFunction: xAxisSettingFunction,

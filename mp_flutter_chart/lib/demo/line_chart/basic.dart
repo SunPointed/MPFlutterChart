@@ -28,10 +28,10 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
   var random = Random(1);
   int _count = 45;
   double _range = 180.0;
-  LineData lineData;
 
   @override
   void initState() {
+    _initController();
     _initLineData(_count, _range);
     super.initState();
   }
@@ -123,6 +123,58 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     return "Line Chart Basic";
   }
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    LimitLine llXAxis = LimitLine(9, "Index 10");
+    llXAxis.setLineWidth(4);
+    llXAxis.enableDashedLine(10, 10, 0);
+    llXAxis.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
+    llXAxis.textSize = (10);
+    llXAxis.typeface = Util.EXTRA_BOLD;
+    LimitLine ll1 = LimitLine(150, "Upper Limit");
+    ll1.setLineWidth(4);
+    ll1.enableDashedLine(10, 10, 0);
+    ll1.labelPosition = (LimitLabelPosition.RIGHT_TOP);
+    ll1.textSize = (10);
+    ll1.typeface = Util.EXTRA_BOLD;
+    LimitLine ll2 = LimitLine(-30, "Lower Limit");
+    ll2.setLineWidth(4);
+    ll2.enableDashedLine(10, 10, 0);
+    ll2.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
+    ll2.textSize = (10);
+    ll2.typeface = Util.EXTRA_BOLD;
+    controller = LineChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..drawLimitLineBehindData = true
+            ..enableGridDashedLine(10, 10, 0)
+            ..enableAxisLineDashedLine(5, 5, 0)
+            ..addLimitLine(ll1)
+            ..addLimitLine(ll2)
+            ..setAxisMaximum(200)
+            ..setAxisMinimum(-50);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend.shape = (LegendForm.LINE);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..drawLimitLineBehindData = true
+            ..enableAxisLineDashedLine(5, 5, 0)
+            ..enableGridDashedLine(10, 10, 0);
+        },
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: true,
+        description: desc);
+  }
+
   void _initLineData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     List<Entry> values = List();
@@ -176,69 +228,16 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     dataSets.add(set1); // add the data sets
 
     // create a data object with the data sets
-    lineData = LineData.fromList(dataSets);
-//    lineData.setValueTypeface(TextStyle(fontSize: Utils.convertDpToPixel(9)));
+    controller.updateData(LineData.fromList(dataSets));
 
     setState(() {});
   }
 
   Widget _initLineChart() {
-    if (lineData == null) {
-      return Center(child: Text("no data"));
-    }
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      LimitLine llXAxis = LimitLine(9, "Index 10");
-      llXAxis.setLineWidth(4);
-      llXAxis.enableDashedLine(10, 10, 0);
-      llXAxis.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
-      llXAxis.textSize = (10);
-      llXAxis.typeface = Util.EXTRA_BOLD;
-      LimitLine ll1 = LimitLine(150, "Upper Limit");
-      ll1.setLineWidth(4);
-      ll1.enableDashedLine(10, 10, 0);
-      ll1.labelPosition = (LimitLabelPosition.RIGHT_TOP);
-      ll1.textSize = (10);
-      ll1.typeface = Util.EXTRA_BOLD;
-      LimitLine ll2 = LimitLine(-30, "Lower Limit");
-      ll2.setLineWidth(4);
-      ll2.enableDashedLine(10, 10, 0);
-      ll2.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
-      ll2.textSize = (10);
-      ll2.typeface = Util.EXTRA_BOLD;
-      controller = LineChartController(lineData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..drawLimitLineBehindData = true
-          ..enableGridDashedLine(10, 10, 0)
-          ..enableAxisLineDashedLine(5, 5, 0)
-          ..addLimitLine(ll1)
-          ..addLimitLine(ll2)
-          ..setAxisMaximum(200)
-          ..setAxisMinimum(-50);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight.enabled = (false);
-      }, legendSettingFunction: (legend, chart) {
-        legend.shape = (LegendForm.LINE);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..drawLimitLineBehindData = true
-          ..enableAxisLineDashedLine(5, 5, 0)
-          ..enableGridDashedLine(10, 10, 0);
-      },
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: true,
-          description: desc);
-      var lineChart = LineChart(controller);
-      controller.getAnimator().animateX1(1500);
-      return lineChart;
-    } else {
-      return LineChart(controller);
-    }
+    var lineChart = LineChart(controller);
+    controller.getAnimator()
+      ..reset()
+      ..animateX1(1500);
+    return lineChart;
   }
 }

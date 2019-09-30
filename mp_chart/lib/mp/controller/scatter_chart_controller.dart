@@ -13,8 +13,7 @@ import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'bar_line_scatter_candle_bubble_controller.dart';
 
 class ScatterChartController extends BarLineScatterCandleBubbleController {
-  ScatterChartController(
-    ScatterData data, {
+  ScatterChartController({
     int maxVisibleCount = 100,
     bool autoScaleMinMaxEnabled = true,
     bool doubleTapToZoomEnabled = true,
@@ -68,7 +67,7 @@ class ScatterChartController extends BarLineScatterCandleBubbleController {
     double infoTextSize = 12,
     Color descTextColor,
     Color infoTextColor,
-  }) : super(data,
+  }) : super(
             marker: marker,
             description: description,
             noDataText: noDataText,
@@ -122,4 +121,6 @@ class ScatterChartController extends BarLineScatterCandleBubbleController {
             borderStrokeWidth: borderStrokeWidth,
             axisLeftSettingFunction: axisLeftSettingFunction,
             axisRightSettingFunction: axisRightSettingFunction);
+
+  ScatterData get data => super.data;
 }

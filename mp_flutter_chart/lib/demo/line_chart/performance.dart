@@ -20,15 +20,14 @@ class LineChartPerformance extends StatefulWidget {
 
 class LineChartPerformanceState
     extends SimpleActionState<LineChartPerformance> {
-  LineData _lineData;
   LineChartController _controller;
   var random = Random(1);
-
   double _range = 100.0;
   int _count = 0;
 
   @override
   void initState() {
+    _initController();
     _initLineData(_range);
     super.initState();
   }
@@ -41,7 +40,11 @@ class LineChartPerformanceState
     return Stack(
       children: <Widget>[
         Positioned(
-            right: 0, left: 0, top: 0, bottom: 100, child: _initLineChart()),
+            right: 0,
+            left: 0,
+            top: 0,
+            bottom: 100,
+            child: LineChart(_controller)),
         Positioned(
           left: 0,
           right: 0,
@@ -85,6 +88,32 @@ class LineChartPerformanceState
     );
   }
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    _controller = LineChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft.drawGridLines = (false);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight.enabled = (false);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend.enabled = (false);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..drawGridLines = (true)
+            ..drawAxisLine = (false);
+        },
+        drawGridBackground: true,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: false,
+        description: desc);
+  }
+
   void _initLineData(double range) {
     List<Entry> values = List();
 
@@ -106,36 +135,8 @@ class LineChartPerformanceState
     set1.setDrawFilled(false);
 
     // create a data object with the data sets
-    _lineData = LineData.fromList(List()..add(set1));
+    _controller.updateData(LineData.fromList(List()..add(set1)));
 
     setState(() {});
-  }
-
-  Widget _initLineChart() {
-    if (_lineData == null) return Center(child: Text("no data"));
-
-    if (_controller == null) {
-      var desc = Description()..enabled = false;
-      _controller = LineChartController(_lineData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft.drawGridLines = (false);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight.enabled = (false);
-      }, legendSettingFunction: (legend, chart) {
-        legend.enabled = (false);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..drawGridLines = (true)
-          ..drawAxisLine = (false);
-      },
-          drawGridBackground: true,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: false,
-          description: desc);
-    }
-    return LineChart(_controller);
   }
 }

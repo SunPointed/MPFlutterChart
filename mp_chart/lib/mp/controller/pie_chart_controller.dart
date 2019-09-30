@@ -27,8 +27,7 @@ class PieChartController extends PieRadarController {
   TypeFace entryLabelTypeface;
   Color backgroundColor;
 
-  PieChartController(
-    PieData data, {
+  PieChartController({
     this.drawEntryLabels = true,
     this.drawHole = true,
     this.drawSlicesUnderHole = false,
@@ -68,7 +67,7 @@ class PieChartController extends PieRadarController {
     double infoTextSize = 12,
     Color descTextColor,
     Color infoTextColor,
-  }) : super(data,
+  }) : super(
             marker: marker,
             noDataText: noDataText,
             xAxisSettingFunction: xAxisSettingFunction,
@@ -94,4 +93,6 @@ class PieChartController extends PieRadarController {
 
   @override
   IMarker initMarker() => BarChartMarker();
+
+  PieData get data => super.data;
 }

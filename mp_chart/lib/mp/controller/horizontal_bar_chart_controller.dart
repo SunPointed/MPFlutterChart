@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
 import 'package:mp_chart/mp/core/axis/y_axis.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
-import 'package:mp_chart/mp/core/data/bar_data.dart';
 import 'package:mp_chart/mp/core/description.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/horizontal_bar_chart_marker.dart';
@@ -17,8 +16,7 @@ import 'package:mp_chart/mp/core/transformer/transformer_horizontal_bar_chart.da
 import 'package:mp_chart/mp/core/view_port.dart';
 
 class HorizontalBarChartController extends BarChartController {
-  HorizontalBarChartController(
-    BarData data, {
+  HorizontalBarChartController({
     bool highlightFullBarEnabled = true,
     bool drawValueAboveBar = false,
     bool drawBarShadow = false,
@@ -76,7 +74,7 @@ class HorizontalBarChartController extends BarChartController {
     double infoTextSize = 12,
     Color descTextColor,
     Color infoTextColor,
-  }) : super(data,
+  }) : super(
             highlightFullBarEnabled: highlightFullBarEnabled,
             drawValueAboveBar: drawValueAboveBar,
             drawBarShadow: drawBarShadow,

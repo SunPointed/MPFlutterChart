@@ -27,10 +27,9 @@ class BarChartStacked2 extends StatefulWidget {
 
 class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
     implements OnChartValueSelectedListener {
-  BarData barData;
-
   @override
   void initState() {
+    _initController();
     _initBarData();
     super.initState();
   }
@@ -47,7 +46,7 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
           left: 0,
           top: 0,
           bottom: 0,
-          child: _initBarChart(),
+          child: HorizontalBarChart(controller),
         ),
       ],
     );
@@ -94,66 +93,62 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
       ..add(Color.fromARGB(255, 124, 181, 236)));
     set.setStackLabels(List()..add("Men")..add("Women"));
 
-    barData = BarData(List()..add(set));
-    barData.barWidth = (8.5);
+    controller.updateData(BarData(List()..add(set)));
+    controller.data.barWidth = (8.5);
 
     setState(() {});
   }
 
-  Widget _initBarChart() {
-    if (barData == null) {
-      return Center(child: Text("no data"));
-    }
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = HorizontalBarChartController(barData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft.enabled = (false);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight
-          ..setAxisMaximum(25)
-          ..setAxisMinimum(-25)
-          ..drawGridLines = (false)
-          ..setDrawZeroLine(true)
-          ..setLabelCount2(7, false)
-          ..setValueFormatter(A())
-          ..textSize = (9);
-      }, legendSettingFunction: (legend, chart) {
-        legend
-          ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-          ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
-          ..orientation = (LegendOrientation.HORIZONTAL)
-          ..drawInside = (false)
-          ..formSize = (8)
-          ..formToTextSpace = (4)
-          ..xEntrySpace = (6);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..position = (XAxisPosition.BOTH_SIDED)
-          ..drawGridLines = (false)
-          ..drawAxisLine = (false)
-          ..textSize = (9)
-          ..setAxisMinimum(0)
-          ..setAxisMaximum(110)
-          ..centerAxisLabels = (true)
-          ..setLabelCount1(12)
-          ..setGranularity(10)
-          ..setValueFormatter(B());
-      },
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: false,
-          selectionListener: this,
-          drawBarShadow: false,
-          drawValueAboveBar: true,
-          highlightFullBarEnabled: false,
-          description: desc);
-    }
-    return HorizontalBarChart(controller);
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = HorizontalBarChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft.enabled = (false);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight
+            ..setAxisMaximum(25)
+            ..setAxisMinimum(-25)
+            ..drawGridLines = (false)
+            ..setDrawZeroLine(true)
+            ..setLabelCount2(7, false)
+            ..setValueFormatter(A())
+            ..textSize = (9);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend
+            ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+            ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
+            ..orientation = (LegendOrientation.HORIZONTAL)
+            ..drawInside = (false)
+            ..formSize = (8)
+            ..formToTextSpace = (4)
+            ..xEntrySpace = (6);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..position = (XAxisPosition.BOTH_SIDED)
+            ..drawGridLines = (false)
+            ..drawAxisLine = (false)
+            ..textSize = (9)
+            ..setAxisMinimum(0)
+            ..setAxisMaximum(110)
+            ..centerAxisLabels = (true)
+            ..setLabelCount1(12)
+            ..setGranularity(10)
+            ..setValueFormatter(B());
+        },
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: false,
+        selectionListener: this,
+        drawBarShadow: false,
+        drawValueAboveBar: true,
+        highlightFullBarEnabled: false,
+        description: desc);
   }
 
   @override

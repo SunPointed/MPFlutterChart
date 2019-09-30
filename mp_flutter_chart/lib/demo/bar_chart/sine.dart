@@ -26,10 +26,10 @@ class BarChartSineState extends BarActionState<BarChartSine> {
   List<BarEntry> _data;
   var random = Random(1);
   int _count = 150;
-  BarData barData;
 
   @override
   void initState() {
+    _initController();
     Util.loadAsset("othersine.txt").then((value) {
       _data = List();
       List<String> lines = value.split("\n");
@@ -102,6 +102,53 @@ class BarChartSineState extends BarActionState<BarChartSine> {
     );
   }
 
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = BarChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..setLabelCount2(6, false)
+            ..typeface = Util.LIGHT
+            ..setAxisMaximum(2.5)
+            ..setAxisMinimum(-2.5)
+            ..granularityEnabled = (true)
+            ..setGranularity(0.1);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight
+            ..drawGridLines = (false)
+            ..typeface = Util.LIGHT
+            ..setLabelCount2(6, false)
+            ..setAxisMinimum(-2.5)
+            ..setAxisMaximum(2.5)
+            ..setGranularity(0.1);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend
+            ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+            ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
+            ..orientation = (LegendOrientation.HORIZONTAL)
+            ..drawInside = (false)
+            ..shape = (LegendForm.SQUARE)
+            ..formSize = (9)
+            ..textSize = (11)
+            ..xEntrySpace = (4);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis.enabled = (false);
+        },
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: false,
+        maxVisibleCount: 60,
+        drawBarShadow: false,
+        drawValueAboveBar: true,
+        description: desc);
+  }
+
   void _initBarData(int count) {
     if (_data == null) return;
 
@@ -113,65 +160,21 @@ class BarChartSineState extends BarActionState<BarChartSine> {
     BarDataSet set = BarDataSet(entries, "Sinus Function");
     set.setColor1(Color.fromARGB(255, 240, 120, 124));
 
-    barData = BarData(List()..add(set));
-    barData.setValueTextSize(10);
-    barData.setValueTypeface(Util.LIGHT);
-    barData.setDrawValues(false);
-    barData.barWidth = (0.8);
+    controller.updateData(BarData(List()..add(set)));
+    controller.data
+      ..setValueTextSize(10)
+      ..setValueTypeface(Util.LIGHT)
+      ..setDrawValues(false)
+      ..barWidth = (0.8);
 
     setState(() {});
   }
 
   Widget _initBarChart() {
-    if (barData == null) return Center(child: Text("no data"));
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = BarChartController(barData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..setLabelCount2(6, false)
-          ..typeface = Util.LIGHT
-          ..setAxisMaximum(2.5)
-          ..setAxisMinimum(-2.5)
-          ..granularityEnabled = (true)
-          ..setGranularity(0.1);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight
-          ..drawGridLines = (false)
-          ..typeface = Util.LIGHT
-          ..setLabelCount2(6, false)
-          ..setAxisMinimum(-2.5)
-          ..setAxisMaximum(2.5)
-          ..setGranularity(0.1);
-      }, legendSettingFunction: (legend, chart) {
-        legend
-          ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-          ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
-          ..orientation = (LegendOrientation.HORIZONTAL)
-          ..drawInside = (false)
-          ..shape = (LegendForm.SQUARE)
-          ..formSize = (9)
-          ..textSize = (11)
-          ..xEntrySpace = (4);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis.enabled = (false);
-      },
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: false,
-          maxVisibleCount: 60,
-          drawBarShadow: false,
-          drawValueAboveBar: true,
-          description: desc);
-      var barChart = BarChart(controller);
-      controller.getAnimator().animateXY1(1500, 1500);
-      return barChart;
-    } else {
-      return BarChart(controller);
-    }
+    var barChart = BarChart(controller);
+    controller.getAnimator()
+      ..reset()
+      ..animateXY1(1500, 1500);
+    return barChart;
   }
 }

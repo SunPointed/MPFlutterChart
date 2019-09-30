@@ -26,7 +26,12 @@ class EvenMoreDynamic extends StatefulWidget {
 class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
     implements OnChartValueSelectedListener {
   LineChartController controller;
-  LineData lineData;
+
+  @override
+  void initState() {
+    _initController();
+    super.initState();
+  }
 
   @override
   Widget getBody() {
@@ -37,7 +42,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
           left: 0,
           top: 0,
           bottom: 0,
-          child: _initLineChart(),
+          child: LineChart(controller),
         ),
       ],
     );
@@ -88,7 +93,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
         controller.getState().setStateIfNotDispose();
         break;
       case 'F':
-        controller.data = null;
+        controller.updateData(null);
         controller.getState().setStateIfNotDispose();
         break;
       case 'G':
@@ -97,22 +102,19 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
     }
   }
 
-  Widget _initLineChart() {
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = LineChartController(lineData,
-          noDataText:
-              "No chart data available. \nUse the menu to add entries and data sets!",
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          selectionListener: this,
-          pinchZoomEnabled: true,
-          description: desc);
-    }
-    return LineChart(controller);
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = LineChartController(
+        noDataText:
+            "No chart data available. \nUse the menu to add entries and data sets!",
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        selectionListener: this,
+        pinchZoomEnabled: true,
+        description: desc);
   }
 
   @override
@@ -129,7 +131,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
 
     if (data == null) {
       data = LineData();
-      controller.data = data;
+      controller.updateData(data);
     }
 
     ILineDataSet set = data.getDataSetByIndex(0);
@@ -185,7 +187,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   void _addDataSet() {
     LineData data = controller?.data;
     if (data == null) {
-      controller.data = LineData();
+      controller.updateData(LineData());
     } else {
       int count = (data.getDataSetCount() + 1);
       int amount = data.getDataSetByIndex(0).getEntryCount();

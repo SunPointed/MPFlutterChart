@@ -41,10 +41,10 @@ class OtherChartCombined extends StatefulWidget {
 class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   int _count = 12;
   var random = Random(1);
-  CombinedData combinedData;
 
   @override
   void initState() {
+    _initController();
     _initCombinedData();
     super.initState();
   }
@@ -57,68 +57,72 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
     return Stack(
       children: <Widget>[
         Positioned(
-            right: 0, left: 0, top: 0, bottom: 0, child: _initCombinedChart()),
+            right: 0,
+            left: 0,
+            top: 0,
+            bottom: 0,
+            child: CombinedChart(controller)),
       ],
     );
   }
 
-  void _initCombinedData() {
-    combinedData = CombinedData();
-    combinedData.setData1(generateLineData());
-    combinedData.setData2(generateBarData());
-    combinedData.setData5(generateBubbleData());
-    combinedData.setData3(generateScatterData());
-    combinedData.setData4(generateCandleData());
-    combinedData.setValueTypeface(Util.LIGHT);
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = CombinedChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..drawGridLines = (false)
+            ..setAxisMinimum(0);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight
+            ..drawGridLines = (false)
+            ..setAxisMinimum(0);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend
+            ..wordWrapEnabled = (true)
+            ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+            ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
+            ..orientation = (LegendOrientation.HORIZONTAL)
+            ..drawInside = (false);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..position = (XAxisPosition.BOTH_SIDED)
+            ..setAxisMinimum(0)
+            ..setGranularity(1)
+            ..setValueFormatter(A())
+            ..setAxisMaximum(
+                controller.data == null ? 0 : controller.data.xMax + 0.25);
+        },
+        drawGridBackground: false,
+        drawBarShadow: false,
+        highlightFullBarEnabled: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: false,
+        maxVisibleCount: 60,
+        description: desc,
+        drawOrder: List()
+          ..add(DrawOrder.BAR)
+          ..add(DrawOrder.BUBBLE)
+          ..add(DrawOrder.CANDLE)
+          ..add(DrawOrder.LINE)
+          ..add(DrawOrder.SCATTER));
   }
 
-  Widget _initCombinedChart() {
-    if (combinedData == null) return Center(child: Text("no data"));
-
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = CombinedChartController(combinedData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..drawGridLines = (false)
-          ..setAxisMinimum(0);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight
-          ..drawGridLines = (false)
-          ..setAxisMinimum(0);
-      }, legendSettingFunction: (legend, chart) {
-        legend
-          ..wordWrapEnabled = (true)
-          ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-          ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
-          ..orientation = (LegendOrientation.HORIZONTAL)
-          ..drawInside = (false);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..position = (XAxisPosition.BOTH_SIDED)
-          ..setAxisMinimum(0)
-          ..setGranularity(1)
-          ..setValueFormatter(A())
-          ..setAxisMaximum(combinedData == null ? 0 : combinedData.xMax + 0.25);
-      },
-          drawGridBackground: false,
-          drawBarShadow: false,
-          highlightFullBarEnabled: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: false,
-          maxVisibleCount: 60,
-          description: desc,
-          drawOrder: List()
-            ..add(DrawOrder.BAR)
-            ..add(DrawOrder.BUBBLE)
-            ..add(DrawOrder.CANDLE)
-            ..add(DrawOrder.LINE)
-            ..add(DrawOrder.SCATTER));
-    }
-    return CombinedChart(controller);
+  void _initCombinedData() {
+    controller.updateData(CombinedData());
+    controller.data
+      ..setData1(generateLineData())
+      ..setData2(generateBarData())
+      ..setData5(generateBubbleData())
+      ..setData3(generateScatterData())
+      ..setData4(generateCandleData())
+      ..setValueTypeface(Util.LIGHT);
   }
 
   double getRandom(double range, double start) {

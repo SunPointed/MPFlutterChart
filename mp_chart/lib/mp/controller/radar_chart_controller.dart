@@ -22,7 +22,7 @@ class RadarChartController extends PieRadarController {
 
   YAxisSettingFunction yAxisSettingFunction;
 
-  RadarChartController(RadarData data,
+  RadarChartController(
       {this.webLineWidth = 1.5,
       this.innerWebLineWidth = 0.75,
       this.webColor,
@@ -55,7 +55,7 @@ class RadarChartController extends PieRadarController {
       double infoTextSize = 12,
       Color descTextColor,
       Color infoTextColor})
-      : super(data,
+      : super(
             marker: marker,
             noDataText: noDataText,
             xAxisSettingFunction: xAxisSettingFunction,
@@ -83,4 +83,6 @@ class RadarChartController extends PieRadarController {
   IMarker initMarker() => RadarChartMarker();
 
   YAxis initYAxis() => YAxis(position: AxisDependency.LEFT);
+
+  RadarData get data => super.data;
 }

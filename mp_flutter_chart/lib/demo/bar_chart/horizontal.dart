@@ -33,10 +33,10 @@ class BarChartHorizontalState
   var random = Random(1);
   int _count = 12;
   double _range = 50.0;
-  BarData barData;
 
   @override
   void initState() {
+    _initController();
     _initBarData(_count, _range);
     super.initState();
   }
@@ -146,68 +146,69 @@ class BarChartHorizontalState
     List<IBarDataSet> dataSets = List();
     dataSets.add(set1);
 
-    barData = BarData(dataSets);
-    barData.setValueTextSize(10);
-    barData.setValueTypeface(Util.LIGHT);
-    barData.barWidth = barWidth;
+    controller.updateData(BarData(dataSets));
+    controller.data
+      ..setValueTextSize(10)
+      ..setValueTypeface(Util.LIGHT)
+      ..barWidth = barWidth;
 
     setState(() {});
   }
 
-  Widget _initBarChart() {
-    if (barData == null) {
-      return Center(child: Text("no data"));
-    }
+  void _initController() {
+    var desc = Description()..enabled = false;
+    controller = HorizontalBarChartController(
+        axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeft
+            ..typeface = Util.LIGHT
+            ..drawAxisLine = true
+            ..drawGridLines = true
+            ..setAxisMinimum(0);
+        },
+        axisRightSettingFunction: (axisRight, chart) {
+          axisRight
+            ..typeface = Util.LIGHT
+            ..drawAxisLine = true
+            ..drawGridLines = false
+            ..setAxisMinimum(0);
+        },
+        legendSettingFunction: (legend, chart) {
+          legend
+            ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
+            ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
+            ..orientation = (LegendOrientation.HORIZONTAL)
+            ..drawInside = (false)
+            ..formSize = (8)
+            ..xEntrySpace = (4);
+        },
+        xAxisSettingFunction: (xAxis, chart) {
+          xAxis
+            ..position = XAxisPosition.BOTTOM
+            ..typeface = Util.LIGHT
+            ..drawAxisLine = true
+            ..drawGridLines = false
+            ..setGranularity(10);
+        },
+        drawGridBackground: false,
+        dragXEnabled: true,
+        dragYEnabled: true,
+        scaleXEnabled: true,
+        scaleYEnabled: true,
+        pinchZoomEnabled: false,
+        maxVisibleCount: 60,
+        description: desc,
+        selectionListener: this,
+        drawBarShadow: false,
+        drawValueAboveBar: false,
+        fitBars: true);
+  }
 
-    if (controller == null) {
-      var desc = Description()..enabled = false;
-      controller = HorizontalBarChartController(barData,
-          axisLeftSettingFunction: (axisLeft, chart) {
-        axisLeft
-          ..typeface = Util.LIGHT
-          ..drawAxisLine = true
-          ..drawGridLines = true
-          ..setAxisMinimum(0);
-      }, axisRightSettingFunction: (axisRight, chart) {
-        axisRight
-          ..typeface = Util.LIGHT
-          ..drawAxisLine = true
-          ..drawGridLines = false
-          ..setAxisMinimum(0);
-      }, legendSettingFunction: (legend, chart) {
-        legend
-          ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
-          ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
-          ..orientation = (LegendOrientation.HORIZONTAL)
-          ..drawInside = (false)
-          ..formSize = (8)
-          ..xEntrySpace = (4);
-      }, xAxisSettingFunction: (xAxis, chart) {
-        xAxis
-          ..position = XAxisPosition.BOTTOM
-          ..typeface = Util.LIGHT
-          ..drawAxisLine = true
-          ..drawGridLines = false
-          ..setGranularity(10);
-      },
-          drawGridBackground: false,
-          dragXEnabled: true,
-          dragYEnabled: true,
-          scaleXEnabled: true,
-          scaleYEnabled: true,
-          pinchZoomEnabled: false,
-          maxVisibleCount: 60,
-          description: desc,
-          selectionListener: this,
-          drawBarShadow: false,
-          drawValueAboveBar: false,
-          fitBars: true);
-      var barChart = HorizontalBarChart(controller);
-      controller.getAnimator().animateY1(2500);
-      return barChart;
-    } else {
-      return HorizontalBarChart(controller);
-    }
+  Widget _initBarChart() {
+    var barChart = HorizontalBarChart(controller);
+    controller.getAnimator()
+      ..reset()
+      ..animateY1(2500);
+    return barChart;
   }
 
   @override
