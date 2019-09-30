@@ -91,7 +91,6 @@ abstract class BarLineScatterCandleBubbleState<
         (_closestDataSetToTouch != null &&
             widget.painter
                 .isInverted(_closestDataSetToTouch.getAxisDependency()));
-    print(res);
     return res;
   }
 
@@ -148,6 +147,14 @@ abstract class BarLineScatterCandleBubbleState<
       var dx = detail.localFocalPoint.dx - _curX;
       var dy = detail.localFocalPoint.dy - _curY;
       if (widget.painter.dragYEnabled && widget.painter.dragXEnabled) {
+        if (_inverted()) {
+          // if there is an inverted horizontalbarchart
+          if (widget is HorizontalBarChart) {
+            dx = -dx;
+          } else {
+            dy = -dy;
+          }
+        }
         widget.painter.translate(dx, dy);
         _dragHighlight(
             Offset(detail.localFocalPoint.dx, detail.localFocalPoint.dy));
@@ -156,6 +163,14 @@ abstract class BarLineScatterCandleBubbleState<
         setStateIfNotDispose();
       } else {
         if (widget.painter.dragXEnabled) {
+          if (_inverted()) {
+            // if there is an inverted horizontalbarchart
+            if (widget is HorizontalBarChart) {
+              dx = -dx;
+            } else {
+              dy = -dy;
+            }
+          }
           widget.painter.translate(dx, 0.0);
           _dragHighlight(Offset(detail.localFocalPoint.dx, 0.0));
 //          listener?.onChartTranslate(

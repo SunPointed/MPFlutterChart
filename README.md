@@ -5,9 +5,7 @@ flutter charts just like [**MPAndroidChart**](https://github.com/PhilJay/MPAndro
 Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when translate this library to flutter I learned a lot about matrix use in animation.
 
 ## todos
-**1.Invert chart vertical drag not correct**
-<br/><br/>
-**2.potential bugs fix**
+**1.potential bugs fix**
 
 ## More Examples
 **LineCharts**

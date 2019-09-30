@@ -174,6 +174,9 @@ class CombinedChartState extends ChartState<CombinedChart> {
       var dx = detail.localFocalPoint.dx - _curX;
       var dy = detail.localFocalPoint.dy - _curY;
       if (widget.painter.dragYEnabled && widget.painter.dragXEnabled) {
+        if (_inverted()) {
+          dy = -dy;
+        }
         widget.painter.translate(dx, dy);
         _dragHighlight(
             Offset(detail.localFocalPoint.dx, detail.localFocalPoint.dy));
@@ -189,12 +192,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
           setStateIfNotDispose();
         } else if (widget.painter.dragYEnabled) {
           if (_inverted()) {
-            // if there is an inverted horizontalbarchart
-//      if (mChart instanceof HorizontalBarChart) {
-//        dx = -dx;
-//      } else {
             dy = -dy;
-//      }
           }
           widget.painter.translate(0.0, dy);
           _dragHighlight(Offset(0.0, detail.localFocalPoint.dy));
