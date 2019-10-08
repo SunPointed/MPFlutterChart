@@ -87,7 +87,7 @@ abstract class BarLineScatterCandleBubbleState<
 
   bool _inverted() {
     var res = (_closestDataSetToTouch == null &&
-        widget.painter.isAnyAxisInverted()) ||
+            widget.painter.isAnyAxisInverted()) ||
         (_closestDataSetToTouch != null &&
             widget.painter
                 .isInverted(_closestDataSetToTouch.getAxisDependency()));
@@ -206,12 +206,32 @@ abstract class BarLineScatterCandleBubbleState<
 
       MPPointF trans = _getTrans(_curX, _curY);
 
-      scaleX = widget.painter.scaleXEnabled ? scaleX : 1.0;
-      scaleY = widget.painter.scaleYEnabled ? scaleY : 1.0;
-      widget.painter.zoom(scaleX, scaleY, trans.x, trans.y);
+      var h = widget.painter.viewPortHandler;
+      bool canZoomMoreX = false;
+      bool canZoomMoreY = false;
+      if (h != null) {
+        canZoomMoreX = scaleX < 1 ? h.canZoomOutMoreX() : h.canZoomInMoreX();
+        canZoomMoreY = scaleY < 1 ? h.canZoomOutMoreY() : h.canZoomInMoreY();
+      }
+
+      scaleX = (widget.painter.scaleXEnabled && canZoomMoreX) ? scaleX : 1.0;
+      scaleY = (widget.painter.scaleYEnabled && canZoomMoreY) ? scaleY : 1.0;
+
+      if (canZoomMoreX && canZoomMoreY) {
+        widget.painter.zoom(scaleX, scaleY, trans.x, trans.y);
 //      listener?.onChartScale(
 //          detail.localFocalPoint.dx, detail.localFocalPoint.dy, scaleX, scaleY);
-      setStateIfNotDispose();
+        setStateIfNotDispose();
+      } else {
+        if (canZoomMoreX) {
+          widget.painter.zoom(scaleX, 1.0, trans.x, trans.y);
+          setStateIfNotDispose();
+        }
+        if (canZoomMoreY) {
+          widget.painter.zoom(1.0, scaleY, trans.x, trans.y);
+          setStateIfNotDispose();
+        }
+      }
       MPPointF.recycleInstance(trans);
     }
     _scaleX = detail.horizontalScale;

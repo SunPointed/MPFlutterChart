@@ -147,5 +147,7 @@ void main() {
 //    });
 
     print(sin(90 / 180 * pi));
+
+    print("---> ${double.maxFinite * 1.1}");
   });
 }

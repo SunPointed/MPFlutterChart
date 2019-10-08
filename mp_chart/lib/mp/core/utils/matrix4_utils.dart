@@ -49,8 +49,10 @@ abstract class Matrix4Utils {
   }
 
   static void postTranslate(Matrix4 m, double tx, double ty) {
-    final Matrix4 result = Matrix4.identity()..setTranslationRaw(tx, ty, 0.0);
-    multiply(m, result).copyInto(m);
+//    final Matrix4 result = Matrix4.identity()..setTranslationRaw(tx, ty, 0.0);
+//    multiply(m, result).copyInto(m);
+    m.storage[12] += tx;
+    m.storage[13] += ty;
   }
 
   static void setTranslate(Matrix4 m, double tx, double ty) {

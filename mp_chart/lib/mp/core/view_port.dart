@@ -19,13 +19,13 @@ class ViewPortHandler {
   double _minScaleY = 1;
 
   /// maximum scale value on the y-axis
-  double _maxScaleY = 100;
+  double _maxScaleY = 1000;
 
   /// minimum scale value on the x-axis
   double _minScaleX = 1;
 
   /// maximum scale value on the x-axis
-  double _maxScaleX = 100;
+  double _maxScaleX = 1000;
 
   /// contains the current scale factor of the x-axis
   double _scaleX = 1;
@@ -393,9 +393,7 @@ class ViewPortHandler {
   /// @param xScale
   void setMinimumScaleX(double xScale) {
     if (xScale < 1) xScale = 1;
-
     _minScaleX = xScale;
-
     limitTransAndScale(_matrixTouch, _contentRect);
   }
 
@@ -403,10 +401,8 @@ class ViewPortHandler {
   ///
   /// @param xScale
   void setMaximumScaleX(double xScale) {
-    if (xScale == 0) xScale = double.infinity;
-
+    if (xScale == 0) xScale = double.maxFinite;
     _maxScaleX = xScale;
-
     limitTransAndScale(_matrixTouch, _contentRect);
   }
 
@@ -417,11 +413,10 @@ class ViewPortHandler {
   void setMinMaxScaleX(double minScaleX, double maxScaleX) {
     if (minScaleX < 1) minScaleX = 1;
 
-    if (maxScaleX == 0) maxScaleX = double.infinity;
+    if (maxScaleX == 0) maxScaleX = double.maxFinite;
 
     _minScaleX = minScaleX;
     _maxScaleX = maxScaleX;
-
     limitTransAndScale(_matrixTouch, _contentRect);
   }
 
@@ -430,9 +425,7 @@ class ViewPortHandler {
   /// @param yScale
   void setMinimumScaleY(double yScale) {
     if (yScale < 1) yScale = 1;
-
     _minScaleY = yScale;
-
     limitTransAndScale(_matrixTouch, _contentRect);
   }
 
@@ -440,21 +433,18 @@ class ViewPortHandler {
   ///
   /// @param yScale
   void setMaximumScaleY(double yScale) {
-    if (yScale == 0) yScale = double.infinity;
-
+    if (yScale == 0) yScale = double.maxFinite;
     _maxScaleY = yScale;
-
     limitTransAndScale(_matrixTouch, _contentRect);
   }
 
   void setMinMaxScaleY(double minScaleY, double maxScaleY) {
     if (minScaleY < 1) minScaleY = 1;
 
-    if (maxScaleY == 0) maxScaleY = double.infinity;
+    if (maxScaleY == 0) maxScaleY = double.maxFinite;
 
     _minScaleY = minScaleY;
     _maxScaleY = maxScaleY;
-
     limitTransAndScale(_matrixTouch, _contentRect);
   }
 

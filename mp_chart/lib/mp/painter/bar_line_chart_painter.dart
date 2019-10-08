@@ -243,10 +243,6 @@ abstract class BarLineChartBasePainter<
   void initDefaultWithData() {
     super.initDefaultWithData();
     highlighter = ChartHighlighter(this);
-    double minXScale = xAxis.axisRange / (_minXRange);
-    viewPortHandler.setMaximumScaleX(minXScale);
-    viewPortHandler.setMinimumScaleX(_minimumScaleX);
-    viewPortHandler.setMinimumScaleY(_minimumScaleY);
   }
 
   @override
@@ -456,7 +452,7 @@ abstract class BarLineChartBasePainter<
     return offsets;
   }
 
-  void compute(){
+  void compute() {
     if (_autoScaleMinMaxEnabled) {
       autoScale();
     }
@@ -570,6 +566,13 @@ abstract class BarLineChartBasePainter<
   /// @param x
   /// @param y
   void zoom(double scaleX, double scaleY, double x, double y) {
+    if (scaleX.isInfinite ||
+        scaleX.isNaN ||
+        scaleY.isInfinite ||
+        scaleY.isNaN) {
+      return;
+    }
+
     viewPortHandler.zoom4(scaleX, scaleY, x, -y, _zoomMatrixBuffer);
     viewPortHandler.refresh(_zoomMatrixBuffer);
   }
