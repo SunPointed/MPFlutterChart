@@ -82,34 +82,38 @@ class OtherChartCandlestickState
                       )),
                 ],
               ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: Center(
-                        child: Slider(
-                            value: _range,
-                            min: 0,
-                            max: 200,
-                            onChanged: (value) {
-                              _range = value;
-                              _initCandleData(_count, _range);
-                            })),
+              Container(
+                  decoration: new BoxDecoration(
+                    color: Colors.white,
                   ),
-                  Container(
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Text(
-                        "${_range.toInt()}",
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColorUtils.BLACK,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold),
-                      )),
-                ],
-              )
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: Center(
+                            child: Slider(
+                                value: _range,
+                                min: 0,
+                                max: 200,
+                                onChanged: (value) {
+                                  _range = value;
+                                  _initCandleData(_count, _range);
+                                })),
+                      ),
+                      Container(
+                          padding: EdgeInsets.only(right: 15.0),
+                          child: Text(
+                            "${_range.toInt()}",
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorUtils.BLACK,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ],
+                  ))
             ],
           ),
         )

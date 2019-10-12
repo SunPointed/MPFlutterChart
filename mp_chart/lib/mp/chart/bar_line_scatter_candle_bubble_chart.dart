@@ -20,9 +20,9 @@ abstract class BarLineScatterCandleBubbleChart<
   void doneBeforePainterInit() {
     super.doneBeforePainterInit();
     controller.gridBackgroundPaint = Paint()
-      ..color = controller.backgroundColor == null
+      ..color = controller.gridBackColor == null
           ? Color.fromARGB(255, 240, 240, 240)
-          : controller.backgroundColor
+          : controller.gridBackColor
       ..style = PaintingStyle.fill;
 
     controller.borderPaint = Paint()

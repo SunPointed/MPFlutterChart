@@ -74,6 +74,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       bool scaleXEnabled,
       bool scaleYEnabled,
       Paint gridBackgroundPaint,
+      Color backgroundColor,
       Paint borderPaint,
       bool drawGridBackground,
       bool drawBorders,
@@ -152,7 +153,8 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
             minXRange,
             maxXRange,
             minimumScaleX,
-            minimumScaleY);
+            minimumScaleY,
+            backgroundColor);
 
   List<DrawOrder> initDrawOrder() {
     return List()

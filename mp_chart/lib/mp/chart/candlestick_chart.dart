@@ -45,6 +45,7 @@ class CandlestickChart extends BarLineScatterCandleBubbleChart<
         controller.scaleXEnabled,
         controller.scaleYEnabled,
         controller.gridBackgroundPaint,
+        controller.backgroundColor,
         controller.borderPaint,
         controller.drawGridBackground,
         controller.drawBorders,

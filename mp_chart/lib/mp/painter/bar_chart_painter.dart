@@ -66,6 +66,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
       bool scaleXEnabled,
       bool scaleYEnabled,
       Paint gridBackgroundPaint,
+      Color backgroundColor,
       Paint borderPaint,
       bool drawGridBackground,
       bool drawBorders,
@@ -143,7 +144,8 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
             minXRange,
             maxXRange,
             minimumScaleX,
-            minimumScaleY);
+            minimumScaleY,
+            backgroundColor);
 
   @override
   void initDefaultWithData() {

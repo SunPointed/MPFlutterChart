@@ -45,6 +45,7 @@ class BarLineScatterCandleBubbleController extends Controller {
   Paint borderPaint;
 
   Color backgroundColor;
+  Color gridBackColor;
   Color borderColor;
   double borderStrokeWidth;
 
@@ -83,6 +84,7 @@ class BarLineScatterCandleBubbleController extends Controller {
     this.gridBackgroundPaint,
     this.borderPaint,
     this.backgroundColor,
+    this.gridBackColor,
     this.borderColor,
     this.borderStrokeWidth = 1.0,
     this.axisLeftSettingFunction,

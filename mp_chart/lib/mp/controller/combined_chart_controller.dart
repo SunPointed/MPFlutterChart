@@ -55,6 +55,7 @@ class CombinedChartController extends BarLineScatterCandleBubbleController {
     Paint gridBackgroundPaint,
     Paint borderPaint,
     Color backgroundColor,
+    Color gridBackColor,
     Color borderColor,
     double borderStrokeWidth = 1.0,
     AxisLeftSettingFunction axisLeftSettingFunction,
@@ -128,6 +129,7 @@ class CombinedChartController extends BarLineScatterCandleBubbleController {
             borderPaint: borderPaint,
             backgroundColor: backgroundColor,
             borderColor: borderColor,
+            gridBackColor: gridBackColor,
             borderStrokeWidth: borderStrokeWidth,
             axisLeftSettingFunction: axisLeftSettingFunction,
             axisRightSettingFunction: axisRightSettingFunction);

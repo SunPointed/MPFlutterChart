@@ -186,6 +186,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
         pinchZoomEnabled: true,
         selectionListener: this,
         highLightPerTapEnabled: true,
+        gridBackColor: ColorUtils.LTGRAY,
         backgroundColor: ColorUtils.LTGRAY,
         description: desc);
   }

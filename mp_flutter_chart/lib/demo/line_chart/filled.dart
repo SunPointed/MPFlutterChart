@@ -156,6 +156,7 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
         scaleXEnabled: true,
         scaleYEnabled: true,
         pinchZoomEnabled: false,
+        gridBackColor: _fillColor,
         backgroundColor: _fillColor,
         description: desc);
   }

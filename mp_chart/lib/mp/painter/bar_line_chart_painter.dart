@@ -88,6 +88,8 @@ abstract class BarLineChartBasePainter<
   /// the object representing the labels on the right y-axis
   final YAxis _axisRight;
 
+  final Color _backgroundColor;
+
   final YAxisRenderer _axisRendererLeft;
   final YAxisRenderer _axisRendererRight;
 
@@ -139,56 +141,57 @@ abstract class BarLineChartBasePainter<
   bool get doubleTapToZoomEnabled => _doubleTapToZoomEnabled;
 
   BarLineChartBasePainter(
-    T data,
-    ChartAnimator animator,
-    ViewPortHandler viewPortHandler,
-    double maxHighlightDistance,
-    bool highLightPerTapEnabled,
-    double extraLeftOffset,
-    double extraTopOffset,
-    double extraRightOffset,
-    double extraBottomOffset,
-    IMarker marker,
-    Description desc,
-    bool drawMarkers,
-    TextPainter infoPainter,
-    TextPainter descPainter,
-    XAxis xAxis,
-    Legend legend,
-    LegendRenderer legendRenderer,
-    DataRendererSettingFunction rendererSettingFunction,
-    OnChartValueSelectedListener selectedListener,
-    int maxVisibleCount,
-    bool autoScaleMinMaxEnabled,
-    bool pinchZoomEnabled,
-    bool doubleTapToZoomEnabled,
-    bool highlightPerDragEnabled,
-    bool dragXEnabled,
-    bool dragYEnabled,
-    bool scaleXEnabled,
-    bool scaleYEnabled,
-    Paint gridBackgroundPaint,
-    Paint borderPaint,
-    bool drawGridBackground,
-    bool drawBorders,
-    bool clipValuesToContent,
-    double minOffset,
-    bool keepPositionOnRotation,
-    OnDrawListener drawListener,
-    YAxis axisLeft,
-    YAxis axisRight,
-    YAxisRenderer axisRendererLeft,
-    YAxisRenderer axisRendererRight,
-    Transformer leftAxisTransformer,
-    Transformer rightAxisTransformer,
-    XAxisRenderer xAxisRenderer,
-    Matrix4 zoomMatrixBuffer,
-    bool customViewPortEnabled,
-    double minXRange,
-    double maxXRange,
-    double minimumScaleX,
-    double minimumScaleY,
-  )   : _keepPositionOnRotation = keepPositionOnRotation,
+      T data,
+      ChartAnimator animator,
+      ViewPortHandler viewPortHandler,
+      double maxHighlightDistance,
+      bool highLightPerTapEnabled,
+      double extraLeftOffset,
+      double extraTopOffset,
+      double extraRightOffset,
+      double extraBottomOffset,
+      IMarker marker,
+      Description desc,
+      bool drawMarkers,
+      TextPainter infoPainter,
+      TextPainter descPainter,
+      XAxis xAxis,
+      Legend legend,
+      LegendRenderer legendRenderer,
+      DataRendererSettingFunction rendererSettingFunction,
+      OnChartValueSelectedListener selectedListener,
+      int maxVisibleCount,
+      bool autoScaleMinMaxEnabled,
+      bool pinchZoomEnabled,
+      bool doubleTapToZoomEnabled,
+      bool highlightPerDragEnabled,
+      bool dragXEnabled,
+      bool dragYEnabled,
+      bool scaleXEnabled,
+      bool scaleYEnabled,
+      Paint gridBackgroundPaint,
+      Paint borderPaint,
+      bool drawGridBackground,
+      bool drawBorders,
+      bool clipValuesToContent,
+      double minOffset,
+      bool keepPositionOnRotation,
+      OnDrawListener drawListener,
+      YAxis axisLeft,
+      YAxis axisRight,
+      YAxisRenderer axisRendererLeft,
+      YAxisRenderer axisRendererRight,
+      Transformer leftAxisTransformer,
+      Transformer rightAxisTransformer,
+      XAxisRenderer xAxisRenderer,
+      Matrix4 zoomMatrixBuffer,
+      bool customViewPortEnabled,
+      double minXRange,
+      double maxXRange,
+      double minimumScaleX,
+      double minimumScaleY,
+      Color backgroundColor)
+      : _keepPositionOnRotation = keepPositionOnRotation,
         _leftAxisTransformer = leftAxisTransformer,
         _rightAxisTransformer = rightAxisTransformer,
         _zoomMatrixBuffer = zoomMatrixBuffer,
@@ -218,6 +221,7 @@ abstract class BarLineChartBasePainter<
         _maxXRange = maxXRange,
         _minimumScaleX = minimumScaleX,
         _minimumScaleY = minimumScaleY,
+        _backgroundColor = backgroundColor,
         super(
             data,
             animator,
@@ -247,6 +251,10 @@ abstract class BarLineChartBasePainter<
 
   @override
   void onPaint(Canvas canvas, Size size) {
+    if(_backgroundColor != null) {
+      canvas.drawColor(_backgroundColor, BlendMode.src);
+    }
+
     // execute all drawing commands
     drawGridBackground(canvas);
 
