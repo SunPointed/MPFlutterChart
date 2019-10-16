@@ -315,8 +315,7 @@ class ViewPortHandler {
   /// @param transformedPts the position to center view viewport to
   /// @param view
   /// @return save
-  void centerViewPort(
-      final List<double> transformedPts, final Function refresh) {
+  void centerViewPort(final List<double> transformedPts) {
     mCenterViewPortMatrixBuffer = Matrix4.identity();
     Matrix4 save = mCenterViewPortMatrixBuffer;
     _matrixTouch.copyInto(save);
@@ -326,7 +325,7 @@ class ViewPortHandler {
 
     Matrix4Utils.postTranslate(save, -x, -y);
 
-    refresh(save, refresh, true);
+    refresh(save);
   }
 
   List<double> matrixBuffer = List(16);

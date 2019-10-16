@@ -1,4 +1,5 @@
 import 'package:flutter/rendering.dart';
+import 'package:mp_chart/mp/chart/bar_line_scatter_candle_bubble_chart.dart';
 import 'package:mp_chart/mp/controller/controller.dart';
 import 'package:mp_chart/mp/core/axis/y_axis.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
@@ -33,10 +34,6 @@ class BarLineScatterCandleBubbleController extends Controller {
   XAxisRenderer xAxisRenderer;
   bool customViewPortEnabled;
   Matrix4 zoomMatrixBuffer;
-  double minXRange;
-  double maxXRange;
-  double minimumScaleX;
-  double minimumScaleY;
   bool pinchZoomEnabled;
   bool keepPositionOnRotation;
 
@@ -44,9 +41,10 @@ class BarLineScatterCandleBubbleController extends Controller {
   Paint gridBackgroundPaint;
   Paint borderPaint;
 
-  Color backgroundColor;
+  Paint backgroundPaint;
   Color gridBackColor;
   Color borderColor;
+  Color backgroundColor;
   double borderStrokeWidth;
 
   AxisLeftSettingFunction axisLeftSettingFunction;
@@ -75,17 +73,14 @@ class BarLineScatterCandleBubbleController extends Controller {
     this.xAxisRenderer,
     this.customViewPortEnabled = false,
     this.zoomMatrixBuffer,
-    this.minXRange = 1.0,
-    this.maxXRange = 1.0,
-    this.minimumScaleX = 1.0,
-    this.minimumScaleY = 1.0,
     this.pinchZoomEnabled = true,
     this.keepPositionOnRotation = false,
     this.gridBackgroundPaint,
     this.borderPaint,
-    this.backgroundColor,
+    this.backgroundPaint,
     this.gridBackColor,
     this.borderColor,
+    this.backgroundColor,
     this.borderStrokeWidth = 1.0,
     this.axisLeftSettingFunction,
     this.axisRightSettingFunction,
@@ -149,4 +144,56 @@ class BarLineScatterCandleBubbleController extends Controller {
       XAxisRenderer(viewPortHandler, xAxis, leftAxisTransformer);
 
   Matrix4 initZoomMatrixBuffer() => Matrix4.identity();
+
+  BarLineScatterCandleBubbleChart get chart => super.chart;
+
+  /**
+   * Moves the left side of the current viewport to the specified x-position.
+   * This also refreshes the chart by calling invalidate().
+   *
+   * @param xValue
+   */
+  void moveViewToX(double xValue) {
+    List<double> pts = List();
+    pts.add(xValue);
+    pts.add(0.0);
+
+    chart?.painter
+        ?.getTransformer(AxisDependency.LEFT)
+        ?.pointValuesToPixel(pts);
+    viewPortHandler.centerViewPort(pts);
+  }
+
+  /**
+   * This will move the left side of the current viewport to the specified
+   * x-value on the x-axis, and center the viewport to the specified y value on the y-axis.
+   * This also refreshes the chart by calling invalidate().
+   *
+   * @param xValue
+   * @param yValue
+   * @param axis   - which axis should be used as a reference for the y-axis
+   */
+  void moveViewTo(double xValue, double yValue, AxisDependency axis) {
+    List<double> pts = List();
+    pts.add(xValue);
+    pts.add(yValue);
+
+    chart?.painter
+        ?.getTransformer(axis)
+        ?.pointValuesToPixel(pts);
+    viewPortHandler.centerViewPort(pts);
+  }
+
+  /**
+   * Sets the size of the area (range on the x-axis) that should be maximum
+   * visible at once (no further zooming out allowed). If this is e.g. set to
+   * 10, no more than a range of 10 on the x-axis can be viewed at once without
+   * scrolling.
+   *
+   * @param maxXRange The maximum visible range of x-values.
+   */
+  void setVisibleXRangeMaximum(double maxXRange) {
+    double xScale = xAxis.axisRange / (maxXRange);
+    viewPortHandler.setMinimumScaleX(xScale);
+  }
 }

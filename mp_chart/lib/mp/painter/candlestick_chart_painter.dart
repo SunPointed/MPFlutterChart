@@ -49,7 +49,7 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
     bool scaleXEnabled,
     bool scaleYEnabled,
     Paint gridBackgroundPaint,
-    Color backgroundColor,
+    Paint backgroundPaint,
     Paint borderPaint,
     bool drawGridBackground,
     bool drawBorders,
@@ -66,10 +66,6 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
     XAxisRenderer xAxisRenderer,
     Matrix4 zoomMatrixBuffer,
     bool customViewPortEnabled,
-    double minXRange,
-    double maxXRange,
-    double minimumScaleX,
-    double minimumScaleY,
   ) : super(
             data,
             animator,
@@ -116,11 +112,7 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
             xAxisRenderer,
             zoomMatrixBuffer,
             customViewPortEnabled,
-            minXRange,
-            maxXRange,
-            minimumScaleX,
-            minimumScaleY,
-            backgroundColor);
+            backgroundPaint);
 
   @override
   void initDefaultWithData() {

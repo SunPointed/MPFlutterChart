@@ -120,4 +120,6 @@ abstract class Controller {
   ChartAnimator getAnimator() {
     return _chart?.animator;
   }
+
+  Chart get chart => _chart;
 }

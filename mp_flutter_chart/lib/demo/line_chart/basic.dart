@@ -167,6 +167,7 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
             ..enableGridDashedLine(10, 10, 0);
         },
         drawGridBackground: false,
+        backgroundColor: ColorUtils.WHITE,
         dragXEnabled: true,
         dragYEnabled: true,
         scaleXEnabled: true,

@@ -152,12 +152,10 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
         randomDataSetIndex);
     data.notifyDataChanged();
 
-//    var painter = lineChart.getState()?.painter;
-//    if (painter != null) {
-//      double xScale = painter.mXAxis.mAxisRange / 6;
-//      lineChart.viewPortHandler.setMinimumScaleX(xScale);
-////      chart.moveViewTo(data.getEntryCount() - 7, 50f, AxisDependency.LEFT);
-//    }
+    controller.setVisibleXRangeMaximum(6);
+    controller.moveViewTo(
+        (data.getEntryCount() - 7).toDouble(), 50, AxisDependency.LEFT);
+    controller.getState()?.setStateIfNotDispose();
   }
 
   LineDataSet _createSet() {

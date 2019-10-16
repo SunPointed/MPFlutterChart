@@ -53,7 +53,9 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
           left: 0,
           top: 0,
           bottom: 100,
-          child: BarChart(controller),
+          child: isDataInitial
+              ? BarChart(controller)
+              : Text("data is not initial"),
         ),
         Positioned(
           left: 0,
@@ -184,6 +186,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
   int groupCount;
   int startYear;
   int endYear;
+  bool isDataInitial = false;
 
   void _initBarData(int count, double range) async {
     List<ui.Image> imgs = List(3);
@@ -238,7 +241,9 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
       // specify the width each bar should have
       ..barWidth = (0.2);
 
-    setState(() {});
+    setState(() {
+      isDataInitial = true;
+    });
   }
 
   @override

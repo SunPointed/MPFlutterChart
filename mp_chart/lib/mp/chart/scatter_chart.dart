@@ -45,7 +45,7 @@ class ScatterChart extends BarLineScatterCandleBubbleChart<ScatterChartPainter,
         controller.scaleXEnabled,
         controller.scaleYEnabled,
         controller.gridBackgroundPaint,
-        controller.backgroundColor,
+        controller.backgroundPaint,
         controller.borderPaint,
         controller.drawGridBackground,
         controller.drawBorders,
@@ -61,11 +61,7 @@ class ScatterChart extends BarLineScatterCandleBubbleChart<ScatterChartPainter,
         controller.rightAxisTransformer,
         controller.xAxisRenderer,
         controller.zoomMatrixBuffer,
-        controller.customViewPortEnabled,
-        controller.minXRange,
-        controller.maxXRange,
-        controller.minimumScaleX,
-        controller.minimumScaleY);
+        controller.customViewPortEnabled);
   }
 }
 

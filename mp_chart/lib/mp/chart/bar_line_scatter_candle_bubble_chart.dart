@@ -32,6 +32,11 @@ abstract class BarLineScatterCandleBubbleChart<
       ..style = PaintingStyle.stroke
       ..strokeWidth = Utils.convertDpToPixel(controller.borderStrokeWidth);
 
+    controller.backgroundPaint = Paint()
+      ..color = controller.backgroundColor == null
+          ? ColorUtils.WHITE
+          : controller.backgroundColor;
+
     controller.drawListener ??= controller.initDrawListener();
     controller.axisLeft = controller.initAxisLeft();
     controller.axisRight = controller.initAxisRight();

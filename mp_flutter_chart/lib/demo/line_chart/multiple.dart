@@ -182,6 +182,7 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
             ..drawGridLines = (false);
         },
         drawGridBackground: false,
+        backgroundColor: ColorUtils.WHITE,
         dragXEnabled: true,
         dragYEnabled: true,
         scaleXEnabled: true,

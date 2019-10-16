@@ -66,7 +66,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
       bool scaleXEnabled,
       bool scaleYEnabled,
       Paint gridBackgroundPaint,
-      Color backgroundColor,
+      Paint backgroundPaint,
       Paint borderPaint,
       bool drawGridBackground,
       bool drawBorders,
@@ -83,10 +83,6 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
       XAxisRenderer xAxisRenderer,
       Matrix4 zoomMatrixBuffer,
       bool customViewPortEnabled,
-      double minXRange,
-      double maxXRange,
-      double minimumScaleX,
-      double minimumScaleY,
       bool highlightFullBarEnabled,
       bool drawValueAboveBar,
       bool drawBarShadow,
@@ -141,11 +137,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
             xAxisRenderer,
             zoomMatrixBuffer,
             customViewPortEnabled,
-            minXRange,
-            maxXRange,
-            minimumScaleX,
-            minimumScaleY,
-            backgroundColor);
+            backgroundPaint);
 
   @override
   void initDefaultWithData() {

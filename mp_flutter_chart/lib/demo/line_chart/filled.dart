@@ -157,7 +157,7 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
         scaleYEnabled: true,
         pinchZoomEnabled: false,
         gridBackColor: _fillColor,
-        backgroundColor: _fillColor,
+        backgroundColor: ColorUtils.WHITE,
         description: desc);
   }
 

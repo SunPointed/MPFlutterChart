@@ -299,10 +299,10 @@ class ScrollingChartMultipleState
       ..setValueFormatter(PercentFormatter())
       ..setValueTextSize(11)
       ..setValueTextColor(ColorUtils.WHITE);
+    var pieChart = PieChart(controller);
     controller.getAnimator()
       ..reset()
       ..animateY1(900);
-    var pieChart = PieChart(controller);
     return pieChart;
   }
 
