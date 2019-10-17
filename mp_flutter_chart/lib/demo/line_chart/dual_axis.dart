@@ -130,10 +130,11 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
 
   @override
   void onValueSelected(Entry e, Highlight h) {
-//    todo
-//    Log.i("Entry selected", e.toString());
-//    chart.centerViewToAnimated(e.getX(), e.getY(), chart.getData().getDataSetByIndex(h.getDataSetIndex())
-//        .getAxisDependency(), 500);
+    controller?.centerViewToAnimated(
+        e.x,
+        e.y,
+        controller.data.getDataSetByIndex(h.dataSetIndex).getAxisDependency(),
+        500);
   }
 
   void _initController() {
