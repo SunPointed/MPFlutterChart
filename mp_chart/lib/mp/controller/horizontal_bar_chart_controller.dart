@@ -4,6 +4,7 @@ import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
 import 'package:mp_chart/mp/core/axis/y_axis.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/description.dart';
+import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/horizontal_bar_chart_marker.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
@@ -152,4 +153,43 @@ class HorizontalBarChartController extends BarChartController {
 
   @override
   ViewPortHandler initViewPortHandler() => HorizontalViewPortHandler();
+
+  @override
+  void setVisibleXRangeMaximum(double maxXRange) {
+    double xScale = xAxis.axisRange / (maxXRange);
+    viewPortHandler.setMinimumScaleY(xScale);
+  }
+
+  @override
+  void setVisibleXRangeMinimum(double minXRange) {
+    double xScale = xAxis.axisRange / (minXRange);
+    viewPortHandler.setMaximumScaleY(xScale);
+  }
+
+  @override
+  void setVisibleXRange(double minXRange, double maxXRange) {
+    double minScale = xAxis.axisRange / minXRange;
+    double maxScale = xAxis.axisRange / maxXRange;
+    viewPortHandler.setMinMaxScaleY(minScale, maxScale);
+  }
+
+  @override
+  void setVisibleYRangeMaximum(double maxYRange, AxisDependency axis) {
+    double yScale = getAxisRange(axis) / maxYRange;
+    viewPortHandler.setMinimumScaleX(yScale);
+  }
+
+  @override
+  void setVisibleYRangeMinimum(double minYRange, AxisDependency axis) {
+    double yScale = getAxisRange(axis) / minYRange;
+    viewPortHandler.setMaximumScaleX(yScale);
+  }
+
+  @override
+  void setVisibleYRange(
+      double minYRange, double maxYRange, AxisDependency axis) {
+    double minScale = getAxisRange(axis) / minYRange;
+    double maxScale = getAxisRange(axis) / maxYRange;
+    viewPortHandler.setMinMaxScaleX(minScale, maxScale);
+  }
 }

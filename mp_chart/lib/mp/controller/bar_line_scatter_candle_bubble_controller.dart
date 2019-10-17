@@ -1,12 +1,14 @@
 import 'package:flutter/rendering.dart';
 import 'package:mp_chart/mp/chart/bar_line_scatter_candle_bubble_chart.dart';
 import 'package:mp_chart/mp/controller/controller.dart';
+import 'package:mp_chart/mp/core/animator.dart';
 import 'package:mp_chart/mp/core/axis/y_axis.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/description.dart';
 import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
+import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
@@ -147,12 +149,20 @@ class BarLineScatterCandleBubbleController extends Controller {
 
   BarLineScatterCandleBubbleChart get chart => super.chart;
 
-  /**
-   * Moves the left side of the current viewport to the specified x-position.
-   * This also refreshes the chart by calling invalidate().
-   *
-   * @param xValue
-   */
+  /// Sets the minimum scale factor value to which can be zoomed out. 1f =
+  /// fitScreen
+  ///
+  /// @param scaleX
+  /// @param scaleY
+  void setScaleMinima(double scaleX, double scaleY) {
+    viewPortHandler.setMinimumScaleX(scaleX);
+    viewPortHandler.setMinimumScaleY(scaleY);
+  }
+
+  /// Moves the left side of the current viewport to the specified x-position.
+  /// This also refreshes the chart by calling invalidate().
+  ///
+  /// @param xValue
   void moveViewToX(double xValue) {
     List<double> pts = List();
     pts.add(xValue);
@@ -164,36 +174,214 @@ class BarLineScatterCandleBubbleController extends Controller {
     viewPortHandler.centerViewPort(pts);
   }
 
-  /**
-   * This will move the left side of the current viewport to the specified
-   * x-value on the x-axis, and center the viewport to the specified y value on the y-axis.
-   * This also refreshes the chart by calling invalidate().
-   *
-   * @param xValue
-   * @param yValue
-   * @param axis   - which axis should be used as a reference for the y-axis
-   */
+  /// This will move the left side of the current viewport to the specified
+  /// x-value on the x-axis, and center the viewport to the specified y value on the y-axis.
+  /// This also refreshes the chart by calling invalidate().
+  ///
+  /// @param xValue
+  /// @param yValue
+  /// @param axis   - which axis should be used as a reference for the y-axis
   void moveViewTo(double xValue, double yValue, AxisDependency axis) {
+    double yInView = getAxisRange(axis) / viewPortHandler.getScaleY();
     List<double> pts = List();
     pts.add(xValue);
-    pts.add(yValue);
-
-    chart?.painter
-        ?.getTransformer(axis)
-        ?.pointValuesToPixel(pts);
+    pts.add(yValue + yInView / 2);
+    chart?.painter?.getTransformer(axis)?.pointValuesToPixel(pts);
     viewPortHandler.centerViewPort(pts);
   }
 
-  /**
-   * Sets the size of the area (range on the x-axis) that should be maximum
-   * visible at once (no further zooming out allowed). If this is e.g. set to
-   * 10, no more than a range of 10 on the x-axis can be viewed at once without
-   * scrolling.
-   *
-   * @param maxXRange The maximum visible range of x-values.
-   */
+  /// This will move the left side of the current viewport to the specified x-value
+  /// and center the viewport to the y value animated.
+  /// This also refreshes the chart by calling invalidate().
+  ///
+  /// @param xValue
+  /// @param yValue
+  /// @param axis
+  /// @param duration the duration of the animation in milliseconds
+  void moveViewToAnimated(
+      double xValue, double yValue, AxisDependency axis, int durationMillis) {
+    MPPointD bounds = getValuesByTouchPoint(
+        viewPortHandler.contentLeft(), viewPortHandler.contentTop(), axis);
+    double yInView = getAxisRange(axis) / viewPortHandler.getScaleY();
+
+    yValue = yValue + yInView / 2;
+    List<double> pts = List();
+    pts.add(xValue);
+    pts.add(yValue);
+    double xOrigin = bounds.x;
+    double yOrigin = bounds.y;
+    ChartAnimator(UpdateListener((x, y) {
+      pts[0] = xOrigin + (xValue - xOrigin) * x;
+      pts[1] = yOrigin + (yValue - yOrigin) * y;
+      chart?.painter?.getTransformer(axis)?.pointValuesToPixel(pts);
+      viewPortHandler.centerViewPort(pts);
+      getState()?.setStateIfNotDispose();
+    })).animateXY1(durationMillis, durationMillis);
+
+    MPPointD.recycleInstance2(bounds);
+  }
+
+  /// Centers the viewport to the specified y value on the y-axis.
+  /// This also refreshes the chart by calling invalidate().
+  ///
+  /// @param yValue
+  /// @param axis   - which axis should be used as a reference for the y-axis
+  void centerViewToY(double yValue, AxisDependency axis) {
+    double valsInView = getAxisRange(axis) / viewPortHandler.getScaleY();
+    List<double> pts = List();
+    pts.add(0.0);
+    pts.add(yValue + valsInView / 2);
+    chart?.painter?.getTransformer(axis)?.pointValuesToPixel(pts);
+    viewPortHandler.centerViewPort(pts);
+  }
+
+  /// This will move the center of the current viewport to the specified
+  /// x and y value.
+  /// This also refreshes the chart by calling invalidate().
+  ///
+  /// @param xValue
+  /// @param yValue
+  /// @param axis   - which axis should be used as a reference for the y axis
+  void centerViewTo(double xValue, double yValue, AxisDependency axis) {
+    double yInView = getAxisRange(axis) / viewPortHandler.getScaleY();
+    double xInView = xAxis.axisRange / viewPortHandler.getScaleX();
+    List<double> pts = List();
+    pts.add(xValue - xInView / 2);
+    pts.add(yValue + yInView / 2);
+    chart?.painter?.getTransformer(axis)?.pointValuesToPixel(pts);
+    viewPortHandler.centerViewPort(pts);
+  }
+
+  /// This will move the center of the current viewport to the specified
+  /// x and y value animated.
+  ///
+  /// @param xValue
+  /// @param yValue
+  /// @param axis
+  /// @param duration the duration of the animation in milliseconds
+  void centerViewToAnimated(
+      double xValue, double yValue, AxisDependency axis, int durationMillis) {
+    MPPointD bounds = getValuesByTouchPoint(
+        viewPortHandler.contentLeft(), viewPortHandler.contentTop(), axis);
+    double yInView = getAxisRange(axis) / viewPortHandler.getScaleY();
+    double xInView = xAxis.axisRange / viewPortHandler.getScaleX();
+
+    xValue = xValue - xInView / 2;
+    yValue = yValue + yInView / 2;
+    List<double> pts = List();
+    pts.add(xValue);
+    pts.add(yValue);
+    double xOrigin = bounds.x;
+    double yOrigin = bounds.y;
+    ChartAnimator(UpdateListener((x, y) {
+      pts[0] = xOrigin + (xValue - xOrigin) * x;
+      pts[1] = yOrigin + (yValue - yOrigin) * y;
+      chart?.painter?.getTransformer(axis)?.pointValuesToPixel(pts);
+      viewPortHandler.centerViewPort(pts);
+      getState()?.setStateIfNotDispose();
+    })).animateXY1(durationMillis, durationMillis);
+
+    MPPointD.recycleInstance2(bounds);
+  }
+
+  /// Sets the size of the area (range on the x-axis) that should be maximum
+  /// visible at once (no further zooming out allowed). If this is e.g. set to
+  /// 10, no more than a range of 10 on the x-axis can be viewed at once without
+  /// scrolling.
+  ///
+  /// @param maxXRange The maximum visible range of x-values.
   void setVisibleXRangeMaximum(double maxXRange) {
     double xScale = xAxis.axisRange / (maxXRange);
     viewPortHandler.setMinimumScaleX(xScale);
   }
+
+  /// Sets the size of the area (range on the x-axis) that should be minimum
+  /// visible at once (no further zooming in allowed). If this is e.g. set to
+  /// 10, no less than a range of 10 on the x-axis can be viewed at once without
+  /// scrolling.
+  ///
+  /// @param minXRange The minimum visible range of x-values.
+  void setVisibleXRangeMinimum(double minXRange) {
+    double xScale = xAxis.axisRange / (minXRange);
+    viewPortHandler.setMaximumScaleX(xScale);
+  }
+
+  /// Limits the maximum and minimum x range that can be visible by pinching and zooming. e.g. minRange=10, maxRange=100 the
+  /// smallest range to be displayed at once is 10, and no more than a range of 100 values can be viewed at once without
+  /// scrolling
+  ///
+  /// @param minXRange
+  /// @param maxXRange
+  void setVisibleXRange(double minXRange, double maxXRange) {
+    double minScale = xAxis.axisRange / minXRange;
+    double maxScale = xAxis.axisRange / maxXRange;
+    viewPortHandler.setMinMaxScaleX(minScale, maxScale);
+  }
+
+  double getAxisRange(AxisDependency axis) {
+    if (axis == AxisDependency.LEFT)
+      return axisLeft.axisRange;
+    else
+      return axisRight.axisRange;
+  }
+
+  MPPointD getValuesByTouchPoint(double x, double y, AxisDependency axis) {
+    MPPointD result = MPPointD.getInstance1(0, 0);
+    _getValuesByTouchPoint(x, y, axis, result);
+    return result;
+  }
+
+  void _getValuesByTouchPoint(
+      double x, double y, AxisDependency axis, MPPointD outputPoint) {
+    chart?.painter
+        ?.getTransformer(axis)
+        ?.getValuesByTouchPoint2(x, y, outputPoint);
+  }
+
+  /// Sets the size of the area (range on the y-axis) that should be maximum
+  /// visible at once.
+  ///
+  /// @param maxYRange the maximum visible range on the y-axis
+  /// @param axis      the axis for which this limit should apply
+  void setVisibleYRangeMaximum(double maxYRange, AxisDependency axis) {
+    double yScale = getAxisRange(axis) / maxYRange;
+    viewPortHandler.setMinimumScaleY(yScale);
+  }
+
+  /// Sets the size of the area (range on the y-axis) that should be minimum visible at once, no further zooming in possible.
+  ///
+  /// @param minYRange
+  /// @param axis      the axis for which this limit should apply
+  void setVisibleYRangeMinimum(double minYRange, AxisDependency axis) {
+    double yScale = getAxisRange(axis) / minYRange;
+    viewPortHandler.setMaximumScaleY(yScale);
+  }
+
+  /// Limits the maximum and minimum y range that can be visible by pinching and zooming.
+  ///
+  /// @param minYRange
+  /// @param maxYRange
+  /// @param axis
+  void setVisibleYRange(
+      double minYRange, double maxYRange, AxisDependency axis) {
+    double minScale = getAxisRange(axis) / minYRange;
+    double maxScale = getAxisRange(axis) / maxYRange;
+    viewPortHandler.setMinMaxScaleY(minScale, maxScale);
+  }
 }
+
+class UpdateListener implements AnimatorUpdateListener {
+  final UpdateFunction _updateFunction;
+
+  UpdateListener(this._updateFunction);
+
+  @override
+  void onAnimationUpdate(double x, double y) {
+    _updateFunction(x, y);
+  }
+
+  @override
+  void onRotateUpdate(double angle) {}
+}
+
+typedef UpdateFunction = void Function(double x, double y);
