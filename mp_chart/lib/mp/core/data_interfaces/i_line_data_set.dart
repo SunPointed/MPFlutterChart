@@ -6,7 +6,7 @@ import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/enums/mode.dart';
 import 'package:mp_chart/mp/core/fill_formatter/i_fill_formatter.dart';
 
-mixin ILineDataSet on ILineRadarDataSet<Entry> {
+mixin ILineDataSet implements ILineRadarDataSet<Entry> {
   /// Returns the drawing mode for this line dataset
   ///
   /// @return

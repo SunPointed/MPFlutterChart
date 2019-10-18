@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:mp_chart/mp/core/data_interfaces/i_line_scatter_candle_radar_data_set.dart';
 import 'package:mp_chart/mp/core/entry/candle_entry.dart';
 
-mixin ICandleDataSet on ILineScatterCandleRadarDataSet<CandleEntry> {
+mixin ICandleDataSet implements ILineScatterCandleRadarDataSet<CandleEntry> {
   /// Returns the space that is left out on the left and right side of each
   /// candle.
   ///

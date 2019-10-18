@@ -4,7 +4,7 @@ import 'package:mp_chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_chart/mp/core/entry/pie_entry.dart';
 import 'package:mp_chart/mp/core/enums/value_position.dart';
 
-mixin IPieDataSet on IDataSet<PieEntry> {
+mixin IPieDataSet implements IDataSet<PieEntry> {
   /// Returns the space that is set to be between the piechart-slices of this
   /// DataSet, in pixels.
   ///

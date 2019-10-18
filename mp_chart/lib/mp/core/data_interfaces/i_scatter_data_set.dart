@@ -4,7 +4,7 @@ import 'package:mp_chart/mp/core/data_interfaces/i_line_scatter_candle_radar_dat
 import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/render/i_shape_renderer.dart';
 
-mixin IScatterDataSet on ILineScatterCandleRadarDataSet<Entry> {
+mixin IScatterDataSet implements ILineScatterCandleRadarDataSet<Entry> {
   /// Returns the currently set scatter shape size
   ///
   /// @return
