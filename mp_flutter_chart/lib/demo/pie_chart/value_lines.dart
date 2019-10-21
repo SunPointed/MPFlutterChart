@@ -158,8 +158,8 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
   void _initController() {
     var desc = Description()..enabled = false;
     controller = PieChartController(
-        legendSettingFunction: (legend, chart) {
-          _formatter.setPieChartPainter(chart);
+        legendSettingFunction: (legend, controller) {
+          _formatter.setPieChartPainter(controller);
           legend
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
@@ -226,18 +226,18 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
 
     dataSet.setYValuePosition(ValuePosition.OUTSIDE_SLICE);
 
-    controller.updateData(PieData(dataSet)
+    controller.data = PieData(dataSet)
       ..setValueFormatter(_formatter)
       ..setValueTextSize(11)
       ..setValueTextColor(ColorUtils.BLACK)
-      ..setValueTypeface(Util.REGULAR));
+      ..setValueTypeface(Util.REGULAR);
 
     setState(() {});
   }
 
   Widget _initPieChart() {
     var pieChart = PieChart(controller);
-    controller.getAnimator()
+    controller.animator
       ..reset()
       ..animateY2(1400, Easing.EaseInOutQuad);
     return pieChart;

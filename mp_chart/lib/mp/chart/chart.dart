@@ -4,67 +4,19 @@ import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:mp_chart/mp/controller/controller.dart';
-import 'package:mp_chart/mp/core/animator.dart';
-import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
-import 'package:mp_chart/mp/painter/painter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
-abstract class Chart<P extends ChartPainter, C extends Controller>
-    extends StatefulWidget implements AnimatorUpdateListener {
+abstract class Chart<C extends Controller> extends StatefulWidget {
   final C controller;
-
-  P _painter;
-  ChartAnimator _animator;
-  ChartState _state;
-
-  ChartAnimator get animator => _animator;
-
-  ChartState get state => _state;
-
-  ChartState createChartState();
 
   @override
   State createState() {
-    _state = createChartState();
-    return _state;
+    return controller.createChartState();
   }
 
-  Chart(this.controller) {
-    controller.attachChart(this);
-    _animator = ChartAnimator(this);
-    doneBeforePainterInit();
-    initialPainter();
-  }
-
-  @override
-  void onAnimationUpdate(double x, double y) {
-    _state?.setStateIfNotDispose();
-  }
-
-  @override
-  void onRotateUpdate(double angle) {}
-
-  ChartPainter get painter => _painter;
-
-  set painter(P value) {
-    _painter = value;
-  }
-
-  void doneBeforePainterInit() {
-    controller.legend = controller.initLegend();
-    controller.legendRenderer = controller.initLegendRenderer();
-    controller.xAxis = controller.initXAxis();
-    if (controller.legendSettingFunction != null) {
-      controller.legendSettingFunction(controller.legend, this);
-    }
-    if (controller.xAxisSettingFunction != null) {
-      controller.xAxisSettingFunction(controller.xAxis, this);
-    }
-  }
-
-  void initialPainter();
+  const Chart(this.controller);
 }
 
 abstract class ChartState<T extends Chart> extends State<T> {
@@ -108,14 +60,14 @@ abstract class ChartState<T extends Chart> extends State<T> {
   @override
   void didUpdateWidget(T oldWidget) {
     super.didUpdateWidget(oldWidget);
-    widget._animator = oldWidget._animator;
-    widget._state = this;
+    widget.controller.animator = oldWidget.controller.animator;
+    widget.controller.state = this;
   }
 
   @override
   Widget build(BuildContext context) {
-    widget.doneBeforePainterInit();
-    widget.initialPainter();
+    widget.controller.doneBeforePainterInit();
+    widget.controller.initialPainter();
     updatePainter();
     return Screenshot(
         controller: _screenshotController,
@@ -154,15 +106,16 @@ abstract class ChartState<T extends Chart> extends State<T> {
                           onScaleEnd: (detail) {
                             onScaleEnd(detail);
                           },
-                          child: CustomPaint(painter: widget.painter))),
+                          child:
+                              CustomPaint(painter: widget.controller.painter))),
                 ])));
   }
 
   @override
   void reassemble() {
     super.reassemble();
-    widget._animator?.reset();
-    widget.painter?.reassemble();
+    widget.controller.animator?.reset();
+    widget.controller.painter?.reassemble();
   }
 
   void onDoubleTap();

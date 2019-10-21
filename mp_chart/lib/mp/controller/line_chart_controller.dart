@@ -1,5 +1,7 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mp_chart/mp/chart/line_chart.dart';
+import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
 import 'package:mp_chart/mp/core/axis/y_axis.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/data/line_data.dart';
@@ -10,10 +12,10 @@ import 'package:mp_chart/mp/core/marker/line_chart_marker.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
+import 'package:mp_chart/mp/painter/line_chart_painter.dart';
 
-import 'bar_line_scatter_candle_bubble_controller.dart';
-
-class LineChartController extends BarLineScatterCandleBubbleController {
+class LineChartController
+    extends BarLineScatterCandleBubbleController<LineChartPainter> {
   LineChartController({
     int maxVisibleCount = 100,
     bool autoScaleMinMaxEnabled = true,
@@ -121,4 +123,64 @@ class LineChartController extends BarLineScatterCandleBubbleController {
   IMarker initMarker() => LineChartMarker();
 
   LineData get data => super.data;
+
+  LineChartState get state => super.state;
+
+  LineChartPainter get painter => super.painter;
+
+  @override
+  void initialPainter() {
+    painter = LineChartPainter(
+        data,
+        animator,
+        viewPortHandler,
+        maxHighlightDistance,
+        highLightPerTapEnabled,
+        extraLeftOffset,
+        extraTopOffset,
+        extraRightOffset,
+        extraBottomOffset,
+        marker,
+        description,
+        drawMarkers,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
+        rendererSettingFunction,
+        selectionListener,
+        maxVisibleCount,
+        autoScaleMinMaxEnabled,
+        pinchZoomEnabled,
+        doubleTapToZoomEnabled,
+        highlightPerDragEnabled,
+        dragXEnabled,
+        dragYEnabled,
+        scaleXEnabled,
+        scaleYEnabled,
+        gridBackgroundPaint,
+        backgroundPaint,
+        borderPaint,
+        drawGridBackground,
+        drawBorders,
+        clipValuesToContent,
+        minOffset,
+        keepPositionOnRotation,
+        drawListener,
+        axisLeft,
+        axisRight,
+        axisRendererLeft,
+        axisRendererRight,
+        leftAxisTransformer,
+        rightAxisTransformer,
+        xAxisRenderer,
+        zoomMatrixBuffer,
+        customViewPortEnabled);
+  }
+
+  @override
+  LineChartState createRealState() {
+    return LineChartState();
+  }
 }

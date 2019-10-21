@@ -105,7 +105,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
   void _initController() {
     var desc = Description()..enabled = false;
     controller = BarChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..setLabelCount2(6, false)
             ..typeface = Util.LIGHT
@@ -114,7 +114,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
             ..granularityEnabled = (true)
             ..setGranularity(0.1);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight
             ..drawGridLines = (false)
             ..typeface = Util.LIGHT
@@ -123,7 +123,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
             ..setAxisMaximum(2.5)
             ..setGranularity(0.1);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend
             ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
             ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
@@ -134,7 +134,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
             ..textSize = (11)
             ..xEntrySpace = (4);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis.enabled = (false);
         },
         drawGridBackground: false,
@@ -160,7 +160,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
     BarDataSet set = BarDataSet(entries, "Sinus Function");
     set.setColor1(Color.fromARGB(255, 240, 120, 124));
 
-    controller.updateData(BarData(List()..add(set)));
+    controller.data = BarData(List()..add(set));
     controller.data
       ..setValueTextSize(10)
       ..setValueTypeface(Util.LIGHT)
@@ -172,7 +172,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
 
   Widget _initBarChart() {
     var barChart = BarChart(controller);
-    controller.getAnimator()
+    controller.animator
       ..reset()
       ..animateXY1(1500, 1500);
     return barChart;

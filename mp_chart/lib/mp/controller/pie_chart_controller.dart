@@ -1,4 +1,5 @@
 import 'package:flutter/painting.dart';
+import 'package:mp_chart/mp/chart/pie_chart.dart';
 import 'package:mp_chart/mp/controller/pie_radar_controller.dart';
 import 'package:mp_chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
@@ -7,8 +8,9 @@ import 'package:mp_chart/mp/core/description.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/bar_chart_marker.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
+import 'package:mp_chart/mp/painter/pie_chart_painter.dart';
 
-class PieChartController extends PieRadarController {
+class PieChartController extends PieRadarController<PieChartPainter> {
   bool drawEntryLabels;
   bool drawHole;
   bool drawSlicesUnderHole;
@@ -95,4 +97,59 @@ class PieChartController extends PieRadarController {
   IMarker initMarker() => BarChartMarker();
 
   PieData get data => super.data;
+
+  PieChartPainter get painter => super.painter;
+
+  PieChartState get state => super.state;
+
+  @override
+  void initialPainter() {
+    painter = PieChartPainter(
+      data,
+      animator,
+      viewPortHandler,
+      maxHighlightDistance,
+      highLightPerTapEnabled,
+      extraLeftOffset,
+      extraTopOffset,
+      extraRightOffset,
+      extraBottomOffset,
+      marker,
+      description,
+      drawMarkers,
+      infoPaint,
+      descPaint,
+      xAxis,
+      legend,
+      legendRenderer,
+      rendererSettingFunction,
+      selectionListener,
+      rotationAngle,
+      rawRotationAngle,
+      rotateEnabled,
+      minOffset,
+      drawEntryLabels,
+      drawHole,
+      drawSlicesUnderHole,
+      usePercentValues,
+      drawRoundedSlices,
+      centerText,
+      centerTextOffsetX,
+      centerTextOffsetY,
+      entryLabelTypeface,
+      centerTextTypeface,
+      holeRadiusPercent,
+      transparentCircleRadiusPercent,
+      drawCenterText,
+      centerTextRadiusPercent,
+      maxAngle,
+      minAngleForSlices,
+      backgroundColor,
+    );
+  }
+
+  @override
+  PieChartState createRealState() {
+    return PieChartState();
+  }
 }

@@ -13,10 +13,14 @@ import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
+import 'package:mp_chart/mp/painter/painter.dart';
 
-abstract class Controller {
-  Chart _chart;
-  ChartData _data;
+abstract class Controller<P extends ChartPainter>
+    implements AnimatorUpdateListener {
+  ChartState state;
+  ChartData data;
+  ChartAnimator animator;
+  P _painter;
 
   ////// needed
   IMarker marker;
@@ -41,31 +45,31 @@ abstract class Controller {
   LegendSettingFunction legendSettingFunction;
   DataRendererSettingFunction rendererSettingFunction;
 
-  Controller(
-      {this.marker,
-      this.description,
-      this.viewPortHandler,
-      this.xAxis,
-      this.legend,
-      this.legendRenderer,
-      this.selectionListener,
-      this.maxHighlightDistance = 100.0,
-      this.highLightPerTapEnabled = true,
-      this.extraTopOffset = 0.0,
-      this.extraRightOffset = 0.0,
-      this.extraBottomOffset = 0.0,
-      this.extraLeftOffset = 0.0,
-      this.drawMarkers = true,
-      double descTextSize = 12,
-      double infoTextSize = 12,
-      Color descTextColor,
-      Color infoTextColor,
-      this.descPaint,
-      this.infoPaint,
-      String noDataText = "No chart data available.",
-      this.xAxisSettingFunction,
-      this.legendSettingFunction,
-      this.rendererSettingFunction}) {
+  Controller({this.marker,
+    this.description,
+    this.viewPortHandler,
+    this.xAxis,
+    this.legend,
+    this.legendRenderer,
+    this.selectionListener,
+    this.maxHighlightDistance = 100.0,
+    this.highLightPerTapEnabled = true,
+    this.extraTopOffset = 0.0,
+    this.extraRightOffset = 0.0,
+    this.extraBottomOffset = 0.0,
+    this.extraLeftOffset = 0.0,
+    this.drawMarkers = true,
+    double descTextSize = 12,
+    double infoTextSize = 12,
+    Color descTextColor,
+    Color infoTextColor,
+    this.descPaint,
+    this.infoPaint,
+    String noDataText = "No chart data available.",
+    this.xAxisSettingFunction,
+    this.legendSettingFunction,
+    this.rendererSettingFunction}) {
+    animator = ChartAnimator(this);
     if (descTextColor == null) {
       descTextColor = ColorUtils.BLACK;
     }
@@ -103,23 +107,38 @@ abstract class Controller {
 
   OnChartValueSelectedListener initSelectionListener() => null;
 
-  void attachChart(Chart chart) {
-    _chart = chart;
+  ChartState createChartState() {
+    state = createRealState();
+    return state;
   }
 
-  void updateData(ChartData data) {
-    _data = data;
+  ChartState createRealState();
+
+  void doneBeforePainterInit() {
+    legend = initLegend();
+    legendRenderer = initLegendRenderer();
+    xAxis = initXAxis();
+    if (legendSettingFunction != null) {
+      legendSettingFunction(legend, this);
+    }
+    if (xAxisSettingFunction != null) {
+      xAxisSettingFunction(xAxis, this);
+    }
   }
 
-  ChartData get data => _data;
+  void initialPainter();
 
-  ChartState getState() {
-    return _chart?.state;
+  @override
+  void onAnimationUpdate(double x, double y) {
+    state?.setStateIfNotDispose();
   }
 
-  ChartAnimator getAnimator() {
-    return _chart?.animator;
-  }
+  @override
+  void onRotateUpdate(double angle) {}
 
-  Chart get chart => _chart;
+  P get painter => _painter;
+
+  set painter(P value) {
+    _painter = value;
+  }
 }

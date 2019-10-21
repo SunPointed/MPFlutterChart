@@ -122,18 +122,18 @@ class ScrollingChartMultipleState
     for (int i = 0; i < 30; i++) {
       if (i % 3 == 0) {
         _controllers.add(LineChartController(
-            axisLeftSettingFunction: (axisLeft, chart) {
+            axisLeftSettingFunction: (axisLeft, controller) {
               axisLeft
                 ..setLabelCount2(5, false)
                 ..setAxisMinimum(0);
             },
-            axisRightSettingFunction: (axisRight, chart) {
+            axisRightSettingFunction: (axisRight, controller) {
               axisRight
                 ..setLabelCount2(5, false)
                 ..drawGridLines = (false)
                 ..setAxisMinimum(0);
             },
-            xAxisSettingFunction: (xAxis, chart) {
+            xAxisSettingFunction: (xAxis, controller) {
               xAxis
                 ..position = (XAxisPosition.BOTTOM)
                 ..drawGridLines = (false)
@@ -147,19 +147,19 @@ class ScrollingChartMultipleState
             description: desc));
       } else if (i % 3 == 1) {
         _controllers.add(BarChartController(
-            axisLeftSettingFunction: (axisLeft, chart) {
+            axisLeftSettingFunction: (axisLeft, controller) {
               axisLeft
                 ..setLabelCount2(5, false)
                 ..setAxisMinimum(0)
                 ..spacePercentTop = (20);
             },
-            axisRightSettingFunction: (axisRight, chart) {
+            axisRightSettingFunction: (axisRight, controller) {
               axisRight
                 ..setLabelCount2(5, false)
                 ..setAxisMinimum(0)
                 ..spacePercentTop = (20);
             },
-            xAxisSettingFunction: (xAxis, chart) {
+            xAxisSettingFunction: (xAxis, controller) {
               xAxis
                 ..position = (XAxisPosition.BOTTOM)
                 ..drawAxisLine = (true)
@@ -175,7 +175,7 @@ class ScrollingChartMultipleState
             description: desc));
       } else if (i % 3 == 2) {
         _controllers.add(PieChartController(
-            legendSettingFunction: (legend, chart) {
+            legendSettingFunction: (legend, controller) {
               legend
                 ..verticalAlignment = (LegendVerticalAlignment.TOP)
                 ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
@@ -200,11 +200,11 @@ class ScrollingChartMultipleState
   void _initBarDatas() {
     for (int i = 0; i < _controllers.length; i++) {
       if (i % 3 == 0) {
-        _controllers[i].updateData(_generateDataLine(i + 1));
+        _controllers[i].data = _generateDataLine(i + 1);
       } else if (i % 3 == 1) {
-        _controllers[i].updateData(_generateDataBar(i + 1));
+        _controllers[i].data = _generateDataBar(i + 1);
       } else if (i % 3 == 2) {
-        _controllers[i].updateData(_generateDataPie());
+        _controllers[i].data = _generateDataPie();
       }
     }
   }
@@ -279,7 +279,7 @@ class ScrollingChartMultipleState
 
   LineChart _getLineChart(LineChartController controller) {
     var lineChart = LineChart(controller);
-    controller.getAnimator()
+    controller.animator
       ..reset()
       ..animateX1(750);
     return lineChart;
@@ -287,7 +287,7 @@ class ScrollingChartMultipleState
 
   BarChart _getBarChart(BarChartController controller) {
     var barChart = BarChart(controller);
-    controller.getAnimator()
+    controller.animator
       ..reset()
       ..animateY1(700);
     return barChart;
@@ -299,7 +299,7 @@ class ScrollingChartMultipleState
       ..setValueTextSize(11)
       ..setValueTextColor(ColorUtils.WHITE);
     var pieChart = PieChart(controller);
-    controller.getAnimator()
+    controller.animator
       ..reset()
       ..animateY1(900);
     return pieChart;

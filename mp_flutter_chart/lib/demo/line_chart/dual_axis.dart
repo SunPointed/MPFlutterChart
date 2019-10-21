@@ -140,7 +140,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
   void _initController() {
     var desc = Description()..enabled = false;
     controller = LineChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..textColor = (ColorUtils.HOLO_BLUE)
             ..setAxisMaximum(200.0)
@@ -150,7 +150,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
             ..drawAxisLine = (true)
             ..granularityEnabled = (true);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight
             ..textColor = (ColorUtils.RED)
             ..setAxisMaximum(900.0)
@@ -160,7 +160,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
             ..setDrawZeroLine(false)
             ..granularityEnabled = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend
             ..shape = (LegendForm.LINE)
             ..textSize = (11)
@@ -171,7 +171,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
             ..orientation = (LegendOrientation.HORIZONTAL)
             ..drawInside = (false);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..typeface = Util.LIGHT
             ..textColor = (ColorUtils.WHITE)
@@ -263,8 +263,8 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
     set3.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
 
     // create a data object with the data sets
-    controller
-        .updateData(LineData.fromList(List()..add(set1)..add(set2)..add(set3)));
+    controller.data =
+        LineData.fromList(List()..add(set1)..add(set2)..add(set3));
     controller.data
       ..setValueTextColor(ColorUtils.WHITE)
       ..setValueTextSize(9);
@@ -274,7 +274,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
 
   Widget _initLineChart() {
     var lineChart = LineChart(controller);
-    controller.getAnimator()
+    controller.animator
       ..reset()
       ..animateX1(1500);
     return lineChart;

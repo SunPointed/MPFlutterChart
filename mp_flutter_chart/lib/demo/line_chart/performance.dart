@@ -91,16 +91,16 @@ class LineChartPerformanceState
   void _initController() {
     var desc = Description()..enabled = false;
     _controller = LineChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft.drawGridLines = (false);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend.enabled = (false);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..drawGridLines = (true)
             ..drawAxisLine = (false);
@@ -135,7 +135,7 @@ class LineChartPerformanceState
     set1.setDrawFilled(false);
 
     // create a data object with the data sets
-    _controller.updateData(LineData.fromList(List()..add(set1)));
+    _controller.data = LineData.fromList(List()..add(set1));
 
     setState(() {});
   }

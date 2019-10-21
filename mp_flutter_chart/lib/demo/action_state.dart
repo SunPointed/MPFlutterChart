@@ -139,7 +139,7 @@ abstract class LineActionState<T extends StatefulWidget>
 
   @override
   void itemClick(String action) {
-    if (controller.getState() == null) {
+    if (controller.state == null) {
       return;
     }
 
@@ -153,7 +153,7 @@ abstract class LineActionState<T extends StatefulWidget>
           LineDataSet set = iSet as LineDataSet;
           set.setDrawValues(!set.isDrawValuesEnabled());
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'C':
         List<ILineDataSet> sets = controller.data.dataSets;
@@ -161,7 +161,7 @@ abstract class LineActionState<T extends StatefulWidget>
           LineDataSet set = iSet as LineDataSet;
           set.setDrawIcons(!set.isDrawIconsEnabled());
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'D':
         List<ILineDataSet> sets = controller.data.dataSets;
@@ -173,7 +173,7 @@ abstract class LineActionState<T extends StatefulWidget>
           else
             set.setDrawFilled(true);
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'E':
         List<ILineDataSet> sets = controller.data.dataSets;
@@ -185,7 +185,7 @@ abstract class LineActionState<T extends StatefulWidget>
           else
             set.setDrawCircles(true);
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'F':
         List<ILineDataSet> sets = controller.data.dataSets;
@@ -196,7 +196,7 @@ abstract class LineActionState<T extends StatefulWidget>
               ? Mode.LINEAR
               : Mode.CUBIC_BEZIER);
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'G':
         List<ILineDataSet> sets = controller.data.dataSets;
@@ -206,7 +206,7 @@ abstract class LineActionState<T extends StatefulWidget>
           set.setMode(
               set.getMode() == Mode.STEPPED ? Mode.LINEAR : Mode.STEPPED);
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'H':
         List<ILineDataSet> sets = controller.data.dataSets;
@@ -217,42 +217,41 @@ abstract class LineActionState<T extends StatefulWidget>
               ? Mode.LINEAR
               : Mode.HORIZONTAL_BEZIER);
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'I':
         controller.pinchZoomEnabled = controller.pinchZoomEnabled;
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'J':
-        controller.autoScaleMinMaxEnabled =
-            !controller.autoScaleMinMaxEnabled;
-        controller.getState().setStateIfNotDispose();
+        controller.autoScaleMinMaxEnabled = !controller.autoScaleMinMaxEnabled;
+        controller.state.setStateIfNotDispose();
         break;
       case 'K':
         if (controller.data != null) {
           controller.data
               .setHighlightEnabled(!controller.data.isHighlightEnabled());
-          controller.getState().setStateIfNotDispose();
+          controller.state.setStateIfNotDispose();
         }
         break;
       case 'L':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateX1(2000);
         break;
       case 'M':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateY2(2000, Easing.EaseInCubic);
         break;
       case 'N':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateXY1(2000, 2000);
         break;
       case 'O':
         captureImg(() {
-          controller.getState().capture();
+          controller.state.capture();
         });
         break;
     }
@@ -281,7 +280,7 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
 
   @override
   void itemClick(String action) {
-    if (controller.getState() == null) {
+    if (controller.state == null) {
       return;
     }
 
@@ -293,12 +292,12 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
         for (IBarDataSet set in controller.data.dataSets)
           (set as BarDataSet)
               .setBarBorderWidth(set.getBarBorderWidth() == 1.0 ? 0.0 : 1.0);
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in controller.data.dataSets)
           set.setDrawValues(!set.isDrawValuesEnabled());
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'D':
         List<IBarDataSet> sets = controller.data.dataSets;
@@ -306,42 +305,41 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
           BarDataSet set = iSet as BarDataSet;
           set.setDrawIcons(!set.isDrawIconsEnabled());
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'E':
         if (controller.data != null) {
           controller.data
               .setHighlightEnabled(!controller.data.isHighlightEnabled());
-          controller.getState().setStateIfNotDispose();
+          controller.state.setStateIfNotDispose();
         }
         break;
       case 'F':
         controller.pinchZoomEnabled = !controller.pinchZoomEnabled;
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'G':
-        controller.autoScaleMinMaxEnabled =
-            !controller.autoScaleMinMaxEnabled;
-        controller.getState().setStateIfNotDispose();
+        controller.autoScaleMinMaxEnabled = !controller.autoScaleMinMaxEnabled;
+        controller.state.setStateIfNotDispose();
         break;
       case 'H':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateX1(2000);
         break;
       case 'I':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateY1(2000);
         break;
       case 'J':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateXY1(2000, 2000);
         break;
       case 'K':
         captureImg(() {
-          controller.getState().capture();
+          controller.state.capture();
         });
         break;
     }
@@ -371,7 +369,7 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
 
   @override
   void itemClick(String action) {
-    if (controller.getState() == null) {
+    if (controller.state == null) {
       return;
     }
 
@@ -383,12 +381,12 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
         for (IBarDataSet set in controller.data.dataSets)
           (set as BarDataSet)
               .setBarBorderWidth(set.getBarBorderWidth() == 1.0 ? 0.0 : 1.0);
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in controller.data.dataSets)
           set.setDrawValues(!set.isDrawValuesEnabled());
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'D':
         List<IBarDataSet> sets = controller.data.dataSets;
@@ -396,42 +394,41 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
           BarDataSet set = iSet as BarDataSet;
           set.setDrawIcons(!set.isDrawIconsEnabled());
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'E':
         if (controller.data != null) {
           controller.data
               .setHighlightEnabled(!controller.data.isHighlightEnabled());
-          controller.getState().setStateIfNotDispose();
+          controller.state.setStateIfNotDispose();
         }
         break;
       case 'F':
         controller.pinchZoomEnabled = !controller.pinchZoomEnabled;
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'G':
-        controller.autoScaleMinMaxEnabled =
-            !controller.autoScaleMinMaxEnabled;
-        controller.getState().setStateIfNotDispose();
+        controller.autoScaleMinMaxEnabled = !controller.autoScaleMinMaxEnabled;
+        controller.state.setStateIfNotDispose();
         break;
       case 'H':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateX1(2000);
         break;
       case 'I':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateY1(2000);
         break;
       case 'J':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateXY1(2000, 2000);
         break;
       case 'K':
         captureImg(() {
-          controller.getState().capture();
+          controller.state.capture();
         });
         break;
     }
@@ -463,7 +460,7 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
 
   @override
   void itemClick(String action) {
-    if (controller.getState() == null) {
+    if (controller.state == null) {
       return;
     }
 
@@ -474,20 +471,20 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
       case 'B':
         for (IDataSet set in controller.data.dataSets)
           set.setDrawValues(!set.isDrawValuesEnabled());
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'C':
         controller.drawEntryLabels = !controller.drawEntryLabels;
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'D':
         for (IDataSet set in controller.data.dataSets)
           set.setDrawIcons(!set.isDrawIconsEnabled());
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'E':
         controller.usePercentValues = !controller.usePercentValues;
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'F':
         if (controller.minAngleForSlices == 0) {
@@ -495,11 +492,11 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
         } else {
           controller.minAngleForSlices = 0;
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'G':
         controller.drawHole = !controller.drawHole;
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'H':
         bool toSet = !controller.drawRoundedSlices || !controller.drawHole;
@@ -510,36 +507,36 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
         if (toSet && controller.drawSlicesUnderHole) {
           controller.drawSlicesUnderHole = false;
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'I':
         controller.drawCenterText = !controller.drawCenterText;
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'J':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..spin(2000, controller.rotationAngle, controller.rotationAngle + 360,
               Easing.EaseInOutCubic);
         break;
       case 'K':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateX1(1400);
         break;
       case 'L':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateY1(1400);
         break;
       case 'M':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateXY1(1400, 1400);
         break;
       case 'N':
         captureImg(() {
-          controller.getState().capture();
+          controller.state.capture();
         });
         break;
     }
@@ -562,7 +559,7 @@ abstract class CombinedActionState<T extends StatefulWidget>
 
   @override
   void itemClick(String action) {
-    if (controller.getState() == null) {
+    if (controller.state == null) {
       return;
     }
 
@@ -574,23 +571,22 @@ abstract class CombinedActionState<T extends StatefulWidget>
         for (IDataSet set in controller.data.dataSets) {
           if (set is LineDataSet) set.setDrawValues(!set.isDrawValuesEnabled());
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in controller.data.dataSets) {
           if (set is BarDataSet) set.setDrawValues(!set.isDrawValuesEnabled());
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'D':
         if (controller.data.getDataSetCount() > 1) {
-          int rnd =
-              _getRandom(controller.data.getDataSetCount().toDouble(), 0)
-                  .toInt();
+          int rnd = _getRandom(controller.data.getDataSetCount().toDouble(), 0)
+              .toInt();
           controller.data
               .removeDataSet1(controller.data.getDataSetByIndex(rnd));
           controller.data.notifyDataChanged();
-          controller.getState().setStateIfNotDispose();
+          controller.state.setStateIfNotDispose();
         }
         break;
     }
@@ -623,7 +619,7 @@ abstract class ScatterActionState<T extends StatefulWidget>
 
   @override
   void itemClick(String action) {
-    if (controller.getState() == null) {
+    if (controller.state == null) {
       return;
     }
 
@@ -637,47 +633,46 @@ abstract class ScatterActionState<T extends StatefulWidget>
           ScatterDataSet set = iSet as ScatterDataSet;
           set.setDrawValues(!set.isDrawValuesEnabled());
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in controller.data.dataSets)
           set.setDrawIcons(!set.isDrawIconsEnabled());
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'D':
         if (controller.data != null) {
           controller.data
               .setHighlightEnabled(!controller.data.isHighlightEnabled());
-          controller.getState().setStateIfNotDispose();
+          controller.state.setStateIfNotDispose();
         }
         break;
       case 'E':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateX1(3000);
         break;
       case 'F':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateY1(3000);
         break;
       case 'G':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateXY1(3000, 3000);
         break;
       case 'H':
         controller.pinchZoomEnabled = !controller.pinchZoomEnabled;
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'I':
-        controller.autoScaleMinMaxEnabled =
-            !controller.autoScaleMinMaxEnabled;
-        controller.getState().setStateIfNotDispose();
+        controller.autoScaleMinMaxEnabled = !controller.autoScaleMinMaxEnabled;
+        controller.state.setStateIfNotDispose();
         break;
       case 'J':
         captureImg(() {
-          controller.getState().capture();
+          controller.state.capture();
         });
         break;
     }
@@ -706,7 +701,7 @@ abstract class BubbleActionState<T extends StatefulWidget>
 
   @override
   void itemClick(String action) {
-    if (controller.getState() == null) {
+    if (controller.state == null) {
       return;
     }
 
@@ -717,47 +712,46 @@ abstract class BubbleActionState<T extends StatefulWidget>
       case 'B':
         for (IDataSet set in controller.data.dataSets)
           set.setDrawValues(!set.isDrawValuesEnabled());
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in controller.data.dataSets)
           set.setDrawIcons(!set.isDrawIconsEnabled());
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'D':
         if (controller.data != null) {
           controller.data
               .setHighlightEnabled(!controller.data.isHighlightEnabled());
-          controller.getState().setStateIfNotDispose();
+          controller.state.setStateIfNotDispose();
         }
         break;
       case 'E':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateX1(2000);
         break;
       case 'F':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateY1(2000);
         break;
       case 'G':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateXY1(2000, 2000);
         break;
       case 'H':
         controller.pinchZoomEnabled = !controller.pinchZoomEnabled;
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'I':
-        controller.autoScaleMinMaxEnabled =
-            !controller.autoScaleMinMaxEnabled;
-        controller.getState().setStateIfNotDispose();
+        controller.autoScaleMinMaxEnabled = !controller.autoScaleMinMaxEnabled;
+        controller.state.setStateIfNotDispose();
         break;
       case 'J':
         captureImg(() {
-          controller.getState().capture();
+          controller.state.capture();
         });
         break;
     }
@@ -787,7 +781,7 @@ abstract class CandlestickActionState<T extends StatefulWidget>
 
   @override
   void itemClick(String action) {
-    if (controller.getState() == null) {
+    if (controller.state == null) {
       return;
     }
 
@@ -798,47 +792,46 @@ abstract class CandlestickActionState<T extends StatefulWidget>
       case 'B':
         for (IDataSet set in controller.data.dataSets)
           set.setDrawValues(!set.isDrawValuesEnabled());
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in controller.data.dataSets)
           set.setDrawIcons(!set.isDrawIconsEnabled());
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'D':
         if (controller.data != null) {
           controller.data
               .setHighlightEnabled(!controller.data.isHighlightEnabled());
-          controller.getState().setStateIfNotDispose();
+          controller.state.setStateIfNotDispose();
         }
         break;
       case 'E':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateX1(2000);
         break;
       case 'F':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateY1(2000);
         break;
       case 'G':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateXY1(2000, 2000);
         break;
       case 'H':
         controller.pinchZoomEnabled = !controller.pinchZoomEnabled;
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'I':
-        controller.autoScaleMinMaxEnabled =
-            !controller.autoScaleMinMaxEnabled;
-        controller.getState().setStateIfNotDispose();
+        controller.autoScaleMinMaxEnabled = !controller.autoScaleMinMaxEnabled;
+        controller.state.setStateIfNotDispose();
         break;
       case 'J':
         captureImg(() {
-          controller.getState().capture();
+          controller.state.capture();
         });
         break;
       case 'K':
@@ -846,7 +839,7 @@ abstract class CandlestickActionState<T extends StatefulWidget>
           (set as CandleDataSet)
               .setShadowColorSameAsCandle(!set.getShadowColorSameAsCandle());
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
     }
   }
@@ -878,7 +871,7 @@ abstract class RadarActionState<T extends StatefulWidget>
 
   @override
   void itemClick(String action) {
-    if (controller.getState() == null) {
+    if (controller.state == null) {
       return;
     }
 
@@ -889,12 +882,12 @@ abstract class RadarActionState<T extends StatefulWidget>
       case 'B':
         for (IDataSet set in controller.data.dataSets)
           set.setDrawValues(!set.isDrawValuesEnabled());
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'C':
         for (IDataSet set in controller.data.dataSets)
           set.setDrawIcons(!set.isDrawIconsEnabled());
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'D':
         List<IRadarDataSet> sets = controller.data.dataSets;
@@ -904,13 +897,13 @@ abstract class RadarActionState<T extends StatefulWidget>
           else
             set.setDrawFilled(true);
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'E':
         if (controller.data != null) {
           controller.data
               .setHighlightEnabled(!controller.data.isHighlightEnabled());
-          controller.getState().setStateIfNotDispose();
+          controller.state.setStateIfNotDispose();
         }
         break;
       case 'F':
@@ -919,44 +912,44 @@ abstract class RadarActionState<T extends StatefulWidget>
           set.setDrawHighlightCircleEnabled(
               !set.isDrawHighlightCircleEnabled());
         }
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'G':
         controller.rotateEnabled = !controller.rotateEnabled;
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'H':
         controller.yAxis.enabled = !controller.yAxis.enabled;
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'I':
         controller.xAxis.enabled = !controller.xAxis.enabled;
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'J':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..spin(2000, controller.rotationAngle, controller.rotationAngle + 360,
               Easing.EaseInOutCubic);
         break;
       case 'K':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateX1(1400);
         break;
       case 'L':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateY1(1400);
         break;
       case 'M':
-        controller.getAnimator()
+        controller.animator
           ..reset()
           ..animateXY1(1400, 1400);
         break;
       case 'N':
         captureImg(() {
-          controller.getState().capture();
+          controller.state.capture();
         });
         break;
     }

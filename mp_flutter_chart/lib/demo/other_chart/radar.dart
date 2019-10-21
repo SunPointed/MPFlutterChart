@@ -57,7 +57,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
   void _initController() {
     var desc = Description()..enabled = false;
     controller = RadarChartController(
-        yAxisSettingFunction: (yAxis, chart) {
+        yAxisSettingFunction: (yAxis, controller) {
           yAxis
             ..typeface = Util.LIGHT
             ..setLabelCount2(5, false)
@@ -66,7 +66,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
             ..setAxisMaximum(80)
             ..drawLabels = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
@@ -77,7 +77,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
             ..yEntrySpace = (5)
             ..textColor = (ColorUtils.WHITE);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..textSize = (9)
             ..typeface = Util.LIGHT
@@ -136,7 +136,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     sets.add(set1);
     sets.add(set2);
 
-    controller.updateData(RadarData.fromList(sets));
+    controller.data = RadarData.fromList(sets);
     controller.data
       ..setValueTypeface(Util.LIGHT)
       ..setValueTextSize(8)
@@ -148,7 +148,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
 
   Widget _initCandleChart() {
     var radarChart = RadarChart(controller);
-    controller.getAnimator()
+    controller.animator
       ..reset()
       ..animateXY2(1400, 1400, Easing.EaseInOutQuad);
     return radarChart;

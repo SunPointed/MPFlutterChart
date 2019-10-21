@@ -1,18 +1,26 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mp_chart/mp/chart/chart.dart';
+import 'package:mp_chart/mp/chart/scatter_chart.dart';
+import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
+import 'package:mp_chart/mp/controller/controller.dart';
 import 'package:mp_chart/mp/core/axis/y_axis.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
+import 'package:mp_chart/mp/core/data/chart_data.dart';
 import 'package:mp_chart/mp/core/data/scatter_data.dart';
+import 'package:mp_chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_chart/mp/core/description.dart';
+import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
+import 'package:mp_chart/mp/painter/painter.dart';
+import 'package:mp_chart/mp/painter/scatter_chart_painter.dart';
 
-import 'bar_line_scatter_candle_bubble_controller.dart';
-
-class ScatterChartController extends BarLineScatterCandleBubbleController {
+class ScatterChartController
+    extends BarLineScatterCandleBubbleController<ScatterChartPainter> {
   ScatterChartController({
     int maxVisibleCount = 100,
     bool autoScaleMinMaxEnabled = true,
@@ -117,4 +125,64 @@ class ScatterChartController extends BarLineScatterCandleBubbleController {
             axisRightSettingFunction: axisRightSettingFunction);
 
   ScatterData get data => super.data;
+
+  ScatterChartState get state => super.state;
+
+  ScatterChartPainter get painter => super.painter;
+
+  @override
+  void initialPainter() {
+    painter = ScatterChartPainter(
+        data,
+        animator,
+        viewPortHandler,
+        maxHighlightDistance,
+        highLightPerTapEnabled,
+        extraLeftOffset,
+        extraTopOffset,
+        extraRightOffset,
+        extraBottomOffset,
+        marker,
+        description,
+        drawMarkers,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
+        rendererSettingFunction,
+        selectionListener,
+        maxVisibleCount,
+        autoScaleMinMaxEnabled,
+        pinchZoomEnabled,
+        doubleTapToZoomEnabled,
+        highlightPerDragEnabled,
+        dragXEnabled,
+        dragYEnabled,
+        scaleXEnabled,
+        scaleYEnabled,
+        gridBackgroundPaint,
+        backgroundPaint,
+        borderPaint,
+        drawGridBackground,
+        drawBorders,
+        clipValuesToContent,
+        minOffset,
+        keepPositionOnRotation,
+        drawListener,
+        axisLeft,
+        axisRight,
+        axisRendererLeft,
+        axisRendererRight,
+        leftAxisTransformer,
+        rightAxisTransformer,
+        xAxisRenderer,
+        zoomMatrixBuffer,
+        customViewPortEnabled);
+  }
+
+  @override
+  ScatterChartState createRealState() {
+    return ScatterChartState();
+  }
 }

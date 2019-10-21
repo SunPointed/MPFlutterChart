@@ -69,17 +69,17 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   void _initController() {
     var desc = Description()..enabled = false;
     controller = CombinedChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..drawGridLines = (false)
             ..setAxisMinimum(0);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight
             ..drawGridLines = (false)
             ..setAxisMinimum(0);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend
             ..wordWrapEnabled = (true)
             ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
@@ -87,7 +87,7 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
             ..orientation = (LegendOrientation.HORIZONTAL)
             ..drawInside = (false);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..position = (XAxisPosition.BOTH_SIDED)
             ..setAxisMinimum(0)
@@ -115,7 +115,7 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   }
 
   void _initCombinedData() {
-    controller.updateData(CombinedData());
+    controller.data = CombinedData();
     controller.data
       ..setData1(generateLineData())
       ..setData2(generateBarData())

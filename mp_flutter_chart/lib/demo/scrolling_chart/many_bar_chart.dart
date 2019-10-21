@@ -92,17 +92,17 @@ class ScrollingChartManyBarState
     var desc = Description()..enabled = false;
     for (int i = 0; i < 20; i++) {
       _controllers.add(BarChartController(
-          axisLeftSettingFunction: (axisLeft, chart) {
+          axisLeftSettingFunction: (axisLeft, controller) {
             axisLeft
               ..setLabelCount2(5, false)
               ..spacePercentTop = (15);
           },
-          axisRightSettingFunction: (axisRight, chart) {
+          axisRightSettingFunction: (axisRight, controller) {
             axisRight
               ..setLabelCount2(5, false)
               ..spacePercentTop = (15);
           },
-          xAxisSettingFunction: (xAxis, chart) {
+          xAxisSettingFunction: (xAxis, controller) {
             xAxis
               ..position = (XAxisPosition.BOTTOM)
               ..drawGridLines = (false);
@@ -119,7 +119,7 @@ class ScrollingChartManyBarState
 
   Widget _renderItem(int index) {
     var barChart = BarChart(_controllers[index]);
-    _controllers[index].getAnimator()
+    _controllers[index].animator
       ..reset()
       ..animateY1(700);
     return Container(height: 200, child: barChart);
@@ -127,7 +127,7 @@ class ScrollingChartManyBarState
 
   void _initBarDatas() {
     for (int i = 0; i < _controllers.length; i++) {
-      _controllers[i].updateData(generateData(i + 1));
+      _controllers[i].data = generateData(i + 1);
     }
   }
 

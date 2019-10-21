@@ -161,22 +161,22 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
   void _initController() {
     var desc = Description()..enabled = false;
     controller = LineChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft.enabled = (false);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight
             ..drawAxisLine = (false)
             ..drawGridLines = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
             ..orientation = (LegendOrientation.VERTICAL)
             ..drawInside = (false);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..drawAxisLine = (false)
             ..drawGridLines = (false);
@@ -224,7 +224,7 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
     (dataSets[0] as LineDataSet).setColors1(ColorUtils.VORDIPLOM_COLORS);
     (dataSets[0] as LineDataSet).setCircleColors(ColorUtils.VORDIPLOM_COLORS);
 
-    controller.updateData(LineData.fromList(dataSets));
+    controller.data = LineData.fromList(dataSets);
 
     setState(() {});
   }

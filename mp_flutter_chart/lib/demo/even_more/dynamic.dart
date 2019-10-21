@@ -68,7 +68,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
 
   @override
   void itemClick(String action) {
-    if (controller.getState() == null) {
+    if (controller.state == null) {
       return;
     }
 
@@ -78,23 +78,23 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
         break;
       case 'B':
         _addEntry();
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'C':
         _removeLastEntry();
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'D':
         _addDataSet();
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'E':
         _removeDataSet();
-        controller.getState().setStateIfNotDispose();
+        controller.state.setStateIfNotDispose();
         break;
       case 'F':
-        controller.updateData(null);
-        controller.getState().setStateIfNotDispose();
+        controller.data = null;
+        controller.state.setStateIfNotDispose();
         break;
       case 'G':
         // todo save
@@ -131,7 +131,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
 
     if (data == null) {
       data = LineData();
-      controller.updateData(data);
+      controller.data = data;
     }
 
     ILineDataSet set = data.getDataSetByIndex(0);
@@ -155,7 +155,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
     controller.setVisibleXRangeMaximum(6);
     controller.moveViewTo(
         (data.getEntryCount() - 7).toDouble(), 50, AxisDependency.LEFT);
-    controller.getState()?.setStateIfNotDispose();
+    controller.state?.setStateIfNotDispose();
   }
 
   LineDataSet _createSet() {
@@ -185,7 +185,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   void _addDataSet() {
     LineData data = controller?.data;
     if (data == null) {
-      controller.updateData(LineData());
+      controller.data = LineData();
     } else {
       int count = (data.getDataSetCount() + 1);
       int amount = data.getDataSetByIndex(0).getEntryCount();

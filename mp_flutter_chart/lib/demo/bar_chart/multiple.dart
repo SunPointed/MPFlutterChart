@@ -133,7 +133,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
     double groupSpace = 0.08;
     double barSpace = 0.03;
     controller = BarChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           ValueFormatter formatter = LargeValueFormatter();
           axisLeft
             ..typeface = Util.LIGHT
@@ -142,10 +142,10 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
             ..spacePercentTop = (35)
             ..setAxisMinimum(0);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
@@ -157,17 +157,20 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
             ..yEntrySpace = (0)
             ..textSize = (8);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..typeface = Util.LIGHT
             ..setGranularity(1.0)
             ..centerAxisLabels = true
             ..setAxisMinimum(startYear.toDouble())
             ..setAxisMaximum(startYear +
-                controller.data.getGroupWidth(groupSpace, barSpace) *
+                (controller.data as BarData)
+                        .getGroupWidth(groupSpace, barSpace) *
                     groupCount)
             ..setValueFormatter(A());
           // (0.2 + 0.03) * 4 + 0.08 = 1.00 -> interval per "group"
+          (controller as BarChartController)
+              .groupBars(startYear.toDouble(), groupSpace, barSpace);
         },
         drawGridBackground: false,
         dragXEnabled: true,
@@ -179,7 +182,6 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
         selectionListener: this,
         drawBarShadow: false,
         description: desc);
-    controller.groupBars(startYear.toDouble(), groupSpace, barSpace);
   }
 
   int groupCount;
@@ -232,8 +234,8 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
     set4 = BarDataSet(values4, "Company D");
     set4.setColor1(Color.fromARGB(255, 255, 102, 0));
 
-    controller.updateData(
-        BarData(List()..add(set1)..add(set2)..add(set3)..add(set4)));
+    controller.data =
+        BarData(List()..add(set1)..add(set2)..add(set3)..add(set4));
     controller.data
       ..setValueFormatter(LargeValueFormatter())
       ..setValueTypeface(Util.LIGHT)

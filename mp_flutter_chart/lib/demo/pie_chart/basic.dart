@@ -157,8 +157,8 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
   void _initController() {
     var desc = Description()..enabled = false;
     controller = PieChartController(
-        legendSettingFunction: (legend, chart) {
-          _formatter.setPieChartPainter(chart);
+        legendSettingFunction: (legend, controller) {
+          _formatter.setPieChartPainter(controller);
           legend
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
@@ -224,7 +224,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
     colors.add(ColorUtils.HOLO_BLUE);
     dataSet.setColors1(colors);
 
-    controller.updateData(PieData(dataSet));
+    controller.data = PieData(dataSet);
     controller.data
       ..setValueFormatter(_formatter)
       ..setValueTextSize(11)

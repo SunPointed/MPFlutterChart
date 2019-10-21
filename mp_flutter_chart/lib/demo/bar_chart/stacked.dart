@@ -154,7 +154,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
     List<IBarDataSet> dataSets = List();
     dataSets.add(set1);
 
-    controller.updateData(BarData(dataSets));
+    controller.data = BarData(dataSets);
     controller.data
       ..setValueFormatter(StackedValueFormatter(false, "", 1))
       ..setValueTextColor(ColorUtils.WHITE);
@@ -172,15 +172,15 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
   void _initController() {
     var desc = Description()..enabled = false;
     controller = BarChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..setValueFormatter(MyValueFormatter("K"))
             ..setAxisMinimum(0);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend
             ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
@@ -191,7 +191,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
             ..formToTextSpace = (4)
             ..xEntrySpace = (6);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis.position = (XAxisPosition.TOP);
         },
         drawGridBackground: false,

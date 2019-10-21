@@ -95,7 +95,7 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
   void _initController() {
     var desc = Description()..enabled = false;
     controller = LineChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..position = (YAxisLabelPosition.INSIDE_CHART)
 //      ..setTypeface(tfLight)
@@ -107,14 +107,14 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
             ..yOffset = (-9)
             ..textColor = (Color.fromARGB(255, 255, 192, 56));
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        legendSettingFunction: (legend, chart) {
-          (chart as LineChart).setViewPortOffsets(0, 0, 0, 0);
+        legendSettingFunction: (legend, controller) {
+          (controller as LineChartController).setViewPortOffsets(0, 0, 0, 0);
           legend.enabled = (false);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..position = (XAxisPosition.TOP_INSIDE)
 //        ..setTypeface(tfLight)
@@ -169,7 +169,7 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
     set1.setDrawCircleHole(false);
 
     // create a data object with the data sets
-    controller.updateData(LineData.fromList(List()..add(set1)));
+    controller.data = LineData.fromList(List()..add(set1));
     controller.data
       ..setValueTextColor(ColorUtils.getHoloBlue())
       ..setValueTextSize(9);

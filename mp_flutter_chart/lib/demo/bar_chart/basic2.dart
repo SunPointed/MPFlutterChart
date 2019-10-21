@@ -136,7 +136,7 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
     List<IBarDataSet> dataSets = List();
     dataSets.add(set1);
 
-    controller.updateData(BarData(dataSets));
+    controller.data = BarData(dataSets);
     controller.data
       ..setValueTextSize(10)
       ..barWidth = 0.9;
@@ -147,13 +147,13 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
   void _initController() {
     var desc = Description()..enabled = false;
     controller = BarChartController(
-      axisLeftSettingFunction: (axisLeft, chart) {
+      axisLeftSettingFunction: (axisLeft, controller) {
         axisLeft.drawGridLines = false;
       },
-      legendSettingFunction: (legend, chart) {
+      legendSettingFunction: (legend, controller) {
         legend.enabled = false;
       },
-      xAxisSettingFunction: (xAxis, chart) {
+      xAxisSettingFunction: (xAxis, controller) {
         xAxis
           ..position = XAxisPosition.BOTTOM
           ..drawGridLines = false;
@@ -172,7 +172,7 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
 
   Widget _initBarChart() {
     var barChart = BarChart(controller);
-    controller.getAnimator()
+    controller.animator
       ..reset()
       ..animateY1(1500);
     return barChart;

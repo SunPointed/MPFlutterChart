@@ -124,19 +124,19 @@ class OtherChartCandlestickState
   void _initController() {
     var desc = Description()..enabled = false;
     controller = CandlestickChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..setLabelCount2(7, false)
             ..drawGridLines = (false)
             ..drawAxisLine = (false);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend.enabled = (false);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..position = (XAxisPosition.BOTTOM)
             ..drawGridLines = (true);
@@ -193,7 +193,7 @@ class OtherChartCandlestickState
     set1.setNeutralColor(ColorUtils.BLUE);
     //set1.setHighlightLineWidth(1f);
 
-    controller.updateData(CandleData.fromList(List()..add(set1)));
+    controller.data = CandleData.fromList(List()..add(set1));
 
     setState(() {});
   }

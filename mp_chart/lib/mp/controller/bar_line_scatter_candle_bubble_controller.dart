@@ -1,5 +1,4 @@
 import 'package:flutter/rendering.dart';
-import 'package:mp_chart/mp/chart/bar_line_scatter_candle_bubble_chart.dart';
 import 'package:mp_chart/mp/controller/controller.dart';
 import 'package:mp_chart/mp/core/animator.dart';
 import 'package:mp_chart/mp/core/axis/y_axis.dart';
@@ -12,8 +11,12 @@ import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
+import 'package:mp_chart/mp/core/utils/color_utils.dart';
+import 'package:mp_chart/mp/core/utils/utils.dart';
+import 'package:mp_chart/mp/painter/bar_line_chart_painter.dart';
 
-class BarLineScatterCandleBubbleController extends Controller {
+abstract class BarLineScatterCandleBubbleController<P extends BarLineChartBasePainter>
+    extends Controller<P> {
   int maxVisibleCount;
   bool autoScaleMinMaxEnabled;
   bool doubleTapToZoomEnabled;
@@ -39,7 +42,6 @@ class BarLineScatterCandleBubbleController extends Controller {
   bool pinchZoomEnabled;
   bool keepPositionOnRotation;
 
-  //////
   Paint gridBackgroundPaint;
   Paint borderPaint;
 
@@ -145,9 +147,49 @@ class BarLineScatterCandleBubbleController extends Controller {
   XAxisRenderer initXAxisRenderer() =>
       XAxisRenderer(viewPortHandler, xAxis, leftAxisTransformer);
 
-  Matrix4 initZoomMatrixBuffer() => Matrix4.identity();
+  @override
+  void doneBeforePainterInit() {
+    super.doneBeforePainterInit();
+    gridBackgroundPaint = Paint()
+      ..color = gridBackColor == null
+          ? Color.fromARGB(255, 240, 240, 240)
+          : gridBackColor
+      ..style = PaintingStyle.fill;
 
-  BarLineScatterCandleBubbleChart get chart => super.chart;
+    borderPaint = Paint()
+      ..color = borderColor == null ? ColorUtils.BLACK : borderColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = Utils.convertDpToPixel(borderStrokeWidth);
+
+    backgroundPaint = Paint()
+      ..color = backgroundColor == null ? ColorUtils.WHITE : backgroundColor;
+
+    drawListener ??= initDrawListener();
+    axisLeft = initAxisLeft();
+    axisRight = initAxisRight();
+    leftAxisTransformer ??= initLeftAxisTransformer();
+    rightAxisTransformer ??= initRightAxisTransformer();
+    zoomMatrixBuffer ??= initZoomMatrixBuffer();
+    axisRendererLeft = initAxisRendererLeft();
+    axisRendererRight = initAxisRendererRight();
+    xAxisRenderer = initXAxisRenderer();
+    if (axisLeftSettingFunction != null) {
+      axisLeftSettingFunction(axisLeft, this);
+    }
+    if (axisRightSettingFunction != null) {
+      axisRightSettingFunction(axisRight, this);
+    }
+  }
+
+  P get painter => super.painter;
+
+  void setViewPortOffsets(final double left, final double top,
+      final double right, final double bottom) {
+    customViewPortEnabled = true;
+    viewPortHandler.restrainViewPort(left, top, right, bottom);
+  }
+
+  Matrix4 initZoomMatrixBuffer() => Matrix4.identity();
 
   /// Sets the minimum scale factor value to which can be zoomed out. 1f =
   /// fitScreen
@@ -168,9 +210,7 @@ class BarLineScatterCandleBubbleController extends Controller {
     pts.add(xValue);
     pts.add(0.0);
 
-    chart?.painter
-        ?.getTransformer(AxisDependency.LEFT)
-        ?.pointValuesToPixel(pts);
+    painter?.getTransformer(AxisDependency.LEFT)?.pointValuesToPixel(pts);
     viewPortHandler.centerViewPort(pts);
   }
 
@@ -186,7 +226,7 @@ class BarLineScatterCandleBubbleController extends Controller {
     List<double> pts = List();
     pts.add(xValue);
     pts.add(yValue + yInView / 2);
-    chart?.painter?.getTransformer(axis)?.pointValuesToPixel(pts);
+    painter?.getTransformer(axis)?.pointValuesToPixel(pts);
     viewPortHandler.centerViewPort(pts);
   }
 
@@ -213,9 +253,9 @@ class BarLineScatterCandleBubbleController extends Controller {
     ChartAnimator(UpdateListener((x, y) {
       pts[0] = xOrigin + (xValue - xOrigin) * x;
       pts[1] = yOrigin + (yValue - yOrigin) * y;
-      chart?.painter?.getTransformer(axis)?.pointValuesToPixel(pts);
+      painter?.getTransformer(axis)?.pointValuesToPixel(pts);
       viewPortHandler.centerViewPort(pts);
-      getState()?.setStateIfNotDispose();
+      state?.setStateIfNotDispose();
     })).animateXY1(durationMillis, durationMillis);
 
     MPPointD.recycleInstance2(bounds);
@@ -231,7 +271,7 @@ class BarLineScatterCandleBubbleController extends Controller {
     List<double> pts = List();
     pts.add(0.0);
     pts.add(yValue + valsInView / 2);
-    chart?.painter?.getTransformer(axis)?.pointValuesToPixel(pts);
+    painter?.getTransformer(axis)?.pointValuesToPixel(pts);
     viewPortHandler.centerViewPort(pts);
   }
 
@@ -248,7 +288,7 @@ class BarLineScatterCandleBubbleController extends Controller {
     List<double> pts = List();
     pts.add(xValue - xInView / 2);
     pts.add(yValue + yInView / 2);
-    chart?.painter?.getTransformer(axis)?.pointValuesToPixel(pts);
+    painter?.getTransformer(axis)?.pointValuesToPixel(pts);
     viewPortHandler.centerViewPort(pts);
   }
 
@@ -276,9 +316,9 @@ class BarLineScatterCandleBubbleController extends Controller {
     ChartAnimator(UpdateListener((x, y) {
       pts[0] = xOrigin + (xValue - xOrigin) * x;
       pts[1] = yOrigin + (yValue - yOrigin) * y;
-      chart?.painter?.getTransformer(axis)?.pointValuesToPixel(pts);
+      painter?.getTransformer(axis)?.pointValuesToPixel(pts);
       viewPortHandler.centerViewPort(pts);
-      getState()?.setStateIfNotDispose();
+      state?.setStateIfNotDispose();
     })).animateXY1(durationMillis, durationMillis);
 
     MPPointD.recycleInstance2(bounds);
@@ -333,9 +373,7 @@ class BarLineScatterCandleBubbleController extends Controller {
 
   void _getValuesByTouchPoint(
       double x, double y, AxisDependency axis, MPPointD outputPoint) {
-    chart?.painter
-        ?.getTransformer(axis)
-        ?.getValuesByTouchPoint2(x, y, outputPoint);
+    painter?.getTransformer(axis)?.getValuesByTouchPoint2(x, y, outputPoint);
   }
 
   /// Sets the size of the area (range on the y-axis) that should be maximum

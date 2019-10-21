@@ -4,8 +4,11 @@ import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/description.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
+import 'package:mp_chart/mp/core/utils/utils.dart';
+import 'package:mp_chart/mp/painter/pie_redar_chart_painter.dart';
 
-class PieRadarController extends Controller {
+abstract class PieRadarController<P extends PieRadarChartPainter>
+    extends Controller<P> {
   double rotationAngle;
   double rawRotationAngle;
   bool rotateEnabled;
@@ -53,4 +56,13 @@ class PieRadarController extends Controller {
             infoTextSize: infoTextSize,
             descTextColor: descTextColor,
             infoTextColor: infoTextColor);
+
+  @override
+  void onRotateUpdate(double angle) {
+    rawRotationAngle = angle;
+    rotationAngle = Utils.getNormalizedAngle(rawRotationAngle);
+    state.setStateIfNotDispose();
+  }
+
+  P get painter => super.painter;
 }

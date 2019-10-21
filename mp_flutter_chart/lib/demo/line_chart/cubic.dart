@@ -124,7 +124,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
   void _initController() {
     var desc = Description()..enabled = false;
     controller = LineChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..typeface = Util.LIGHT
             ..setLabelCount2(6, false)
@@ -133,19 +133,21 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
             ..drawGridLines = (false)
             ..axisLineColor = (ColorUtils.WHITE);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        legendSettingFunction: (legend, chart) {
-          (chart as LineChart).setViewPortOffsets(0, 0, 0, 0);
+        legendSettingFunction: (legend, controller) {
+          (controller as LineChartController).setViewPortOffsets(0, 0, 0, 0);
           legend.enabled = (false);
-          var formatter =
-              controller.data.getDataSetByIndex(0).getFillFormatter();
+          var formatter = (controller as LineChartController)
+              .data
+              .getDataSetByIndex(0)
+              .getFillFormatter();
           if (formatter is A) {
-            formatter.setPainter(chart);
+            formatter.setPainter(controller);
           }
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis.enabled = (false);
         },
         drawGridBackground: true,
@@ -187,17 +189,17 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
     set1.setFillFormatter(A());
 
     // create a data object with the data sets
-    controller.updateData(LineData.fromList(List()..add(set1))
+    controller.data = LineData.fromList(List()..add(set1))
       ..setValueTypeface(Util.LIGHT)
       ..setValueTextSize(9)
-      ..setDrawValues(false));
+      ..setDrawValues(false);
 
     setState(() {});
   }
 
   Widget _initLineChart() {
     var lineChart = LineChart(controller);
-    controller.getAnimator()
+    controller.animator
       ..reset()
       ..animateXY1(2000, 2000);
     return lineChart;
@@ -205,15 +207,15 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
 }
 
 class A implements IFillFormatter {
-  LineChart _lineChart;
+  LineChartController _controller;
 
-  void setPainter(LineChart chart) {
-    _lineChart = chart;
+  void setPainter(LineChartController controller) {
+    _controller = controller;
   }
 
   @override
   double getFillLinePosition(
       ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return _lineChart?.painter?.axisLeft?.axisMinimum;
+    return _controller?.painter?.axisLeft?.axisMinimum;
   }
 }

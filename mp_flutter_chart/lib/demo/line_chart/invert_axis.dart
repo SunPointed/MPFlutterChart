@@ -127,18 +127,18 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
   void _initController() {
     var desc = Description()..enabled = false;
     controller = LineChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..setAxisMinimum(0)
             ..inverted = (true);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend.shape = (LegendForm.LINE);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..avoidFirstLastClipping = (true)
             ..setAxisMinimum(0);
@@ -183,7 +183,7 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
     set1.setCircleRadius(4);
 
     // create a data object with the data sets
-    controller.updateData(LineData.fromList(List()..add(set1)));
+    controller.data = LineData.fromList(List()..add(set1));
 
     setState(() {});
   }

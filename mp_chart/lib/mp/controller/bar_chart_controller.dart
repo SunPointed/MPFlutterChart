@@ -1,5 +1,7 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mp_chart/mp/chart/bar_chart.dart';
+import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
 import 'package:mp_chart/mp/core/axis/y_axis.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/data/bar_data.dart';
@@ -10,10 +12,10 @@ import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
+import 'package:mp_chart/mp/painter/bar_chart_painter.dart';
 
-import 'bar_line_scatter_candle_bubble_controller.dart';
-
-class BarChartController extends BarLineScatterCandleBubbleController {
+class BarChartController
+    extends BarLineScatterCandleBubbleController<BarChartPainter> {
   bool highlightFullBarEnabled;
   bool drawValueAboveBar;
   bool drawBarShadow;
@@ -127,6 +129,65 @@ class BarChartController extends BarLineScatterCandleBubbleController {
             axisRightSettingFunction: axisRightSettingFunction);
 
   @override
+  void initialPainter() {
+    painter = BarChartPainter(
+        data,
+        animator,
+        viewPortHandler,
+        maxHighlightDistance,
+        highLightPerTapEnabled,
+        extraLeftOffset,
+        extraTopOffset,
+        extraRightOffset,
+        extraBottomOffset,
+        marker,
+        description,
+        drawMarkers,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
+        rendererSettingFunction,
+        selectionListener,
+        maxVisibleCount,
+        autoScaleMinMaxEnabled,
+        pinchZoomEnabled,
+        doubleTapToZoomEnabled,
+        highlightPerDragEnabled,
+        dragXEnabled,
+        dragYEnabled,
+        scaleXEnabled,
+        scaleYEnabled,
+        gridBackgroundPaint,
+        backgroundPaint,
+        borderPaint,
+        drawGridBackground,
+        drawBorders,
+        clipValuesToContent,
+        minOffset,
+        keepPositionOnRotation,
+        drawListener,
+        axisLeft,
+        axisRight,
+        axisRendererLeft,
+        axisRendererRight,
+        leftAxisTransformer,
+        rightAxisTransformer,
+        xAxisRenderer,
+        zoomMatrixBuffer,
+        customViewPortEnabled,
+        highlightFullBarEnabled,
+        drawValueAboveBar,
+        drawBarShadow,
+        fitBars);
+  }
+
+  BarChartPainter get painter => super.painter;
+
+  BarChartState get state => super.state;
+
+  @override
   IMarker initMarker() => BarChartMarker();
 
   BarData get data => super.data;
@@ -138,5 +199,10 @@ class BarChartController extends BarLineScatterCandleBubbleController {
     } else {
       data.groupBars(fromX, groupSpace, barSpace);
     }
+  }
+
+  @override
+  BarChartState createRealState() {
+    return BarChartState();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/painting.dart';
+import 'package:mp_chart/mp/chart/radar_chart.dart';
 import 'package:mp_chart/mp/controller/pie_radar_controller.dart';
 import 'package:mp_chart/mp/core/axis/y_axis.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
@@ -8,12 +9,13 @@ import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/marker/radar_chart_marker.dart';
+import 'package:mp_chart/mp/painter/radar_chart_painter.dart';
 
-class RadarChartController extends PieRadarController {
+class RadarChartController extends PieRadarController<RadarChartPainter> {
   double webLineWidth;
   double innerWebLineWidth;
-  Color webColor; // = Color.fromARGB(255, 122, 122, 122)
-  Color webColorInner; // = Color.fromARGB(255, 122, 122, 122)
+  Color webColor;
+  Color webColorInner;
   int webAlpha;
   bool drawWeb;
   int skipWebLineCount;
@@ -85,4 +87,61 @@ class RadarChartController extends PieRadarController {
   YAxis initYAxis() => YAxis(position: AxisDependency.LEFT);
 
   RadarData get data => super.data;
+
+  RadarChartPainter get painter => super.painter;
+
+  RadarChartState get state => super.state;
+
+  @override
+  void initialPainter() {
+    painter = RadarChartPainter(
+        data,
+        animator,
+        viewPortHandler,
+        maxHighlightDistance,
+        highLightPerTapEnabled,
+        extraLeftOffset,
+        extraTopOffset,
+        extraRightOffset,
+        extraBottomOffset,
+        marker,
+        description,
+        drawMarkers,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
+        rendererSettingFunction,
+        selectionListener,
+        rotationAngle,
+        rawRotationAngle,
+        rotateEnabled,
+        minOffset,
+        webLineWidth,
+        innerWebLineWidth,
+        webColor,
+        webColorInner,
+        webAlpha,
+        drawWeb,
+        skipWebLineCount,
+        yAxis,
+        backgroundColor);
+  }
+
+  @override
+  void doneBeforePainterInit() {
+    super.doneBeforePainterInit();
+    webColor ??= Color.fromARGB(255, 122, 122, 122);
+    webColorInner ??= Color.fromARGB(255, 122, 122, 122);
+    yAxis = initYAxis();
+    if (yAxisSettingFunction != null) {
+      yAxisSettingFunction(yAxis, this);
+    }
+  }
+
+  @override
+  RadarChartState createRealState() {
+    return RadarChartState();
+  }
 }

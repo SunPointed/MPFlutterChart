@@ -1,4 +1,5 @@
 import 'package:flutter/rendering.dart';
+import 'package:mp_chart/mp/chart/combined_chart.dart';
 import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
 import 'package:mp_chart/mp/core/axis/y_axis.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
@@ -11,7 +12,8 @@ import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/painter/combined_chart_painter.dart';
 
-class CombinedChartController extends BarLineScatterCandleBubbleController {
+class CombinedChartController
+    extends BarLineScatterCandleBubbleController<CombinedChartPainter> {
   bool drawValueAboveBar;
   bool highlightFullBarEnabled;
   bool drawBarShadow;
@@ -127,4 +129,69 @@ class CombinedChartController extends BarLineScatterCandleBubbleController {
             axisRightSettingFunction: axisRightSettingFunction);
 
   CombinedData get data => super.data;
+
+  CombinedChartPainter get painter => super.painter;
+
+  CombinedChartState get state => super.state;
+
+  @override
+  void initialPainter() {
+    painter = CombinedChartPainter(
+        data,
+        animator,
+        viewPortHandler,
+        maxHighlightDistance,
+        highLightPerTapEnabled,
+        extraLeftOffset,
+        extraTopOffset,
+        extraRightOffset,
+        extraBottomOffset,
+        marker,
+        description,
+        drawMarkers,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
+        rendererSettingFunction,
+        selectionListener,
+        maxVisibleCount,
+        autoScaleMinMaxEnabled,
+        pinchZoomEnabled,
+        doubleTapToZoomEnabled,
+        highlightPerDragEnabled,
+        dragXEnabled,
+        dragYEnabled,
+        scaleXEnabled,
+        scaleYEnabled,
+        gridBackgroundPaint,
+        backgroundPaint,
+        borderPaint,
+        drawGridBackground,
+        drawBorders,
+        clipValuesToContent,
+        minOffset,
+        keepPositionOnRotation,
+        drawListener,
+        axisLeft,
+        axisRight,
+        axisRendererLeft,
+        axisRendererRight,
+        leftAxisTransformer,
+        rightAxisTransformer,
+        xAxisRenderer,
+        zoomMatrixBuffer,
+        customViewPortEnabled,
+        highlightFullBarEnabled,
+        drawValueAboveBar,
+        drawBarShadow,
+        fitBars,
+        drawOrder);
+  }
+
+  @override
+  CombinedChartState createRealState() {
+    return CombinedChartState();
+  }
 }

@@ -144,7 +144,7 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     ll2.textSize = (10);
     ll2.typeface = Util.EXTRA_BOLD;
     controller = LineChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..drawLimitLineBehindData = true
             ..enableGridDashedLine(10, 10, 0)
@@ -154,13 +154,13 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
             ..setAxisMaximum(200)
             ..setAxisMinimum(-50);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend.shape = (LegendForm.LINE);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..drawLimitLineBehindData = true
             ..enableAxisLineDashedLine(5, 5, 0)
@@ -229,14 +229,14 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     dataSets.add(set1); // add the data sets
 
     // create a data object with the data sets
-    controller.updateData(LineData.fromList(dataSets));
+    controller.data = LineData.fromList(dataSets);
 
     setState(() {});
   }
 
   Widget _initLineChart() {
     var lineChart = LineChart(controller);
-    controller.getAnimator()
+    controller.animator
       ..reset()
       ..animateX1(1500);
     return lineChart;

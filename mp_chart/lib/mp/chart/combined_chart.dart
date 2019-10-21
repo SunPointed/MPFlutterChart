@@ -8,80 +8,16 @@ import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/utils/highlight_utils.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
-import 'package:mp_chart/mp/painter/combined_chart_painter.dart';
 
-class CombinedChart extends BarLineScatterCandleBubbleChart<
-    CombinedChartPainter, CombinedChartController> {
-  CombinedChart(CombinedChartController controller) : super(controller);
-
-  @override
-  CombinedChartState createChartState() {
-    return CombinedChartState();
-  }
-
-  CombinedChartPainter get painter => super.painter;
-
-  @override
-  void initialPainter() {
-    painter = CombinedChartPainter(
-        controller.data,
-        animator,
-        controller.viewPortHandler,
-        controller.maxHighlightDistance,
-        controller.highLightPerTapEnabled,
-        controller.extraLeftOffset,
-        controller.extraTopOffset,
-        controller.extraRightOffset,
-        controller.extraBottomOffset,
-        controller.marker,
-        controller.description,
-        controller.drawMarkers,
-        controller.infoPaint,
-        controller.descPaint,
-        controller.xAxis,
-        controller.legend,
-        controller.legendRenderer,
-        controller.rendererSettingFunction,
-        controller.selectionListener,
-        controller.maxVisibleCount,
-        controller.autoScaleMinMaxEnabled,
-        controller.pinchZoomEnabled,
-        controller.doubleTapToZoomEnabled,
-        controller.highlightPerDragEnabled,
-        controller.dragXEnabled,
-        controller.dragYEnabled,
-        controller.scaleXEnabled,
-        controller.scaleYEnabled,
-        controller.gridBackgroundPaint,
-        controller.backgroundPaint,
-        controller.borderPaint,
-        controller.drawGridBackground,
-        controller.drawBorders,
-        controller.clipValuesToContent,
-        controller.minOffset,
-        controller.keepPositionOnRotation,
-        controller.drawListener,
-        controller.axisLeft,
-        controller.axisRight,
-        controller.axisRendererLeft,
-        controller.axisRendererRight,
-        controller.leftAxisTransformer,
-        controller.rightAxisTransformer,
-        controller.xAxisRenderer,
-        controller.zoomMatrixBuffer,
-        controller.customViewPortEnabled,
-        controller.highlightFullBarEnabled,
-        controller.drawValueAboveBar,
-        controller.drawBarShadow,
-        controller.fitBars,
-        controller.drawOrder);
-  }
+class CombinedChart
+    extends BarLineScatterCandleBubbleChart<CombinedChartController> {
+  const CombinedChart(CombinedChartController controller) : super(controller);
 }
 
 class CombinedChartState extends ChartState<CombinedChart> {
   @override
   void updatePainter() {
-    widget.painter.highlightValue6(_lastHighlighted, false);
+    widget.controller.painter.highlightValue6(_lastHighlighted, false);
   }
 
   IDataSet _closestDataSetToTouch;
@@ -93,7 +29,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
   bool _isZoom = false;
 
   MPPointF _getTrans(double x, double y) {
-    ViewPortHandler vph = widget.painter.viewPortHandler;
+    ViewPortHandler vph = widget.controller.painter.viewPortHandler;
 
     double xTrans = x - vph.offsetLeft();
     double yTrans = 0.0;
@@ -102,7 +38,9 @@ class CombinedChartState extends ChartState<CombinedChart> {
     if (_inverted()) {
       yTrans = -(y - vph.offsetTop());
     } else {
-      yTrans = -(widget.painter.getMeasuredHeight() - y - vph.offsetBottom());
+      yTrans = -(widget.controller.painter.getMeasuredHeight() -
+          y -
+          vph.offsetBottom());
     }
 
     return MPPointF.getInstance1(xTrans, yTrans);
@@ -110,9 +48,9 @@ class CombinedChartState extends ChartState<CombinedChart> {
 
   bool _inverted() {
     return (_closestDataSetToTouch == null &&
-            widget.painter.isAnyAxisInverted()) ||
+            widget.controller.painter.isAnyAxisInverted()) ||
         (_closestDataSetToTouch != null &&
-            widget.painter
+            widget.controller.painter
                 .isInverted(_closestDataSetToTouch.getAxisDependency()));
   }
 
@@ -120,17 +58,20 @@ class CombinedChartState extends ChartState<CombinedChart> {
   void onTapDown(TapDownDetails detail) {
     _curX = detail.localPosition.dx;
     _curY = detail.localPosition.dy;
-    _closestDataSetToTouch = widget.painter.getDataSetByTouchPoint(
+    _closestDataSetToTouch = widget.controller.painter.getDataSetByTouchPoint(
         detail.localPosition.dx, detail.localPosition.dy);
   }
 
   @override
   void onDoubleTap() {
-    if (widget.painter.doubleTapToZoomEnabled &&
-        widget.painter.getData().getEntryCount() > 0) {
+    if (widget.controller.painter.doubleTapToZoomEnabled &&
+        widget.controller.painter.getData().getEntryCount() > 0) {
       MPPointF trans = _getTrans(_curX, _curY);
-      widget.painter.zoom(widget.painter.scaleXEnabled ? 1.4 : 1,
-          widget.painter.scaleYEnabled ? 1.4 : 1, trans.x, trans.y);
+      widget.controller.painter.zoom(
+          widget.controller.painter.scaleXEnabled ? 1.4 : 1,
+          widget.controller.painter.scaleYEnabled ? 1.4 : 1,
+          trans.x,
+          trans.y);
       setStateIfNotDispose();
       MPPointF.recycleInstance(trans);
     }
@@ -166,21 +107,22 @@ class CombinedChartState extends ChartState<CombinedChart> {
 
       var dx = detail.localFocalPoint.dx - _curX;
       var dy = detail.localFocalPoint.dy - _curY;
-      if (widget.painter.dragYEnabled && widget.painter.dragXEnabled) {
+      if (widget.controller.painter.dragYEnabled &&
+          widget.controller.painter.dragXEnabled) {
         if (_inverted()) {
           dy = -dy;
         }
-        widget.painter.translate(dx, dy);
+        widget.controller.painter.translate(dx, dy);
         setStateIfNotDispose();
       } else {
-        if (widget.painter.dragXEnabled) {
-          widget.painter.translate(dx, 0.0);
+        if (widget.controller.painter.dragXEnabled) {
+          widget.controller.painter.translate(dx, 0.0);
           setStateIfNotDispose();
-        } else if (widget.painter.dragYEnabled) {
+        } else if (widget.controller.painter.dragYEnabled) {
           if (_inverted()) {
             dy = -dy;
           }
-          widget.painter.translate(0.0, dy);
+          widget.controller.painter.translate(0.0, dy);
           setStateIfNotDispose();
         }
       }
@@ -198,9 +140,9 @@ class CombinedChartState extends ChartState<CombinedChart> {
 
       MPPointF trans = _getTrans(_curX, _curY);
 
-      scaleX = widget.painter.scaleXEnabled ? scaleX : 1.0;
-      scaleY = widget.painter.scaleYEnabled ? scaleY : 1.0;
-      widget.painter.zoom(scaleX, scaleY, trans.x, trans.y);
+      scaleX = widget.controller.painter.scaleXEnabled ? scaleX : 1.0;
+      scaleY = widget.controller.painter.scaleYEnabled ? scaleY : 1.0;
+      widget.controller.painter.zoom(scaleX, scaleY, trans.x, trans.y);
       setStateIfNotDispose();
       MPPointF.recycleInstance(trans);
     }
@@ -214,11 +156,11 @@ class CombinedChartState extends ChartState<CombinedChart> {
 
   @override
   void onSingleTapUp(TapUpDetails detail) {
-    if (widget.painter.highlightPerDragEnabled) {
-      Highlight h = widget.painter.getHighlightByTouchPoint(
+    if (widget.controller.painter.highlightPerDragEnabled) {
+      Highlight h = widget.controller.painter.getHighlightByTouchPoint(
           detail.localPosition.dx, detail.localPosition.dy);
-      _lastHighlighted =
-          HighlightUtils.performHighlight(widget.painter, h, _lastHighlighted);
+      _lastHighlighted = HighlightUtils.performHighlight(
+          widget.controller.painter, h, _lastHighlighted);
       setStateIfNotDispose();
     } else {
       _lastHighlighted = null;

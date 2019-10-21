@@ -145,15 +145,15 @@ class ScrollingChartViewPagerState
     var desc = Description()..enabled = false;
 
     _lineChartController1 = LineChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..setAxisMaximum(1.2)
             ..setAxisMinimum(-1.2);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis.enabled = (false);
         },
         drawGridBackground: false,
@@ -164,10 +164,10 @@ class ScrollingChartViewPagerState
         description: desc);
 
     _lineChartController2 = LineChartController(
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis.enabled = (false);
         },
         drawGridBackground: false,
@@ -178,13 +178,13 @@ class ScrollingChartViewPagerState
         description: desc);
 
     _barChartController = BarChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft.setAxisMinimum(0);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis.enabled = (false);
         },
         drawGridBackground: false,
@@ -196,17 +196,17 @@ class ScrollingChartViewPagerState
         description: desc);
 
     _scatterChartController = ScatterChartController(
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.drawGridLines = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend
             ..wordWrapEnabled = (true)
             ..formSize = (14)
             ..textSize = (9)
             ..yOffset = (13);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis.position = (XAxisPosition.BOTTOM);
         },
         drawGridBackground: false,
@@ -218,7 +218,7 @@ class ScrollingChartViewPagerState
         description: desc);
 
     _pieChartController = PieChartController(
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
@@ -249,7 +249,7 @@ class ScrollingChartViewPagerState
       ds1.setColor1(ColorUtils.VORDIPLOM_COLORS[0]);
       sets.add(ds1);
       if (sets.length == 2) {
-        _lineChartController1.updateData(LineData.fromList(sets));
+        _lineChartController1.data = LineData.fromList(sets);
         //    _lineData1.setValueTypeface(tf);
         setState(() {});
       }
@@ -270,7 +270,7 @@ class ScrollingChartViewPagerState
       ds2.setColor1(ColorUtils.VORDIPLOM_COLORS[1]);
       sets.add(ds2);
       if (sets.length == 2) {
-        _lineChartController1.updateData(LineData.fromList(sets));
+        _lineChartController1.data = LineData.fromList(sets);
         //    _lineData1.setValueTypeface(tf);
         setState(() {});
       }
@@ -297,7 +297,7 @@ class ScrollingChartViewPagerState
       ds.setCircleColor(ColorUtils.VORDIPLOM_COLORS[0]);
       sets.add(ds);
       if (sets.length == 4) {
-        _lineChartController2.updateData(LineData.fromList(sets));
+        _lineChartController2.data = LineData.fromList(sets);
         //    _lineData1.setValueTypeface(tf);
         setState(() {});
       }
@@ -320,7 +320,7 @@ class ScrollingChartViewPagerState
       ds.setCircleColor(ColorUtils.VORDIPLOM_COLORS[1]);
       sets.add(ds);
       if (sets.length == 4) {
-        _lineChartController2.updateData(LineData.fromList(sets));
+        _lineChartController2.data = LineData.fromList(sets);
         //    _lineData1.setValueTypeface(tf);
         setState(() {});
       }
@@ -343,7 +343,7 @@ class ScrollingChartViewPagerState
       ds.setCircleColor(ColorUtils.VORDIPLOM_COLORS[2]);
       sets.add(ds);
       if (sets.length == 4) {
-        _lineChartController2.updateData(LineData.fromList(sets));
+        _lineChartController2.data = LineData.fromList(sets);
         //    _lineData1.setValueTypeface(tf);
         setState(() {});
       }
@@ -366,7 +366,7 @@ class ScrollingChartViewPagerState
       ds.setCircleColor(ColorUtils.VORDIPLOM_COLORS[3]);
       sets.add(ds);
       if (sets.length == 4) {
-        _lineChartController2.updateData(LineData.fromList(sets));
+        _lineChartController2.data = LineData.fromList(sets);
         //    _lineData1.setValueTypeface(tf);
         setState(() {});
       }
@@ -398,7 +398,7 @@ class ScrollingChartViewPagerState
       sets.add(ds);
     }
 
-    _barChartController.updateData(BarData(sets));
+    _barChartController.data = BarData(sets);
 //    _barData.setValueTypeface(tf);
   }
 
@@ -426,7 +426,7 @@ class ScrollingChartViewPagerState
       sets.add(ds);
     }
 
-    _scatterChartController.updateData(ScatterData.fromList(sets));
+    _scatterChartController.data = ScatterData.fromList(sets);
 //    _scatterData.setValueTypeface(tf);
   }
 
@@ -446,13 +446,13 @@ class ScrollingChartViewPagerState
     ds1.setValueTextColor(ColorUtils.WHITE);
     ds1.setValueTextSize(12);
 
-    _pieChartController.updateData(PieData(ds1));
+    _pieChartController.data = PieData(ds1);
 //    _pieData.setValueTypeface(tf);
   }
 
   Widget _initLineChart1() {
     var lineChart = LineChart(_lineChartController1);
-    _lineChartController1.getAnimator()
+    _lineChartController1.animator
       ..reset()
       ..animateX1(3000);
     return lineChart;
@@ -460,7 +460,7 @@ class ScrollingChartViewPagerState
 
   Widget _initLineChart2() {
     var lineChart = LineChart(_lineChartController2);
-    _lineChartController2.getAnimator()
+    _lineChartController2.animator
       ..reset()
       ..animateX1(3000);
     return lineChart;

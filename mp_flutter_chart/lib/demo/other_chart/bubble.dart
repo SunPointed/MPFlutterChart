@@ -129,17 +129,17 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
   void _initController() {
     var desc = Description()..enabled = false;
     controller = BubbleChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..spacePercentTop = (30)
             ..spacePercentBottom = (30)
             ..typeface = Util.LIGHT
             ..setDrawZeroLine(false);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend
             ..typeface = Util.LIGHT
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
@@ -147,7 +147,7 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
             ..orientation = (LegendOrientation.VERTICAL)
             ..drawInside = (false);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..position = (XAxisPosition.BOTTOM)
             ..typeface = Util.LIGHT;
@@ -212,7 +212,7 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
     dataSets.add(set3);
 
     // create a data object with the data sets
-    controller.updateData(BubbleData.fromList(dataSets));
+    controller.data = BubbleData.fromList(dataSets);
     controller.data
       ..setDrawValues(false)
       ..setValueTypeface(Util.LIGHT)

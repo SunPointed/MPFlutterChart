@@ -79,8 +79,8 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
   void _initController() {
     var desc = Description()..enabled = false;
     _controller = PieChartController(
-        legendSettingFunction: (legend, chart) {
-          _formatter.setPieChartPainter(chart);
+        legendSettingFunction: (legend, controller) {
+          _formatter.setPieChartPainter(controller);
           legend
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
@@ -139,17 +139,17 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
     dataSet.setColors1(ColorUtils.MATERIAL_COLORS);
     //dataSet.setSelectionShift(0f);
 
-    _controller.updateData(PieData(dataSet)
+    _controller.data = PieData(dataSet)
       ..setValueFormatter(new PercentFormatter())
       ..setValueTextColor(ColorUtils.WHITE)
-      ..setValueTypeface(Util.LIGHT));
+      ..setValueTypeface(Util.LIGHT);
 
     setState(() {});
   }
 
   Widget _initPieChart() {
     var pieChart = PieChart(_controller);
-    _controller.getAnimator().animateY2(1400, Easing.EaseInOutQuad);
+    _controller.animator.animateY2(1400, Easing.EaseInOutQuad);
     return pieChart;
   }
 }

@@ -89,7 +89,7 @@ class ScrollingChartTallBarState
 
   Widget _renderItem() {
     var barChart = BarChart(_controller);
-    _controller.getAnimator()
+    _controller.animator
       ..reset()
       ..animateY1(800);
     return Column(
@@ -131,13 +131,13 @@ class ScrollingChartTallBarState
   void _initController() {
     var desc = Description()..enabled = false;
     _controller = BarChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft.drawGridLines = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend.enabled = (false);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..position = (XAxisPosition.BOTTOM)
             ..drawGridLines = (false);
@@ -154,7 +154,7 @@ class ScrollingChartTallBarState
   }
 
   void _initBarData() {
-    _controller.updateData(generateData());
+    _controller.data = generateData();
   }
 
   BarData generateData() {

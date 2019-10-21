@@ -130,15 +130,15 @@ class OtherChartScatterPlotState
   void _initController() {
     var desc = Description()..enabled = false;
     controller = ScatterChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..setAxisMinimum(0)
             ..typeface = Util.LIGHT;
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
@@ -147,7 +147,7 @@ class OtherChartScatterPlotState
             ..typeface = Util.LIGHT
             ..xOffset = (5);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..drawGridLines = (false)
             ..typeface = Util.LIGHT;
@@ -212,7 +212,7 @@ class OtherChartScatterPlotState
     dataSets.add(set3);
 
     // create a data object with the data sets
-    controller.updateData(ScatterData.fromList(dataSets));
+    controller.data = ScatterData.fromList(dataSets);
     controller.data.setValueTypeface(Util.LIGHT);
 
     setState(() {});

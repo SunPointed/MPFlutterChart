@@ -1,5 +1,7 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mp_chart/mp/chart/bubble_chart.dart';
+import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
 import 'package:mp_chart/mp/core/axis/y_axis.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
 import 'package:mp_chart/mp/core/data/bubble_data.dart';
@@ -9,10 +11,10 @@ import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
+import 'package:mp_chart/mp/painter/bubble_chart_painter.dart';
 
-import 'bar_line_scatter_candle_bubble_controller.dart';
-
-class BubbleChartController extends BarLineScatterCandleBubbleController {
+class BubbleChartController
+    extends BarLineScatterCandleBubbleController<BubbleChartPainter> {
   BubbleChartController({
     int maxVisibleCount = 100,
     bool autoScaleMinMaxEnabled = true,
@@ -117,4 +119,64 @@ class BubbleChartController extends BarLineScatterCandleBubbleController {
             axisRightSettingFunction: axisRightSettingFunction);
 
   BubbleData get data => super.data;
+
+  BubbleChartState get state => super.state;
+
+  BubbleChartPainter get painter => super.painter;
+
+  @override
+  void initialPainter() {
+    painter = BubbleChartPainter(
+        data,
+        animator,
+        viewPortHandler,
+        maxHighlightDistance,
+        highLightPerTapEnabled,
+        extraLeftOffset,
+        extraTopOffset,
+        extraRightOffset,
+        extraBottomOffset,
+        marker,
+        description,
+        drawMarkers,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
+        rendererSettingFunction,
+        selectionListener,
+        maxVisibleCount,
+        autoScaleMinMaxEnabled,
+        pinchZoomEnabled,
+        doubleTapToZoomEnabled,
+        highlightPerDragEnabled,
+        dragXEnabled,
+        dragYEnabled,
+        scaleXEnabled,
+        scaleYEnabled,
+        gridBackgroundPaint,
+        backgroundPaint,
+        borderPaint,
+        drawGridBackground,
+        drawBorders,
+        clipValuesToContent,
+        minOffset,
+        keepPositionOnRotation,
+        drawListener,
+        axisLeft,
+        axisRight,
+        axisRendererLeft,
+        axisRendererRight,
+        leftAxisTransformer,
+        rightAxisTransformer,
+        xAxisRenderer,
+        zoomMatrixBuffer,
+        customViewPortEnabled);
+  }
+
+  @override
+  BubbleChartState createRealState() {
+    return BubbleChartState();
+  }
 }

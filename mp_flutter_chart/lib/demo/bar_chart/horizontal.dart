@@ -146,7 +146,7 @@ class BarChartHorizontalState
     List<IBarDataSet> dataSets = List();
     dataSets.add(set1);
 
-    controller.updateData(BarData(dataSets));
+    controller.data = BarData(dataSets);
     controller.data
       ..setValueTextSize(10)
       ..setValueTypeface(Util.LIGHT)
@@ -158,21 +158,21 @@ class BarChartHorizontalState
   void _initController() {
     var desc = Description()..enabled = false;
     controller = HorizontalBarChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..typeface = Util.LIGHT
             ..drawAxisLine = true
             ..drawGridLines = true
             ..setAxisMinimum(0);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight
             ..typeface = Util.LIGHT
             ..drawAxisLine = true
             ..drawGridLines = false
             ..setAxisMinimum(0);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend
             ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
             ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
@@ -181,7 +181,7 @@ class BarChartHorizontalState
             ..formSize = (8)
             ..xEntrySpace = (4);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..position = XAxisPosition.BOTTOM
             ..typeface = Util.LIGHT
@@ -205,7 +205,7 @@ class BarChartHorizontalState
 
   Widget _initBarChart() {
     var barChart = HorizontalBarChart(controller);
-    controller.getAnimator()
+    controller.animator
       ..reset()
       ..animateY1(2500);
     return barChart;

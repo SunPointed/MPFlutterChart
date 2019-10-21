@@ -93,7 +93,7 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
       ..add(Color.fromARGB(255, 124, 181, 236)));
     set.setStackLabels(List()..add("Men")..add("Women"));
 
-    controller.updateData(BarData(List()..add(set)));
+    controller.data = BarData(List()..add(set));
     controller.data.barWidth = (8.5);
 
     setState(() {});
@@ -102,10 +102,10 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
   void _initController() {
     var desc = Description()..enabled = false;
     controller = HorizontalBarChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft.enabled = (false);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight
             ..setAxisMaximum(25)
             ..setAxisMinimum(-25)
@@ -115,7 +115,7 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
             ..setValueFormatter(A())
             ..textSize = (9);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend
             ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
@@ -125,7 +125,7 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
             ..formToTextSpace = (4)
             ..xEntrySpace = (6);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..position = (XAxisPosition.BOTH_SIDED)
             ..drawGridLines = (false)

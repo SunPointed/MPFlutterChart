@@ -82,7 +82,7 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
     set.setColors1(colors);
     set.setValueTextColors(colors);
 
-    _controller.updateData(BarData(List()..add(set)));
+    _controller.data = BarData(List()..add(set));
     _controller.data
       ..setValueTextSize(13)
       ..setValueTypeface(Util.REGULAR)
@@ -93,7 +93,7 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
   void _initController() {
     var desc = Description()..enabled = false;
     _controller = BarChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..drawLabels = (false)
             ..spacePercentTop = (25)
@@ -104,13 +104,13 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
             ..zeroLineColor = ColorUtils.GRAY
             ..zeroLineWidth = 0.7;
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend.enabled = (false);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis
             ..position = (XAxisPosition.BOTTOM)
             ..typeface = Util.LIGHT

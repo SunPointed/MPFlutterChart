@@ -135,7 +135,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
   void _initController() {
     var desc = Description()..enabled = false;
     controller = BarChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..setLabelCount2(8, false)
             ..typeface = Util.LIGHT
@@ -144,7 +144,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..spacePercentTop = 15
             ..setAxisMinimum(0);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight
             ..drawGridLines = false
             ..typeface = Util.LIGHT
@@ -153,7 +153,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..spacePercentTop = 15
             ..setAxisMinimum(0);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend
             ..verticalAlignment = LegendVerticalAlignment.BOTTOM
             ..orientation = LegendOrientation.HORIZONTAL
@@ -163,14 +163,15 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..textSize = 11
             ..xEntrySpace = 4;
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
+          print(controller);
           xAxis
             ..typeface = Util.LIGHT
             ..position = XAxisPosition.BOTTOM
             ..drawGridLines = false
             ..setGranularity(1.0)
             ..setLabelCount1(7)
-            ..setValueFormatter(DayAxisValueFormatter(chart));
+            ..setValueFormatter(DayAxisValueFormatter(controller));
         },
         selectionListener: this,
         drawBarShadow: false,
@@ -231,7 +232,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     List<IBarDataSet> dataSets = List();
     dataSets.add(set1);
 
-    controller.updateData(BarData(dataSets));
+    controller.data = BarData(dataSets);
     controller.data
       ..setValueTextSize(10)
       ..setValueTypeface(Util.LIGHT)

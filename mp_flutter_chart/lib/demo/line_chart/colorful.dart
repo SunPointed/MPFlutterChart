@@ -84,7 +84,7 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
 
   void _initLineData(int count, double range) {
     for (int i = 0; i < _controllers.length; i++) {
-      _controllers[i].updateData(_getData(36, 100));
+      _controllers[i].data = _getData(36, 100);
       _controllers[i].data.setValueTypeface(Util.BOLD);
       (_controllers[i].data.getDataSetByIndex(0) as LineDataSet)
           .setCircleHoleColor(_colors[i % _colors.length]);
@@ -119,20 +119,20 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
   LineChartController _setupChartController(Color color) {
     var desc = Description()..enabled = false;
     return LineChartController(
-        axisLeftSettingFunction: (axisLeft, chart) {
+        axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..enabled = (false)
             ..spacePercentTop = (40)
             ..spacePercentBottom = (40);
         },
-        axisRightSettingFunction: (axisRight, chart) {
+        axisRightSettingFunction: (axisRight, controller) {
           axisRight.enabled = (false);
         },
-        legendSettingFunction: (legend, chart) {
+        legendSettingFunction: (legend, controller) {
           legend.enabled = (false);
-          (chart as LineChart).setViewPortOffsets(0, 0, 0, 0);
+          (controller as LineChartController).setViewPortOffsets(0, 0, 0, 0);
         },
-        xAxisSettingFunction: (xAxis, chart) {
+        xAxisSettingFunction: (xAxis, controller) {
           xAxis.enabled = (false);
         },
         drawGridBackground: true,
@@ -148,7 +148,7 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
 
   Widget getLineChart(LineChartController controller) {
     var lineChart = LineChart(controller);
-    controller.getAnimator()
+    controller.animator
       ..reset()
       ..animateX1(2500);
     return lineChart;

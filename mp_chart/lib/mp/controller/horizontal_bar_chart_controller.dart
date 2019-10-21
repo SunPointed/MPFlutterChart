@@ -15,6 +15,7 @@ import 'package:mp_chart/mp/core/render/y_axis_renderer_horizontal_bar_chart.dar
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/core/transformer/transformer_horizontal_bar_chart.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
+import 'package:mp_chart/mp/painter/horizontal_bar_chart_painter.dart';
 
 class HorizontalBarChartController extends BarChartController {
   HorizontalBarChartController({
@@ -127,6 +128,63 @@ class HorizontalBarChartController extends BarChartController {
             borderStrokeWidth: borderStrokeWidth,
             axisLeftSettingFunction: axisLeftSettingFunction,
             axisRightSettingFunction: axisRightSettingFunction);
+
+  HorizontalBarChartPainter get painter => super.painter;
+
+  @override
+  void initialPainter() {
+    painter = HorizontalBarChartPainter(
+        data,
+        animator,
+        viewPortHandler,
+        maxHighlightDistance,
+        highLightPerTapEnabled,
+        extraLeftOffset,
+        extraTopOffset,
+        extraRightOffset,
+        extraBottomOffset,
+        marker,
+        description,
+        drawMarkers,
+        infoPaint,
+        descPaint,
+        xAxis,
+        legend,
+        legendRenderer,
+        rendererSettingFunction,
+        selectionListener,
+        maxVisibleCount,
+        autoScaleMinMaxEnabled,
+        pinchZoomEnabled,
+        doubleTapToZoomEnabled,
+        highlightPerDragEnabled,
+        dragXEnabled,
+        dragYEnabled,
+        scaleXEnabled,
+        scaleYEnabled,
+        gridBackgroundPaint,
+        backgroundPaint,
+        borderPaint,
+        drawGridBackground,
+        drawBorders,
+        clipValuesToContent,
+        minOffset,
+        keepPositionOnRotation,
+        drawListener,
+        axisLeft,
+        axisRight,
+        axisRendererLeft,
+        axisRendererRight,
+        leftAxisTransformer,
+        rightAxisTransformer,
+        xAxisRenderer,
+        zoomMatrixBuffer,
+        customViewPortEnabled,
+        highlightFullBarEnabled,
+        drawValueAboveBar,
+        drawBarShadow,
+        fitBars);
+  }
 
   @override
   IMarker initMarker() => HorizontalBarChartMarker();
