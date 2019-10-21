@@ -4,7 +4,7 @@ import 'package:mp_chart/mp/core/enums/rounding.dart';
 
 abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
   /// the entries that this DataSet represents / holds together
-  List<T> _values = null;
+  List<T> _values;
 
   /// maximum y-value in the value array
   double _yMax = -double.infinity;

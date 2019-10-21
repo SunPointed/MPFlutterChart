@@ -15,7 +15,7 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
   double _highlightLineWidth = 0.5;
 
   /// the path effect for dashed highlight-lines
-  DashPathEffect _highlightDashPathEffect = null;
+  DashPathEffect _highlightDashPathEffect;
 
   /// the path effect for dashed highlight-lines
 //   DashPathEffect mHighlightDashPathEffect = null;
@@ -65,31 +65,25 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
     return _highlightLineWidth;
   }
 
-  /**
-   * Enables the highlight-line to be drawn in dashed mode, e.g. like this "- - - - - -"
-   *
-   * @param lineLength the length of the line pieces
-   * @param spaceLength the length of space inbetween the line-pieces
-   * @param phase offset, in degrees (normally, use 0)
-   */
+  /// Enables the highlight-line to be drawn in dashed mode, e.g. like this "- - - - - -"
+  ///
+  /// @param lineLength the length of the line pieces
+  /// @param spaceLength the length of space inbetween the line-pieces
+  /// @param phase offset, in degrees (normally, use 0)
   void enableDashedHighlightLine(
       double lineLength, double spaceLength, double phase) {
     _highlightDashPathEffect = DashPathEffect(lineLength, spaceLength, phase);
   }
 
-  /**
-   * Disables the highlight-line to be drawn in dashed mode.
-   */
+  /// Disables the highlight-line to be drawn in dashed mode.
   void disableDashedHighlightLine() {
     _highlightDashPathEffect = null;
   }
 
-  /**
-   * Returns true if the dashed-line effect is enabled for highlight lines, false if not.
-   * Default: disabled
-   *
-   * @return
-   */
+  /// Returns true if the dashed-line effect is enabled for highlight lines, false if not.
+  /// Default: disabled
+  ///
+  /// @return
   bool isDashedHighlightLineEnabled() {
     return _highlightDashPathEffect == null ? false : true;
   }

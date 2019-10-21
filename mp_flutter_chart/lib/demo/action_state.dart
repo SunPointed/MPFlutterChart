@@ -76,7 +76,7 @@ abstract class ActionState<T extends StatefulWidget> extends State<T> {
     PermissionHandler()
         .checkPermissionStatus(PermissionGroup.storage)
         .then((permission) {
-      if (permission.value != PermissionStatus.granted) {
+      if (permission.value != PermissionStatus.granted.value) {
         PermissionHandler()
             .requestPermissions([PermissionGroup.storage]).then((permissions) {
           if (permissions.containsKey(PermissionGroup.storage)) {

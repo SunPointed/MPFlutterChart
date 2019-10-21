@@ -348,7 +348,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   /// @param high         - the highlight object
   /// @param callListener - call the listener
   void highlightValue6(Highlight high, bool callListener) {
-    Entry e = null;
+    Entry e;
 
     if (high == null) {
       _indicesToHighlight = null;

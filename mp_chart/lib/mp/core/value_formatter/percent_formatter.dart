@@ -2,7 +2,6 @@ import 'package:intl/intl.dart';
 import 'package:mp_chart/mp/chart/pie_chart.dart';
 import 'package:mp_chart/mp/core/entry/pie_entry.dart';
 import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
-import 'package:mp_chart/mp/painter/pie_chart_painter.dart';
 
 class PercentFormatter extends ValueFormatter {
   NumberFormat _format;

@@ -7,8 +7,8 @@ class LineChart extends BarLineScatterCandleBubbleChart<LineChartPainter,
   LineChart(LineChartController controller) : super(controller);
 
   @override
-  LineChartState createChartState() {
-    return LineChartState();
+  BarLineScatterCandleBubbleState<LineChart> createChartState() {
+    return BarLineScatterCandleBubbleState<LineChart>();
   }
 
   @override
@@ -63,14 +63,4 @@ class LineChart extends BarLineScatterCandleBubbleChart<LineChartPainter,
   }
 
   LineChartPainter get painter => super.painter;
-}
-
-class LineChartState extends BarLineScatterCandleBubbleState<LineChart> {
-  @override
-  void updatePainter() {
-    if (widget.painter.getData() != null &&
-        widget.painter.getData().dataSets != null &&
-        widget.painter.getData().dataSets.length > 0)
-      widget.painter.highlightValue6(lastHighlighted, false);
-  }
 }

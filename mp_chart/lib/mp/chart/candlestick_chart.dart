@@ -7,8 +7,8 @@ class CandlestickChart extends BarLineScatterCandleBubbleChart<
   CandlestickChart(CandlestickChartController controller) : super(controller);
 
   @override
-  CandlestickChartState createChartState() {
-    return CandlestickChartState();
+  BarLineScatterCandleBubbleState<CandlestickChart> createChartState() {
+    return BarLineScatterCandleBubbleState<CandlestickChart>();
   }
 
   CandlestickChartPainter get painter => super.painter;
@@ -62,16 +62,5 @@ class CandlestickChart extends BarLineScatterCandleBubbleChart<
         controller.xAxisRenderer,
         controller.zoomMatrixBuffer,
         controller.customViewPortEnabled);
-  }
-}
-
-class CandlestickChartState
-    extends BarLineScatterCandleBubbleState<CandlestickChart> {
-  @override
-  void updatePainter() {
-    if (widget.painter.getData() != null &&
-        widget.painter.getData().dataSets != null &&
-        widget.painter.getData().dataSets.length > 0)
-      widget.painter.highlightValue6(lastHighlighted, false);
   }
 }

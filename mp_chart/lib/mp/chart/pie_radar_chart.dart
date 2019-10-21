@@ -68,8 +68,6 @@ abstract class PieRadarChartState<T extends PieRadarChart>
           detail.localPosition.dx, detail.localPosition.dy);
       lastHighlighted =
           HighlightUtils.performHighlight(widget.painter, h, lastHighlighted);
-//      painter.getOnChartGestureListener()?.onChartSingleTapped(
-//          detail.localPosition.dx, detail.localPosition.dy);
       setStateIfNotDispose();
     } else {
       lastHighlighted = null;

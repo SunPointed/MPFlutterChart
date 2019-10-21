@@ -40,6 +40,7 @@ class Highlight {
       double yPx = 0,
       int dataSetIndex = 0,
       int stackIndex = -1,
+      // ignore: avoid_init_to_null
       AxisDependency axis = null}) {
     this._x = x;
     this._y = y;

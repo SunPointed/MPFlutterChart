@@ -6,7 +6,6 @@ import 'package:mp_chart/mp/core/limit_line.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/default_axis_value_formatter.dart';
 import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
-import 'package:path_drawing/path_drawing.dart';
 
 abstract class AxisBase extends ComponentBase {
   /// custom formatter that is used instead of the auto-formatter if set
@@ -57,10 +56,10 @@ abstract class AxisBase extends ComponentBase {
   bool _centerAxisLabels = false;
 
   /// the path effect of the axis line that makes dashed lines possible
-  DashPathEffect _axisLineDashPathEffect = null;
+  DashPathEffect _axisLineDashPathEffect;
 
   /// the path effect of the grid lines that makes dashed lines possible
-  DashPathEffect _gridDashPathEffect = null;
+  DashPathEffect _gridDashPathEffect;
 
   /// array of limit lines that can be set for the axis
   List<LimitLine> _limitLines;

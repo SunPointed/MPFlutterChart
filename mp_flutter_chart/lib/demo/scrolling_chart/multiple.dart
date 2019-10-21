@@ -10,7 +10,6 @@ import 'package:mp_chart/mp/controller/controller.dart';
 import 'package:mp_chart/mp/controller/line_chart_controller.dart';
 import 'package:mp_chart/mp/controller/pie_chart_controller.dart';
 import 'package:mp_chart/mp/core/data/bar_data.dart';
-import 'package:mp_chart/mp/core/data/chart_data.dart';
 import 'package:mp_chart/mp/core/data/line_data.dart';
 import 'package:mp_chart/mp/core/data/pie_data.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_line_data_set.dart';

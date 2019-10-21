@@ -1,4 +1,5 @@
 import 'package:mp_chart/mp/chart/bar_chart.dart';
+import 'package:mp_chart/mp/chart/bar_line_scatter_candle_bubble_chart.dart';
 import 'package:mp_chart/mp/controller/horizontal_bar_chart_controller.dart';
 import 'package:mp_chart/mp/painter/horizontal_bar_chart_painter.dart';
 
@@ -7,8 +8,8 @@ class HorizontalBarChart extends BarChart {
       : super(controller);
 
   @override
-  HorizontalBarChartState createChartState() {
-    return HorizontalBarChartState();
+  BarLineScatterCandleBubbleState<HorizontalBarChart> createChartState() {
+    return BarLineScatterCandleBubbleState<HorizontalBarChart>();
   }
 
   HorizontalBarChartPainter get painter => super.painter;
@@ -66,15 +67,5 @@ class HorizontalBarChart extends BarChart {
         controller.drawValueAboveBar,
         controller.drawBarShadow,
         controller.fitBars);
-  }
-}
-
-class HorizontalBarChartState extends BarChartState<HorizontalBarChart> {
-  @override
-  void updatePainter() {
-    if (widget.painter.getData() != null &&
-        widget.painter.getData().dataSets != null &&
-        widget.painter.getData().dataSets.length > 0)
-      widget.painter.highlightValue6(lastHighlighted, false);
   }
 }

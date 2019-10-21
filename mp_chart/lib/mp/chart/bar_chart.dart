@@ -1,6 +1,5 @@
 import 'package:mp_chart/mp/chart/bar_line_scatter_candle_bubble_chart.dart';
 import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
-import 'package:mp_chart/mp/core/data/bar_data.dart';
 import 'package:mp_chart/mp/painter/bar_chart_painter.dart';
 
 class BarChart extends BarLineScatterCandleBubbleChart<BarChartPainter,
@@ -8,17 +7,8 @@ class BarChart extends BarLineScatterCandleBubbleChart<BarChartPainter,
   BarChart(BarChartController controller) : super(controller);
 
   @override
-  BarChartState createChartState() {
-    return BarChartState();
-  }
-
-  void groupBars(double fromX, double groupSpace, double barSpace) {
-    if (controller.data == null) {
-      throw Exception(
-          "You need to set data for the chart before grouping bars.");
-    } else {
-      (controller.data as BarData).groupBars(fromX, groupSpace, barSpace);
-    }
+  BarLineScatterCandleBubbleState<BarChart> createChartState() {
+    return BarLineScatterCandleBubbleState<BarChart>();
   }
 
   @override
@@ -77,15 +67,4 @@ class BarChart extends BarLineScatterCandleBubbleChart<BarChartPainter,
   }
 
   BarChartPainter get painter => super.painter;
-}
-
-class BarChartState<T extends BarChart>
-    extends BarLineScatterCandleBubbleState<T> {
-  @override
-  void updatePainter() {
-    if (widget.painter.getData() != null &&
-        widget.painter.getData().dataSets != null &&
-        widget.painter.getData().dataSets.length > 0)
-      widget.painter.highlightValue6(lastHighlighted, false);
-  }
 }

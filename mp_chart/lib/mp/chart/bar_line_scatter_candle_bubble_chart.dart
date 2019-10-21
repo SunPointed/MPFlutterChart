@@ -63,7 +63,7 @@ abstract class BarLineScatterCandleBubbleChart<
   }
 }
 
-abstract class BarLineScatterCandleBubbleState<
+class BarLineScatterCandleBubbleState<
     T extends BarLineScatterCandleBubbleChart> extends ChartState<T> {
   IDataSet _closestDataSetToTouch;
 
@@ -80,7 +80,7 @@ abstract class BarLineScatterCandleBubbleState<
     double xTrans = x - vph.offsetLeft();
     double yTrans = 0.0;
 
-    // check if axis is inverted
+    /// check if axis is inverted
     if (_inverted()) {
       yTrans = -(y - vph.offsetTop());
     } else {
@@ -114,7 +114,6 @@ abstract class BarLineScatterCandleBubbleState<
       MPPointF trans = _getTrans(_curX, _curY);
       widget.painter.zoom(widget.painter.scaleXEnabled ? 1.4 : 1,
           widget.painter.scaleYEnabled ? 1.4 : 1, trans.x, trans.y);
-//      painter.getOnChartGestureListener()?.onChartDoubleTapped(_curX, _curY);
       setStateIfNotDispose();
       MPPointF.recycleInstance(trans);
     }
@@ -143,7 +142,6 @@ abstract class BarLineScatterCandleBubbleState<
       return;
     }
 
-//    OnChartGestureListener listener = painter.getOnChartGestureListener();
     if (_scaleX == detail.horizontalScale && _scaleY == detail.verticalScale) {
       if (_isZoom) {
         return;
@@ -153,7 +151,7 @@ abstract class BarLineScatterCandleBubbleState<
       var dy = detail.localFocalPoint.dy - _curY;
       if (widget.painter.dragYEnabled && widget.painter.dragXEnabled) {
         if (_inverted()) {
-          // if there is an inverted horizontalbarchart
+          /// if there is an inverted horizontalbarchart
           if (widget is HorizontalBarChart) {
             dx = -dx;
           } else {
@@ -161,15 +159,11 @@ abstract class BarLineScatterCandleBubbleState<
           }
         }
         widget.painter.translate(dx, dy);
-        _dragHighlight(
-            Offset(detail.localFocalPoint.dx, detail.localFocalPoint.dy));
-//        listener?.onChartTranslate(
-//            detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
         setStateIfNotDispose();
       } else {
         if (widget.painter.dragXEnabled) {
           if (_inverted()) {
-            // if there is an inverted horizontalbarchart
+            /// if there is an inverted horizontalbarchart
             if (widget is HorizontalBarChart) {
               dx = -dx;
             } else {
@@ -177,13 +171,10 @@ abstract class BarLineScatterCandleBubbleState<
             }
           }
           widget.painter.translate(dx, 0.0);
-          _dragHighlight(Offset(detail.localFocalPoint.dx, 0.0));
-//          listener?.onChartTranslate(
-//              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
           setStateIfNotDispose();
         } else if (widget.painter.dragYEnabled) {
           if (_inverted()) {
-            // if there is an inverted horizontalbarchart
+            /// if there is an inverted horizontalbarchart
             if (widget is HorizontalBarChart) {
               dx = -dx;
             } else {
@@ -191,9 +182,6 @@ abstract class BarLineScatterCandleBubbleState<
             }
           }
           widget.painter.translate(0.0, dy);
-          _dragHighlight(Offset(0.0, detail.localFocalPoint.dy));
-//          listener?.onChartTranslate(
-//              detail.localFocalPoint.dx, detail.localFocalPoint.dy, dx, dy);
           setStateIfNotDispose();
         }
       }
@@ -224,8 +212,6 @@ abstract class BarLineScatterCandleBubbleState<
 
       if (canZoomMoreX && canZoomMoreY) {
         widget.painter.zoom(scaleX, scaleY, trans.x, trans.y);
-//      listener?.onChartScale(
-//          detail.localFocalPoint.dx, detail.localFocalPoint.dy, scaleX, scaleY);
         setStateIfNotDispose();
       } else {
         if (canZoomMoreX) {
@@ -245,19 +231,6 @@ abstract class BarLineScatterCandleBubbleState<
     _curY = detail.localFocalPoint.dy;
   }
 
-  void _dragHighlight(Offset offset) {
-    if (widget.painter.highlightPerDragEnabled) {
-      Highlight h =
-          widget.painter.getHighlightByTouchPoint(offset.dx, offset.dy);
-      if (h != null && !h.equalTo(lastHighlighted)) {
-        lastHighlighted = h;
-        widget.painter.highlightValue6(h, true);
-      }
-    } else {
-      lastHighlighted = null;
-    }
-  }
-
   @override
   void onSingleTapUp(TapUpDetails detail) {
     if (widget.painter.highLightPerTapEnabled) {
@@ -265,11 +238,17 @@ abstract class BarLineScatterCandleBubbleState<
           detail.localPosition.dx, detail.localPosition.dy);
       lastHighlighted =
           HighlightUtils.performHighlight(widget.painter, h, lastHighlighted);
-//      painter.getOnChartGestureListener()?.onChartSingleTapped(
-//          detail.localPosition.dx, detail.localPosition.dy);
       setStateIfNotDispose();
     } else {
       lastHighlighted = null;
     }
+  }
+
+  @override
+  void updatePainter() {
+    if (widget.painter.getData() != null &&
+        widget.painter.getData().dataSets != null &&
+        widget.painter.getData().dataSets.length > 0)
+      widget.painter.highlightValue6(lastHighlighted, false);
   }
 }

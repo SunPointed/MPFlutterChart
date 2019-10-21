@@ -130,4 +130,13 @@ class BarChartController extends BarLineScatterCandleBubbleController {
   IMarker initMarker() => BarChartMarker();
 
   BarData get data => super.data;
+
+  void groupBars(double fromX, double groupSpace, double barSpace) {
+    if (data == null) {
+      throw Exception(
+          "You need to set data for the chart before grouping bars.");
+    } else {
+      data.groupBars(fromX, groupSpace, barSpace);
+    }
+  }
 }

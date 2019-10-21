@@ -14,7 +14,7 @@ abstract class ComponentBase {
   double _yOffset = 5;
 
   /// the typeface used for the labels
-  TypeFace _typeface = null;
+  TypeFace _typeface;
 
   /// the text size of the labels
   double _textSize = Utils.convertDpToPixel(10);

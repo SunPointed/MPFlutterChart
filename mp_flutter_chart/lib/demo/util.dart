@@ -35,6 +35,7 @@ abstract class Util {
   static TypeFace BOLD =
   TypeFace(fontFamily: "OpenSans", fontWeight: FontWeight.w700);
 
+
   static TypeFace EXTRA_BOLD =
       TypeFace(fontFamily: "OpenSans", fontWeight: FontWeight.w800);
 }

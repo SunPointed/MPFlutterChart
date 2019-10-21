@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:mp_chart/mp/chart/bar_line_scatter_candle_bubble_chart.dart';
 import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
-import 'package:mp_chart/mp/painter/bar_line_chart_painter.dart';
 
 class DayAxisValueFormatter extends ValueFormatter {
   final List<String> _months = List()

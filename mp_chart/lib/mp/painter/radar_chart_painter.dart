@@ -191,21 +191,17 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
     drawMarkers(canvas);
   }
 
-  /**
-   * Returns the factor that is needed to transform values into pixels.
-   *
-   * @return
-   */
+  /// Returns the factor that is needed to transform values into pixels.
+  ///
+  /// @return
   double getFactor() {
     Rect content = viewPortHandler.getContentRect();
     return min(content.width / 2, content.height / 2) / _yAxis.axisRange;
   }
 
-  /**
-   * Returns the angle that each slice in the radar chart occupies.
-   *
-   * @return
-   */
+  /// Returns the angle that each slice in the radar chart occupies.
+  ///
+  /// @return
   double getSliceAngle() {
     return 360 / getData().getMaxEntryCountSet().getEntryCount();
   }
@@ -252,16 +248,12 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
     return min(content.width / 2, content.height / 2);
   }
 
-  /**
-   * Returns the maximum value this chart can display on it's y-axis.
-   */
+  /// Returns the maximum value this chart can display on it's y-axis.
   double getYChartMax() {
     return _yAxis.axisMaximum;
   }
 
-  /**
-   * Returns the minimum value this chart can display on it's y-axis.
-   */
+  /// Returns the minimum value this chart can display on it's y-axis.
   double getYChartMin() {
     return _yAxis.axisMinimum;
   }

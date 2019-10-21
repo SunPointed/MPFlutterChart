@@ -168,8 +168,6 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
                     groupCount)
             ..setValueFormatter(A());
           // (0.2 + 0.03) * 4 + 0.08 = 1.00 -> interval per "group"
-          (chart as BarChart)
-              .groupBars(startYear.toDouble(), groupSpace, barSpace);
         },
         drawGridBackground: false,
         dragXEnabled: true,
@@ -181,6 +179,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
         selectionListener: this,
         drawBarShadow: false,
         description: desc);
+    controller.groupBars(startYear.toDouble(), groupSpace, barSpace);
   }
 
   int groupCount;

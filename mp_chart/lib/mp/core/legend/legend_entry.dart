@@ -43,12 +43,10 @@ class LegendEntry {
   /// Set as NaN to use the legend's default
   double _formLineWidth = double.nan;
 
-  /**
-   * Line dash path effect used for shapes that consist of lines.
-   *
-   * Set to null to use the legend's default
-   */
-  DashPathEffect formLineDashEffect = null;
+  /// Line dash path effect used for shapes that consist of lines.
+  ///
+  /// Set to null to use the legend's default
+  DashPathEffect formLineDashEffect;
 
   /// The color for drawing the form
   Color _formColor = ColorUtils.COLOR_NONE;

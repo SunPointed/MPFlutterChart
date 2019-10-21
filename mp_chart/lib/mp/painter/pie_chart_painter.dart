@@ -18,8 +18,6 @@ import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_chart/mp/core/render/pie_chart_renderer.dart';
-import 'package:mp_chart/mp/core/utils/color_utils.dart';
-import 'package:mp_chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
 import 'package:mp_chart/mp/painter/pie_redar_chart_painter.dart';
@@ -443,6 +441,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
 
   @override
   double getRequiredLegendOffset() {
+    // ignore: null_aware_before_operator
     var offset = legendRenderer.legendLabelPaint.text?.style?.fontSize * 2.0;
     return offset == null ? Utils.convertDpToPixel(9) : offset;
   }

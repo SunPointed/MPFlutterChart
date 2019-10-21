@@ -44,10 +44,8 @@ class Legend extends ComponentBase {
   /// the size of the legend forms/shapes
   double _formLineWidth = 3;
 
-  /**
-   * Line dash path effect used for shapes that consist of lines.
-   */
-  DashPathEffect _formLineDashEffect = null;
+  /// Line dash path effect used for shapes that consist of lines.
+  DashPathEffect _formLineDashEffect;
 
   /// the space between the legend entries on a horizontal axis, default 6f
   double _xEntrySpace = 6;
@@ -253,18 +251,14 @@ class Legend extends ComponentBase {
     _formLineWidth = value;
   }
 
-  /**
-   * Sets the line dash path effect used for shapes that consist of lines.
-   *
-   * @param dashPathEffect
-   */
+  /// Sets the line dash path effect used for shapes that consist of lines.
+  ///
+  /// @param dashPathEffect
   void setFormLineDashEffect(DashPathEffect dashPathEffect) {
     _formLineDashEffect = dashPathEffect;
   }
 
-  /**
-   * @return The line dash path effect used for shapes that consist of lines.
-   */
+  /// @return The line dash path effect used for shapes that consist of lines.
   DashPathEffect getFormLineDashEffect() {
     return _formLineDashEffect;
   }

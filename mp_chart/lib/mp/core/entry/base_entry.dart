@@ -5,10 +5,10 @@ abstract class BaseEntry {
   double _y = 0;
 
   /// optional spot for additional data this Entry represents
-  Object _data = null;
+  Object _data;
 
   /// optional icon image
-  ui.Image _icon = null;
+  ui.Image _icon;
 
   BaseEntry({double y, ui.Image icon, Object data}) {
     this._y = y;

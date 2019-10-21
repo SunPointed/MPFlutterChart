@@ -14,14 +14,14 @@ import 'package:mp_chart/mp/core/utils/utils.dart';
 
 abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   /// List representing all colors that are used for this DataSet
-  List<ui.Color> _colors = null;
+  List<ui.Color> _colors;
 
-  GradientColor _gradientColor = null;
+  GradientColor _gradientColor;
 
-  List<GradientColor> _gradientColors = null;
+  List<GradientColor> _gradientColors;
 
   /// List representing all colors that are used for drawing the actual values for this DataSet
-  List<ui.Color> _valueColors = null;
+  List<ui.Color> _valueColors;
 
   /// label that describes the DataSet or the data the DataSet represents
   String _label = "DataSet";
@@ -41,7 +41,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   LegendForm _form = LegendForm.DEFAULT;
   double _formSize = double.nan;
   double _formLineWidth = double.nan;
-  DashPathEffect _formLineDashEffect = null;
+  DashPathEffect _formLineDashEffect;
 
   /// if true, y-values are drawn on the chart
   bool _drawValues = true;
@@ -85,9 +85,7 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
     calcMinMax();
   }
 
-  /**
-   * ###### ###### COLOR GETTING RELATED METHODS ##### ######
-   */
+  /// ###### ###### COLOR GETTING RELATED METHODS ##### ######
 
   @override
   List<ui.Color> getColors() {

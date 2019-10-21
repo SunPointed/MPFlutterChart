@@ -147,7 +147,6 @@ class A extends ValueFormatter {
   @override
   String getFormattedValue1(double value) {
     return _data[min(max(value.toInt(), 0), _data.length - 1)].xAxisValue;
-    ;
   }
 }
 
