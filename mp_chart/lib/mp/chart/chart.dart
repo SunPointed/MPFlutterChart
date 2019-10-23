@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:mp_chart/mp/controller/controller.dart';
+import 'package:mp_chart/mp/core/adapter_gesture_detector.dart';
+import 'package:mp_chart/mp/core/local_position_util.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -69,6 +71,7 @@ abstract class ChartState<T extends Chart> extends State<T> {
     widget.controller.doneBeforePainterInit();
     widget.controller.initialPainter();
     updatePainter();
+
     return Screenshot(
         controller: _screenshotController,
         child: Container(
@@ -81,29 +84,41 @@ abstract class ChartState<T extends Chart> extends State<T> {
                       constraints: BoxConstraints(
                           minHeight: double.infinity,
                           minWidth: double.infinity),
-                      child: GestureDetector(
-                          onTapDown: (detail) {
+                      child: AdapterGestureDetector(
+                          adapterOnTapDown: (detail, context) {
                             _singleTap = true;
-                            onTapDown(detail);
+                            onTapDown(
+                                detail,
+                                LocalPositionUtil.getLocalPosition(
+                                    detail.globalPosition, context));
                           },
-                          onTapUp: (detail) {
+                          adapterOnTapUp: (detail, context) {
                             if (_singleTap) {
                               _singleTap = false;
-                              onSingleTapUp(detail);
+                              onSingleTapUp(
+                                  detail,
+                                  LocalPositionUtil.getLocalPosition(
+                                      detail.globalPosition, context));
                             }
                           },
-                          onDoubleTap: () {
+                          adapterOnDoubleTap: (context) {
                             _singleTap = false;
                             onDoubleTap();
                           },
-                          onScaleStart: (detail) {
-                            onScaleStart(detail);
+                          adapterOnScaleStart: (detail, context) {
+                            onScaleStart(
+                                detail,
+                                LocalPositionUtil.getLocalPosition(
+                                    detail.focalPoint, context));
                           },
-                          onScaleUpdate: (detail) {
+                          adapterOnScaleUpdate: (detail, context) {
                             _singleTap = false;
-                            onScaleUpdate(detail);
+                            onScaleUpdate(
+                                detail,
+                                LocalPositionUtil.getLocalPosition(
+                                    detail.focalPoint, context));
                           },
-                          onScaleEnd: (detail) {
+                          adapterOnScaleEnd: (detail, context) {
                             onScaleEnd(detail);
                           },
                           child:
@@ -120,13 +135,13 @@ abstract class ChartState<T extends Chart> extends State<T> {
 
   void onDoubleTap();
 
-  void onScaleStart(ScaleStartDetails detail);
+  void onScaleStart(ScaleStartDetails detail, Offset localFocalPoint);
 
-  void onScaleUpdate(ScaleUpdateDetails detail);
+  void onScaleUpdate(ScaleUpdateDetails detail, Offset localFocalPoint);
 
   void onScaleEnd(ScaleEndDetails detail);
 
-  void onTapDown(TapDownDetails detail);
+  void onTapDown(TapDownDetails detail, Offset localPosition);
 
-  void onSingleTapUp(TapUpDetails detail);
+  void onSingleTapUp(TapUpDetails detail, Offset localPosition);
 }

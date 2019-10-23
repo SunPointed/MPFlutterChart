@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/widgets.dart';
 import 'package:mp_chart/mp/core/adapter_android_mp.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -33,9 +34,13 @@ abstract class Util {
       TypeFace(fontFamily: "OpenSans", fontWeight: FontWeight.w300);
 
   static TypeFace BOLD =
-  TypeFace(fontFamily: "OpenSans", fontWeight: FontWeight.w700);
-
+      TypeFace(fontFamily: "OpenSans", fontWeight: FontWeight.w700);
 
   static TypeFace EXTRA_BOLD =
       TypeFace(fontFamily: "OpenSans", fontWeight: FontWeight.w800);
+
+  static Offset getLocalPosition(Offset globalPosition, BuildContext context) {
+    RenderBox getBox = context.findRenderObject() as RenderBox;
+    return getBox.globalToLocal(globalPosition);
+  }
 }

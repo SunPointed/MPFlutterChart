@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/src/gestures/scale.dart';
 import 'package:flutter/src/gestures/tap.dart';
 import 'package:mp_chart/mp/chart/bar_line_scatter_candle_bubble_chart.dart';
@@ -55,11 +57,11 @@ class CombinedChartState extends ChartState<CombinedChart> {
   }
 
   @override
-  void onTapDown(TapDownDetails detail) {
-    _curX = detail.localPosition.dx;
-    _curY = detail.localPosition.dy;
-    _closestDataSetToTouch = widget.controller.painter.getDataSetByTouchPoint(
-        detail.localPosition.dx, detail.localPosition.dy);
+  void onTapDown(TapDownDetails detail, Offset localPosition) {
+    _curX = localPosition.dx;
+    _curY = localPosition.dy;
+    _closestDataSetToTouch = widget.controller.painter
+        .getDataSetByTouchPoint(localPosition.dx, localPosition.dy);
   }
 
   @override
@@ -87,13 +89,13 @@ class CombinedChartState extends ChartState<CombinedChart> {
   }
 
   @override
-  void onScaleStart(ScaleStartDetails detail) {
-    _curX = detail.localFocalPoint.dx;
-    _curY = detail.localFocalPoint.dy;
+  void onScaleStart(ScaleStartDetails detail, Offset localFocalPoint) {
+    _curX = localFocalPoint.dx;
+    _curY = localFocalPoint.dy;
   }
 
   @override
-  void onScaleUpdate(ScaleUpdateDetails detail) {
+  void onScaleUpdate(ScaleUpdateDetails detail, Offset localFocalPoint) {
     if (_scaleX == -1.0 && _scaleY == -1.0) {
       _scaleX = detail.horizontalScale;
       _scaleY = detail.verticalScale;
@@ -105,8 +107,8 @@ class CombinedChartState extends ChartState<CombinedChart> {
         return;
       }
 
-      var dx = detail.localFocalPoint.dx - _curX;
-      var dy = detail.localFocalPoint.dy - _curY;
+      var dx = localFocalPoint.dx - _curX;
+      var dy = localFocalPoint.dy - _curY;
       if (widget.controller.painter.dragYEnabled &&
           widget.controller.painter.dragXEnabled) {
         if (_inverted()) {
@@ -126,8 +128,8 @@ class CombinedChartState extends ChartState<CombinedChart> {
           setStateIfNotDispose();
         }
       }
-      _curX = detail.localFocalPoint.dx;
-      _curY = detail.localFocalPoint.dy;
+      _curX = localFocalPoint.dx;
+      _curY = localFocalPoint.dy;
     } else {
       var scaleX = detail.horizontalScale / _scaleX;
       var scaleY = detail.verticalScale / _scaleY;
@@ -148,17 +150,17 @@ class CombinedChartState extends ChartState<CombinedChart> {
     }
     _scaleX = detail.horizontalScale;
     _scaleY = detail.verticalScale;
-    _curX = detail.localFocalPoint.dx;
-    _curY = detail.localFocalPoint.dy;
+    _curX = localFocalPoint.dx;
+    _curY = localFocalPoint.dy;
   }
 
   Highlight _lastHighlighted;
 
   @override
-  void onSingleTapUp(TapUpDetails detail) {
+  void onSingleTapUp(TapUpDetails detail, Offset localPosition) {
     if (widget.controller.painter.highlightPerDragEnabled) {
-      Highlight h = widget.controller.painter.getHighlightByTouchPoint(
-          detail.localPosition.dx, detail.localPosition.dy);
+      Highlight h = widget.controller.painter
+          .getHighlightByTouchPoint(localPosition.dx, localPosition.dy);
       _lastHighlighted = HighlightUtils.performHighlight(
           widget.controller.painter, h, _lastHighlighted);
       setStateIfNotDispose();

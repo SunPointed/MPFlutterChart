@@ -36,25 +36,24 @@ abstract class PieRadarChartState<T extends PieRadarChart>
   void onScaleEnd(ScaleEndDetails detail) {}
 
   @override
-  void onScaleStart(ScaleStartDetails detail) {
-    _setGestureStartAngle(detail.localFocalPoint.dx, detail.localFocalPoint.dy);
+  void onScaleStart(ScaleStartDetails detail, Offset localFocalPoint) {
+    _setGestureStartAngle(localFocalPoint.dx, localFocalPoint.dy);
     _touchStartPoint
-      ..x = detail.localFocalPoint.dx
-      ..y = detail.localFocalPoint.dy;
+      ..x = localFocalPoint.dx
+      ..y = localFocalPoint.dy;
   }
 
   @override
-  void onScaleUpdate(ScaleUpdateDetails detail) {
-    _updateGestureRotation(
-        detail.localFocalPoint.dx, detail.localFocalPoint.dy);
+  void onScaleUpdate(ScaleUpdateDetails detail, Offset localFocalPoint) {
+    _updateGestureRotation(localFocalPoint.dx, localFocalPoint.dy);
     setStateIfNotDispose();
   }
 
   @override
-  void onSingleTapUp(TapUpDetails detail) {
+  void onSingleTapUp(TapUpDetails detail, Offset localPosition) {
     if (widget.controller.painter.highLightPerTapEnabled) {
-      Highlight h = widget.controller.painter.getHighlightByTouchPoint(
-          detail.localPosition.dx, detail.localPosition.dy);
+      Highlight h = widget.controller.painter
+          .getHighlightByTouchPoint(localPosition.dx, localPosition.dy);
       lastHighlighted = HighlightUtils.performHighlight(
           widget.controller.painter, h, lastHighlighted);
       setStateIfNotDispose();
@@ -64,7 +63,7 @@ abstract class PieRadarChartState<T extends PieRadarChart>
   }
 
   @override
-  void onTapDown(TapDownDetails detail) {}
+  void onTapDown(TapDownDetails detail, Offset localPosition) {}
 
   @override
   void updatePainter() {

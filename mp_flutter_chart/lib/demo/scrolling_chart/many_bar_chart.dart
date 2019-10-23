@@ -11,6 +11,7 @@ import 'package:mp_chart/mp/core/entry/bar_entry.dart';
 import 'package:mp_chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:mp_flutter_chart/demo/adapter_listener.dart';
 import 'package:mp_flutter_chart/demo/util.dart';
 
 class ScrollingChartManyBar extends StatefulWidget {
@@ -43,46 +44,48 @@ class ScrollingChartManyBarState
     return Stack(
       children: <Widget>[
         Positioned(
-          right: 0,
-          left: 0,
-          top: 0,
-          bottom: 0,
-          child: Listener(
-            onPointerDown: (e) {
-              _curX = e.localPosition.dx;
-              _preTime = Util.currentTimeMillis();
-            },
-            onPointerMove: (e) {
-              if (_isParentMove) {
-                var diff = Util.currentTimeMillis() - _preTime;
-                if (diff >= 500 && diff <= 600) {
-                  if ((_curX - e.localPosition.dx).abs() < 5) {
-                    _isParentMove = false;
-                    if (mounted) {
-                      setState(() {});
+            right: 0,
+            left: 0,
+            top: 0,
+            bottom: 0,
+            child: AdapterListener(
+              child: ListView.builder(
+                  itemCount: _controllers.length,
+                  itemBuilder: (context, index) {
+                    return _renderItem(index);
+                  },
+                  physics: _isParentMove
+                      ? PageScrollPhysics()
+                      : NeverScrollableScrollPhysics()),
+              adapterOnPointerDown: (e, c) {
+                var localPosition = Util.getLocalPosition(e.position, c);
+                _curX = localPosition.dx;
+                _preTime = Util.currentTimeMillis();
+              },
+              adapterOnPointerMove: (e, c) {
+                if (_isParentMove) {
+                  var diff = Util.currentTimeMillis() - _preTime;
+                  if (diff >= 500 && diff <= 600) {
+                    var localPosition =
+                        Util.getLocalPosition(e.position, c);
+                    if ((_curX - localPosition.dx).abs() < 5) {
+                      _isParentMove = false;
+                      if (mounted) {
+                        setState(() {});
+                      }
                     }
                   }
                 }
-              }
-            },
-            onPointerUp: (e) {
-              if (!_isParentMove) {
-                _isParentMove = true;
-                if (mounted) {
-                  setState(() {});
+              },
+              adapterOnPointerUp: (e, c) {
+                if (!_isParentMove) {
+                  _isParentMove = true;
+                  if (mounted) {
+                    setState(() {});
+                  }
                 }
-              }
-            },
-            child: ListView.builder(
-                itemCount: _controllers.length,
-                itemBuilder: (context, index) {
-                  return _renderItem(index);
-                },
-                physics: _isParentMove
-                    ? PageScrollPhysics()
-                    : NeverScrollableScrollPhysics()),
-          ),
-        ),
+              },
+            )),
       ],
     );
   }
