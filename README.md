@@ -2,6 +2,8 @@
 
 flutter charts just like [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart)
 
+The minimum version currently supported is 1.7.3
+
 Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when translate this library to flutter I learned a lot about matrix use in animation.
 
 ## todos

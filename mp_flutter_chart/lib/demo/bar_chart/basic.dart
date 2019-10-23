@@ -164,7 +164,6 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..xEntrySpace = 4;
         },
         xAxisSettingFunction: (xAxis, controller) {
-          print(controller);
           xAxis
             ..typeface = Util.LIGHT
             ..position = XAxisPosition.BOTTOM
