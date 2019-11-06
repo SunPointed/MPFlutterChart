@@ -4,7 +4,7 @@ PODS:
     - Flutter
   - path_provider (0.0.1):
     - Flutter
-  - permission_handler (3.2.2):
+  - permission_handler (3.3.0):
     - Flutter
   - url_launcher (0.0.1):
     - Flutter
@@ -31,9 +31,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
   image_gallery_saver: 73b3cd8ad9c950c739878af9c311744d1bf5405d
-  path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
-  permission_handler: d59f41439f5bc6c4d1005f3355e98f05ddc68ece
-  url_launcher: 0067ddb8f10d36786672aa0722a21717dba3a298
+  path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
+  permission_handler: 67637977b227d62d46bfbf524f335f8568de5a73
+  url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
 
 PODFILE CHECKSUM: 7fb83752f59ead6285236625b82473f90b1cb932
 

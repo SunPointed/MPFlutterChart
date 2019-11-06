@@ -33,18 +33,18 @@ class ChartAnimator {
 
   bool get needReset => _isShowed;
 
-  void spin(int durationMillis, double fro_angle, double toAngle,
+  void spin(int durationMillis, double fromAngle, double toAngle,
       EasingFunction easing) {
     if (_isShowed ||
         _countdownTimer != null ||
         durationMillis < 0 ||
-        fro_angle >= toAngle) {
+        fromAngle >= toAngle) {
       return;
     }
     reset();
     _isShowed = true;
     final double totalTime = durationMillis.toDouble();
-    _angle = fro_angle;
+    _angle = fromAngle;
     _countdownTimer =
         Timer.periodic(Duration(milliseconds: REFRESH_RATE), (timer) {
       if (durationMillis < 0) {
