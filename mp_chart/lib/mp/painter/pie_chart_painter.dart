@@ -77,7 +77,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   TypeFace _entryLabelTypeface;
 
   PieChartPainter(PieData data,
-      ChartAnimator animator,
+      Animator animator,
       ViewPortHandler viewPortHandler,
       double maxHighlightDistance,
       bool highLightPerTapEnabled,

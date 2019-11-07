@@ -31,7 +31,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
   Paint _shadowPaint;
   Paint _barBorderPaint;
 
-  BarChartRenderer(BarDataProvider chart, ChartAnimator animator,
+  BarChartRenderer(BarDataProvider chart, Animator animator,
       ViewPortHandler viewPortHandler)
       : super(animator, viewPortHandler) {
     this._provider = chart;

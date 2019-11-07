@@ -136,7 +136,7 @@ T extends BarLineScatterCandleBubbleData<
   bool get doubleTapToZoomEnabled => _doubleTapToZoomEnabled;
 
   BarLineChartBasePainter(T data,
-      ChartAnimator animator,
+      Animator animator,
       ViewPortHandler viewPortHandler,
       double maxHighlightDistance,
       bool highLightPerTapEnabled,

@@ -21,7 +21,7 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
     implements CandleDataProvider {
   CandlestickChartPainter(
     CandleData data,
-    ChartAnimator animator,
+    Animator animator,
     ViewPortHandler viewPortHandler,
     double maxHighlightDistance,
     bool highLightPerTapEnabled,

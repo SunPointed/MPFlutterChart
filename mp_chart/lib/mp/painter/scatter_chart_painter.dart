@@ -21,7 +21,7 @@ class ScatterChartPainter extends BarLineChartBasePainter<ScatterData>
     implements ScatterDataProvider {
   ScatterChartPainter(
     ScatterData data,
-    ChartAnimator animator,
+    Animator animator,
     ViewPortHandler viewPortHandler,
     double maxHighlightDistance,
     bool highLightPerTapEnabled,

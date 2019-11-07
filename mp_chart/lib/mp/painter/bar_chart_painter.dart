@@ -38,7 +38,7 @@ class BarChartPainter extends BarLineChartBasePainter<BarData>
 
   BarChartPainter(
       BarData data,
-      ChartAnimator animator,
+      Animator animator,
       ViewPortHandler viewPortHandler,
       double maxHighlightDistance,
       bool highLightPerTapEnabled,

@@ -49,7 +49,7 @@ class PieChartRenderer extends DataRenderer {
 
 //   Canvas mBitmapCanvas;
 
-  PieChartRenderer(PieChartPainter chart, ChartAnimator animator,
+  PieChartRenderer(PieChartPainter chart, Animator animator,
       ViewPortHandler viewPortHandler,
       {TypeFace centerTextTypeface, TypeFace entryLabelTypeface})
       : super(animator, viewPortHandler) {

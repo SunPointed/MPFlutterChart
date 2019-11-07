@@ -46,7 +46,7 @@ class LineChartRenderer extends LineRadarRenderer {
   Path _cubicPath = Path();
   Path _cubicFillPath = Path();
 
-  LineChartRenderer(LineDataProvider chart, ChartAnimator animator,
+  LineChartRenderer(LineDataProvider chart, Animator animator,
       ViewPortHandler viewPortHandler)
       : super(animator, viewPortHandler) {
     _provider = chart;

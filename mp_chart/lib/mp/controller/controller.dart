@@ -19,7 +19,7 @@ abstract class Controller<P extends ChartPainter>
     implements AnimatorUpdateListener {
   ChartState state;
   ChartData data;
-  ChartAnimator animator;
+  Animator animator;
   P _painter;
 
   ////// needed
@@ -45,31 +45,32 @@ abstract class Controller<P extends ChartPainter>
   LegendSettingFunction legendSettingFunction;
   DataRendererSettingFunction rendererSettingFunction;
 
-  Controller({this.marker,
-    this.description,
-    this.viewPortHandler,
-    this.xAxis,
-    this.legend,
-    this.legendRenderer,
-    this.selectionListener,
-    this.maxHighlightDistance = 100.0,
-    this.highLightPerTapEnabled = true,
-    this.extraTopOffset = 0.0,
-    this.extraRightOffset = 0.0,
-    this.extraBottomOffset = 0.0,
-    this.extraLeftOffset = 0.0,
-    this.drawMarkers = true,
-    double descTextSize = 12,
-    double infoTextSize = 12,
-    Color descTextColor,
-    Color infoTextColor,
-    this.descPaint,
-    this.infoPaint,
-    String noDataText = "No chart data available.",
-    this.xAxisSettingFunction,
-    this.legendSettingFunction,
-    this.rendererSettingFunction}) {
-    animator = ChartAnimator(this);
+  Controller(
+      {this.marker,
+      this.description,
+      this.viewPortHandler,
+      this.xAxis,
+      this.legend,
+      this.legendRenderer,
+      this.selectionListener,
+      this.maxHighlightDistance = 100.0,
+      this.highLightPerTapEnabled = true,
+      this.extraTopOffset = 0.0,
+      this.extraRightOffset = 0.0,
+      this.extraBottomOffset = 0.0,
+      this.extraLeftOffset = 0.0,
+      this.drawMarkers = true,
+      double descTextSize = 12,
+      double infoTextSize = 12,
+      Color descTextColor,
+      Color infoTextColor,
+      this.descPaint,
+      this.infoPaint,
+      String noDataText = "No chart data available.",
+      this.xAxisSettingFunction,
+      this.legendSettingFunction,
+      this.rendererSettingFunction}) {
+    animator = ChartAnimatorBySys(this);
     if (descTextColor == null) {
       descTextColor = ColorUtils.BLACK;
     }

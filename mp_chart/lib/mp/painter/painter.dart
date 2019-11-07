@@ -29,7 +29,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   final T _data;
 
   /// object responsible for animations
-  final ChartAnimator _animator;
+  final Animator _animator;
 
   /// object that manages the bounds and drawing constraints of the chart
   final ViewPortHandler _viewPortHandler;
@@ -112,7 +112,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
 
   bool get isDrawMarkers => _drawMarkers;
 
-  ChartAnimator get animator => _animator;
+  Animator get animator => _animator;
 
   Size get size => _size;
 
@@ -122,7 +122,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
 
   ChartPainter(
       T data,
-      ChartAnimator animator,
+      Animator animator,
       ViewPortHandler viewPortHandler,
       double maxHighlightDistance,
       bool highLightPerTapEnabled,

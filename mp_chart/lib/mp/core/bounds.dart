@@ -16,7 +16,7 @@ class XBounds {
   /// range of visible entry indices
   int _range;
 
-  ChartAnimator _animator;
+  Animator _animator;
 
   XBounds(this._animator);
 

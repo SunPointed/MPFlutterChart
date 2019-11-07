@@ -22,7 +22,7 @@ class LineChartPainter extends BarLineChartBasePainter<LineData>
     implements LineDataProvider {
   LineChartPainter(
     LineData data,
-    ChartAnimator animator,
+    Animator animator,
     ViewPortHandler viewPortHandler,
     double maxHighlightDistance,
     bool highLightPerTapEnabled,

@@ -21,7 +21,7 @@ class BubbleChartPainter extends BarLineChartBasePainter<BubbleData>
     implements BubbleDataProvider {
   BubbleChartPainter(
       BubbleData data,
-      ChartAnimator animator,
+      Animator animator,
       ViewPortHandler viewPortHandler,
       double maxHighlightDistance,
       bool highLightPerTapEnabled,

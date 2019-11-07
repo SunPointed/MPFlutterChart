@@ -64,7 +64,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData> {
   YAxis get yAxis => _yAxis;
 
   RadarChartPainter(RadarData data,
-      ChartAnimator animator,
+      Animator animator,
       ViewPortHandler viewPortHandler,
       double maxHighlightDistance,
       bool highLightPerTapEnabled,

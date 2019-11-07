@@ -39,7 +39,7 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>>
   Color _backgroundColor;
 
   PieRadarChartPainter(T data,
-      ChartAnimator animator,
+      Animator animator,
       ViewPortHandler viewPortHandler,
       double maxHighlightDistance,
       bool highLightPerTapEnabled,
