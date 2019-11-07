@@ -1,4 +1,4 @@
-# mp_flutter_chart
+# MPFlutterChart
 
 flutter charts just like [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart)
 
