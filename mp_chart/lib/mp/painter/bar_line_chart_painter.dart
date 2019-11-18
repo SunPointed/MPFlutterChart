@@ -45,6 +45,7 @@ T extends BarLineScatterCandleBubbleData<
   /// flag that indicates if pinch-zoom is enabled. if true, both x and y axis
   /// can be scaled with 2 fingers, if false, x and y axis can be scaled
   /// separately
+  // ignore: unused_field
   final bool _pinchZoomEnabled;
 
   /// flag that indicates if double tap zoom is enabled or not
@@ -79,9 +80,11 @@ T extends BarLineScatterCandleBubbleData<
   final double _minOffset;
 
   /// flag indicating if the chart should stay at the same position after a rotation. Default is false.
+  // ignore: unused_field
   final bool _keepPositionOnRotation;
 
   /// the listener for user drawing on the chart
+  // ignore: unused_field
   final OnDrawListener _drawListener;
 
   /// the object representing the labels on the left y-axis

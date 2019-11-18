@@ -37,7 +37,9 @@ class PieChartRenderer extends DataRenderer {
   TextPainter _entryLabelsPaint;
 
 //   StaticLayout _centerTextLayout;
+  // ignore: unused_field
   String _centerTextLastValue;
+  // ignore: unused_field
   Rect _centerTextLastBounds = Rect.zero;
   List<Rect> _rectBuffer = List()
     ..add(Rect.zero)
@@ -92,8 +94,10 @@ class PieChartRenderer extends DataRenderer {
 
   TextPainter get centerTextPaint => _centerTextPaint;
 
+  // ignore: unnecessary_getters_setters
   TextPainter get entryLabelsPaint => _entryLabelsPaint;
 
+  // ignore: unnecessary_getters_setters
   set entryLabelsPaint(TextPainter value) {
     _entryLabelsPaint = value;
   }

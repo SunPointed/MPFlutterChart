@@ -36,8 +36,10 @@ class YAxisRenderer extends AxisRenderer {
 
   YAxis get yAxis => _yAxis;
 
+  // ignore: unnecessary_getters_setters
   Paint get zeroLinePaint => _zeroLinePaint;
 
+  // ignore: unnecessary_getters_setters
   set zeroLinePaint(Paint value) {
     _zeroLinePaint = value;
   }
@@ -283,8 +285,10 @@ class YAxisRenderer extends AxisRenderer {
   List<double> _renderLimitLinesBuffer = List(2);
   Rect _limitLineClippingRect = Rect.zero;
 
+  // ignore: unnecessary_getters_setters
   Rect get limitLineClippingRect => _limitLineClippingRect;
 
+  // ignore: unnecessary_getters_setters
   set limitLineClippingRect(Rect value) {
     _limitLineClippingRect = value;
   }
@@ -376,14 +380,18 @@ class YAxisRenderer extends AxisRenderer {
     }
   }
 
+  // ignore: unnecessary_getters_setters
   Rect get gridClippingRect => _gridClippingRect;
 
+  // ignore: unnecessary_getters_setters
   set gridClippingRect(Rect value) {
     _gridClippingRect = value;
   }
 
+  // ignore: unnecessary_getters_setters
   Rect get zeroLineClippingRect => _zeroLineClippingRect;
 
+  // ignore: unnecessary_getters_setters
   set zeroLineClippingRect(Rect value) {
     _zeroLineClippingRect = value;
   }

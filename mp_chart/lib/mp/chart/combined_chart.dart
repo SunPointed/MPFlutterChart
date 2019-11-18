@@ -1,5 +1,4 @@
-import 'package:flutter/src/gestures/scale.dart';
-import 'package:flutter/src/gestures/tap.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mp_chart/mp/chart/bar_line_scatter_candle_bubble_chart.dart';
 import 'package:mp_chart/mp/chart/chart.dart';
 import 'package:mp_chart/mp/controller/combined_chart_controller.dart';

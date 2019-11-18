@@ -49,12 +49,15 @@ abstract class DataRenderer extends Renderer {
         chart.getMaxVisibleCount() * viewPortHandler.getScaleX();
   }
 
+  // ignore: unnecessary_getters_setters
   TextPainter get valuePaint => _valuePaint;
 
+  // ignore: unnecessary_getters_setters
   set valuePaint(TextPainter value) {
     _valuePaint = value;
   }
 
+  // ignore: unnecessary_getters_setters
   Paint get highlightPaint => _highlightPaint;
 
   Paint get renderPaint => _renderPaint;
@@ -63,6 +66,7 @@ abstract class DataRenderer extends Renderer {
 
   Paint get drawPaint => _drawPaint;
 
+  // ignore: unnecessary_getters_setters
   set highlightPaint(Paint value) {
     _highlightPaint = value;
   }

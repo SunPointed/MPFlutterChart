@@ -21,7 +21,7 @@ class LimitLine extends ComponentBase {
   String _label = "";
 
   /// the path effect of this LimitLine that makes dashed lines possible
-  DashPathEffect _dashPathEffect = null;
+  DashPathEffect _dashPathEffect;
 
   /// indicates the position of the LimitLine label
   LimitLabelPosition _labelPosition = LimitLabelPosition.RIGHT_TOP;
@@ -42,8 +42,10 @@ class LimitLine extends ComponentBase {
 
   double get lineWidth => _lineWidth;
 
+  // ignore: unnecessary_getters_setters
   Color get lineColor => _lineColor;
 
+  // ignore: unnecessary_getters_setters
   set lineColor(Color value) {
     _lineColor = value;
   }
@@ -70,26 +72,34 @@ class LimitLine extends ComponentBase {
     return _dashPathEffect == null ? false : true;
   }
 
+  // ignore: unnecessary_getters_setters
   DashPathEffect get dashPathEffect => _dashPathEffect;
 
+  // ignore: unnecessary_getters_setters
   set dashPathEffect(DashPathEffect value) {
     _dashPathEffect = value;
   }
 
+  // ignore: unnecessary_getters_setters
   PaintingStyle get textStyle => _textStyle;
 
+  // ignore: unnecessary_getters_setters
   set textStyle(PaintingStyle value) {
     _textStyle = value;
   }
 
+  // ignore: unnecessary_getters_setters
   LimitLabelPosition get labelPosition => _labelPosition;
 
+  // ignore: unnecessary_getters_setters
   set labelPosition(LimitLabelPosition value) {
     _labelPosition = value;
   }
 
+  // ignore: unnecessary_getters_setters
   String get label => _label;
 
+  // ignore: unnecessary_getters_setters
   set label(String value) {
     _label = value;
   }

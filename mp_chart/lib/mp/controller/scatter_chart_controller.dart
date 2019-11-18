@@ -1,22 +1,16 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mp_chart/mp/chart/chart.dart';
 import 'package:mp_chart/mp/chart/scatter_chart.dart';
 import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
-import 'package:mp_chart/mp/controller/controller.dart';
 import 'package:mp_chart/mp/core/axis/y_axis.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';
-import 'package:mp_chart/mp/core/data/chart_data.dart';
 import 'package:mp_chart/mp/core/data/scatter_data.dart';
-import 'package:mp_chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_chart/mp/core/description.dart';
-import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
-import 'package:mp_chart/mp/painter/painter.dart';
 import 'package:mp_chart/mp/painter/scatter_chart_painter.dart';
 
 class ScatterChartController

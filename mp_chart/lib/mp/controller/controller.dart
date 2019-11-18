@@ -137,8 +137,10 @@ abstract class Controller<P extends ChartPainter>
   @override
   void onRotateUpdate(double angle) {}
 
+  // ignore: unnecessary_getters_setters
   P get painter => _painter;
 
+  // ignore: unnecessary_getters_setters
   set painter(P value) {
     _painter = value;
   }

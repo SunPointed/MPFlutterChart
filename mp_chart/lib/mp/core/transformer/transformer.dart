@@ -24,8 +24,10 @@ class Transformer {
 
   ViewPortHandler get viewPortHandler => _viewPortHandler;
 
+  // ignore: unnecessary_getters_setters
   Matrix4 get matrixOffset => _matrixOffset;
 
+  // ignore: unnecessary_getters_setters
   set matrixOffset(Matrix4 value) {
     _matrixOffset = value;
   }

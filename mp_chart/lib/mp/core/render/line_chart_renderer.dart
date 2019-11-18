@@ -191,8 +191,6 @@ class LineChartRenderer extends LineRadarRenderer {
 
     List<double> list = List();
 
-    double x = 0.0;
-    double y = 0.0;
     if (xBounds.range >= 1) {
       double prevDx = 0;
       double prevDy = 0;
@@ -205,7 +203,7 @@ class LineChartRenderer extends LineRadarRenderer {
       // And in the `lastIndex`, add +1
 
       final int firstIndex = xBounds.min + 1;
-      final int lastIndex = xBounds.min + xBounds.range;
+//      final int lastIndex = xBounds.min + xBounds.range;
 
       Entry prevPrev;
       Entry prev = dataSet.getEntryForIndex(max(firstIndex - 2, 0));
@@ -214,9 +212,6 @@ class LineChartRenderer extends LineRadarRenderer {
       int nextIndex = -1;
 
       if (cur == null) return;
-
-      x = cur.x;
-      y = cur.y;
 
       // let the spline start
       list.add(cur.x);
@@ -726,6 +721,7 @@ class LineChartRenderer extends LineRadarRenderer {
     }
   }
 
+  // ignore: unused_element
   Future<Codec> _loadImage(ByteData data) async {
     if (data == null) throw 'Unable to read data';
     return await instantiateImageCodec(data.buffer.asUint8List());

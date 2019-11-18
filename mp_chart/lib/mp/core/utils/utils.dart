@@ -11,8 +11,10 @@ import 'package:mp_chart/mp/core/value_formatter/default_value_formatter.dart';
 import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
 
 abstract class Utils {
+  // ignore: non_constant_identifier_names
   static double DEG2RAD = pi / 180.0;
 
+  // ignore: non_constant_identifier_names
   static double FLOAT_EPSILON = 1.4E-45;
 
   static void drawXAxisValue(
@@ -219,6 +221,7 @@ abstract class Utils {
     paint.textAlign = originalTextAlign;
   }
 
+  // ignore: non_constant_identifier_names
   static double FDEG2RAD = (pi / 180);
 
   static FSize getSizeOfRotatedRectangleByDegrees(
