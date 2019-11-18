@@ -224,6 +224,10 @@ class PieChartRenderer extends DataRenderer {
       }
     }
 
+    renderPaint..color = ColorUtils.WHITE;
+    c.drawCircle(
+        Offset(center.x, center.y), radius, renderPaint);
+
     final double sliceSpace =
         visibleAngleCount <= 1 ? 0.0 : getSliceSpace(dataSet);
 
@@ -347,9 +351,6 @@ class PieChartRenderer extends DataRenderer {
             mPathBuffer.arcTo(roundedCircleBox, endAngleInner * Utils.FDEG2RAD,
                 180 * Utils.FDEG2RAD, false);
           } else {
-//            mPathBuffer.lineTo(
-//                center.x + innerRadius * cos(endAngleInner * Utils.FDEG2RAD),
-//                center.y + innerRadius * sin(endAngleInner * Utils.FDEG2RAD));
             double angleMiddle = startAngleOuter + sweepAngleOuter / 2.0;
             double sliceSpaceOffset = calculateMinimumRadiusForSpacedSlice(
                 center,
