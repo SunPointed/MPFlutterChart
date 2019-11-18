@@ -15,8 +15,8 @@ import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 import 'package:mp_chart/mp/painter/bar_line_chart_painter.dart';
 
-abstract class BarLineScatterCandleBubbleController<P extends BarLineChartBasePainter>
-    extends Controller<P> {
+abstract class BarLineScatterCandleBubbleController<
+    P extends BarLineChartBasePainter> extends Controller<P> {
   int maxVisibleCount;
   bool autoScaleMinMaxEnabled;
   bool doubleTapToZoomEnabled;

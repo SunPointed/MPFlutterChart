@@ -51,8 +51,8 @@ class PieChartRenderer extends DataRenderer {
 
 //   Canvas mBitmapCanvas;
 
-  PieChartRenderer(PieChartPainter chart, Animator animator,
-      ViewPortHandler viewPortHandler,
+  PieChartRenderer(
+      PieChartPainter chart, Animator animator, ViewPortHandler viewPortHandler,
       {TypeFace centerTextTypeface, TypeFace entryLabelTypeface})
       : super(animator, viewPortHandler) {
     _painter = chart;
@@ -229,8 +229,7 @@ class PieChartRenderer extends DataRenderer {
     }
 
     renderPaint..color = ColorUtils.WHITE;
-    c.drawCircle(
-        Offset(center.x, center.y), radius, renderPaint);
+    c.drawCircle(Offset(center.x, center.y), radius, renderPaint);
 
     final double sliceSpace =
         visibleAngleCount <= 1 ? 0.0 : getSliceSpace(dataSet);

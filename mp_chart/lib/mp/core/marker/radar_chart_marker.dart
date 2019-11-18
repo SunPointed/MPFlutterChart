@@ -34,8 +34,8 @@ class RadarChartMarker implements IMarker {
 
   @override
   void draw(Canvas canvas, double posX, double posY) {
-    TextPainter painter = PainterUtils.create(
-        null, "${_formatter.getFormattedValue1(_entry.y)}", _textColor, _fontSize);
+    TextPainter painter = PainterUtils.create(null,
+        "${_formatter.getFormattedValue1(_entry.y)}", _textColor, _fontSize);
     Paint paint = Paint()
       ..color = _backColor
       ..strokeWidth = 2

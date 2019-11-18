@@ -415,8 +415,7 @@ class Legend extends ComponentBase {
           double labelLineHeight = Utils.getLineHeight1(labelpainter);
           double labelLineSpacing =
               Utils.getLineSpacing1(labelpainter) + yEntrySpace;
-          double contentWidth =
-              viewPortHandler.chartWidth() * _maxSizePercent;
+          double contentWidth = viewPortHandler.chartWidth() * _maxSizePercent;
 
           // Start calculating layout
           double maxLineWidth = 0;

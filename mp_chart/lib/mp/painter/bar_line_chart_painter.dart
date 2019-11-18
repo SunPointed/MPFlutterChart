@@ -32,8 +32,8 @@ import 'package:mp_chart/mp/core/view_port.dart';
 import 'package:mp_chart/mp/painter/painter.dart';
 
 abstract class BarLineChartBasePainter<
-T extends BarLineScatterCandleBubbleData<
-    IBarLineScatterCandleBubbleDataSet<Entry>>> extends ChartPainter<T>
+        T extends BarLineScatterCandleBubbleData<
+            IBarLineScatterCandleBubbleDataSet<Entry>>> extends ChartPainter<T>
     implements BarLineScatterCandleBubbleDataProvider {
   /// the maximum number of entries to which values will be drawn
   /// (entry numbers greater than this value will cause value-labels to disappear)
@@ -138,7 +138,8 @@ T extends BarLineScatterCandleBubbleData<
 
   bool get doubleTapToZoomEnabled => _doubleTapToZoomEnabled;
 
-  BarLineChartBasePainter(T data,
+  BarLineChartBasePainter(
+      T data,
       Animator animator,
       ViewPortHandler viewPortHandler,
       double maxHighlightDistance,
@@ -212,25 +213,25 @@ T extends BarLineScatterCandleBubbleData<
         _borderPaint = borderPaint,
         _backgroundPaint = backgroundPaint,
         super(
-          data,
-          animator,
-          viewPortHandler,
-          maxHighlightDistance,
-          highLightPerTapEnabled,
-          extraLeftOffset,
-          extraTopOffset,
-          extraRightOffset,
-          extraBottomOffset,
-          marker,
-          desc,
-          drawMarkers,
-          infoPainter,
-          descPainter,
-          xAxis,
-          legend,
-          legendRenderer,
-          rendererSettingFunction,
-          selectedListener);
+            data,
+            animator,
+            viewPortHandler,
+            maxHighlightDistance,
+            highLightPerTapEnabled,
+            extraLeftOffset,
+            extraTopOffset,
+            extraRightOffset,
+            extraBottomOffset,
+            marker,
+            desc,
+            drawMarkers,
+            infoPainter,
+            descPainter,
+            xAxis,
+            legend,
+            legendRenderer,
+            rendererSettingFunction,
+            selectedListener);
 
   @override
   void initDefaultWithData() {
@@ -361,9 +362,9 @@ T extends BarLineScatterCandleBubbleData<
             case LegendHorizontalAlignment.LEFT:
               offsets = Rect.fromLTRB(
                   min(
-                      legend.neededWidth,
-                      viewPortHandler.getChartWidth() *
-                          legend.maxSizePercent) +
+                          legend.neededWidth,
+                          viewPortHandler.getChartWidth() *
+                              legend.maxSizePercent) +
                       legend.xOffset,
                   0.0,
                   0.0,
@@ -375,9 +376,9 @@ T extends BarLineScatterCandleBubbleData<
                   0.0,
                   0.0,
                   min(
-                      legend.neededWidth,
-                      viewPortHandler.getChartWidth() *
-                          legend.maxSizePercent) +
+                          legend.neededWidth,
+                          viewPortHandler.getChartWidth() *
+                              legend.maxSizePercent) +
                       legend.xOffset,
                   0.0);
               break;
@@ -388,9 +389,9 @@ T extends BarLineScatterCandleBubbleData<
                   offsets = Rect.fromLTRB(
                       0.0,
                       min(
-                          legend.neededHeight,
-                          viewPortHandler.getChartHeight() *
-                              legend.maxSizePercent) +
+                              legend.neededHeight,
+                              viewPortHandler.getChartHeight() *
+                                  legend.maxSizePercent) +
                           legend.yOffset,
                       0.0,
                       0.0);
@@ -402,9 +403,9 @@ T extends BarLineScatterCandleBubbleData<
                       0.0,
                       0.0,
                       min(
-                          legend.neededHeight,
-                          viewPortHandler.getChartHeight() *
-                              legend.maxSizePercent) +
+                              legend.neededHeight,
+                              viewPortHandler.getChartHeight() *
+                                  legend.maxSizePercent) +
                           legend.yOffset);
                   break;
 
@@ -421,9 +422,9 @@ T extends BarLineScatterCandleBubbleData<
               offsets = Rect.fromLTRB(
                   0.0,
                   min(
-                      legend.neededHeight,
-                      viewPortHandler.getChartHeight() *
-                          legend.maxSizePercent) +
+                          legend.neededHeight,
+                          viewPortHandler.getChartHeight() *
+                              legend.maxSizePercent) +
                       legend.yOffset,
                   0.0,
                   0.0);
@@ -435,9 +436,9 @@ T extends BarLineScatterCandleBubbleData<
                   0.0,
                   0.0,
                   min(
-                      legend.neededHeight,
-                      viewPortHandler.getChartHeight() *
-                          legend.maxSizePercent) +
+                          legend.neededHeight,
+                          viewPortHandler.getChartHeight() *
+                              legend.maxSizePercent) +
                       legend.yOffset);
               break;
 
@@ -478,10 +479,7 @@ T extends BarLineScatterCandleBubbleData<
     compute();
 
     if (!_customViewPortEnabled) {
-      double offsetLeft = 0,
-          offsetRight = 0,
-          offsetTop = 0,
-          offsetBottom = 0;
+      double offsetLeft = 0, offsetRight = 0, offsetTop = 0, offsetBottom = 0;
 
       _offsetsBuffer = calculateLegendOffsets(_offsetsBuffer);
 
@@ -608,8 +606,8 @@ T extends BarLineScatterCandleBubbleData<
   /// @param minYRange
   /// @param maxYRange
   /// @param axis
-  void setVisibleYRange(double minYRange, double maxYRange,
-      AxisDependency axis) {
+  void setVisibleYRange(
+      double minYRange, double maxYRange, AxisDependency axis) {
     double minScale = getAxisRange(axis) / minYRange;
     double maxScale = getAxisRange(axis) / maxYRange;
     viewPortHandler.setMinMaxScaleY(minScale, maxScale);
@@ -687,8 +685,8 @@ T extends BarLineScatterCandleBubbleData<
     return result;
   }
 
-  void getValuesByTouchPoint2(double x, double y, AxisDependency axis,
-      MPPointD outputPoint) {
+  void getValuesByTouchPoint2(
+      double x, double y, AxisDependency axis, MPPointD outputPoint) {
     getTransformer(axis).getValuesByTouchPoint2(x, y, outputPoint);
   }
 
@@ -721,8 +719,8 @@ T extends BarLineScatterCandleBubbleData<
   /// @param x
   /// @param y
   /// @return
-  IBarLineScatterCandleBubbleDataSet getDataSetByTouchPoint(double x,
-      double y) {
+  IBarLineScatterCandleBubbleDataSet getDataSetByTouchPoint(
+      double x, double y) {
     Highlight h = getHighlightByTouchPoint(x, y);
     if (h != null) {
       return getData().getDataSetByIndex(h.dataSetIndex);

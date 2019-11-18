@@ -27,6 +27,4 @@ class BubbleEntry extends Entry {
   set size(double value) {
     _size = value;
   }
-
-
 }

@@ -91,7 +91,6 @@ class XAxis extends AxisBase {
     _labelWidth = value;
   }
 
-
   int getRequiredHeightSpace(TextPainter p) {
     p = PainterUtils.create(p, null, null, textSize);
 

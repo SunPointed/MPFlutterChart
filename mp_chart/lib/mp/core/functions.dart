@@ -9,12 +9,14 @@ import 'package:mp_chart/mp/core/axis/y_axis.dart';
 import 'package:mp_chart/mp/core/legend/legend.dart';
 import 'package:mp_chart/mp/core/render/data_renderer.dart';
 
-typedef XAxisSettingFunction = void Function(XAxis xAxis, Controller controller);
-typedef LegendSettingFunction = void Function(Legend legend, Controller controller);
-typedef YAxisSettingFunction = void Function(YAxis yAxis, RadarChartController controller);
+typedef XAxisSettingFunction = void Function(
+    XAxis xAxis, Controller controller);
+typedef LegendSettingFunction = void Function(
+    Legend legend, Controller controller);
+typedef YAxisSettingFunction = void Function(
+    YAxis yAxis, RadarChartController controller);
 typedef AxisLeftSettingFunction = void Function(
     YAxis axisLeft, BarLineScatterCandleBubbleController controller);
 typedef AxisRightSettingFunction = void Function(
     YAxis axisRight, BarLineScatterCandleBubbleController controller);
-typedef DataRendererSettingFunction = void Function(
-    DataRenderer renderer);
+typedef DataRendererSettingFunction = void Function(DataRenderer renderer);

@@ -76,7 +76,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   TypeFace _centerTextTypeface;
   TypeFace _entryLabelTypeface;
 
-  PieChartPainter(PieData data,
+  PieChartPainter(
+      PieData data,
       Animator animator,
       ViewPortHandler viewPortHandler,
       double maxHighlightDistance,
@@ -128,36 +129,35 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
         _centerTextRadiusPercent = centerTextRadiusPercent,
         _maxAngle = maxAngle,
         _centerTextOffset =
-        MPPointF.getInstance1(centerTextOffsetX, centerTextOffsetY),
+            MPPointF.getInstance1(centerTextOffsetX, centerTextOffsetY),
         _minAngleForSlices = minAngleForSlices,
         _centerTextTypeface = centerTextTypeface,
         _entryLabelTypeface = entryLabelTypeface,
         super(
-          data,
-          animator,
-          viewPortHandler,
-          maxHighlightDistance,
-          highLightPerTapEnabled,
-          extraLeftOffset,
-          extraTopOffset,
-          extraRightOffset,
-          extraBottomOffset,
-          marker,
-          desc,
-          drawMarkers,
-          infoPainter,
-          descPainter,
-          xAxis,
-          legend,
-          legendRenderer,
-          rendererSettingFunction,
-          selectedListener,
-          rotationAngle,
-          rawRotationAngle,
-          rotateEnabled,
-          minOffset,
-          backgroundColor
-      );
+            data,
+            animator,
+            viewPortHandler,
+            maxHighlightDistance,
+            highLightPerTapEnabled,
+            extraLeftOffset,
+            extraTopOffset,
+            extraRightOffset,
+            extraBottomOffset,
+            marker,
+            desc,
+            drawMarkers,
+            infoPainter,
+            descPainter,
+            xAxis,
+            legend,
+            legendRenderer,
+            rendererSettingFunction,
+            selectedListener,
+            rotationAngle,
+            rawRotationAngle,
+            rotateEnabled,
+            minOffset,
+            backgroundColor);
 
   @override
   void initDefaultWithData() {
@@ -236,21 +236,20 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
 
     // calculate the text position
     double x = (r *
-        cos(((rotationAngle + _absoluteAngles[entryIndex] - offset) *
-            animator.getPhaseY()) /
-            180 *
-            pi) +
+            cos(((rotationAngle + _absoluteAngles[entryIndex] - offset) *
+                    animator.getPhaseY()) /
+                180 *
+                pi) +
         center.x);
     double y = (r *
-        sin((rotationAngle + _absoluteAngles[entryIndex] - offset) *
-            animator.getPhaseY() /
-            180 *
-            pi) +
+            sin((rotationAngle + _absoluteAngles[entryIndex] - offset) *
+                animator.getPhaseY() /
+                180 *
+                pi) +
         center.y);
 
     MPPointF.recycleInstance(center);
-    return List()
-      ..add(x)..add(y);
+    return List()..add(x)..add(y);
   }
 
   /// calculates the needed angles for the chart slices
@@ -289,10 +288,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
 
       for (int j = 0; j < set.getEntryCount(); j++) {
         double drawAngle =
-        calcAngle2(set
-            .getEntryForIndex(j)
-            .y
-            .abs(), yValueSum);
+            calcAngle2(set.getEntryForIndex(j).y.abs(), yValueSum);
 
         if (hasMinAngle) {
           double temp = drawAngle - _minAngleForSlices;

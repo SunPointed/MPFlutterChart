@@ -31,8 +31,8 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
   Paint _shadowPaint;
   Paint _barBorderPaint;
 
-  BarChartRenderer(BarDataProvider chart, Animator animator,
-      ViewPortHandler viewPortHandler)
+  BarChartRenderer(
+      BarDataProvider chart, Animator animator, ViewPortHandler viewPortHandler)
       : super(animator, viewPortHandler) {
     this._provider = chart;
 
@@ -317,7 +317,6 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
             }
 
             if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
-
               double px = x;
               double py = val >= 0
                   ? (buffer.buffer[j + 1] + posOffset)
@@ -371,7 +370,6 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
               }
 
               if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
-
                 double px = x;
                 double py = buffer.buffer[bufferIndex + 1] +
                     (entry.y >= 0 ? posOffset : negOffset);
