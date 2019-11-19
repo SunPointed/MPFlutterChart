@@ -77,10 +77,10 @@ packages:
   mp_chart:
     dependency: "direct main"
     description:
-      path: "../mp_chart"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: mp_chart
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.2"
   path:
     dependency: transitive
     description:
@@ -108,7 +108,7 @@ packages:
       name: path_provider
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.4.0"
+    version: "1.4.2"
   pedantic:
     dependency: transitive
     description:
