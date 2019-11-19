@@ -9,6 +9,15 @@ Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when
 ## todos
 **1.potential bugs fix**
 
+## Get Start
+**1.add dependencies**
+```
+    dependencies:
+        mp_chart: ^0.0.7
+```
+
+**2.download example and see how to use**
+
 ## More Examples
 **LineCharts**
 <div align=center>
