@@ -12,7 +12,7 @@ import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_chart/mp/core/fill_formatter/i_fill_formatter.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:example/demo/action_state.dart';
 
 class LineChartFilled extends StatefulWidget {
   @override

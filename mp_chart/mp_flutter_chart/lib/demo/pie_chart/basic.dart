@@ -18,8 +18,8 @@ import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/render/pie_chart_renderer.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/percent_formatter.dart';
-import 'package:mp_flutter_chart/demo/action_state.dart';
-import 'package:mp_flutter_chart/demo/util.dart';
+import 'package:example/demo/action_state.dart';
+import 'package:example/demo/util.dart';
 
 class PieChartBasic extends StatefulWidget {
   @override

@@ -1,4 +1,4 @@
-package com.lqy.mp_flutter_chart;
+package com.lqy.example;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

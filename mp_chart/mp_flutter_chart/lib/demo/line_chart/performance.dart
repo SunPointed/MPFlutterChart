@@ -9,7 +9,7 @@ import 'package:mp_chart/mp/core/description.dart';
 import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/enums/mode.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:example/demo/action_state.dart';
 
 class LineChartPerformance extends StatefulWidget {
   @override

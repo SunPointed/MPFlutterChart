@@ -28,8 +28,8 @@ import 'package:mp_chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:mp_chart/mp/painter/combined_chart_painter.dart';
-import 'package:mp_flutter_chart/demo/action_state.dart';
-import 'package:mp_flutter_chart/demo/util.dart';
+import 'package:example/demo/action_state.dart';
+import 'package:example/demo/util.dart';
 
 class OtherChartCombined extends StatefulWidget {
   @override

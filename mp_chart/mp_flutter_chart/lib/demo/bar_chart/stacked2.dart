@@ -16,7 +16,7 @@ import 'package:mp_chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/image_loader.dart';
 import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
-import 'package:mp_flutter_chart/demo/action_state.dart';
+import 'package:example/demo/action_state.dart';
 
 class BarChartStacked2 extends StatefulWidget {
   @override

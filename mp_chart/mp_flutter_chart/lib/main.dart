@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
-import 'package:mp_flutter_chart/demo/bar_chart/basic.dart';
-import 'package:mp_flutter_chart/demo/bar_chart/basic2.dart';
-import 'package:mp_flutter_chart/demo/bar_chart/horizontal.dart';
-import 'package:mp_flutter_chart/demo/bar_chart/multiple.dart';
-import 'package:mp_flutter_chart/demo/bar_chart/negative.dart';
-import 'package:mp_flutter_chart/demo/bar_chart/sine.dart';
-import 'package:mp_flutter_chart/demo/bar_chart/stacked.dart';
-import 'package:mp_flutter_chart/demo/bar_chart/stacked2.dart';
-import 'package:mp_flutter_chart/demo/even_more/dynamic.dart';
-import 'package:mp_flutter_chart/demo/even_more/hourly.dart';
-import 'package:mp_flutter_chart/demo/line_chart/basic.dart';
-import 'package:mp_flutter_chart/demo/line_chart/colorful.dart';
-import 'package:mp_flutter_chart/demo/line_chart/cubic.dart';
-import 'package:mp_flutter_chart/demo/line_chart/dual_axis.dart';
-import 'package:mp_flutter_chart/demo/line_chart/filled.dart';
-import 'package:mp_flutter_chart/demo/line_chart/invert_axis.dart';
-import 'package:mp_flutter_chart/demo/line_chart/multiple.dart';
-import 'package:mp_flutter_chart/demo/line_chart/performance.dart';
-import 'package:mp_flutter_chart/demo/other_chart/bubble.dart';
-import 'package:mp_flutter_chart/demo/other_chart/candlestick.dart';
-import 'package:mp_flutter_chart/demo/other_chart/combined.dart';
-import 'package:mp_flutter_chart/demo/other_chart/radar.dart';
-import 'package:mp_flutter_chart/demo/other_chart/scatter_plot.dart';
-import 'package:mp_flutter_chart/demo/pie_chart/basic.dart';
-import 'package:mp_flutter_chart/demo/pie_chart/half_pie.dart';
-import 'package:mp_flutter_chart/demo/pie_chart/value_lines.dart';
-import 'package:mp_flutter_chart/demo/res/styles.dart';
-import 'package:mp_flutter_chart/demo/scrolling_chart/multiple.dart';
-import 'package:mp_flutter_chart/demo/scrolling_chart/tall_bar.dart';
-import 'package:mp_flutter_chart/demo/scrolling_chart/view_pager.dart';
+import 'package:example/demo/bar_chart/basic.dart';
+import 'package:example/demo/bar_chart/basic2.dart';
+import 'package:example/demo/bar_chart/horizontal.dart';
+import 'package:example/demo/bar_chart/multiple.dart';
+import 'package:example/demo/bar_chart/negative.dart';
+import 'package:example/demo/bar_chart/sine.dart';
+import 'package:example/demo/bar_chart/stacked.dart';
+import 'package:example/demo/bar_chart/stacked2.dart';
+import 'package:example/demo/even_more/dynamic.dart';
+import 'package:example/demo/even_more/hourly.dart';
+import 'package:example/demo/line_chart/basic.dart';
+import 'package:example/demo/line_chart/colorful.dart';
+import 'package:example/demo/line_chart/cubic.dart';
+import 'package:example/demo/line_chart/dual_axis.dart';
+import 'package:example/demo/line_chart/filled.dart';
+import 'package:example/demo/line_chart/invert_axis.dart';
+import 'package:example/demo/line_chart/multiple.dart';
+import 'package:example/demo/line_chart/performance.dart';
+import 'package:example/demo/other_chart/bubble.dart';
+import 'package:example/demo/other_chart/candlestick.dart';
+import 'package:example/demo/other_chart/combined.dart';
+import 'package:example/demo/other_chart/radar.dart';
+import 'package:example/demo/other_chart/scatter_plot.dart';
+import 'package:example/demo/pie_chart/basic.dart';
+import 'package:example/demo/pie_chart/half_pie.dart';
+import 'package:example/demo/pie_chart/value_lines.dart';
+import 'package:example/demo/res/styles.dart';
+import 'package:example/demo/scrolling_chart/multiple.dart';
+import 'package:example/demo/scrolling_chart/tall_bar.dart';
+import 'package:example/demo/scrolling_chart/view_pager.dart';
 
 import 'demo/scrolling_chart/many_bar_chart.dart';
 
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'mp_flutter_chart Demo',
+      title: 'example Demo',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'mp_flutter_chart example'),
+      home: MyHomePage(title: 'example example'),
       routes: <String, WidgetBuilder>{
         '/line_chart/basic': (_) => LineChartBasic(),
         '/line_chart/multiple': (_) => LineChartMultiple(),
