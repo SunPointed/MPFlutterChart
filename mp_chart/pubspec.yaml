@@ -1,5 +1,5 @@
 name: mp_chart
-description: A Flutter chart package just like AndroidMPChart, apply easy to use chart for Flutter. Now have line chart, bar chart, bubble chart, candlestick chart, pie chart, radar chart and scatter chart.
+description: A Flutter chart package just like AndroidMPChart, apply easy to use chart for Flutter.
 version: 0.0.6
 author: SunPointed<410338643@qq.com>
 homepage: https://github.com/SunPointed/MPFlutterChart
