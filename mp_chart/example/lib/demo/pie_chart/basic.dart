@@ -126,6 +126,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
     );
   }
 
+  // ignore: non_constant_identifier_names
   final List<String> PARTIES = List()
     ..add("Party A")
     ..add("Party B")
