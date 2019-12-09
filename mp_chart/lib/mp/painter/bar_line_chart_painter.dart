@@ -249,6 +249,8 @@ abstract class BarLineChartBasePainter<
     // execute all drawing commands
     drawGridBackground(canvas);
 
+    compute();
+
     _xAxisRenderer.renderAxisLine(canvas);
     _axisRendererLeft.renderAxisLine(canvas);
     _axisRendererRight.renderAxisLine(canvas);
@@ -339,7 +341,26 @@ abstract class BarLineChartBasePainter<
 
   /// Performs auto scaling of the axis by recalculating the minimum and maximum y-values based on the entries currently in view.
   void autoScale() {
-    // todo autoScale
+
+    final double fromX=getLowestVisibleX();
+    final double toX=getHighestVisibleX();
+
+    getData().calcMinMaxY(fromX, toX);
+
+    xAxis.calculate(getData().xMin, getData().xMax);
+
+    // calculate axis range (min / max) according to provided data
+
+    if(axisLeft.enabled){
+      axisLeft.calculate(getData().getYMin2(AxisDependency.LEFT), getData().getYMax2(AxisDependency.LEFT));
+    }
+
+    if(axisRight.enabled){
+      axisRight.calculate(getData().getYMin2(AxisDependency.RIGHT), getData().getYMax2(AxisDependency.RIGHT));
+    }
+
+    calculateOffsets();
+
   }
 
   @override
@@ -476,7 +497,6 @@ abstract class BarLineChartBasePainter<
     if (legend != null) legendRenderer.computeLegend(getData());
     renderer?.initBuffers();
     calcMinMax();
-    compute();
 
     if (!_customViewPortEnabled) {
       double offsetLeft = 0, offsetRight = 0, offsetTop = 0, offsetBottom = 0;
