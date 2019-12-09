@@ -139,8 +139,12 @@ class CombinedChartState extends ChartState<CombinedChart> {
 
       MPPointF trans = _getTrans(_curX, _curY);
 
-      scaleX = widget.controller.painter.scaleXEnabled ? scaleX : 1.0;
-      scaleY = widget.controller.painter.scaleYEnabled ? scaleY : 1.0;
+      scaleX = widget.controller.painter.scaleXEnabled
+          ? (scaleX > 1.1 ? 1.0 : scaleX)
+          : 1.0;
+      scaleY = widget.controller.painter.scaleYEnabled
+          ? (scaleY > 1.1 ? 1.0 : scaleY)
+          : 1.0;
       widget.controller.painter.zoom(scaleX, scaleY, trans.x, trans.y);
       setStateIfNotDispose();
       MPPointF.recycleInstance(trans);

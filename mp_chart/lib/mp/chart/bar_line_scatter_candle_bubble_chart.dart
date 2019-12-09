@@ -164,10 +164,10 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
       }
 
       scaleX = (widget.controller.painter.scaleXEnabled && canZoomMoreX)
-          ? scaleX
+          ? (scaleX > 1.1 ? 1.0 : scaleX)
           : 1.0;
       scaleY = (widget.controller.painter.scaleYEnabled && canZoomMoreY)
-          ? scaleY
+          ? (scaleY > 1.1 ? 1.0 : scaleY)
           : 1.0;
 
       if (canZoomMoreX && canZoomMoreY) {
