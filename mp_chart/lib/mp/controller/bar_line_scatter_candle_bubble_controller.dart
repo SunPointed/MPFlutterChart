@@ -54,6 +54,24 @@ abstract class BarLineScatterCandleBubbleController<
   AxisLeftSettingFunction axisLeftSettingFunction;
   AxisRightSettingFunction axisRightSettingFunction;
 
+  MPPointF _decelerationVelocity=MPPointF.getInstance1(0, 0);
+
+  MPPointF get decelerationVelocity => _decelerationVelocity;
+
+  double _dragDecelerationFrictionCoef=0.90;
+
+  set dragDecelerationFrictionCoef(double dragDecelerationFrictionCoef){
+    _dragDecelerationFrictionCoef=dragDecelerationFrictionCoef;
+  }
+
+  int _decelerationLastTime=0;
+
+  int get decelerationLastTime =>_decelerationLastTime;
+
+  set decelerationLastTime(int decelerationLastTime){
+    _decelerationLastTime=decelerationLastTime;
+  }
+
   BarLineScatterCandleBubbleController({
     this.maxVisibleCount = 100,
     this.autoScaleMinMaxEnabled = true,
@@ -405,6 +423,49 @@ abstract class BarLineScatterCandleBubbleController<
     double minScale = getAxisRange(axis) / minYRange;
     double maxScale = getAxisRange(axis) / maxYRange;
     viewPortHandler.setMinMaxScaleY(minScale, maxScale);
+  }
+
+
+  void stopDeceleration() {
+    decelerationVelocity.x=0;
+    decelerationVelocity.y=0;
+  }
+
+  void computeScroll(){
+
+    if(decelerationVelocity.x==0&&decelerationVelocity.y==0){
+      return;
+    }
+
+    int currentTime=DateTime.now().millisecondsSinceEpoch;
+
+    decelerationVelocity.x*=_dragDecelerationFrictionCoef;
+    decelerationVelocity.y*=_dragDecelerationFrictionCoef;
+
+
+    double timeInterval =(currentTime-_decelerationLastTime)/1000;
+
+    double distanceX=decelerationVelocity.x*timeInterval;
+    double distanceY=decelerationVelocity.y*timeInterval;
+
+    double dragDistanceX=dragXEnabled?distanceX:0;
+    double dragDistanceY=dragYEnabled?distanceY:0;
+
+    painter.translate(dragDistanceX,dragDistanceY);
+
+    _decelerationLastTime=currentTime;
+
+    if(decelerationVelocity.x.abs()>=20 || decelerationVelocity.y.abs()>=20){
+      state.setStateIfNotDispose();
+      Future.delayed(Duration(milliseconds: 16), () {
+        computeScroll();
+      });
+    }else{
+      painter.calculateOffsets();
+      state.setStateIfNotDispose();
+      stopDeceleration();
+    }
+
   }
 }
 
