@@ -54,23 +54,15 @@ abstract class BarLineScatterCandleBubbleController<
   AxisLeftSettingFunction axisLeftSettingFunction;
   AxisRightSettingFunction axisRightSettingFunction;
 
-  MPPointF _decelerationVelocity=MPPointF.getInstance1(0, 0);
+  MPPointF _decelerationVelocity = MPPointF.getInstance1(0, 0);
 
-  MPPointF get decelerationVelocity => _decelerationVelocity;
+  double _dragDecelerationFrictionCoef = 0.90;
 
-  double _dragDecelerationFrictionCoef=0.90;
-
-  set dragDecelerationFrictionCoef(double dragDecelerationFrictionCoef){
-    _dragDecelerationFrictionCoef=dragDecelerationFrictionCoef;
+  set dragDecelerationFrictionCoef(double dragDecelerationFrictionCoef) {
+    _dragDecelerationFrictionCoef = dragDecelerationFrictionCoef;
   }
 
-  int _decelerationLastTime=0;
-
-  int get decelerationLastTime =>_decelerationLastTime;
-
-  set decelerationLastTime(int decelerationLastTime){
-    _decelerationLastTime=decelerationLastTime;
-  }
+  int _decelerationLastTime = 0;
 
   BarLineScatterCandleBubbleController({
     this.maxVisibleCount = 100,
@@ -425,47 +417,54 @@ abstract class BarLineScatterCandleBubbleController<
     viewPortHandler.setMinMaxScaleY(minScale, maxScale);
   }
 
-
   void stopDeceleration() {
-    decelerationVelocity.x=0;
-    decelerationVelocity.y=0;
+    _decelerationVelocity.x = 0;
+    _decelerationVelocity.y = 0;
+    _decelerationLastTime = 0;
   }
 
-  void computeScroll(){
+  void setDecelerationVelocity(Offset velocityOffset){
+    _decelerationVelocity.x = velocityOffset.dx;
+    _decelerationVelocity.y = velocityOffset.dy;
+  }
 
-    if(decelerationVelocity.x==0&&decelerationVelocity.y==0){
+  void computeScroll() {
+    if (_decelerationVelocity.x == 0 && _decelerationVelocity.y == 0) {
       return;
     }
 
-    int currentTime=DateTime.now().millisecondsSinceEpoch;
+    int currentTime = DateTime.now().millisecondsSinceEpoch;
 
-    decelerationVelocity.x*=_dragDecelerationFrictionCoef;
-    decelerationVelocity.y*=_dragDecelerationFrictionCoef;
+    if (_decelerationLastTime == 0) {
+      _decelerationLastTime = currentTime;
+    } else {
+      _decelerationVelocity.x *= _dragDecelerationFrictionCoef;
+      _decelerationVelocity.y *= _dragDecelerationFrictionCoef;
 
+      double timeInterval = (currentTime - _decelerationLastTime) / 1000;
 
-    double timeInterval =(currentTime-_decelerationLastTime)/1000;
+      double distanceX = _decelerationVelocity.x * timeInterval;
+      double distanceY = _decelerationVelocity.y * timeInterval;
 
-    double distanceX=decelerationVelocity.x*timeInterval;
-    double distanceY=decelerationVelocity.y*timeInterval;
+      double dragDistanceX = dragXEnabled ? distanceX : 0;
+      double dragDistanceY = dragYEnabled ? distanceY : 0;
 
-    double dragDistanceX=dragXEnabled?distanceX:0;
-    double dragDistanceY=dragYEnabled?distanceY:0;
+      painter.translate(dragDistanceX, dragDistanceY);
 
-    painter.translate(dragDistanceX,dragDistanceY);
+      _decelerationLastTime = currentTime;
+    }
 
-    _decelerationLastTime=currentTime;
-
-    if(decelerationVelocity.x.abs()>=20 || decelerationVelocity.y.abs()>=20){
+    if (_decelerationVelocity.x.abs() >= 20 ||
+        _decelerationVelocity.y.abs() >= 20) {
       state.setStateIfNotDispose();
       Future.delayed(Duration(milliseconds: 16), () {
         computeScroll();
       });
-    }else{
+    } else {
       painter.calculateOffsets();
       state.setStateIfNotDispose();
       stopDeceleration();
     }
-
   }
 }
 

@@ -80,15 +80,11 @@ class CombinedChartState extends ChartState<CombinedChart> {
   void onScaleEnd(ScaleEndDetails detail) {
     if (_isZoom) {
       _isZoom = false;
-    }else{
-      widget.controller.stopDeceleration();
-
-      widget.controller.decelerationLastTime=DateTime.now().millisecondsSinceEpoch;
-
-      widget.controller.decelerationVelocity.x=detail.velocity.pixelsPerSecond.dx;
-      widget.controller.decelerationVelocity.y=detail.velocity.pixelsPerSecond.dy;
-
-      widget.controller.computeScroll();
+    } else {
+      widget.controller
+        ..stopDeceleration()
+        ..setDecelerationVelocity(detail.velocity.pixelsPerSecond)
+        ..computeScroll();
     }
     _scaleX = -1.0;
     _scaleY = -1.0;
