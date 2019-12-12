@@ -78,6 +78,11 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
   void onScaleEnd(ScaleEndDetails detail) {
     if (_isZoom) {
       _isZoom = false;
+    }  else {
+      widget.controller
+        ..stopDeceleration()
+        ..setDecelerationVelocity(detail.velocity.pixelsPerSecond)
+        ..computeScroll();
     }
     _scaleX = -1.0;
     _scaleY = -1.0;

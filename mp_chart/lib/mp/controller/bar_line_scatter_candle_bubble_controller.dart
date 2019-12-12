@@ -54,6 +54,16 @@ abstract class BarLineScatterCandleBubbleController<
   AxisLeftSettingFunction axisLeftSettingFunction;
   AxisRightSettingFunction axisRightSettingFunction;
 
+  MPPointF _decelerationVelocity = MPPointF.getInstance1(0, 0);
+
+  double _dragDecelerationFrictionCoef = 0.90;
+
+  set dragDecelerationFrictionCoef(double dragDecelerationFrictionCoef) {
+    _dragDecelerationFrictionCoef = dragDecelerationFrictionCoef;
+  }
+
+  int _decelerationLastTime = 0;
+
   BarLineScatterCandleBubbleController({
     this.maxVisibleCount = 100,
     this.autoScaleMinMaxEnabled = true,
@@ -405,6 +415,56 @@ abstract class BarLineScatterCandleBubbleController<
     double minScale = getAxisRange(axis) / minYRange;
     double maxScale = getAxisRange(axis) / maxYRange;
     viewPortHandler.setMinMaxScaleY(minScale, maxScale);
+  }
+
+  void stopDeceleration() {
+    _decelerationVelocity.x = 0;
+    _decelerationVelocity.y = 0;
+    _decelerationLastTime = 0;
+  }
+
+  void setDecelerationVelocity(Offset velocityOffset){
+    _decelerationVelocity.x = velocityOffset.dx;
+    _decelerationVelocity.y = velocityOffset.dy;
+  }
+
+  void computeScroll() {
+    if (_decelerationVelocity.x == 0 && _decelerationVelocity.y == 0) {
+      return;
+    }
+
+    int currentTime = DateTime.now().millisecondsSinceEpoch;
+
+    if (_decelerationLastTime == 0) {
+      _decelerationLastTime = currentTime;
+    } else {
+      _decelerationVelocity.x *= _dragDecelerationFrictionCoef;
+      _decelerationVelocity.y *= _dragDecelerationFrictionCoef;
+
+      double timeInterval = (currentTime - _decelerationLastTime) / 1000;
+
+      double distanceX = _decelerationVelocity.x * timeInterval;
+      double distanceY = _decelerationVelocity.y * timeInterval;
+
+      double dragDistanceX = dragXEnabled ? distanceX : 0;
+      double dragDistanceY = dragYEnabled ? distanceY : 0;
+
+      painter.translate(dragDistanceX, dragDistanceY);
+
+      _decelerationLastTime = currentTime;
+    }
+
+    if (_decelerationVelocity.x.abs() >= 20 ||
+        _decelerationVelocity.y.abs() >= 20) {
+      state.setStateIfNotDispose();
+      Future.delayed(Duration(milliseconds: 16), () {
+        computeScroll();
+      });
+    } else {
+      painter.calculateOffsets();
+      state.setStateIfNotDispose();
+      stopDeceleration();
+    }
   }
 }
 
