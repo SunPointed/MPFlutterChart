@@ -53,6 +53,7 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
 
   @override
   void onTapDown(TapDownDetails detail) {
+    widget.controller.stopDeceleration();
     _curX = detail.localPosition.dx;
     _curY = detail.localPosition.dy;
     _closestDataSetToTouch = widget.controller.painter.getDataSetByTouchPoint(
@@ -61,6 +62,7 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
 
   @override
   void onDoubleTap() {
+    widget.controller.stopDeceleration();
     if (widget.controller.painter.doubleTapToZoomEnabled &&
         widget.controller.painter.getData().getEntryCount() > 0) {
       MPPointF trans = _getTrans(_curX, _curY);
@@ -90,6 +92,7 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
 
   @override
   void onScaleStart(ScaleStartDetails detail) {
+    widget.controller.stopDeceleration();
     _curX = detail.localFocalPoint.dx;
     _curY = detail.localFocalPoint.dy;
   }
