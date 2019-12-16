@@ -219,16 +219,15 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
         }
       }
       MPPointF.recycleInstance(trans);
+
+      if (pinchZoomEnabled) {
+        _scale = detail.scale;
+      } else {
+        _scale = _scaleOrientation == ScaleOrientation.VERTICAL
+            ? detail.verticalScale
+            : detail.horizontalScale;
+      }
     }
-    if (pinchZoomEnabled) {
-      _scale = detail.scale;
-    } else {
-      _scale = _scaleOrientation == ScaleOrientation.VERTICAL
-          ? detail.verticalScale
-          : detail.horizontalScale;
-    }
-    _curX = detail.localFocalPoint.dx;
-    _curY = detail.localFocalPoint.dy;
   }
 
   @override
