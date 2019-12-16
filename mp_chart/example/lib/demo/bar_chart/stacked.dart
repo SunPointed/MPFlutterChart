@@ -199,7 +199,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        pinchZoomEnabled: false,
+//        pinchZoomEnabled: false,
         maxVisibleCount: 60,
         fitBars: true,
         selectionListener: this,

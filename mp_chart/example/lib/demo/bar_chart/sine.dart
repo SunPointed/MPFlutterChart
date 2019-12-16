@@ -142,7 +142,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        pinchZoomEnabled: false,
+//        pinchZoomEnabled: false,
         maxVisibleCount: 60,
         drawBarShadow: false,
         drawValueAboveBar: true,

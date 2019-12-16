@@ -143,7 +143,7 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        pinchZoomEnabled: false,
+//        pinchZoomEnabled: false,
         selectionListener: this,
         drawBarShadow: false,
         drawValueAboveBar: true,

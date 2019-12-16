@@ -194,7 +194,7 @@ class BarChartHorizontalState
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        pinchZoomEnabled: false,
+//        pinchZoomEnabled: false,
         maxVisibleCount: 60,
         description: desc,
         selectionListener: this,

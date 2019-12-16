@@ -187,7 +187,7 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        pinchZoomEnabled: false,
+//        pinchZoomEnabled: false,
         selectionListener: this,
         drawBorders: false,
         description: desc);

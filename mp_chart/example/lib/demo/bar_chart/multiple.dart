@@ -177,7 +177,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-        pinchZoomEnabled: false,
+//        pinchZoomEnabled: false,
         maxVisibleCount: 60,
         selectionListener: this,
         drawBarShadow: false,

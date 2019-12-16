@@ -163,7 +163,7 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
       dragYEnabled: true,
       scaleXEnabled: true,
       scaleYEnabled: true,
-      pinchZoomEnabled: false,
+//      pinchZoomEnabled: false,
       maxVisibleCount: 60,
       description: desc,
       fitBars: true,

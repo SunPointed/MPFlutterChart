@@ -68,7 +68,7 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
     if (widget.controller.painter.doubleTapToZoomEnabled &&
         widget.controller.painter.getData().getEntryCount() > 0) {
       /**
-       * todo flutter yet don't offer position when double tap, so we just zoom in at center
+       * todo -flutter yet don't offer position when double tap, so we just zoom in at center
        */
       MPPointF trans = _getTrans(
           widget.controller.painter.getMeasuredWidth() / 2,
@@ -111,6 +111,11 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
       if (pinchZoomEnabled) {
         _scale = detail.scale;
       } else {
+        /**
+         * todo -flutter yet just provide verticalScale and horizontalScale,
+         * todo -use these to calculate scale direction(x or y) is not always true,
+         * todo -before flutter support this(we need two postion when scale), suggest use pinchZoomEnabled instead
+         */
         var which = detail.verticalScale > detail.horizontalScale;
         _scaleOrientation =
             which ? ScaleOrientation.VERTICAL : ScaleOrientation.HORIZONTAL;
