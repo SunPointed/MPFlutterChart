@@ -220,7 +220,7 @@ abstract class LineActionState<T extends StatefulWidget>
         controller.state.setStateIfNotDispose();
         break;
       case 'I':
-        controller.pinchZoomEnabled = controller.pinchZoomEnabled;
+        controller.pinchZoomEnabled = !controller.pinchZoomEnabled;
         controller.state.setStateIfNotDispose();
         break;
       case 'J':
