@@ -362,4 +362,8 @@ abstract class Utils {
     outputPoint.x = (center.x + dist * cos((angle / 180 * pi)));
     outputPoint.y = (center.y + dist * sin((angle / 180 * pi)));
   }
+
+  static double optimizeScale(double scale) {
+    return scale > 1.1 ? 1.0 : scale;
+  }
 }

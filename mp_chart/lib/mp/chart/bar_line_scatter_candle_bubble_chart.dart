@@ -3,9 +3,11 @@ import 'package:mp_chart/mp/chart/chart.dart';
 import 'package:mp_chart/mp/chart/horizontal_bar_chart.dart';
 import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_data_set.dart';
+import 'package:mp_chart/mp/core/enums/scale_orientation.dart';
 import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/utils/highlight_utils.dart';
+import 'package:mp_chart/mp/core/utils/utils.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
 
 abstract class BarLineScatterCandleBubbleChart<
@@ -20,8 +22,8 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
   Highlight lastHighlighted;
   double _curX = 0.0;
   double _curY = 0.0;
-  double _scaleX = -1.0;
-  double _scaleY = -1.0;
+  double _scale = -1.0;
+  ScaleOrientation _scaleOrientation;
   bool _isZoom = false;
 
   MPPointF _getTrans(double x, double y) {
@@ -80,14 +82,14 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
   void onScaleEnd(ScaleEndDetails detail) {
     if (_isZoom) {
       _isZoom = false;
-    }  else {
+    } else {
       widget.controller
         ..stopDeceleration()
         ..setDecelerationVelocity(detail.velocity.pixelsPerSecond)
         ..computeScroll();
     }
-    _scaleX = -1.0;
-    _scaleY = -1.0;
+    _scaleOrientation = null;
+    _scale = -1.0;
   }
 
   @override
@@ -99,13 +101,27 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
 
   @override
   void onScaleUpdate(ScaleUpdateDetails detail) {
-    if (_scaleX == -1.0 && _scaleY == -1.0) {
-      _scaleX = detail.horizontalScale;
-      _scaleY = detail.verticalScale;
+    var pinchZoomEnabled = widget.controller.pinchZoomEnabled;
+    if (_scale == -1.0) {
+      if (pinchZoomEnabled) {
+        _scale = detail.scale;
+      } else {
+        var which = detail.verticalScale > detail.horizontalScale;
+        _scaleOrientation =
+            which ? ScaleOrientation.VERTICAL : ScaleOrientation.HORIZONTAL;
+        _scale = which ? detail.verticalScale : detail.horizontalScale;
+      }
       return;
     }
 
-    if (_scaleX == detail.horizontalScale && _scaleY == detail.verticalScale) {
+    var isDrag = (pinchZoomEnabled && _scale == detail.scale) ||
+        (!pinchZoomEnabled &&
+            _scaleOrientation == ScaleOrientation.VERTICAL &&
+            _scale == detail.verticalScale) ||
+        (!pinchZoomEnabled &&
+            _scaleOrientation == ScaleOrientation.HORIZONTAL &&
+            _scale == detail.horizontalScale);
+    if (isDrag) {
       if (_isZoom) {
         return;
       }
@@ -152,49 +168,65 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
       _curX = detail.localFocalPoint.dx;
       _curY = detail.localFocalPoint.dy;
     } else {
-      var scaleX = detail.horizontalScale / _scaleX;
-      var scaleY = detail.verticalScale / _scaleY;
+      var scale = 1.0;
+      if (pinchZoomEnabled) {
+        scale = detail.scale / _scale;
+      } else {
+        scale = _scaleOrientation == ScaleOrientation.VERTICAL
+            ? detail.verticalScale / _scale
+            : detail.horizontalScale / _scale;
+      }
 
       if (!_isZoom) {
-        scaleX = detail.horizontalScale;
-        scaleY = detail.verticalScale;
+        if (pinchZoomEnabled) {
+          scale = detail.scale;
+        } else {
+          scale = _scaleOrientation == ScaleOrientation.VERTICAL
+              ? detail.verticalScale
+              : detail.horizontalScale;
+        }
         _isZoom = true;
       }
 
       MPPointF trans = _getTrans(_curX, _curY);
-
       var h = widget.controller.painter.viewPortHandler;
-      bool canZoomMoreX = false;
-      bool canZoomMoreY = false;
-      if (h != null) {
-        canZoomMoreX = scaleX < 1 ? h.canZoomOutMoreX() : h.canZoomInMoreX();
-        canZoomMoreY = scaleY < 1 ? h.canZoomOutMoreY() : h.canZoomInMoreY();
-      }
-
-      scaleX = (widget.controller.painter.scaleXEnabled && canZoomMoreX)
-          ? (scaleX > 1.1 ? 1.0 : scaleX)
-          : 1.0;
-      scaleY = (widget.controller.painter.scaleYEnabled && canZoomMoreY)
-          ? (scaleY > 1.1 ? 1.0 : scaleY)
-          : 1.0;
-
-      if (canZoomMoreX && canZoomMoreY) {
-        widget.controller.painter.zoom(scaleX, scaleY, trans.x, trans.y);
+      scale = Utils.optimizeScale(scale);
+      if (pinchZoomEnabled) {
+        bool canZoomMoreX =
+            scale < 1 ? h.canZoomOutMoreX() : h.canZoomInMoreX();
+        bool canZoomMoreY =
+            scale < 1 ? h.canZoomOutMoreY() : h.canZoomInMoreY();
+        widget.controller.painter.zoom(canZoomMoreX ? scale : 1,
+            canZoomMoreY ? scale : 1, trans.x, trans.y);
         setStateIfNotDispose();
       } else {
-        if (canZoomMoreX) {
-          widget.controller.painter.zoom(scaleX, 1.0, trans.x, trans.y);
-          setStateIfNotDispose();
-        }
-        if (canZoomMoreY) {
-          widget.controller.painter.zoom(1.0, scaleY, trans.x, trans.y);
-          setStateIfNotDispose();
+        if (_scaleOrientation == ScaleOrientation.VERTICAL) {
+          if (widget.controller.painter.scaleYEnabled) {
+            bool canZoomMoreY =
+                scale < 1 ? h.canZoomOutMoreY() : h.canZoomInMoreY();
+            widget.controller.painter
+                .zoom(1, canZoomMoreY ? scale : 1, trans.x, trans.y);
+            setStateIfNotDispose();
+          }
+        } else {
+          if (widget.controller.painter.scaleXEnabled) {
+            bool canZoomMoreX =
+                scale < 1 ? h.canZoomOutMoreX() : h.canZoomInMoreX();
+            widget.controller.painter
+                .zoom(canZoomMoreX ? scale : 1, 1, trans.x, trans.y);
+            setStateIfNotDispose();
+          }
         }
       }
       MPPointF.recycleInstance(trans);
     }
-    _scaleX = detail.horizontalScale;
-    _scaleY = detail.verticalScale;
+    if (pinchZoomEnabled) {
+      _scale = detail.scale;
+    } else {
+      _scale = _scaleOrientation == ScaleOrientation.VERTICAL
+          ? detail.verticalScale
+          : detail.horizontalScale;
+    }
     _curX = detail.localFocalPoint.dx;
     _curY = detail.localFocalPoint.dy;
   }
