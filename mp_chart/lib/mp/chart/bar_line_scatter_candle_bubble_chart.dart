@@ -67,7 +67,12 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
     widget.controller.stopDeceleration();
     if (widget.controller.painter.doubleTapToZoomEnabled &&
         widget.controller.painter.getData().getEntryCount() > 0) {
-      MPPointF trans = _getTrans(_curX, _curY);
+      /**
+       * todo flutter yet don't offer position when double tap, so we just zoom in at center
+       */
+      MPPointF trans = _getTrans(
+          widget.controller.painter.getMeasuredWidth() / 2,
+          widget.controller.painter.getMeasuredHeight() / 2);
       widget.controller.painter.zoom(
           widget.controller.painter.scaleXEnabled ? 1.4 : 1,
           widget.controller.painter.scaleYEnabled ? 1.4 : 1,
