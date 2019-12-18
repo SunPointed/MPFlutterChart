@@ -84,9 +84,9 @@ packages:
   optimized_gesture_detector:
     dependency: transitive
     description:
-      path: "../../../optimized_gesture_detector"
-      relative: true
-    source: path
+      name: optimized_gesture_detector
+      url: "https://pub.flutter-io.cn"
+    source: hosted
     version: "0.0.1"
   path:
     dependency: transitive
