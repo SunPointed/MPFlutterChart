@@ -103,7 +103,7 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-//        pinchZoomEnabled: false,
+        pinchZoomEnabled: false,
         maxVisibleCount: 60,
         description: desc,
         drawOrder: List()

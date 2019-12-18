@@ -81,6 +81,13 @@ packages:
       relative: true
     source: path
     version: "0.0.9"
+  optimized_gesture_detector:
+    dependency: transitive
+    description:
+      path: "../../../optimized_gesture_detector"
+      relative: true
+    source: path
+    version: "0.0.1"
   path:
     dependency: transitive
     description:

@@ -128,7 +128,7 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-//        pinchZoomEnabled: false,
+        pinchZoomEnabled: false,
         description: desc,
         extraTopOffset: -30,
         extraBottomOffset: 10,

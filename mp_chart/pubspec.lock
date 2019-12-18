@@ -67,6 +67,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.6"
+  optimized_gesture_detector:
+    dependency: "direct main"
+    description:
+      path: "../../optimized_gesture_detector"
+      relative: true
+    source: path
+    version: "0.0.1"
   path:
     dependency: transitive
     description:

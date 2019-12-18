@@ -155,7 +155,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-//        pinchZoomEnabled: false,
+        pinchZoomEnabled: false,
         gridBackColor: Color.fromARGB(255, 104, 241, 175),
         backgroundColor: Color.fromARGB(255, 104, 241, 175),
         description: desc);

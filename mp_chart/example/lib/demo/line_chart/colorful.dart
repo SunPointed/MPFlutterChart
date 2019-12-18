@@ -140,7 +140,7 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-//        pinchZoomEnabled: false,
+        pinchZoomEnabled: false,
         gridBackColor: color,
         backgroundColor: color,
         description: desc);

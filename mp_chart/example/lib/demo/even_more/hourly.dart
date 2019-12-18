@@ -134,7 +134,7 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
         dragYEnabled: true,
         scaleXEnabled: true,
         scaleYEnabled: true,
-//        pinchZoomEnabled: false,
+        pinchZoomEnabled: false,
         description: desc);
   }
 

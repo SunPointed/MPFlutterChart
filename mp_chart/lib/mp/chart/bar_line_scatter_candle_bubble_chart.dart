@@ -3,12 +3,13 @@ import 'package:mp_chart/mp/chart/chart.dart';
 import 'package:mp_chart/mp/chart/horizontal_bar_chart.dart';
 import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_data_set.dart';
-import 'package:mp_chart/mp/core/enums/scale_orientation.dart';
 import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/utils/highlight_utils.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
+import 'package:optimized_gesture_detector/details.dart';
+import 'package:optimized_gesture_detector/direction.dart';
 
 abstract class BarLineScatterCandleBubbleChart<
     C extends BarLineScatterCandleBubbleController> extends Chart<C> {
@@ -23,8 +24,6 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
   double _curX = 0.0;
   double _curY = 0.0;
   double _scale = -1.0;
-  ScaleOrientation _scaleOrientation;
-  bool _isZoom = false;
 
   MPPointF _getTrans(double x, double y) {
     ViewPortHandler vph = widget.controller.painter.viewPortHandler;
@@ -63,184 +62,6 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
   }
 
   @override
-  void onDoubleTap() {
-    widget.controller.stopDeceleration();
-    if (widget.controller.painter.doubleTapToZoomEnabled &&
-        widget.controller.painter.getData().getEntryCount() > 0) {
-      /**
-       * todo -flutter yet don't offer position when double tap, so we just zoom in at center
-       */
-      MPPointF trans = _getTrans(
-          widget.controller.painter.getMeasuredWidth() / 2,
-          widget.controller.painter.getMeasuredHeight() / 2);
-      widget.controller.painter.zoom(
-          widget.controller.painter.scaleXEnabled ? 1.4 : 1,
-          widget.controller.painter.scaleYEnabled ? 1.4 : 1,
-          trans.x,
-          trans.y);
-      setStateIfNotDispose();
-      MPPointF.recycleInstance(trans);
-    }
-  }
-
-  @override
-  void onScaleEnd(ScaleEndDetails detail) {
-    if (_isZoom) {
-      _isZoom = false;
-    } else {
-      widget.controller
-        ..stopDeceleration()
-        ..setDecelerationVelocity(detail.velocity.pixelsPerSecond)
-        ..computeScroll();
-    }
-    _scaleOrientation = null;
-    _scale = -1.0;
-  }
-
-  @override
-  void onScaleStart(ScaleStartDetails detail) {
-    widget.controller.stopDeceleration();
-    _curX = detail.localFocalPoint.dx;
-    _curY = detail.localFocalPoint.dy;
-  }
-
-  @override
-  void onScaleUpdate(ScaleUpdateDetails detail) {
-    var pinchZoomEnabled = widget.controller.pinchZoomEnabled;
-    if (_scale == -1.0) {
-      if (pinchZoomEnabled) {
-        _scale = detail.scale;
-      } else {
-        /**
-         * todo -flutter yet just provide verticalScale and horizontalScale,
-         * todo -use these to calculate scale direction(x or y) is not always true,
-         * todo -before flutter support this(we need two postion when scale), suggest use pinchZoomEnabled instead
-         */
-        var which = detail.verticalScale > detail.horizontalScale;
-        _scaleOrientation =
-            which ? ScaleOrientation.VERTICAL : ScaleOrientation.HORIZONTAL;
-        _scale = which ? detail.verticalScale : detail.horizontalScale;
-      }
-      return;
-    }
-
-    var isDrag = (pinchZoomEnabled && _scale == detail.scale) ||
-        (!pinchZoomEnabled &&
-            _scaleOrientation == ScaleOrientation.VERTICAL &&
-            _scale == detail.verticalScale) ||
-        (!pinchZoomEnabled &&
-            _scaleOrientation == ScaleOrientation.HORIZONTAL &&
-            _scale == detail.horizontalScale);
-    if (isDrag) {
-      if (_isZoom) {
-        return;
-      }
-
-      var dx = detail.localFocalPoint.dx - _curX;
-      var dy = detail.localFocalPoint.dy - _curY;
-      if (widget.controller.painter.dragYEnabled &&
-          widget.controller.painter.dragXEnabled) {
-        if (_inverted()) {
-          /// if there is an inverted horizontalbarchart
-          if (widget is HorizontalBarChart) {
-            dx = -dx;
-          } else {
-            dy = -dy;
-          }
-        }
-        widget.controller.painter.translate(dx, dy);
-        setStateIfNotDispose();
-      } else {
-        if (widget.controller.painter.dragXEnabled) {
-          if (_inverted()) {
-            /// if there is an inverted horizontalbarchart
-            if (widget is HorizontalBarChart) {
-              dx = -dx;
-            } else {
-              dy = -dy;
-            }
-          }
-          widget.controller.painter.translate(dx, 0.0);
-          setStateIfNotDispose();
-        } else if (widget.controller.painter.dragYEnabled) {
-          if (_inverted()) {
-            /// if there is an inverted horizontalbarchart
-            if (widget is HorizontalBarChart) {
-              dx = -dx;
-            } else {
-              dy = -dy;
-            }
-          }
-          widget.controller.painter.translate(0.0, dy);
-          setStateIfNotDispose();
-        }
-      }
-      _curX = detail.localFocalPoint.dx;
-      _curY = detail.localFocalPoint.dy;
-    } else {
-      var scale = 1.0;
-      if (pinchZoomEnabled) {
-        scale = detail.scale / _scale;
-      } else {
-        scale = _scaleOrientation == ScaleOrientation.VERTICAL
-            ? detail.verticalScale / _scale
-            : detail.horizontalScale / _scale;
-      }
-
-      if (!_isZoom) {
-        if (pinchZoomEnabled) {
-          scale = detail.scale;
-        } else {
-          scale = _scaleOrientation == ScaleOrientation.VERTICAL
-              ? detail.verticalScale
-              : detail.horizontalScale;
-        }
-        _isZoom = true;
-      }
-
-      MPPointF trans = _getTrans(_curX, _curY);
-      var h = widget.controller.painter.viewPortHandler;
-      scale = Utils.optimizeScale(scale);
-      if (pinchZoomEnabled) {
-        bool canZoomMoreX =
-            scale < 1 ? h.canZoomOutMoreX() : h.canZoomInMoreX();
-        bool canZoomMoreY =
-            scale < 1 ? h.canZoomOutMoreY() : h.canZoomInMoreY();
-        widget.controller.painter.zoom(canZoomMoreX ? scale : 1,
-            canZoomMoreY ? scale : 1, trans.x, trans.y);
-        setStateIfNotDispose();
-      } else {
-        if (_scaleOrientation == ScaleOrientation.VERTICAL) {
-          if (widget.controller.painter.scaleYEnabled) {
-            bool canZoomMoreY =
-                scale < 1 ? h.canZoomOutMoreY() : h.canZoomInMoreY();
-            widget.controller.painter
-                .zoom(1, canZoomMoreY ? scale : 1, trans.x, trans.y);
-            setStateIfNotDispose();
-          }
-        } else {
-          if (widget.controller.painter.scaleXEnabled) {
-            bool canZoomMoreX =
-                scale < 1 ? h.canZoomOutMoreX() : h.canZoomInMoreX();
-            widget.controller.painter
-                .zoom(canZoomMoreX ? scale : 1, 1, trans.x, trans.y);
-            setStateIfNotDispose();
-          }
-        }
-      }
-      MPPointF.recycleInstance(trans);
-
-      if (pinchZoomEnabled) {
-        _scale = detail.scale;
-      } else {
-        _scale = _scaleOrientation == ScaleOrientation.VERTICAL
-            ? detail.verticalScale
-            : detail.horizontalScale;
-      }
-    }
-  }
-
-  @override
   void onSingleTapUp(TapUpDetails detail) {
     if (widget.controller.painter.highLightPerTapEnabled) {
       Highlight h = widget.controller.painter.getHighlightByTouchPoint(
@@ -251,6 +72,157 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
     } else {
       lastHighlighted = null;
     }
+  }
+
+  @override
+  void onDoubleTapUp(details) {
+    widget.controller.stopDeceleration();
+    if (widget.controller.painter.doubleTapToZoomEnabled &&
+        widget.controller.painter.getData().getEntryCount() > 0) {
+      MPPointF trans =
+          _getTrans(details.localPosition.dx, details.localPosition.dy);
+      widget.controller.painter.zoom(
+          widget.controller.painter.scaleXEnabled ? 1.2 : 1,
+          widget.controller.painter.scaleYEnabled ? 1.2 : 1,
+          trans.x,
+          trans.y);
+      setStateIfNotDispose();
+      MPPointF.recycleInstance(trans);
+    }
+  }
+
+  @override
+  void onMoveStart(OpsMoveStartDetails details) {
+    widget.controller.stopDeceleration();
+    _curX = details.localPoint.dx;
+    _curY = details.localPoint.dy;
+  }
+
+  @override
+  void onMoveUpdate(OpsMoveUpdateDetails details) {
+    var dx = details.localPoint.dx - _curX;
+    var dy = details.localPoint.dy - _curY;
+    if (widget.controller.painter.dragYEnabled &&
+        widget.controller.painter.dragXEnabled) {
+      if (_inverted()) {
+        /// if there is an inverted horizontalbarchart
+        if (widget is HorizontalBarChart) {
+          dx = -dx;
+        } else {
+          dy = -dy;
+        }
+      }
+      widget.controller.painter.translate(dx, dy);
+      setStateIfNotDispose();
+    } else {
+      if (widget.controller.painter.dragXEnabled) {
+        if (_inverted()) {
+          /// if there is an inverted horizontalbarchart
+          if (widget is HorizontalBarChart) {
+            dx = -dx;
+          } else {
+            dy = -dy;
+          }
+        }
+        widget.controller.painter.translate(dx, 0.0);
+        setStateIfNotDispose();
+      } else if (widget.controller.painter.dragYEnabled) {
+        if (_inverted()) {
+          /// if there is an inverted horizontalbarchart
+          if (widget is HorizontalBarChart) {
+            dx = -dx;
+          } else {
+            dy = -dy;
+          }
+        }
+        widget.controller.painter.translate(0.0, dy);
+        setStateIfNotDispose();
+      }
+    }
+    _curX = details.localPoint.dx;
+    _curY = details.localPoint.dy;
+  }
+
+  @override
+  void onMoveEnd(OpsMoveEndDetails details) {
+    widget.controller
+      ..stopDeceleration()
+      ..setDecelerationVelocity(details.velocity.pixelsPerSecond)
+      ..computeScroll();
+  }
+
+  @override
+  void onScaleStart(OpsScaleStartDetails details) {
+    widget.controller.stopDeceleration();
+    _curX = details.localPoint.dx;
+    _curY = details.localPoint.dy;
+  }
+
+  @override
+  void onScaleUpdate(OpsScaleUpdateDetails details) {
+    var pinchZoomEnabled = widget.controller.pinchZoomEnabled;
+    var isYDirection = details.mainDirection == Direction.Y;
+    if (_scale == -1.0) {
+      if (pinchZoomEnabled) {
+        _scale = details.scale;
+      } else {
+        _scale = isYDirection
+            ? details.verticalScale
+            : details.horizontalScale;
+      }
+      return;
+    }
+
+    var scale = 1.0;
+    if (pinchZoomEnabled) {
+      scale = details.scale / _scale;
+    } else {
+      scale = isYDirection
+          ? details.verticalScale / _scale
+          : details.horizontalScale / _scale;
+    }
+    MPPointF trans = _getTrans(_curX, _curY);
+    var h = widget.controller.painter.viewPortHandler;
+    scale = Utils.optimizeScale(scale);
+    if (pinchZoomEnabled) {
+      bool canZoomMoreX = scale < 1 ? h.canZoomOutMoreX() : h.canZoomInMoreX();
+      bool canZoomMoreY = scale < 1 ? h.canZoomOutMoreY() : h.canZoomInMoreY();
+      widget.controller.painter.zoom(
+          canZoomMoreX ? scale : 1, canZoomMoreY ? scale : 1, trans.x, trans.y);
+      setStateIfNotDispose();
+    } else {
+      if (isYDirection) {
+        if (widget.controller.painter.scaleYEnabled) {
+          bool canZoomMoreY =
+              scale < 1 ? h.canZoomOutMoreY() : h.canZoomInMoreY();
+          widget.controller.painter
+              .zoom(1, canZoomMoreY ? scale : 1, trans.x, trans.y);
+          setStateIfNotDispose();
+        }
+      } else {
+        if (widget.controller.painter.scaleXEnabled) {
+          bool canZoomMoreX =
+              scale < 1 ? h.canZoomOutMoreX() : h.canZoomInMoreX();
+          widget.controller.painter
+              .zoom(canZoomMoreX ? scale : 1, 1, trans.x, trans.y);
+          setStateIfNotDispose();
+        }
+      }
+    }
+    MPPointF.recycleInstance(trans);
+
+    if (pinchZoomEnabled) {
+      _scale = details.scale;
+    } else {
+      _scale = isYDirection
+          ? details.verticalScale
+          : details.horizontalScale;
+    }
+  }
+
+  @override
+  void onScaleEnd(OpsScaleEndDetails detail) {
+    _scale = -1.0;
   }
 
   @override

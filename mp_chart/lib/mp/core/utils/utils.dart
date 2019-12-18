@@ -364,6 +364,7 @@ abstract class Utils {
   }
 
   static double optimizeScale(double scale) {
-    return scale > 1.1 ? 1.0 : scale;
+//    return scale > 1.1 ? 1.0 : scale;
+    return scale;
   }
 }

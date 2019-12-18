@@ -1,1 +1,0 @@
-enum ScaleOrientation { HORIZONTAL, VERTICAL }
