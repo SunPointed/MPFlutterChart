@@ -10,6 +10,7 @@ import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
+import 'package:mp_chart/mp/core/touch_listener.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
@@ -50,6 +51,9 @@ abstract class BarLineScatterCandleBubbleController<
   Color borderColor;
   Color backgroundColor;
   double borderStrokeWidth;
+
+  /// this is used for user get touch event if they needed
+  OnTouchEventListener touchEventListener;
 
   AxisLeftSettingFunction axisLeftSettingFunction;
   AxisRightSettingFunction axisRightSettingFunction;
@@ -98,6 +102,7 @@ abstract class BarLineScatterCandleBubbleController<
     this.borderStrokeWidth = 1.0,
     this.axisLeftSettingFunction,
     this.axisRightSettingFunction,
+    this.touchEventListener,
     IMarker marker,
     Description description,
     String noDataText = "No chart data available.",
@@ -423,7 +428,7 @@ abstract class BarLineScatterCandleBubbleController<
     _decelerationLastTime = 0;
   }
 
-  void setDecelerationVelocity(Offset velocityOffset){
+  void setDecelerationVelocity(Offset velocityOffset) {
     _decelerationVelocity.x = velocityOffset.dx;
     _decelerationVelocity.y = velocityOffset.dy;
   }

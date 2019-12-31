@@ -9,6 +9,7 @@ import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
+import 'package:mp_chart/mp/core/touch_listener.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/painter/combined_chart_painter.dart';
 
@@ -58,6 +59,7 @@ class CombinedChartController
     double borderStrokeWidth = 1.0,
     AxisLeftSettingFunction axisLeftSettingFunction,
     AxisRightSettingFunction axisRightSettingFunction,
+    OnTouchEventListener touchEventListener,
     IMarker marker,
     Description description,
     String noDataText = "No chart data available.",
@@ -126,7 +128,8 @@ class CombinedChartController
             gridBackColor: gridBackColor,
             borderStrokeWidth: borderStrokeWidth,
             axisLeftSettingFunction: axisLeftSettingFunction,
-            axisRightSettingFunction: axisRightSettingFunction);
+            axisRightSettingFunction: axisRightSettingFunction,
+            touchEventListener: touchEventListener);
 
   CombinedData get data => super.data;
 

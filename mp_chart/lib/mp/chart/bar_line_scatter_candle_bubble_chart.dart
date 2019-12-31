@@ -5,9 +5,9 @@ import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller
 import 'package:mp_chart/mp/core/data_interfaces/i_data_set.dart';
 import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
+import 'package:mp_chart/mp/core/touch_listener.dart';
 import 'package:mp_chart/mp/core/utils/highlight_utils.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
-import 'package:mp_chart/mp/core/view_port.dart';
 import 'package:optimized_gesture_detector/details.dart';
 import 'package:optimized_gesture_detector/direction.dart';
 
@@ -26,21 +26,18 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
   double _scale = -1.0;
 
   MPPointF _getTrans(double x, double y) {
-    ViewPortHandler vph = widget.controller.painter.viewPortHandler;
+    return Utils.local2Chart(widget.controller, x, y, inverted: _inverted());
+  }
 
-    double xTrans = x - vph.offsetLeft();
-    double yTrans = 0.0;
-
-    /// check if axis is inverted
-    if (_inverted()) {
-      yTrans = -(y - vph.offsetTop());
+  MPPointF _getTouchValue(
+      TouchValueType type, double screenX, double screenY, double localX, localY) {
+    if (type == TouchValueType.CHART) {
+      return _getTrans(localX, localY);
+    } else if (type == TouchValueType.SCREEN) {
+      return MPPointF.getInstance1(screenX, screenY);
     } else {
-      yTrans = -(widget.controller.painter.getMeasuredHeight() -
-          y -
-          vph.offsetBottom());
+      return MPPointF.getInstance1(localX, localY);
     }
-
-    return MPPointF.getInstance1(xTrans, yTrans);
   }
 
   bool _inverted() {
@@ -53,29 +50,47 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
   }
 
   @override
-  void onTapDown(TapDownDetails detail) {
+  void onTapDown(TapDownDetails details) {
     widget.controller.stopDeceleration();
-    _curX = detail.localPosition.dx;
-    _curY = detail.localPosition.dy;
+    _curX = details.localPosition.dx;
+    _curY = details.localPosition.dy;
     _closestDataSetToTouch = widget.controller.painter.getDataSetByTouchPoint(
-        detail.localPosition.dx, detail.localPosition.dy);
+        details.localPosition.dx, details.localPosition.dy);
+    if (widget.controller.touchEventListener != null) {
+      var point = _getTouchValue(
+          widget.controller.touchEventListener.valueType(),
+          details.globalPosition.dx,
+          details.globalPosition.dy,
+          details.localPosition.dx,
+          details.localPosition.dy);
+      widget.controller.touchEventListener.onTapDown(point.x, point.y);
+    }
   }
 
   @override
-  void onSingleTapUp(TapUpDetails detail) {
+  void onSingleTapUp(TapUpDetails details) {
     if (widget.controller.painter.highLightPerTapEnabled) {
       Highlight h = widget.controller.painter.getHighlightByTouchPoint(
-          detail.localPosition.dx, detail.localPosition.dy);
+          details.localPosition.dx, details.localPosition.dy);
       lastHighlighted = HighlightUtils.performHighlight(
           widget.controller.painter, h, lastHighlighted);
       setStateIfNotDispose();
     } else {
       lastHighlighted = null;
     }
+    if (widget.controller.touchEventListener != null) {
+      var point = _getTouchValue(
+          widget.controller.touchEventListener.valueType(),
+          details.globalPosition.dx,
+          details.globalPosition.dy,
+          details.localPosition.dx,
+          details.localPosition.dy);
+      widget.controller.touchEventListener.onSingleTapUp(point.x, point.y);
+    }
   }
 
   @override
-  void onDoubleTapUp(details) {
+  void onDoubleTapUp(TapUpDetails details) {
     widget.controller.stopDeceleration();
     if (widget.controller.painter.doubleTapToZoomEnabled &&
         widget.controller.painter.getData().getEntryCount() > 0) {
@@ -89,6 +104,15 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
       setStateIfNotDispose();
       MPPointF.recycleInstance(trans);
     }
+    if (widget.controller.touchEventListener != null) {
+      var point = _getTouchValue(
+          widget.controller.touchEventListener.valueType(),
+          details.globalPosition.dx,
+          details.globalPosition.dy,
+          details.localPosition.dx,
+          details.localPosition.dy);
+      widget.controller.touchEventListener.onDoubleTapUp(point.x, point.y);
+    }
   }
 
   @override
@@ -96,6 +120,15 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
     widget.controller.stopDeceleration();
     _curX = details.localPoint.dx;
     _curY = details.localPoint.dy;
+    if (widget.controller.touchEventListener != null) {
+      var point = _getTouchValue(
+          widget.controller.touchEventListener.valueType(),
+          details.globalPoint.dx,
+          details.globalPoint.dy,
+          details.localPoint.dx,
+          details.localPoint.dy);
+      widget.controller.touchEventListener.onMoveStart(point.x, point.y);
+    }
   }
 
   @override
@@ -113,6 +146,15 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
         }
       }
       widget.controller.painter.translate(dx, dy);
+      if (widget.controller.touchEventListener != null) {
+        var point = _getTouchValue(
+            widget.controller.touchEventListener.valueType(),
+            details.globalPoint.dx,
+            details.globalPoint.dy,
+            details.localPoint.dx,
+            details.localPoint.dy);
+        widget.controller.touchEventListener.onMoveUpdate(point.x, point.y);
+      }
       setStateIfNotDispose();
     } else {
       if (widget.controller.painter.dragXEnabled) {
@@ -125,6 +167,15 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
           }
         }
         widget.controller.painter.translate(dx, 0.0);
+        if (widget.controller.touchEventListener != null) {
+          var point = _getTouchValue(
+              widget.controller.touchEventListener.valueType(),
+              details.globalPoint.dx,
+              details.globalPoint.dy,
+              details.localPoint.dx,
+              details.localPoint.dy);
+          widget.controller.touchEventListener.onMoveUpdate(point.x, point.y);
+        }
         setStateIfNotDispose();
       } else if (widget.controller.painter.dragYEnabled) {
         if (_inverted()) {
@@ -136,6 +187,15 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
           }
         }
         widget.controller.painter.translate(0.0, dy);
+        if (widget.controller.touchEventListener != null) {
+          var point = _getTouchValue(
+              widget.controller.touchEventListener.valueType(),
+              details.globalPoint.dx,
+              details.globalPoint.dy,
+              details.localPoint.dx,
+              details.localPoint.dy);
+          widget.controller.touchEventListener.onMoveUpdate(point.x, point.y);
+        }
         setStateIfNotDispose();
       }
     }
@@ -149,6 +209,15 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
       ..stopDeceleration()
       ..setDecelerationVelocity(details.velocity.pixelsPerSecond)
       ..computeScroll();
+    if (widget.controller.touchEventListener != null) {
+      var point = _getTouchValue(
+          widget.controller.touchEventListener.valueType(),
+          details.globalPoint.dx,
+          details.globalPoint.dy,
+          details.localPoint.dx,
+          details.localPoint.dy);
+      widget.controller.touchEventListener.onMoveEnd(point.x, point.y);
+    }
   }
 
   @override
@@ -156,6 +225,15 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
     widget.controller.stopDeceleration();
     _curX = details.localPoint.dx;
     _curY = details.localPoint.dy;
+    if (widget.controller.touchEventListener != null) {
+      var point = _getTouchValue(
+          widget.controller.touchEventListener.valueType(),
+          details.globalPoint.dx,
+          details.globalPoint.dy,
+          details.localPoint.dx,
+          details.localPoint.dy);
+      widget.controller.touchEventListener.onScaleStart(point.x, point.y);
+    }
   }
 
   @override
@@ -166,9 +244,7 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
       if (pinchZoomEnabled) {
         _scale = details.scale;
       } else {
-        _scale = isYDirection
-            ? details.verticalScale
-            : details.horizontalScale;
+        _scale = isYDirection ? details.verticalScale : details.horizontalScale;
       }
       return;
     }
@@ -189,6 +265,16 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
       bool canZoomMoreY = scale < 1 ? h.canZoomOutMoreY() : h.canZoomInMoreY();
       widget.controller.painter.zoom(
           canZoomMoreX ? scale : 1, canZoomMoreY ? scale : 1, trans.x, trans.y);
+      if (widget.controller.touchEventListener != null) {
+        var point = _getTouchValue(
+            widget.controller.touchEventListener.valueType(),
+            details.globalFocalPoint.dx,
+            details.globalFocalPoint.dy,
+            details.localFocalPoint.dx,
+            details.localFocalPoint.dy);
+        widget.controller.touchEventListener
+            .onScaleUpdate(point.x, point.y);
+      }
       setStateIfNotDispose();
     } else {
       if (isYDirection) {
@@ -197,6 +283,16 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
               scale < 1 ? h.canZoomOutMoreY() : h.canZoomInMoreY();
           widget.controller.painter
               .zoom(1, canZoomMoreY ? scale : 1, trans.x, trans.y);
+          if (widget.controller.touchEventListener != null) {
+            var point = _getTouchValue(
+                widget.controller.touchEventListener.valueType(),
+                details.globalFocalPoint.dx,
+                details.globalFocalPoint.dy,
+                details.localFocalPoint.dx,
+                details.localFocalPoint.dy);
+            widget.controller.touchEventListener
+                .onScaleUpdate(point.x, point.y);
+          }
           setStateIfNotDispose();
         }
       } else {
@@ -205,6 +301,16 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
               scale < 1 ? h.canZoomOutMoreX() : h.canZoomInMoreX();
           widget.controller.painter
               .zoom(canZoomMoreX ? scale : 1, 1, trans.x, trans.y);
+          if (widget.controller.touchEventListener != null) {
+            var point = _getTouchValue(
+                widget.controller.touchEventListener.valueType(),
+                details.globalFocalPoint.dx,
+                details.globalFocalPoint.dy,
+                details.localFocalPoint.dx,
+                details.localFocalPoint.dy);
+            widget.controller.touchEventListener
+                .onScaleUpdate(point.x, point.y);
+          }
           setStateIfNotDispose();
         }
       }
@@ -214,15 +320,22 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
     if (pinchZoomEnabled) {
       _scale = details.scale;
     } else {
-      _scale = isYDirection
-          ? details.verticalScale
-          : details.horizontalScale;
+      _scale = isYDirection ? details.verticalScale : details.horizontalScale;
     }
   }
 
   @override
-  void onScaleEnd(OpsScaleEndDetails detail) {
+  void onScaleEnd(OpsScaleEndDetails details) {
     _scale = -1.0;
+    if (widget.controller.touchEventListener != null) {
+      var point = _getTouchValue(
+          widget.controller.touchEventListener.valueType(),
+          details.globalPoint.dx,
+          details.globalPoint.dy,
+          details.localPoint.dx,
+          details.localPoint.dy);
+      widget.controller.touchEventListener.onScaleEnd(point.x, point.y);
+    }
   }
 
   @override

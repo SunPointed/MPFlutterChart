@@ -21,7 +21,7 @@ dependencies:
   permission_handler: ^3.2.0
   flutter:
     sdk: flutter
-  mp_chart: ^0.0.9
+  mp_chart: ^0.1.1
 #  mp_chart:
 #    path : ../
   # The following adds the Cupertino Icons font to your application.

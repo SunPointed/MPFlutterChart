@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 
+import 'package:example/demo/action_state.dart';
+import 'package:example/demo/util.dart';
 import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/chart/bar_chart.dart';
 import 'package:mp_chart/mp/controller/bar_chart_controller.dart';
@@ -19,11 +21,10 @@ import 'package:mp_chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_chart/mp/core/enums/y_axis_label_position.dart';
 import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/image_loader.dart';
+import 'package:mp_chart/mp/core/touch_listener.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/day_axis_value_formatter.dart';
 import 'package:mp_chart/mp/core/value_formatter/my_value_formatter.dart';
-import 'package:example/demo/action_state.dart';
-import 'package:example/demo/util.dart';
 
 class BarChartBasic extends StatefulWidget {
   @override
@@ -182,7 +183,8 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
         scaleYEnabled: true,
         pinchZoomEnabled: false,
         maxVisibleCount: 60,
-        description: desc);
+        description: desc,
+        touchEventListener: MyTouchEventListener());
   }
 
   void _initData(int count, double range, ui.Image img) {
@@ -264,5 +266,57 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
 //            + chart.getHighestVisibleX());
 //
 //    MPPointF.recycleInstance(position);
+  }
+}
+
+class MyTouchEventListener with OnTouchEventListener {
+  @override
+  void onDoubleTapUp(double x, double y) {
+    print("onDoubleTapUp x: $x, y: $y");
+  }
+
+  @override
+  void onMoveEnd(double x, double y) {
+    print("onMoveEnd x: $x, y: $y");
+  }
+
+  @override
+  void onMoveStart(double x, double y) {
+    print("onMoveStart x: $x, y: $y");
+  }
+
+  @override
+  void onMoveUpdate(double x, double y) {
+    print("onMoveUpdate x: $x, y: $y");
+  }
+
+  @override
+  void onScaleEnd(double x, double y) {
+    print("onScaleEnd x: $x, y: $y");
+  }
+
+  @override
+  void onScaleStart(double x, double y) {
+    print("onScaleStart x: $x, y: $y");
+  }
+
+  @override
+  void onScaleUpdate(double x, double y) {
+    print("onScaleUpdate x: $x, y: $y");
+  }
+
+  @override
+  void onSingleTapUp(double x, double y) {
+    print("onSingleTapUp x: $x, y: $y");
+  }
+
+  @override
+  void onTapDown(double x, double y) {
+    print("onTapDown x: $x, y: $y");
+  }
+
+  @override
+  TouchValueType valueType() {
+    return TouchValueType.SCREEN;
   }
 }

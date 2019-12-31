@@ -24,7 +24,6 @@ abstract class Chart<C extends Controller> extends StatefulWidget {
 abstract class ChartState<T extends Chart> extends State<T> {
   final ScreenshotController _screenshotController = ScreenshotController();
   bool isCapturing = false;
-  bool _singleTap = false;
 
   void setStateIfNotDispose() {
     if (mounted) {

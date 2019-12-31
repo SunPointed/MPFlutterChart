@@ -12,6 +12,7 @@ import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer_horizontal_bar_chart.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer_horizontal_bar_chart.dart';
+import 'package:mp_chart/mp/core/touch_listener.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/core/transformer/transformer_horizontal_bar_chart.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
@@ -55,6 +56,7 @@ class HorizontalBarChartController extends BarChartController {
     double borderStrokeWidth = 1.0,
     AxisLeftSettingFunction axisLeftSettingFunction,
     AxisRightSettingFunction axisRightSettingFunction,
+    OnTouchEventListener touchEventListener,
     IMarker marker,
     Description description,
     String noDataText = "No chart data available.",
@@ -127,7 +129,8 @@ class HorizontalBarChartController extends BarChartController {
             gridBackColor: gridBackColor,
             borderStrokeWidth: borderStrokeWidth,
             axisLeftSettingFunction: axisLeftSettingFunction,
-            axisRightSettingFunction: axisRightSettingFunction);
+            axisRightSettingFunction: axisRightSettingFunction,
+            touchEventListener: touchEventListener);
 
   HorizontalBarChartPainter get painter => super.painter;
 

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:mp_chart/mp/controller/controller.dart';
 import 'package:mp_chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/poolable/size.dart';
@@ -9,6 +10,7 @@ import 'package:mp_chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_chart/mp/core/utils/screen_utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/default_value_formatter.dart';
 import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
+import 'package:mp_chart/mp/core/view_port.dart';
 
 abstract class Utils {
   // ignore: non_constant_identifier_names
@@ -366,5 +368,23 @@ abstract class Utils {
   static double optimizeScale(double scale) {
 //    return scale > 1.1 ? 1.0 : scale;
     return scale;
+  }
+
+  static MPPointF local2Chart(Controller controller, double x, double y,
+      {bool inverted = false}) {
+    ViewPortHandler vph = controller.painter.viewPortHandler;
+
+    double xTrans = x - vph.offsetLeft();
+    double yTrans = 0.0;
+
+    /// check if axis is inverted
+    if (inverted) {
+      yTrans = -(y - vph.offsetTop());
+    } else {
+      yTrans =
+          -(controller.painter.getMeasuredHeight() - y - vph.offsetBottom());
+    }
+
+    return MPPointF.getInstance1(xTrans, yTrans);
   }
 }
