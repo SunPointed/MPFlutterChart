@@ -31,6 +31,7 @@ import 'package:example/demo/scrolling_chart/multiple.dart';
 import 'package:example/demo/scrolling_chart/tall_bar.dart';
 import 'package:example/demo/scrolling_chart/view_pager.dart';
 
+import 'demo/even_more/realtime.dart';
 import 'demo/scrolling_chart/many_bar_chart.dart';
 
 void main() => runApp(MyApp());
@@ -84,7 +85,7 @@ class MyApp extends StatelessWidget {
         '/scrolling_chart/tall_bar_chart': (_) => ScrollingChartTallBar(),
         '/scrolling_chart/many_bar_charts': (_) => ScrollingChartManyBar(),
         '/even_more_line_chart/dynamic': (_) => EvenMoreDynamic(),
-        '/even_more_line_chart/realtime': (_) => BarChartBasic2(),
+        '/even_more_line_chart/realtime': (_) => EvenMoreRealtime(),
         '/even_more_line_chart/hourly': (_) => EvenMoreHourly(),
       },
     );
@@ -148,10 +149,10 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: <Widget>[
           PopupMenuButton<String>(
             itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
-              _item('View on GitHub', 'A'),
-              _item('Problem Report', 'B'),
-              _item('Developer Website', 'C'),
-            ],
+                  _item('View on GitHub', 'A'),
+                  _item('Problem Report', 'B'),
+                  _item('Developer Website', 'C'),
+                ],
             onSelected: (String action) {
               _itemClick(action);
             },

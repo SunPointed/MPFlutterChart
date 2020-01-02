@@ -138,7 +138,7 @@ Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when
 </div>
 <br/><br/>
 <div align=center>
-    <img src="https://raw.githubusercontent.com/SunPointed/MPFlutterChart/master/mp_chart/img/even_more_charts/basic.png"  width="240" height="480">
+    <img src="https://raw.githubusercontent.com/SunPointed/MPFlutterChart/master/mp_chart/img/even_more_charts/realtime.png"  width="240" height="480">
 </div>
 <br/><br/>
 <div align=center>

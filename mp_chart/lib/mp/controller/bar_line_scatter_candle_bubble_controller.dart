@@ -217,7 +217,7 @@ abstract class BarLineScatterCandleBubbleController<
   }
 
   /// Moves the left side of the current viewport to the specified x-position.
-  /// This also refreshes the chart by calling invalidate().
+  /// call state?.setStateIfNotDispose() to invalidate
   ///
   /// @param xValue
   void moveViewToX(double xValue) {
@@ -229,9 +229,24 @@ abstract class BarLineScatterCandleBubbleController<
     viewPortHandler.centerViewPort(pts);
   }
 
+  /// This will center the viewport to the specified y value on the y-axis.
+  /// call state?.setStateIfNotDispose() to invalidate
+  ///
+  /// @param yValue
+  /// @param axis   - which axis should be used as a reference for the y-axis
+  void moveViewToY(double yValue, AxisDependency axis){
+    double yInView = getAxisRange(axis) / viewPortHandler.getScaleY();
+    List<double> pts = List();
+    pts.add(0.0);
+    pts.add(yValue + yInView / 2);
+
+    painter?.getTransformer(axis)?.pointValuesToPixel(pts);
+    viewPortHandler.centerViewPort(pts);
+  }
+
   /// This will move the left side of the current viewport to the specified
   /// x-value on the x-axis, and center the viewport to the specified y value on the y-axis.
-  /// This also refreshes the chart by calling invalidate().
+  /// call state?.setStateIfNotDispose() to invalidate
   ///
   /// @param xValue
   /// @param yValue
@@ -247,7 +262,7 @@ abstract class BarLineScatterCandleBubbleController<
 
   /// This will move the left side of the current viewport to the specified x-value
   /// and center the viewport to the y value animated.
-  /// This also refreshes the chart by calling invalidate().
+  /// call state?.setStateIfNotDispose() to invalidate
   ///
   /// @param xValue
   /// @param yValue
@@ -277,7 +292,7 @@ abstract class BarLineScatterCandleBubbleController<
   }
 
   /// Centers the viewport to the specified y value on the y-axis.
-  /// This also refreshes the chart by calling invalidate().
+  /// call state?.setStateIfNotDispose() to invalidate
   ///
   /// @param yValue
   /// @param axis   - which axis should be used as a reference for the y-axis
@@ -292,7 +307,7 @@ abstract class BarLineScatterCandleBubbleController<
 
   /// This will move the center of the current viewport to the specified
   /// x and y value.
-  /// This also refreshes the chart by calling invalidate().
+  /// call state?.setStateIfNotDispose() to invalidate
   ///
   /// @param xValue
   /// @param yValue

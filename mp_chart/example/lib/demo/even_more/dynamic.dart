@@ -97,7 +97,9 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
         controller.state.setStateIfNotDispose();
         break;
       case 'G':
-        // todo save
+        captureImg(() {
+          controller.state.capture();
+        });
         break;
     }
   }
