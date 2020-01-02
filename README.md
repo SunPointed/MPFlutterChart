@@ -75,7 +75,7 @@ Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when
 
 **EvenMoreCharts**
 <div>
-    <img src="https://github.com/SunPointed/MPFlutterChart/blob/master/mp_chart/img/even_more_charts/dynamic.png"  width="240" height="480"><img src="https://github.com/SunPointed/MPFlutterChart/blob/master/mp_chart/img/even_more_charts/basic.png"  width="240" height="480"><img src="https://github.com/SunPointed/MPFlutterChart/blob/master/mp_chart/img/even_more_charts/hourly.png"  width="240" height="480">
+    <img src="https://github.com/SunPointed/MPFlutterChart/blob/master/mp_chart/img/even_more_charts/dynamic.png"  width="240" height="480"><img src="https://github.com/SunPointed/MPFlutterChart/blob/master/mp_chart/img/even_more_charts/realtime.png"  width="240" height="480"><img src="https://github.com/SunPointed/MPFlutterChart/blob/master/mp_chart/img/even_more_charts/hourly.png"  width="240" height="480">
 </div>
 <br/><br/>
 
