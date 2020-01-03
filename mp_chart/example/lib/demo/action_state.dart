@@ -23,6 +23,7 @@ import 'package:mp_chart/mp/core/data_set/bar_data_set.dart';
 import 'package:mp_chart/mp/core/data_set/candle_data_set.dart';
 import 'package:mp_chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_chart/mp/core/data_set/scatter_data_set.dart';
+import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_chart/mp/core/enums/mode.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:example/demo/util.dart';
@@ -553,7 +554,8 @@ abstract class CombinedActionState<T extends StatefulWidget>
           item('View on GitHub', 'A'),
           item('Toggle Line Values', 'B'),
           item('Toggle Bar Values', 'C'),
-          item('Remove Data Set', 'D')
+          item('Remove Data Set', 'D'),
+          item('Set Y Range Test', 'E')
         ];
   }
 
@@ -588,6 +590,10 @@ abstract class CombinedActionState<T extends StatefulWidget>
           controller.data.notifyDataChanged();
           controller.state.setStateIfNotDispose();
         }
+        break;
+      case 'E':
+        controller.setVisibleYRangeMaximum(100, AxisDependency.LEFT);
+        controller.state.setStateIfNotDispose();
         break;
     }
   }
