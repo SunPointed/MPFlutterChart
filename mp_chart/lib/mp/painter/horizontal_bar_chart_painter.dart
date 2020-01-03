@@ -147,7 +147,6 @@ class HorizontalBarChartPainter extends BarChartPainter {
     if (legend != null) legendRenderer.computeLegend(getBarData());
     renderer?.initBuffers();
     calcMinMax();
-    compute();
 
     double offsetLeft = 0, offsetRight = 0, offsetTop = 0, offsetBottom = 0;
 
