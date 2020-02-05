@@ -266,10 +266,31 @@ abstract class Utils {
     if (d == double.infinity)
       return d;
     else {
-      d += 0.1;
-//      todo return longBitsToDouble(doubleToRawLongBits(d) +
+      /**
+       * dart don't have longBitsToDouble and doubleToRawLongBits
+       * so we just return like this
+       */
+      var res = 0.0;
+      try {
+        var len = d.toString().split(".")[1].length;
+        var value = "0.";
+        for(var i = 0; i < len; i++){
+          value += "0";
+        }
+        value += "1";
+        if(d >= 0){
+          res = double.parse(value);
+        } else {
+          res = -double.parse(value);
+        }
+      } catch (e) {
+        return d;
+      }
+
+      return d + res;
+//      todo
+//       return longBitsToDouble(doubleToRawLongBits(d) +
 //          ((d >= 0.0) ? 1 : -1));
-      return d;
     }
   }
 

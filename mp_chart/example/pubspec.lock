@@ -77,9 +77,9 @@ packages:
   mp_chart:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      name: mp_chart
+      url: "https://pub.flutter-io.cn"
+    source: hosted
     version: "0.1.2"
   optimized_gesture_detector:
     dependency: transitive

@@ -149,5 +149,35 @@ void main() {
     print(sin(90 / 180 * pi));
 
     print("---> ${double.maxFinite * 1.1}");
+
+    double d1 = 8.93345;
+    double d2 = -0.35345;
+    double d3 = 10;
+
+    print(d1.toString());
+    print(d2.toString());
+    print(d3.toString());
+
+    print(d1.toString().split(".")[1].length);
+    print(d2.toString().split(".")[1].length);
+    print(d3.toString().split(".")[1].length);
+
+    var res = 0.0;
+    try {
+      var len = d3.toString().split(".")[1].length;
+      var value = "0.";
+      for(var i = 0; i < len; i++){
+        value += "0";
+      }
+      value += "1";
+      if(d3 >= 0){
+        res = double.parse(value);
+      } else {
+        res = -double.parse(value);
+      }
+    } catch (e) {
+
+    }
+    print(res);
   });
 }
