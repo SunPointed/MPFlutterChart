@@ -133,6 +133,15 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
 
   @override
   void onMoveUpdate(OpsMoveUpdateDetails details) {
+    if (widget.controller.painter.highlightPerDragEnabled) {
+      final highlighted = widget.controller.painter.getHighlightByTouchPoint(
+          details.localPoint.dx, details.localPoint.dy);
+      if (highlighted?.equalTo(lastHighlighted) == false) {
+        lastHighlighted = HighlightUtils.performHighlight(
+            widget.controller.painter, highlighted, lastHighlighted);
+        setStateIfNotDispose();
+      }
+    }
     var dx = details.localPoint.dx - _curX;
     var dy = details.localPoint.dy - _curY;
     if (widget.controller.painter.dragYEnabled &&
