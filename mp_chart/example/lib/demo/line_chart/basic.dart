@@ -125,24 +125,38 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
 
   void _initController() {
     var desc = Description()..enabled = false;
-    LimitLine llXAxis = LimitLine(9, "Index 10");
-    llXAxis.setLineWidth(4);
-    llXAxis.enableDashedLine(10, 10, 0);
-    llXAxis.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
-    llXAxis.textSize = (10);
-    llXAxis.typeface = Util.EXTRA_BOLD;
+//    LimitLine llXAxis = LimitLine(9, "Index 10");
+//    llXAxis.setLineWidth(4);
+//    llXAxis.enableDashedLine(10, 10, 0);
+//    llXAxis.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
+//    llXAxis.textSize = (10);
+//    llXAxis.typeface = Util.EXTRA_BOLD;
     LimitLine ll1 = LimitLine(150, "Upper Limit");
     ll1.setLineWidth(4);
     ll1.enableDashedLine(10, 10, 0);
-    ll1.labelPosition = (LimitLabelPosition.RIGHT_TOP);
+    ll1.labelPosition = (LimitLabelPosition.LEFT_CENTER);
+    ll1.drawBackground = true;
     ll1.textSize = (10);
     ll1.typeface = Util.EXTRA_BOLD;
     LimitLine ll2 = LimitLine(-30, "Lower Limit");
+    ll2.drawBackground = true;
     ll2.setLineWidth(4);
     ll2.enableDashedLine(10, 10, 0);
-    ll2.labelPosition = (LimitLabelPosition.RIGHT_BOTTOM);
+    ll2.labelPosition = (LimitLabelPosition.RIGHT_CENTER);
     ll2.textSize = (10);
     ll2.typeface = Util.EXTRA_BOLD;
+    LimitLine ll3 = LimitLine(10, "Upper Limit");
+    ll3.setLineWidth(4);
+    ll3.enableDashedLine(10, 10, 0);
+    ll3.labelPosition = (LimitLabelPosition.CENTER_TOP);
+    ll3.textSize = (10);
+    ll3.typeface = Util.EXTRA_BOLD;
+    LimitLine ll4 = LimitLine(20, "Lower Limit");
+    ll4.setLineWidth(4);
+    ll4.enableDashedLine(10, 10, 0);
+    ll4.labelPosition = (LimitLabelPosition.CENTER_BOTTOM);
+    ll4.textSize = (10);
+    ll4.typeface = Util.EXTRA_BOLD;
     controller = LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
@@ -162,6 +176,8 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
         },
         xAxisSettingFunction: (xAxis, controller) {
           xAxis
+            ..addLimitLine(ll3)
+            ..addLimitLine(ll4)
             ..drawLimitLineBehindData = true
             ..enableAxisLineDashedLine(5, 5, 0)
             ..enableGridDashedLine(10, 10, 0);

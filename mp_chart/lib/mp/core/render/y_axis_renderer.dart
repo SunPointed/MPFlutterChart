@@ -9,6 +9,7 @@ import 'package:mp_chart/mp/core/limit_line.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/render/axis_renderer.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
+import 'package:mp_chart/mp/core/utils/canvas_utils.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
@@ -354,25 +355,38 @@ class YAxisRenderer extends AxisRenderer {
         painter.layout();
         final LimitLabelPosition position = l.labelPosition;
         if (position == LimitLabelPosition.RIGHT_TOP) {
-          painter.paint(
-              c,
-              Offset(viewPortHandler.contentRight() - xOffset - painter.width,
-                  pts[1] - yOffset + labelLineHeight - painter.height));
+          var offset = Offset(
+              viewPortHandler.contentRight() - xOffset - painter.width,
+              pts[1] - yOffset + labelLineHeight - painter.height);
+          CanvasUtils.renderLimitLabelBackground(c, painter, offset, l);
+          painter.paint(c, offset);
         } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
-          painter.paint(
-              c,
-              Offset(viewPortHandler.contentRight() - xOffset - painter.width,
-                  pts[1] + yOffset - painter.height));
+          var offset = Offset(
+              viewPortHandler.contentRight() - xOffset - painter.width,
+              pts[1] + yOffset - painter.height);
+          CanvasUtils.renderLimitLabelBackground(c, painter, offset, l);
+          painter.paint(c, offset);
+        } else if (position == LimitLabelPosition.RIGHT_CENTER) {
+          var offset = Offset(
+              viewPortHandler.contentRight() - xOffset - painter.width,
+              pts[1] - l.lineWidth);
+          CanvasUtils.renderLimitLabelBackground(c, painter, offset, l);
+          painter.paint(c, offset);
+        } else if (position == LimitLabelPosition.LEFT_CENTER) {
+          var offset = Offset(
+              viewPortHandler.contentLeft() + xOffset, pts[1] - l.lineWidth);
+          CanvasUtils.renderLimitLabelBackground(c, painter, offset, l);
+          painter.paint(c, offset);
         } else if (position == LimitLabelPosition.LEFT_TOP) {
-          painter.paint(
-              c,
-              Offset(viewPortHandler.contentLeft() + xOffset - painter.width,
-                  pts[1] - yOffset + labelLineHeight - painter.height));
+          var offset = Offset(viewPortHandler.contentLeft() + xOffset,
+              pts[1] - yOffset + labelLineHeight - painter.height);
+          CanvasUtils.renderLimitLabelBackground(c, painter, offset, l);
+          painter.paint(c, offset);
         } else {
-          painter.paint(
-              c,
-              Offset(viewPortHandler.offsetLeft() + xOffset - painter.width,
-                  pts[1] + yOffset - painter.height));
+          var offset = Offset(viewPortHandler.offsetLeft() + xOffset,
+              pts[1] + yOffset - painter.height);
+          CanvasUtils.renderLimitLabelBackground(c, painter, offset, l);
+          painter.paint(c, offset);
         }
       }
 

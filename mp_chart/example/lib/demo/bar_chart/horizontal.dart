@@ -13,9 +13,11 @@ import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/enums/legend_horizontal_alignment.dart';
 import 'package:mp_chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_chart/mp/core/enums/legend_vertical_alignment.dart';
+import 'package:mp_chart/mp/core/enums/limite_label_postion.dart';
 import 'package:mp_chart/mp/core/enums/x_axis_position.dart';
 import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/image_loader.dart';
+import 'package:mp_chart/mp/core/limit_line.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
@@ -156,10 +158,38 @@ class BarChartHorizontalState
   }
 
   void _initController() {
+    LimitLine ll1 = LimitLine(47, "Upper Limit");
+    ll1.setLineWidth(1);
+    ll1.enableDashedLine(10, 10, 0);
+    ll1.labelPosition = (LimitLabelPosition.CENTER_TOP);
+    ll1.textSize = (10);
+    ll1.typeface = Util.EXTRA_BOLD;
     var desc = Description()..enabled = false;
+    LimitLine ll2 = LimitLine(10, "Lower Limit");
+    ll2.setLineWidth(1);
+    ll2.enableDashedLine(10, 10, 0);
+    ll2.labelPosition = (LimitLabelPosition.CENTER_BOTTOM);
+    ll2.textSize = (10);
+    ll2.typeface = Util.EXTRA_BOLD;
+    LimitLine ll3 = LimitLine(47, "Upper Limit");
+    ll3.setLineWidth(1);
+    ll3.drawBackground = true;
+    ll3.enableDashedLine(10, 10, 0);
+    ll3.labelPosition = (LimitLabelPosition.LEFT_CENTER);
+    ll3.textSize = (10);
+    ll3.typeface = Util.EXTRA_BOLD;
+    LimitLine ll4 = LimitLine(10, "Lower Limit");
+    ll4.drawBackground = true;
+    ll4.setLineWidth(1);
+    ll4.enableDashedLine(10, 10, 0);
+    ll4.labelPosition = (LimitLabelPosition.RIGHT_CENTER);
+    ll4.textSize = (10);
+    ll4.typeface = Util.EXTRA_BOLD;
     controller = HorizontalBarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
+            ..addLimitLine(ll1)
+            ..addLimitLine(ll2)
             ..typeface = Util.LIGHT
             ..drawAxisLine = true
             ..drawGridLines = true
@@ -183,6 +213,8 @@ class BarChartHorizontalState
         },
         xAxisSettingFunction: (xAxis, controller) {
           xAxis
+            ..addLimitLine(ll3)
+            ..addLimitLine(ll4)
             ..position = XAxisPosition.BOTTOM
             ..typeface = Util.LIGHT
             ..drawAxisLine = true

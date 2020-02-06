@@ -14,6 +14,10 @@ class LimitLine extends ComponentBase {
   /// the color of the limit line
   Color _lineColor = Color.fromARGB(255, 237, 91, 91);
 
+  Color _backgroundColor = Color.fromARGB(255, 255, 255, 0);
+
+  bool _drawBackground = false;
+
   /// the style of the label text
   PaintingStyle _textStyle = PaintingStyle.fill;
 
@@ -103,4 +107,22 @@ class LimitLine extends ComponentBase {
   set label(String value) {
     _label = value;
   }
+
+  // ignore: unnecessary_getters_setters
+  Color get backgroundColor => _backgroundColor;
+
+  // ignore: unnecessary_getters_setters
+  set backgroundColor(Color value) {
+    _backgroundColor = value;
+  }
+
+  // ignore: unnecessary_getters_setters
+  bool get drawBackground => _drawBackground;
+
+  // ignore: unnecessary_getters_setters
+  set drawBackground(bool value) {
+    _drawBackground = value;
+  }
+
+
 }
