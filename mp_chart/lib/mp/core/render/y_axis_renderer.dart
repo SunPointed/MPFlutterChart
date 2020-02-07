@@ -369,12 +369,12 @@ class YAxisRenderer extends AxisRenderer {
         } else if (position == LimitLabelPosition.RIGHT_CENTER) {
           var offset = Offset(
               viewPortHandler.contentRight() - xOffset - painter.width,
-              pts[1] - l.lineWidth);
+              pts[1] - (l.lineWidth + labelLineHeight) / 2);
           CanvasUtils.renderLimitLabelBackground(c, painter, offset, l);
           painter.paint(c, offset);
         } else if (position == LimitLabelPosition.LEFT_CENTER) {
-          var offset = Offset(
-              viewPortHandler.contentLeft() + xOffset, pts[1] - l.lineWidth);
+          var offset = Offset(viewPortHandler.contentLeft() + xOffset,
+              pts[1] - (l.lineWidth + labelLineHeight) / 2);
           CanvasUtils.renderLimitLabelBackground(c, painter, offset, l);
           painter.paint(c, offset);
         } else if (position == LimitLabelPosition.LEFT_TOP) {
