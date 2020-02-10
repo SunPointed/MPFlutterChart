@@ -68,6 +68,7 @@ class BubbleChartController
     double infoTextSize = 12,
     Color descTextColor,
     Color infoTextColor,
+    Color infoBgColor,
   }) : super(
             marker: marker,
             description: description,
@@ -87,6 +88,7 @@ class BubbleChartController
             infoTextSize: infoTextSize,
             descTextColor: descTextColor,
             infoTextColor: infoTextColor,
+            infoBgColor: infoBgColor,
             maxVisibleCount: maxVisibleCount,
             autoScaleMinMaxEnabled: autoScaleMinMaxEnabled,
             doubleTapToZoomEnabled: doubleTapToZoomEnabled,
@@ -142,6 +144,7 @@ class BubbleChartController
         marker,
         description,
         drawMarkers,
+        infoBgColor,
         infoPaint,
         descPaint,
         xAxis,

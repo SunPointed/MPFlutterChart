@@ -78,6 +78,7 @@ class CombinedChartController
     double infoTextSize = 12,
     Color descTextColor,
     Color infoTextColor,
+    Color infoBgColor,
   }) : super(
             marker: marker,
             description: description,
@@ -97,6 +98,7 @@ class CombinedChartController
             infoTextSize: infoTextSize,
             descTextColor: descTextColor,
             infoTextColor: infoTextColor,
+            infoBgColor : infoBgColor,
             maxVisibleCount: maxVisibleCount,
             autoScaleMinMaxEnabled: autoScaleMinMaxEnabled,
             doubleTapToZoomEnabled: doubleTapToZoomEnabled,
@@ -152,6 +154,7 @@ class CombinedChartController
         marker,
         description,
         drawMarkers,
+        infoBgColor,
         infoPaint,
         descPaint,
         xAxis,

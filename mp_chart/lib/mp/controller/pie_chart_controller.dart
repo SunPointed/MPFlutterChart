@@ -69,6 +69,7 @@ class PieChartController extends PieRadarController<PieChartPainter> {
     double infoTextSize = 12,
     Color descTextColor,
     Color infoTextColor,
+    Color infoBgColor,
   }) : super(
             marker: marker,
             noDataText: noDataText,
@@ -88,6 +89,7 @@ class PieChartController extends PieRadarController<PieChartPainter> {
             infoTextSize: infoTextSize,
             descTextColor: descTextColor,
             infoTextColor: infoTextColor,
+            infoBgColor: infoBgColor,
             rotationAngle: rotationAngle,
             rawRotationAngle: rawRotationAngle,
             rotateEnabled: rotateEnabled,
@@ -117,6 +119,7 @@ class PieChartController extends PieRadarController<PieChartPainter> {
       marker,
       description,
       drawMarkers,
+      infoBgColor,
       infoPaint,
       descPaint,
       xAxis,

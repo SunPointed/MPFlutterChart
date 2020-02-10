@@ -116,6 +116,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
         scaleYEnabled: true,
         selectionListener: this,
         pinchZoomEnabled: true,
+        infoBgColor: ColorUtils.HOLO_GREEN_LIGHT,
         description: desc);
   }
 

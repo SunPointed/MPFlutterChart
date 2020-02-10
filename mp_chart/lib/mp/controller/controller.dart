@@ -38,6 +38,7 @@ abstract class Controller<P extends ChartPainter>
   bool drawMarkers;
 
   ////// split child property
+  Color infoBgColor;
   TextPainter descPaint;
   TextPainter infoPaint;
 
@@ -64,6 +65,7 @@ abstract class Controller<P extends ChartPainter>
       double infoTextSize = 12,
       Color descTextColor,
       Color infoTextColor,
+      this.infoBgColor,
       this.descPaint,
       this.infoPaint,
       String noDataText = "No chart data available.",
@@ -82,6 +84,7 @@ abstract class Controller<P extends ChartPainter>
     }
     infoPaint =
         PainterUtils.create(null, noDataText, infoTextColor, infoTextSize);
+    infoBgColor ??= ColorUtils.WHITE;
 
     if (maxHighlightDistance == 0.0) {
       maxHighlightDistance = Utils.convertDpToPixel(500);
