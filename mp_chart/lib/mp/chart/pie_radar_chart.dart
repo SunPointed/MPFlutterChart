@@ -84,6 +84,12 @@ abstract class PieRadarChartState<T extends PieRadarChart>
   @override
   void onScaleEnd(OpsScaleEndDetails details) {}
 
+  void onDragStart(LongPressStartDetails details) {}
+
+  void onDragUpdate(LongPressMoveUpdateDetails details) {}
+
+  void onDragEnd(LongPressEndDetails details) {}
+
   @override
   void updatePainter() {
     if (widget.controller.painter.getData() != null &&

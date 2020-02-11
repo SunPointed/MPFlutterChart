@@ -110,6 +110,15 @@ abstract class ChartState<T extends Chart> extends State<T> {
                           scaleEnd: (details) {
                             onScaleEnd(details);
                           },
+                          dragStart: (details){
+                            onDragStart(details);
+                          },
+                          dragUpdate: (details){
+                            onDragUpdate(details);
+                          },
+                          dragEnd: (details){
+                            onDragEnd(details);
+                          },
                           child:
                               CustomPaint(painter: widget.controller.painter))),
                 ])));
@@ -139,4 +148,10 @@ abstract class ChartState<T extends Chart> extends State<T> {
   void onScaleUpdate(OpsScaleUpdateDetails details);
 
   void onScaleEnd(OpsScaleEndDetails details);
+
+  void onDragStart(LongPressStartDetails details);
+
+  void onDragUpdate(LongPressMoveUpdateDetails details);
+
+  void onDragEnd(LongPressEndDetails details);
 }

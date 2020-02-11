@@ -322,4 +322,34 @@ class CombinedChartState extends ChartState<CombinedChart> {
       _scale = isYDirection ? details.verticalScale : details.horizontalScale;
     }
   }
+
+  void onDragStart(LongPressStartDetails details) {
+    var point = _getTouchValue(
+        widget.controller.touchEventListener.valueType(),
+        details.globalPosition.dx,
+        details.globalPosition.dy,
+        details.localPosition.dx,
+        details.localPosition.dy);
+    widget.controller.touchEventListener.onDragStart(point.x, point.y);
+  }
+
+  void onDragUpdate(LongPressMoveUpdateDetails details) {
+    var point = _getTouchValue(
+        widget.controller.touchEventListener.valueType(),
+        details.globalPosition.dx,
+        details.globalPosition.dy,
+        details.localPosition.dx,
+        details.localPosition.dy);
+    widget.controller.touchEventListener.onDragUpdate(point.x, point.y);
+  }
+
+  void onDragEnd(LongPressEndDetails details) {
+    var point = _getTouchValue(
+        widget.controller.touchEventListener.valueType(),
+        details.globalPosition.dx,
+        details.globalPosition.dy,
+        details.localPosition.dx,
+        details.localPosition.dy);
+    widget.controller.touchEventListener.onDragEnd(point.x, point.y);
+  }
 }

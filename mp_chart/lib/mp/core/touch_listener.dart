@@ -9,6 +9,9 @@ mixin OnTouchEventListener {
   void onScaleStart(double x, double y);
   void onScaleUpdate(double x, double y);
   void onScaleEnd(double x, double y);
+  void onDragStart(double x, double y);
+  void onDragUpdate(double x, double y);
+  void onDragEnd(double x, double y);
 }
 
 enum TouchValueType{
