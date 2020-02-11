@@ -1,7 +1,7 @@
 import 'package:flutter/painting.dart';
 import 'package:mp_chart/mp/core/component.dart';
 import 'package:mp_chart/mp/core/adapter_android_mp.dart';
-import 'package:mp_chart/mp/core/enums/limite_label_postion.dart';
+import 'package:mp_chart/mp/core/enums/limit_label_postion.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 
 class LimitLine extends ComponentBase {
