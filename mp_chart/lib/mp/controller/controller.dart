@@ -121,7 +121,9 @@ abstract class Controller<P extends ChartPainter>
   void doneBeforePainterInit() {
     legend = initLegend();
     legendRenderer = initLegendRenderer();
-    xAxis = initXAxis();
+    if (xAxis == null) {
+      xAxis = initXAxis();
+    }
     if (legendSettingFunction != null) {
       legendSettingFunction(legend, this);
     }
