@@ -22,6 +22,7 @@ import 'package:mp_chart/mp/core/enums/y_axis_label_position.dart';
 import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/image_loader.dart';
 import 'package:mp_chart/mp/core/touch_listener.dart';
+import 'package:mp_chart/mp/core/chart_trans_listener.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/day_axis_value_formatter.dart';
 import 'package:mp_chart/mp/core/value_formatter/my_value_formatter.dart';
@@ -136,6 +137,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
   void _initController() {
     var desc = Description()..enabled = false;
     controller = BarChartController(
+        chartTransListener: MyChartTransListener(),
         axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..setLabelCount2(8, false)
@@ -267,6 +269,19 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
 //
 //    MPPointF.recycleInstance(position);
   }
+}
+
+class MyChartTransListener with ChartTransListener{
+  @override
+  void scale(double scaleX, double scaleY, double x, double y) {
+    print("scale scaleX: $scaleX, scaleY: $scaleY, x: $x, y: $y");
+  }
+
+  @override
+  void translate(double dx, double dy) {
+    print("translate dx: $dx, dy: $dy");
+  }
+
 }
 
 class MyTouchEventListener with OnTouchEventListener {

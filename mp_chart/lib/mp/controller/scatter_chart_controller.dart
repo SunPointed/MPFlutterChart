@@ -11,6 +11,7 @@ import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/touch_listener.dart';
+import 'package:mp_chart/mp/core/chart_trans_listener.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/painter/scatter_chart_painter.dart';
 
@@ -69,6 +70,7 @@ class ScatterChartController
     Color descTextColor,
     Color infoTextColor,
     Color infoBgColor,
+    ChartTransListener chartTransListener,
   }) : super(
             marker: marker,
             description: description,
@@ -121,7 +123,8 @@ class ScatterChartController
             borderStrokeWidth: borderStrokeWidth,
             axisLeftSettingFunction: axisLeftSettingFunction,
             axisRightSettingFunction: axisRightSettingFunction,
-            touchEventListener: touchEventListener);
+            touchEventListener: touchEventListener,
+            chartTransListener: chartTransListener);
 
   ScatterData get data => super.data;
 
@@ -178,7 +181,8 @@ class ScatterChartController
         rightAxisTransformer,
         xAxisRenderer,
         zoomMatrixBuffer,
-        customViewPortEnabled);
+        customViewPortEnabled,
+        chartTransListener);
   }
 
   @override

@@ -25,6 +25,7 @@ import 'package:mp_chart/mp/core/poolable/point.dart';
 import 'package:mp_chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
+import 'package:mp_chart/mp/core/chart_trans_listener.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/core/utils/matrix4_utils.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
@@ -35,6 +36,8 @@ abstract class BarLineChartBasePainter<
         T extends BarLineScatterCandleBubbleData<
             IBarLineScatterCandleBubbleDataSet<Entry>>> extends ChartPainter<T>
     implements BarLineScatterCandleBubbleDataProvider {
+  final ChartTransListener _chartTransListener;
+
   /// the maximum number of entries to which values will be drawn
   /// (entry numbers greater than this value will cause value-labels to disappear)
   final int _maxVisibleCount;
@@ -185,7 +188,8 @@ abstract class BarLineChartBasePainter<
       XAxisRenderer xAxisRenderer,
       Matrix4 zoomMatrixBuffer,
       bool customViewPortEnabled,
-      Paint backgroundPaint)
+      Paint backgroundPaint,
+      ChartTransListener chartTransListener)
       : _keepPositionOnRotation = keepPositionOnRotation,
         _leftAxisTransformer = leftAxisTransformer,
         _rightAxisTransformer = rightAxisTransformer,
@@ -213,6 +217,7 @@ abstract class BarLineChartBasePainter<
         _gridBackgroundPaint = gridBackgroundPaint,
         _borderPaint = borderPaint,
         _backgroundPaint = backgroundPaint,
+        _chartTransListener = chartTransListener,
         super(
             data,
             animator,
@@ -343,9 +348,8 @@ abstract class BarLineChartBasePainter<
 
   /// Performs auto scaling of the axis by recalculating the minimum and maximum y-values based on the entries currently in view.
   void autoScale() {
-
-    final double fromX=getLowestVisibleX();
-    final double toX=getHighestVisibleX();
+    final double fromX = getLowestVisibleX();
+    final double toX = getHighestVisibleX();
 
     getData().calcMinMaxY(fromX, toX);
 
@@ -353,16 +357,17 @@ abstract class BarLineChartBasePainter<
 
     // calculate axis range (min / max) according to provided data
 
-    if(axisLeft.enabled){
-      axisLeft.calculate(getData().getYMin2(AxisDependency.LEFT), getData().getYMax2(AxisDependency.LEFT));
+    if (axisLeft.enabled) {
+      axisLeft.calculate(getData().getYMin2(AxisDependency.LEFT),
+          getData().getYMax2(AxisDependency.LEFT));
     }
 
-    if(axisRight.enabled){
-      axisRight.calculate(getData().getYMin2(AxisDependency.RIGHT), getData().getYMax2(AxisDependency.RIGHT));
+    if (axisRight.enabled) {
+      axisRight.calculate(getData().getYMin2(AxisDependency.RIGHT),
+          getData().getYMax2(AxisDependency.RIGHT));
     }
 
     calculateOffsets();
-
   }
 
   @override
@@ -596,12 +601,18 @@ abstract class BarLineChartBasePainter<
 
     viewPortHandler.zoom4(scaleX, scaleY, x, -y, _zoomMatrixBuffer);
     viewPortHandler.refresh(_zoomMatrixBuffer);
+    if (_chartTransListener != null) {
+      _chartTransListener.scale(scaleX, scaleY, x, y);
+    }
   }
 
   void translate(double dx, double dy) {
     Matrix4Utils.postTranslate(viewPortHandler.matrixTouch, dx, dy);
     viewPortHandler.limitTransAndScale(
         viewPortHandler.matrixTouch, viewPortHandler.contentRect);
+    if (_chartTransListener != null) {
+      _chartTransListener.translate(dx, dy);
+    }
   }
 
   /// Sets the size of the area (range on the y-axis) that should be maximum

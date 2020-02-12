@@ -23,6 +23,7 @@ import 'package:mp_chart/mp/core/render/combined_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
+import 'package:mp_chart/mp/core/chart_trans_listener.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
 import 'package:mp_chart/mp/painter/bar_line_chart_painter.dart';
@@ -96,7 +97,8 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       bool drawValueAboveBar,
       bool drawBarShadow,
       bool fitBars,
-      List<DrawOrder> drawOrder)
+      List<DrawOrder> drawOrder,
+      ChartTransListener chartTransListener)
       : _drawBarShadow = drawBarShadow,
         _highlightFullBarEnabled = highlightFullBarEnabled,
         _drawValueAboveBar = drawValueAboveBar,
@@ -148,7 +150,8 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
             xAxisRenderer,
             zoomMatrixBuffer,
             customViewPortEnabled,
-            backgroundPaint);
+            backgroundPaint,
+            chartTransListener);
 
   List<DrawOrder> initDrawOrder() {
     return List()

@@ -24,6 +24,7 @@ import 'package:mp_chart/mp/core/render/horizontal_bar_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
+import 'package:mp_chart/mp/core/chart_trans_listener.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
@@ -81,7 +82,8 @@ class HorizontalBarChartPainter extends BarChartPainter {
       bool highlightFullBarEnabled,
       bool drawValueAboveBar,
       bool drawBarShadow,
-      bool fitBars)
+      bool fitBars,
+      ChartTransListener chartTransListener)
       : super(
             data,
             animator,
@@ -133,7 +135,8 @@ class HorizontalBarChartPainter extends BarChartPainter {
             highlightFullBarEnabled,
             drawValueAboveBar,
             drawBarShadow,
-            fitBars);
+            fitBars,
+            chartTransListener);
 
   @override
   void initDefaultWithData() {

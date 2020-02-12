@@ -12,6 +12,7 @@ import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/touch_listener.dart';
+import 'package:mp_chart/mp/core/chart_trans_listener.dart';
 import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/painter/bar_chart_painter.dart';
 
@@ -60,6 +61,7 @@ class BarChartController
     AxisLeftSettingFunction axisLeftSettingFunction,
     AxisRightSettingFunction axisRightSettingFunction,
     OnTouchEventListener touchEventListener,
+    ChartTransListener chartTransListener,
     IMarker marker,
     Description description,
     String noDataText = "No chart data available.",
@@ -131,7 +133,8 @@ class BarChartController
             borderStrokeWidth: borderStrokeWidth,
             axisLeftSettingFunction: axisLeftSettingFunction,
             axisRightSettingFunction: axisRightSettingFunction,
-            touchEventListener: touchEventListener);
+            touchEventListener: touchEventListener,
+            chartTransListener: chartTransListener);
 
   @override
   void initialPainter() {
@@ -186,7 +189,8 @@ class BarChartController
         highlightFullBarEnabled,
         drawValueAboveBar,
         drawBarShadow,
-        fitBars);
+        fitBars,
+        chartTransListener);
   }
 
   BarChartPainter get painter => super.painter;
