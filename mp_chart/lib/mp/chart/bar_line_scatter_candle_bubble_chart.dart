@@ -347,33 +347,39 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
   }
 
   void onDragStart(LongPressStartDetails details) {
-    var point = _getTouchValue(
-        widget.controller.touchEventListener.valueType(),
-        details.globalPosition.dx,
-        details.globalPosition.dy,
-        details.localPosition.dx,
-        details.localPosition.dy);
-    widget.controller.touchEventListener.onDragStart(point.x, point.y);
+    if (widget.controller.touchEventListener != null) {
+      var point = _getTouchValue(
+          widget.controller.touchEventListener.valueType(),
+          details.globalPosition.dx,
+          details.globalPosition.dy,
+          details.localPosition.dx,
+          details.localPosition.dy);
+      widget.controller.touchEventListener.onDragStart(point.x, point.y);
+    }
   }
 
   void onDragUpdate(LongPressMoveUpdateDetails details) {
-    var point = _getTouchValue(
-        widget.controller.touchEventListener.valueType(),
-        details.globalPosition.dx,
-        details.globalPosition.dy,
-        details.localPosition.dx,
-        details.localPosition.dy);
-    widget.controller.touchEventListener.onDragUpdate(point.x, point.y);
+    if (widget.controller.touchEventListener != null) {
+      var point = _getTouchValue(
+          widget.controller.touchEventListener.valueType(),
+          details.globalPosition.dx,
+          details.globalPosition.dy,
+          details.localPosition.dx,
+          details.localPosition.dy);
+      widget.controller.touchEventListener.onDragUpdate(point.x, point.y);
+    }
   }
 
   void onDragEnd(LongPressEndDetails details) {
-    var point = _getTouchValue(
-        widget.controller.touchEventListener.valueType(),
-        details.globalPosition.dx,
-        details.globalPosition.dy,
-        details.localPosition.dx,
-        details.localPosition.dy);
-    widget.controller.touchEventListener.onDragEnd(point.x, point.y);
+    if (widget.controller.touchEventListener != null) {
+      var point = _getTouchValue(
+          widget.controller.touchEventListener.valueType(),
+          details.globalPosition.dx,
+          details.globalPosition.dy,
+          details.localPosition.dx,
+          details.localPosition.dy);
+      widget.controller.touchEventListener.onDragEnd(point.x, point.y);
+    }
   }
 
   @override
