@@ -319,4 +319,19 @@ class MyTouchEventListener with OnTouchEventListener {
   TouchValueType valueType() {
     return TouchValueType.SCREEN;
   }
+
+  @override
+  void onDragEnd(double x, double y) {
+    print("onDragEnd x: $x, y: $y");
+  }
+
+  @override
+  void onDragStart(double x, double y) {
+    print("onDragStart x: $x, y: $y");
+  }
+
+  @override
+  void onDragUpdate(double x, double y) {
+    print("onDragUpdate x: $x, y: $y");
+  }
 }
