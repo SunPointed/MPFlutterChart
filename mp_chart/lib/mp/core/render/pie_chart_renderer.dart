@@ -228,7 +228,7 @@ class PieChartRenderer extends DataRenderer {
       }
     }
 
-    renderPaint..color = _painter.getHoleColor();
+    renderPaint..color = ColorUtils.WHITE;
     c.drawCircle(Offset(center.x, center.y), radius, renderPaint);
 
     final double sliceSpace =
@@ -405,7 +405,7 @@ class PieChartRenderer extends DataRenderer {
       angle += sliceAngle * phaseX;
     }
 
-    renderPaint..color = _painter.getHoleColor();
+    renderPaint..color = ColorUtils.WHITE;
     c.drawCircle(
         Offset(center.x, center.y), mInnerRectBuffer.width / 2, renderPaint);
 
@@ -1021,7 +1021,7 @@ class PieChartRenderer extends DataRenderer {
 
 //      mBitmapCanvas.drawPath(mPathBuffer, renderPaint);
       c.drawPath(mPathBuffer, renderPaint);
-      renderPaint..color = _painter.getHoleColor();
+      renderPaint..color = ColorUtils.WHITE;
       c.drawOval(mInnerRectBuffer, renderPaint);
     }
 
