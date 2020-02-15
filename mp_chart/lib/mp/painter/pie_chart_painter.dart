@@ -71,6 +71,9 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   /// array that holds the absolute angle in degrees of each slice
   List<double> _absoluteAngles = List(1);
 
+  /// Hole color
+  Color _holeColor;
+
   MPPointF _centerTextOffset;
 
   TypeFace _centerTextTypeface;
@@ -117,7 +120,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
       double centerTextRadiusPercent,
       double maxAngle,
       double minAngleForSlices,
-      Color backgroundColor)
+      Color backgroundColor,
+      Color holeColor)
       : _drawEntryLabels = drawEntryLabels,
         _drawHole = drawHole,
         _drawSlicesUnderHole = drawSlicesUnderHole,
@@ -134,6 +138,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
         _minAngleForSlices = minAngleForSlices,
         _centerTextTypeface = centerTextTypeface,
         _entryLabelTypeface = entryLabelTypeface,
+        _holeColor = holeColor,
         super(
             data,
             animator,
@@ -516,5 +521,9 @@ class PieChartPainter extends PieRadarChartPainter<PieData> {
   /// default 1.f (100%)
   double getCenterTextRadiusPercent() {
     return _centerTextRadiusPercent;
+  }
+
+  Color getHoleColor() {
+    return _holeColor;
   }
 }
