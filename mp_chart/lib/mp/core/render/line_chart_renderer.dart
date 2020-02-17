@@ -442,8 +442,6 @@ class LineChartRenderer extends LineRadarRenderer {
     }
   }
 
-  Path _generateFilledPathBuffer = Path();
-
   /// Draws a filled linear path on the canvas.
   ///
   /// @param c
@@ -452,8 +450,6 @@ class LineChartRenderer extends LineRadarRenderer {
   /// @param bounds
   void drawLinearFill(
       Canvas c, ILineDataSet dataSet, Transformer trans, XBounds bounds) {
-    final Path filled = _generateFilledPathBuffer;
-
     final int startingIndex = bounds.min;
     final int endingIndex = bounds.range + bounds.min;
     final int indexInterval = 128;
@@ -464,26 +460,25 @@ class LineChartRenderer extends LineRadarRenderer {
 
     // Doing this iteratively in order to avoid OutOfMemory errors that can happen on large bounds sets.
     do {
+      final Path filled = Path();
       currentStartIndex = startingIndex + (iterations * indexInterval);
-      currentEndIndex = currentStartIndex + indexInterval;
-      currentEndIndex =
-          currentEndIndex > endingIndex ? endingIndex : currentEndIndex;
+      currentEndIndex = min(currentStartIndex + indexInterval, endingIndex);
 
       if (currentStartIndex <= currentEndIndex) {
         generateFilledPath(
-            dataSet, currentStartIndex, currentEndIndex, filled, trans);
-
-//        trans.pathValueToPixel(filled);
-
-//        final Drawable drawable = dataSet.getFillDrawable();
-//        if (drawable != null) {
-//
-//          drawFilledPath(c, filled, drawable);
-//        } else {
+          dataSet,
+          currentStartIndex,
+          currentEndIndex,
+          filled,
+          trans,
+        );
 
         drawFilledPath2(
-            c, filled, dataSet.getFillColor().value, dataSet.getFillAlpha());
-//        }
+          c,
+          filled,
+          dataSet.getFillColor().value,
+          dataSet.getFillAlpha(),
+        );
       }
 
       iterations++;
