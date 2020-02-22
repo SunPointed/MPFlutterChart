@@ -13,7 +13,7 @@ Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when
 **1.add dependencies**
 ```
     dependencies:
-        mp_chart: ^0.1.6
+        mp_chart: ^0.1.7
 ```
 
 **2.download example and see how to use**
