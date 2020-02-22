@@ -21,9 +21,7 @@ dependencies:
   permission_handler: ^3.2.0
   flutter:
     sdk: flutter
-#  mp_chart: ^0.1.5
-  mp_chart:
-    path : ../
+  mp_chart: ^0.1.6
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -34,6 +32,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+dependency_overrides:
+  mp_chart:
+    path : ../
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
