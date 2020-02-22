@@ -139,12 +139,12 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
         legendSettingFunction: (legend, controller) {
           (controller as LineChartController).setViewPortOffsets(0, 0, 0, 0);
           legend.enabled = (false);
-          var formatter = (controller as LineChartController)
-              .data
-              .getDataSetByIndex(0)
-              .getFillFormatter();
-          if (formatter is A) {
-            formatter.setPainter(controller);
+          var data = (controller as LineChartController).data;
+          if (data != null) {
+            var formatter = data.getDataSetByIndex(0).getFillFormatter();
+            if (formatter is A) {
+              formatter.setPainter(controller);
+            }
           }
         },
         xAxisSettingFunction: (xAxis, controller) {

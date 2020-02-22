@@ -8,6 +8,7 @@ import 'package:mp_chart/mp/core/description.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/bar_chart_marker.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
+import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/painter/pie_chart_painter.dart';
 
 class PieChartController extends PieRadarController<PieChartPainter> {
@@ -48,7 +49,7 @@ class PieChartController extends PieRadarController<PieChartPainter> {
     this.centerTextTypeface,
     this.entryLabelTypeface,
     this.backgroundColor,
-    this.holeColor,
+    this.holeColor = ColorUtils.WHITE,
     IMarker marker,
     Description description,
     XAxisSettingFunction xAxisSettingFunction,
