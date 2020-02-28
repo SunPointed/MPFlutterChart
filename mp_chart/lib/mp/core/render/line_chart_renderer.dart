@@ -142,6 +142,10 @@ class LineChartRenderer extends LineRadarRenderer {
       }
     }
 
+    if (list.length <= 0) {
+      return;
+    }
+
     renderPaint
       ..color = dataSet.getColor1()
       ..style = PaintingStyle.stroke;
