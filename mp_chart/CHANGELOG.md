@@ -1,3 +1,6 @@
+## 0.1.8 2020-03-08
+* Support addEntryByIndex in line scatter bubble candlestick chart
+* Support updateEntryByIndex in all chart
 ## 0.1.7 2020-02-22
 * Updated dependency to include vector_math package.
 ## 0.1.6 2020-02-21
