@@ -893,4 +893,27 @@ abstract class BarLineChartBasePainter<
     if (_axisRight.inverted) return true;
     return false;
   }
+
+  bool updateEntry(int index, Entry entry, int dataSetIndex){
+    var dataSet = getData().getDataSetByIndex(dataSetIndex);
+    if(dataSet == null) {
+      return false;
+    }
+
+    return dataSet.updateEntryByIndex(index, entry);
+  }
+
+  void addEntryByIndex(int index, Entry entry, int dataSetIndex){
+    var dataSet = getData().getDataSetByIndex(dataSetIndex);
+    if(dataSet != null){
+      dataSet.addEntryByIndex(index, entry);
+    }
+  }
+
+  void addEntry(Entry entry, int dataSetIndex){
+    var dataSet = getData().getDataSetByIndex(dataSetIndex);
+    if(dataSet != null) {
+      addEntryByIndex(dataSet.getEntryCount(), entry, dataSetIndex);
+    }
+  }
 }

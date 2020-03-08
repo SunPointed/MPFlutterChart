@@ -40,6 +40,10 @@ mixin IDataSet<T extends Entry> {
 
   bool addEntry(T e);
 
+  bool addEntryByIndex(int index, T e);
+
+  bool updateEntryByIndex(int index, T e);
+
   void addEntryOrdered(T e);
 
   bool removeFirst();

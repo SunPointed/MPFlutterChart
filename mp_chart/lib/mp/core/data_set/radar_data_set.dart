@@ -119,4 +119,9 @@ class RadarDataSet extends LineRadarDataSet<RadarEntry>
       radarDataSet._highlightCircleStrokeWidth = _highlightCircleStrokeWidth;
     }
   }
+
+  @override
+  bool addEntryByIndex(int index, RadarEntry e) {
+    return false;
+  }
 }

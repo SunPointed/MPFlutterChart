@@ -151,6 +151,12 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
     ILineDataSet randomSet = data.getDataSetByIndex(randomDataSetIndex);
     double value = (random.nextDouble() * 50) + 50 * (randomDataSetIndex + 1);
 
+
+    //for test ChartData's addEntryByIndex
+//    var x =  10.0 - 0.5 * randomSet.getEntryCount().toDouble();
+//    data.addEntryByIndex(0, Entry(x: x, y: value),
+//        randomDataSetIndex);
+
     data.addEntry(Entry(x: randomSet.getEntryCount().toDouble(), y: value),
         randomDataSetIndex);
     data.notifyDataChanged();

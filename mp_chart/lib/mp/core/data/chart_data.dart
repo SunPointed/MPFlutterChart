@@ -335,6 +335,26 @@ class ChartData<T extends IDataSet<Entry>> {
     }
   }
 
+  void addEntryByIndex(int index, Entry e, int dataSetIndex) {
+    if (_dataSets.length > dataSetIndex && dataSetIndex >= 0) {
+      IDataSet set = _dataSets[dataSetIndex];
+      // add the entry to the dataset
+      if (!set.addEntryByIndex(index, e)) return;
+
+      calcMinMax2(e, set.getAxisDependency());
+    }
+  }
+
+  void updateEntryByIndex(int index, Entry e, int dataSetIndex) {
+    if (_dataSets.length > dataSetIndex && dataSetIndex >= 0) {
+      IDataSet set = _dataSets[dataSetIndex];
+      // add the entry to the dataset
+      if (!set.updateEntryByIndex(index, e)) return;
+
+      calcMinMax2(e, set.getAxisDependency());
+    }
+  }
+
   /// Adjusts the current minimum and maximum values based on the provided Entry object.
   ///
   /// @param e

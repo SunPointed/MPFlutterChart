@@ -111,6 +111,46 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
     }
   }
 
+  /// It's best not to use this method because it will cause the points to
+  /// be unevenly distributed in x axis.
+  /// the added entry's x value must be in range of Pre's x value(Pre : Entry at index - 1)
+  /// and Cur's x value(Cur: Entry at index).
+  @override
+  bool addEntryByIndex(int index, T e) {
+    if(index < 0 || index > getEntryCount()){
+      return false;
+    }
+
+    List<T> valueDatas = values;
+    if (getEntryCount() == 0) {
+      return addEntry(e);
+    }
+
+    if(index == 0){
+      var cur = valueDatas[index];
+      if (e.x >= cur.x) {
+        return false;
+      }
+    } else if(index == getEntryCount()){
+      var pre = valueDatas[index - 1];
+      if(e.x <= pre.x){
+        return false;
+      }
+    }else {
+      var cur = valueDatas[index];
+      var pre = valueDatas[index - 1];
+      if (e.x >= cur.x || e.x <= pre.x) {
+        return false;
+      }
+    }
+
+    calcMinMax1(e);
+
+    valueDatas.insert(index, e);
+
+    return true;
+  }
+
   @override
   String toString() {
     return '${super.toString()}\nLineScatterCandleRadarDataSet{\n_drawVerticalHighlightIndicator: $_drawVerticalHighlightIndicator,\n _drawHorizontalHighlightIndicator: $_drawHorizontalHighlightIndicator,\n _highlightLineWidth: $_highlightLineWidth}';

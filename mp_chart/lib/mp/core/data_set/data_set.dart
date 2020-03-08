@@ -87,7 +87,7 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
   @override
   int getEntryCount() {
-    return _values.length;
+    return _values == null ? 0 : _values.length;
   }
 
   List<T> get values => _values;
@@ -201,6 +201,31 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
     // add the entry
     valueDatas.add(e);
+    return true;
+  }
+
+  @override
+  bool addEntryByIndex(int index, T e) {
+    return false;
+  }
+
+  @override
+  bool updateEntryByIndex(int index, T e) {
+    if (index < 0 || index > getEntryCount() - 1) {
+      return false;
+    }
+
+    if (getEntryCount() == 0) {
+      return false;
+    }
+
+    List<T> valueDatas = values;
+    var pre = valueDatas.removeAt(index);
+    e.x = pre.x;
+    valueDatas.insert(index, e);
+
+    calcMinMax();
+
     return true;
   }
 
