@@ -14,6 +14,7 @@ import 'package:mp_chart/mp/core/enums/legend_orientation.dart';
 import 'package:mp_chart/mp/core/enums/legend_vertical_alignment.dart';
 import 'package:mp_chart/mp/core/image_loader.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
+import 'package:mp_chart/mp/core/utils/utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
 import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
@@ -75,7 +76,8 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
             ..typeface = Util.LIGHT
             ..xEntrySpace = (7)
             ..yEntrySpace = (5)
-            ..textColor = (ColorUtils.WHITE);
+            ..formSize = Utils.convertDpToPixel(25)
+            ..textColor = (ColorUtils.RED);
         },
         xAxisSettingFunction: (xAxis, controller) {
           xAxis

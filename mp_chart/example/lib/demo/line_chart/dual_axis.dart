@@ -165,7 +165,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
             ..shape = (LegendForm.LINE)
             ..textSize = (11)
             ..typeface = Util.LIGHT
-            ..textColor = (ColorUtils.WHITE)
+            ..textColor = (ColorUtils.BLUE)
             ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
             ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
             ..orientation = (LegendOrientation.HORIZONTAL)
