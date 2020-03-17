@@ -156,7 +156,9 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
     ..add("Party Z");
 
   void _initController() {
-    var desc = Description()..enabled = false;
+    var desc = Description()
+      ..text = "desc"
+      ..enabled = true;
     controller = PieChartController(
         legendSettingFunction: (legend, controller) {
           _formatter.setPieChartPainter(controller);
