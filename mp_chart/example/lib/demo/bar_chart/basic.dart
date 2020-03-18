@@ -162,8 +162,9 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..orientation = LegendOrientation.HORIZONTAL
             ..drawInside = false
             ..shape = LegendForm.SQUARE
-            ..formSize = 9
+            ..formSize = 20
             ..textSize = 11
+            ..textColor = ColorUtils.RED
             ..xEntrySpace = 4;
         },
         xAxisSettingFunction: (xAxis, controller) {

@@ -183,7 +183,7 @@ class LegendRenderer extends Renderer {
   TextPainter getLabelPainter() {
     var fontFamily = _legend.typeface?.fontFamily;
     var fontWeight = _legend.typeface?.fontWeight;
-    return PainterUtils.create(_legendLabelPaint, null, _legend.textColor, _legend.formSize,
+    return PainterUtils.create(_legendLabelPaint, null, _legend.textColor, _legend.textSize,
         fontFamily: fontFamily, fontWeight: fontWeight);
   }
 
