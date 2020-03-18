@@ -73,7 +73,6 @@ abstract class ChartState<T extends Chart> extends State<T> {
     return Screenshot(
         controller: _screenshotController,
         child: Container(
-            decoration: BoxDecoration(color: ColorUtils.WHITE),
             child: Stack(
                 // Center is a layout widget. It takes a single child and positions it
                 // in the middle of the parent.
