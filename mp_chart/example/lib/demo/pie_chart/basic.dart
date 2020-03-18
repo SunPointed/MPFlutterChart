@@ -179,7 +179,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
             ..setEntryLabelColor(ColorUtils.WHITE)
             ..setEntryLabelTextSize(12);
         },
-        rotateEnabled: true,
+        rotateEnabled: false,
         drawHole: true,
         drawCenterText: true,
         extraLeftOffset: 5,
