@@ -1,3 +1,8 @@
+## 0.1.9 2020-03-18
+* Support trans background
+* Support legend text color set
+* Fix pie radar chart rotateEnabled no used
+* Fix bugs when description is enabled
 ## 0.1.8 2020-03-08
 * Support addEntryByIndex in line scatter bubble candlestick chart
 * Support updateEntryByIndex in all chart
