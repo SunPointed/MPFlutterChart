@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/painting.dart';
+import 'package:mp_chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_chart/mp/core/animator.dart';
 import 'package:mp_chart/mp/core/buffer/bar_buffer.dart';
 import 'package:mp_chart/mp/core/buffer/horizontal_bar_buffer.dart';
@@ -205,7 +206,9 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
                 formattedValue,
                 buffer.buffer[j + 2] + (val >= 0 ? posOffset : negOffset),
                 y,
-                dataSet.getValueTextColor2(j ~/ 2));
+                dataSet.getValueTextColor2(j ~/ 2),
+                dataSet.getValueTextSize(),
+                dataSet.getValueTypeface());
           }
           if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
             double px =
@@ -271,7 +274,9 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
                   buffer.buffer[bufferIndex + 2] +
                       (entry.y >= 0 ? posOffset : negOffset),
                   buffer.buffer[bufferIndex + 1],
-                  color);
+                  color,
+                  dataSet.getValueTextSize(),
+                  dataSet.getValueTypeface());
             }
             if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
               double px = buffer.buffer[bufferIndex + 2] +
@@ -344,7 +349,8 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
               if (!viewPortHandler.isInBoundsBottom(y)) continue;
 
               if (dataSet.isDrawValuesEnabled()) {
-                drawValue(c, formattedValue, x, y, color);
+                drawValue(c, formattedValue, x, y, color,
+                    dataSet.getValueTextSize(), dataSet.getValueTypeface());
               }
 
               if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
@@ -369,14 +375,10 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
   }
 
   @override
-  void drawValue(Canvas c, String valueText, double x, double y, Color color) {
-    valuePaint = PainterUtils.create(
-        valuePaint,
-        valueText,
-        color,
-        valuePaint.text.style.fontSize == null
-            ? Utils.convertDpToPixel(13)
-            : valuePaint.text.style.fontSize);
+  void drawValue(Canvas c, String valueText, double x, double y, Color color,
+      double textSize, TypeFace typeFace) {
+    valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
+        fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
     valuePaint.layout();
     valuePaint.paint(c, Offset(x, y - valuePaint.height / 2));
   }

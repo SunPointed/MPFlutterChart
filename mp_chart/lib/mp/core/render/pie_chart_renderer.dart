@@ -39,6 +39,7 @@ class PieChartRenderer extends DataRenderer {
 //   StaticLayout _centerTextLayout;
   // ignore: unused_field
   String _centerTextLastValue;
+
   // ignore: unused_field
   Rect _centerTextLastBounds = Rect.zero;
   List<Rect> _rectBuffer = List()
@@ -582,8 +583,14 @@ class PieChartRenderer extends DataRenderer {
 
           // draw everything, depending on settings
           if (drawXOutside && drawYOutside) {
-            drawValue(c, formattedValue, labelPtx, labelPty,
-                dataSet.getValueTextColor2(j));
+            drawValue(
+                c,
+                formattedValue,
+                labelPtx,
+                labelPty,
+                dataSet.getValueTextColor2(j),
+                dataSet.getValueTextSize(),
+                dataSet.getValueTypeface());
 
             if (j < data.getEntryCount() && entryLabel != null) {
               drawEntryLabel(c, entryLabel, labelPtx, labelPty + lineHeight);
@@ -600,7 +607,9 @@ class PieChartRenderer extends DataRenderer {
                 labelPtx,
                 labelPty + lineHeight / 2.0,
                 dataSet.getValueTextColor2(j),
-                false);
+                false,
+                dataSet.getValueTextSize(),
+                dataSet.getValueTypeface());
           }
         }
 
@@ -612,7 +621,14 @@ class PieChartRenderer extends DataRenderer {
           // draw everything, depending on settings
           if (drawXInside && drawYInside) {
             drawValueByHeight(
-                c, formattedValue, x, y, dataSet.getValueTextColor2(j), true);
+                c,
+                formattedValue,
+                x,
+                y,
+                dataSet.getValueTextColor2(j),
+                true,
+                dataSet.getValueTextSize(),
+                dataSet.getValueTypeface());
 
             if (j < data.getEntryCount() && entryLabel != null) {
               drawEntryLabel(c, entryLabel, x, y + lineHeight);
@@ -622,8 +638,14 @@ class PieChartRenderer extends DataRenderer {
               drawEntryLabel(c, entryLabel, x, y + lineHeight / 2);
             }
           } else if (drawYInside) {
-            drawValue(c, formattedValue, x, y + lineHeight / 2,
-                dataSet.getValueTextColor2(j));
+            drawValue(
+                c,
+                formattedValue,
+                x,
+                y + lineHeight / 2,
+                dataSet.getValueTextColor2(j),
+                dataSet.getValueTextSize(),
+                dataSet.getValueTypeface());
           }
         }
 
@@ -646,14 +668,9 @@ class PieChartRenderer extends DataRenderer {
   }
 
   void drawValueByHeight(Canvas c, String valueText, double x, double y,
-      Color color, bool useHeight) {
-    valuePaint = PainterUtils.create(
-        valuePaint,
-        valueText,
-        color,
-        valuePaint.text.style.fontSize == null
-            ? Utils.convertDpToPixel(13)
-            : valuePaint.text.style.fontSize);
+      Color color, bool useHeight, double textSize, TypeFace typeFace) {
+    valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
+        fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
     valuePaint.layout();
     valuePaint.paint(
         c,
@@ -662,14 +679,10 @@ class PieChartRenderer extends DataRenderer {
   }
 
   @override
-  void drawValue(Canvas c, String valueText, double x, double y, Color color) {
-    valuePaint = PainterUtils.create(
-        valuePaint,
-        valueText,
-        color,
-        valuePaint.text.style.fontSize == null
-            ? Utils.convertDpToPixel(13)
-            : valuePaint.text.style.fontSize);
+  void drawValue(Canvas c, String valueText, double x, double y, Color color,
+      double textSize, TypeFace typeFace) {
+    valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
+        fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
     valuePaint.layout();
     valuePaint.paint(
         c, Offset(x - valuePaint.width / 2, y - valuePaint.height));

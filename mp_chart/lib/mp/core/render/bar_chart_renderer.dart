@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/painting.dart';
+import 'package:mp_chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_chart/mp/core/animator.dart';
 import 'package:mp_chart/mp/core/buffer/bar_buffer.dart';
 import 'package:mp_chart/mp/core/color/gradient_color.dart';
@@ -313,7 +314,9 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                   val >= 0
                       ? (buffer.buffer[j + 1] + posOffset)
                       : (buffer.buffer[j + 3] + negOffset),
-                  dataSet.getValueTextColor2(j ~/ 4));
+                  dataSet.getValueTextColor2(j ~/ 4),
+                  dataSet.getValueTextSize(),
+                  dataSet.getValueTypeface());
             }
 
             if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
@@ -366,7 +369,9 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                     x,
                     buffer.buffer[bufferIndex + 1] +
                         (entry.y >= 0 ? posOffset : negOffset),
-                    color);
+                    color,
+                    dataSet.getValueTextSize(),
+                    dataSet.getValueTypeface());
               }
 
               if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
@@ -424,7 +429,13 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
                 if (dataSet.isDrawValuesEnabled()) {
                   drawValue(
-                      c, formatter.getBarStackedLabel(val, entry), x, y, color);
+                      c,
+                      formatter.getBarStackedLabel(val, entry),
+                      x,
+                      y,
+                      color,
+                      dataSet.getValueTextSize(),
+                      dataSet.getValueTypeface());
                 }
 
                 if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
@@ -450,14 +461,10 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
   }
 
   @override
-  void drawValue(Canvas c, String valueText, double x, double y, Color color) {
-    valuePaint = PainterUtils.create(
-        valuePaint,
-        valueText,
-        color,
-        valuePaint.text.style.fontSize == null
-            ? Utils.convertDpToPixel(9)
-            : valuePaint.text.style.fontSize);
+  void drawValue(Canvas c, String valueText, double x, double y, Color color,
+      double textSize, TypeFace typeFace) {
+    valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
+        fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
     valuePaint.layout();
     valuePaint.paint(
         c, Offset(x - valuePaint.width / 2, y - valuePaint.height));

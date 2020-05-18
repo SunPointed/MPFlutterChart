@@ -1,4 +1,5 @@
 import 'package:flutter/painting.dart';
+import 'package:mp_chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_chart/mp/core/animator.dart';
 import 'package:mp_chart/mp/core/data/chart_data.dart';
 import 'package:mp_chart/mp/core/data/combined_data.dart';
@@ -76,7 +77,8 @@ class CombinedChartRenderer extends DataRenderer {
   }
 
   @override
-  void drawValue(Canvas c, String valueText, double x, double y, Color color) {}
+  void drawValue(Canvas c, String valueText, double x, double y, Color color,
+      double textSize, TypeFace typeFace) {}
 
   @override
   void drawValues(Canvas c) {

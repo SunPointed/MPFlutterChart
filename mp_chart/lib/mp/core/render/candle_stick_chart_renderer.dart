@@ -1,4 +1,5 @@
 import 'package:flutter/painting.dart';
+import 'package:mp_chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_chart/mp/core/animator.dart';
 import 'package:mp_chart/mp/core/data/candle_data.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_candle_data_set.dart';
@@ -268,8 +269,14 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
           CandleEntry entry = dataSet.getEntryForIndex(j ~/ 2 + xBounds.min);
 
           if (dataSet.isDrawValuesEnabled()) {
-            drawValue(c, formatter.getCandleLabel(entry), x, y - yOffset,
-                dataSet.getValueTextColor2(j ~/ 2));
+            drawValue(
+                c,
+                formatter.getCandleLabel(entry),
+                x,
+                y - yOffset,
+                dataSet.getValueTextColor2(j ~/ 2),
+                dataSet.getValueTextSize(),
+                dataSet.getValueTypeface());
           }
 
           if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
@@ -288,14 +295,10 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
   }
 
   @override
-  void drawValue(Canvas c, String valueText, double x, double y, Color color) {
-    valuePaint = PainterUtils.create(
-        valuePaint,
-        valueText,
-        color,
-        valuePaint.text.style.fontSize == null
-            ? Utils.convertDpToPixel(9)
-            : valuePaint.text.style.fontSize);
+  void drawValue(Canvas c, String valueText, double x, double y, Color color,
+      double textSize, TypeFace typeFace) {
+    valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
+        fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
     valuePaint.layout();
     valuePaint.paint(
         c, Offset(x - valuePaint.width / 2, y - valuePaint.height));
