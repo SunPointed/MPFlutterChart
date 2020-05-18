@@ -1,3 +1,5 @@
+## 0.2.0 2020-05-18
+* fix chart data's setValueTextSize setValueTypeface not work
 ## 0.1.9 2020-03-18
 * Support trans background
 * Support legend text color set
