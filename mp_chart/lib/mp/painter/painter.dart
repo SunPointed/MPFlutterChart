@@ -382,6 +382,11 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
     }
   }
 
+  void selectedValue(Highlight high) {
+    Entry e = _data.getEntryForHighlight(high);
+    _selectionListener?.onValueSelected(e, null);
+  }
+
   /// Returns the Highlight object (contains x-index and DataSet index) of the
   /// selected value at the given touch point inside the Line-, Scatter-, or
   /// CandleStick-Chart.
