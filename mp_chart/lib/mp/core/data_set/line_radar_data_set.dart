@@ -7,7 +7,8 @@ import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 
 abstract class LineRadarDataSet<T extends Entry>
-    extends LineScatterCandleRadarDataSet<T> implements ILineRadarDataSet<T> {
+    extends LineScatterCandleRadarDataSet<T>
+    implements ILineRadarDataSet<T> {
   /// the color that is used for filling the line surface
   Color _fillColor = Color.fromARGB(255, 140, 234, 255);
 
@@ -25,6 +26,8 @@ abstract class LineRadarDataSet<T extends Entry>
   /// if true, the data will also be drawn filled
   bool _drawFilled = false;
 
+  bool _gradientEnable = false;
+
   LineRadarDataSet(List<T> yVals, String label) : super(yVals, label);
 
   @override
@@ -37,8 +40,18 @@ abstract class LineRadarDataSet<T extends Entry>
   ///
   /// @param color
   void setFillColor(Color color) {
-    _fillColor = color;
+    if(color != null) {
+      _fillColor = color;
 //    mFillDrawable = null;
+    setGradientFilled(false);
+    }
+  }
+
+  void setGradientColor(Color start, Color end) {
+    if(start != null && end != null) {
+      super.setGradientColor(start, end);
+      setGradientFilled(true);
+    }
   }
 
 //  @override
@@ -92,6 +105,16 @@ abstract class LineRadarDataSet<T extends Entry>
   }
 
   @override
+  void setGradientFilled(bool enabled) {
+    _gradientEnable = enabled;
+  }
+
+  @override
+  bool isGradientEnabled() {
+    return _gradientEnable;
+  }
+
+  @override
   void copy(BaseDataSet baseDataSet) {
     super.copy(baseDataSet);
 
@@ -107,6 +130,7 @@ abstract class LineRadarDataSet<T extends Entry>
 
   @override
   String toString() {
-    return '${super.toString()}\nLineRadarDataSet{_fillColor: $_fillColor,\n _fillAlpha: $_fillAlpha,\n _lineWidth: $_lineWidth,\n _drawFilled: $_drawFilled}';
+    return '${super
+        .toString()}\nLineRadarDataSet{_fillColor: $_fillColor,\n _fillAlpha: $_fillAlpha,\n _lineWidth: $_lineWidth,\n _drawFilled: $_drawFilled}';
   }
 }

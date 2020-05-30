@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:mp_chart/mp/controller/controller.dart';
-import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:optimized_gesture_detector/details.dart';
 import 'package:optimized_gesture_detector/optimized_gesture_detector.dart';
 import 'package:path_provider/path_provider.dart';

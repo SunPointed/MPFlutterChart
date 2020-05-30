@@ -3,7 +3,6 @@ import 'dart:ui' as ui;
 import 'package:flutter/painting.dart';
 import 'package:mp_chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_chart/mp/core/limit_line.dart';
-import 'package:mp_chart/mp/core/utils/painter_utils.dart';
 
 abstract class CanvasUtils {
   static void drawLines(

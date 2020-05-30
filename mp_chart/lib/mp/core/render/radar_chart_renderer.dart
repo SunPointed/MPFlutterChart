@@ -120,8 +120,17 @@ class RadarChartRenderer extends LineRadarRenderer {
 //        drawFilledPath(c, surface, drawable);
 //      } else {
 
-      drawFilledPath2(
-          c, surface, dataSet.getFillColor().value, dataSet.getFillAlpha());
+      if (dataSet.isGradientEnabled()) {
+        drawFilledPath3(
+            c,
+            surface,
+            dataSet.getGradientColor1().startColor.value,
+            dataSet.getGradientColor1().endColor.value,
+            dataSet.getFillAlpha());
+      } else {
+        drawFilledPath2(
+            c, surface, dataSet.getFillColor().value, dataSet.getFillAlpha());
+      }
 //      }
     }
 

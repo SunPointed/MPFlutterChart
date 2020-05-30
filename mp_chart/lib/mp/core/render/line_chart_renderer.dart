@@ -308,8 +308,13 @@ class LineChartRenderer extends LineRadarRenderer {
 //      drawFilledPath(c, spline, drawable);
 //    } else {
 
-    drawFilledPath2(
-        c, spline, dataSet.getFillColor().value, dataSet.getFillAlpha());
+    if (dataSet.isGradientEnabled()) {
+      drawFilledPath3(c, spline, dataSet.getGradientColor1().startColor.value,
+          dataSet.getGradientColor1().endColor.value, dataSet.getFillAlpha());
+    } else {
+      drawFilledPath2(
+          c, spline, dataSet.getFillColor().value, dataSet.getFillAlpha());
+    }
 
 //    }
   }
@@ -479,12 +484,17 @@ class LineChartRenderer extends LineRadarRenderer {
           trans,
         );
 
-        drawFilledPath2(
-          c,
-          filled,
-          dataSet.getFillColor().value,
-          dataSet.getFillAlpha(),
-        );
+        if (dataSet.isGradientEnabled()) {
+          drawFilledPath3(
+              c,
+              filled,
+              dataSet.getGradientColor1().startColor.value,
+              dataSet.getGradientColor1().endColor.value,
+              dataSet.getFillAlpha());
+        } else {
+          drawFilledPath2(
+              c, filled, dataSet.getFillColor().value, dataSet.getFillAlpha());
+        }
       }
 
       iterations++;
@@ -602,9 +612,14 @@ class LineChartRenderer extends LineRadarRenderer {
           Entry entry = dataSet.getEntryForIndex(j ~/ 2 + xBounds.min);
 
           if (dataSet.isDrawValuesEnabled()) {
-            drawValue(c, formatter.getPointLabel(entry), x, y - valOffset,
-                dataSet.getValueTextColor2(j ~/ 2), dataSet.getValueTextSize(), dataSet.getValueTypeface());
-
+            drawValue(
+                c,
+                formatter.getPointLabel(entry),
+                x,
+                y - valOffset,
+                dataSet.getValueTextColor2(j ~/ 2),
+                dataSet.getValueTextSize(),
+                dataSet.getValueTypeface());
           }
 
           if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
@@ -623,7 +638,8 @@ class LineChartRenderer extends LineRadarRenderer {
   }
 
   @override
-  void drawValue(Canvas c, String valueText, double x, double y, Color color, double textSize, TypeFace typeFace) {
+  void drawValue(Canvas c, String valueText, double x, double y, Color color,
+      double textSize, TypeFace typeFace) {
     valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
         fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
     valuePaint.layout();

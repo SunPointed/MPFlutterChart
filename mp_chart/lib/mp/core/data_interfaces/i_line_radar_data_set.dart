@@ -39,4 +39,8 @@ mixin ILineRadarDataSet<T extends Entry>
   ///
   /// @param enabled
   void setDrawFilled(bool enabled);
+
+  bool isGradientEnabled();
+
+  void setGradientFilled(bool enabled);
 }

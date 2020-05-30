@@ -127,7 +127,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
 
     RadarDataSet set2 = RadarDataSet(entries2, "This Week");
     set2.setColor1(Color.fromARGB(255, 121, 162, 175));
-    set2.setFillColor(Color.fromARGB(255, 121, 162, 175));
+    set2.setGradientColor(ColorUtils.BLUE, ColorUtils.YELLOW);
     set2.setDrawFilled(true);
     set2.setFillAlpha(180);
     set2.setLineWidth(2);
