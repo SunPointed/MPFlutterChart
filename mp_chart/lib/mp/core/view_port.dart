@@ -42,7 +42,7 @@ class ViewPortHandler {
   /// offset that allows the chart to be dragged over its bounds on the x-axis
   double _transOffsetX = 0;
 
-  /// offset that allows the chart to be dragged over its bounds on the x-axis
+  /// offset that allows the chart to be dragged over its bounds on the y-axis
   double _transOffsetY = 0;
 
   /// Constructor - don't forget calling setChartDimens(...)

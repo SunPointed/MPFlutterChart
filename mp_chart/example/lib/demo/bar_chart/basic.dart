@@ -82,8 +82,10 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
                             })),
                   ),
                   Container(
+                      constraints: BoxConstraints.expand(height: 50, width: 60),
                       padding: EdgeInsets.only(right: 15.0),
-                      child: Text(
+                      child: Center(
+                          child: Text(
                         "$_count",
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.center,
@@ -91,7 +93,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
                             color: ColorUtils.BLACK,
                             fontSize: 12,
                             fontWeight: FontWeight.bold),
-                      )),
+                      ))),
                 ],
               ),
               Row(
@@ -110,8 +112,10 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
                             })),
                   ),
                   Container(
+                      constraints: BoxConstraints.expand(height: 50, width: 60),
                       padding: EdgeInsets.only(right: 15.0),
-                      child: Text(
+                      child: Center(
+                          child: Text(
                         "${_range.toInt()}",
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.center,
@@ -119,7 +123,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
                             color: ColorUtils.BLACK,
                             fontSize: 12,
                             fontWeight: FontWeight.bold),
-                      )),
+                      ))),
                 ],
               )
             ],
@@ -272,7 +276,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
   }
 }
 
-class MyChartTransListener with ChartTransListener{
+class MyChartTransListener with ChartTransListener {
   @override
   void scale(double scaleX, double scaleY, double x, double y) {
     print("scale scaleX: $scaleX, scaleY: $scaleY, x: $x, y: $y");
@@ -282,7 +286,6 @@ class MyChartTransListener with ChartTransListener{
   void translate(double dx, double dy) {
     print("translate dx: $dx, dy: $dy");
   }
-
 }
 
 class MyTouchEventListener with OnTouchEventListener {

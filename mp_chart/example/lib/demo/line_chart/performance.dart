@@ -69,8 +69,10 @@ class LineChartPerformanceState
                             })),
                   ),
                   Container(
+                      constraints: BoxConstraints.expand(height: 50, width: 60),
                       padding: EdgeInsets.only(right: 15.0),
-                      child: Text(
+                      child: Center(
+                          child: Text(
                         "$_count",
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.center,
@@ -78,7 +80,7 @@ class LineChartPerformanceState
                             color: ColorUtils.BLACK,
                             fontSize: 12,
                             fontWeight: FontWeight.bold),
-                      )),
+                      ))),
                 ],
               ),
             ],

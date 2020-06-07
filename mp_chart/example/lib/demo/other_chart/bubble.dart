@@ -79,8 +79,10 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
                             })),
                   ),
                   Container(
+                      constraints: BoxConstraints.expand(height: 50, width: 60),
                       padding: EdgeInsets.only(right: 15.0),
-                      child: Text(
+                      child: Center(
+                          child: Text(
                         "$_count",
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.center,
@@ -88,7 +90,7 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
                             color: ColorUtils.BLACK,
                             fontSize: 12,
                             fontWeight: FontWeight.bold),
-                      )),
+                      ))),
                 ],
               ),
               Row(
@@ -107,8 +109,10 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
                             })),
                   ),
                   Container(
+                      constraints: BoxConstraints.expand(height: 50, width: 60),
                       padding: EdgeInsets.only(right: 15.0),
-                      child: Text(
+                      child: Center(
+                          child: Text(
                         "${_range.toInt()}",
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.center,
@@ -116,7 +120,7 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
                             color: ColorUtils.BLACK,
                             fontSize: 12,
                             fontWeight: FontWeight.bold),
-                      )),
+                      ))),
                 ],
               )
             ],

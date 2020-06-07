@@ -48,9 +48,6 @@ class ScrollingChartViewPagerState
   ScatterChartController _scatterChartController;
   PieChartController _pieChartController;
   var random = Random(1);
-  bool _isParentMove = true;
-  double _curX = 0.0;
-  int _preTime = 0;
 
   @override
   void initState() {
@@ -75,68 +72,70 @@ class ScrollingChartViewPagerState
           left: 0,
           top: 0,
           bottom: 0,
-          child: Listener(
-              onPointerDown: (e) {
-                _curX = e.localPosition.dx;
-                _preTime = Util.currentTimeMillis();
-              },
-              onPointerMove: (e) {
-                if (_isParentMove) {
-                  var diff = Util.currentTimeMillis() - _preTime;
-                  if (diff >= 500 && diff <= 600) {
-                    if ((_curX - e.localPosition.dx).abs() < 5) {
-                      _isParentMove = false;
-                      if (mounted) {
-                        setState(() {});
-                      }
-                    }
+          child: PageView.builder(
+            physics: PageScrollPhysics(),
+            itemBuilder: (context, index) {
+              switch (index) {
+                case 0:
+                  {
+                    _initLineChart1();
+                    return getChildWidget(LineChart(_lineChartController1));
                   }
-                }
-              },
-              onPointerUp: (e) {
-                if (!_isParentMove) {
-                  _isParentMove = true;
-                  if (mounted) {
-                    setState(() {});
+                case 1:
+                  {
+                    _initLineChart2();
+                    return getChildWidget(LineChart(_lineChartController2),
+                        showText:
+                            "this chart's controller not set resolveGestureHorizontalConflict, so chart move horizontal conflict with page view");
                   }
-                }
-              },
-              child: PageView.builder(
-                physics: _isParentMove
-                    ? PageScrollPhysics()
-                    : NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  switch (index) {
-                    case 0:
-                      {
-                        _initLineChart1();
-                        return LineChart(_lineChartController1);
-                      }
-                    case 1:
-                      {
-                        _initLineChart2();
-                        return LineChart(_lineChartController2);
-                      }
-                    case 2:
-                      {
-                        _initBarChart();
-                        return BarChart(_barChartController);
-                      }
-                    case 3:
-                      {
-                        _initScatterChart();
-                        return ScatterChart(_scatterChartController);
-                      }
-                    default:
-                      {
-                        _initPieChart();
-                        return PieChart(_pieChartController);
-                      }
+                case 2:
+                  {
+                    _initBarChart();
+                    return getChildWidget(BarChart(_barChartController));
                   }
-                },
-                itemCount: 5,
-              )),
+                case 3:
+                  {
+                    _initScatterChart();
+                    return getChildWidget(
+                        ScatterChart(_scatterChartController));
+                  }
+                default:
+                  {
+                    _initPieChart();
+                    return getChildWidget(PieChart(_pieChartController));
+                  }
+              }
+            },
+            itemCount: 5,
+          ),
         ),
+      ],
+    );
+  }
+
+  Widget getChildWidget(Widget child,
+      {String showText =
+          "this chart's controller set resolveGestureHorizontalConflict, so only can scroll this place to move page"}) {
+    return Stack(
+      children: <Widget>[
+        Positioned(right: 0, left: 0, top: 0, bottom: 100, child: child),
+        Positioned(
+            right: 0,
+            left: 0,
+            bottom: 0,
+            child: Container(
+                color: ColorUtils.HOLO_BLUE_LIGHT,
+                constraints: BoxConstraints.expand(height: 100),
+                child: Center(
+                    child: Text(
+                  showText,
+                  textDirection: TextDirection.ltr,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      color: ColorUtils.BLACK,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold),
+                ))))
       ],
     );
   }
@@ -145,6 +144,7 @@ class ScrollingChartViewPagerState
     var desc = Description()..enabled = false;
 
     _lineChartController1 = LineChartController(
+        resolveGestureHorizontalConflict: true,
         axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..setAxisMaximum(1.2)
@@ -178,6 +178,7 @@ class ScrollingChartViewPagerState
         description: desc);
 
     _barChartController = BarChartController(
+        resolveGestureHorizontalConflict: true,
         axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft.setAxisMinimum(0);
         },
@@ -196,6 +197,7 @@ class ScrollingChartViewPagerState
         description: desc);
 
     _scatterChartController = ScatterChartController(
+        resolveGestureHorizontalConflict: true,
         axisRightSettingFunction: (axisRight, controller) {
           axisRight.drawGridLines = (false);
         },
@@ -218,6 +220,7 @@ class ScrollingChartViewPagerState
         description: desc);
 
     _pieChartController = PieChartController(
+        resolveGestureHorizontalConflict: true,
         legendSettingFunction: (legend, controller) {
           legend
             ..verticalAlignment = (LegendVerticalAlignment.TOP)

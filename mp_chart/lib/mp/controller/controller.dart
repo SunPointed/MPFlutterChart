@@ -14,6 +14,7 @@ import 'package:mp_chart/mp/core/utils/painter_utils.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
 import 'package:mp_chart/mp/painter/painter.dart';
+import 'package:optimized_gesture_detector/gesture_dectetor.dart';
 
 abstract class Controller<P extends ChartPainter>
     implements AnimatorUpdateListener {
@@ -46,6 +47,9 @@ abstract class Controller<P extends ChartPainter>
   LegendSettingFunction legendSettingFunction;
   DataRendererSettingFunction rendererSettingFunction;
 
+  CanDragDownFunction horizontalConflictResolveFunc;
+  CanDragDownFunction verticalConflictResolveFunc;
+
   Controller(
       {this.marker,
       this.description,
@@ -61,6 +65,8 @@ abstract class Controller<P extends ChartPainter>
       this.extraBottomOffset = 0.0,
       this.extraLeftOffset = 0.0,
       this.drawMarkers = true,
+      bool resolveGestureHorizontalConflict = false,
+      bool resolveGestureVerticalConflict = false,
       double descTextSize = 12,
       double infoTextSize = 12,
       Color descTextColor,
@@ -94,6 +100,14 @@ abstract class Controller<P extends ChartPainter>
     this.marker ??= initMarker();
     this.description ??= initDescription();
     this.selectionListener ??= initSelectionListener();
+
+    if (resolveGestureHorizontalConflict) {
+      horizontalConflictResolveFunc = () => true;
+    }
+
+    if (resolveGestureVerticalConflict) {
+      verticalConflictResolveFunc = () => true;
+    }
   }
 
   IMarker initMarker() => null;

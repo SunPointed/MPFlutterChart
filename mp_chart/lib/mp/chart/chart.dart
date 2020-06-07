@@ -76,50 +76,52 @@ abstract class ChartState<T extends Chart> extends State<T> {
                 // Center is a layout widget. It takes a single child and positions it
                 // in the middle of the parent.
                 children: [
-                  ConstrainedBox(
-                      constraints: BoxConstraints(
-                          minHeight: double.infinity,
-                          minWidth: double.infinity),
-                      child: OptimizedGestureDetector(
-                          tapDown: (details) {
-                            onTapDown(details);
-                          },
-                          singleTapUp: (details) {
-                            onSingleTapUp(details);
-                          },
-                          doubleTapUp: (details) {
-                            onDoubleTapUp(details);
-                          },
-                          moveStart: (details) {
-                            onMoveStart(details);
-                          },
-                          moveUpdate: (details) {
-                            onMoveUpdate(details);
-                          },
-                          moveEnd: (details) {
-                            onMoveEnd(details);
-                          },
-                          scaleStart: (details) {
-                            onScaleStart(details);
-                          },
-                          scaleUpdate: (details) {
-                            onScaleUpdate(details);
-                          },
-                          scaleEnd: (details) {
-                            onScaleEnd(details);
-                          },
-                          dragStart: (details){
-                            onDragStart(details);
-                          },
-                          dragUpdate: (details){
-                            onDragUpdate(details);
-                          },
-                          dragEnd: (details){
-                            onDragEnd(details);
-                          },
-                          child:
-                              CustomPaint(painter: widget.controller.painter))),
-                ])));
+              ConstrainedBox(
+                  constraints: BoxConstraints(
+                      minHeight: double.infinity, minWidth: double.infinity),
+                  child: OptimizedGestureDetector(
+                      tapDown: (details) {
+                        onTapDown(details);
+                      },
+                      singleTapUp: (details) {
+                        onSingleTapUp(details);
+                      },
+                      doubleTapUp: (details) {
+                        onDoubleTapUp(details);
+                      },
+                      moveStart: (details) {
+                        onMoveStart(details);
+                      },
+                      moveUpdate: (details) {
+                        onMoveUpdate(details);
+                      },
+                      moveEnd: (details) {
+                        onMoveEnd(details);
+                      },
+                      scaleStart: (details) {
+                        onScaleStart(details);
+                      },
+                      scaleUpdate: (details) {
+                        onScaleUpdate(details);
+                      },
+                      scaleEnd: (details) {
+                        onScaleEnd(details);
+                      },
+                      dragStart: (details) {
+                        onDragStart(details);
+                      },
+                      dragUpdate: (details) {
+                        onDragUpdate(details);
+                      },
+                      dragEnd: (details) {
+                        onDragEnd(details);
+                      },
+                      needHorizontalConflictFunc:
+                          widget.controller.horizontalConflictResolveFunc,
+                      needVerticalConflictFunc:
+                          widget.controller.verticalConflictResolveFunc,
+                      child: CustomPaint(painter: widget.controller.painter))),
+            ])));
   }
 
   @override

@@ -81,8 +81,10 @@ class BarChartHorizontalState
                             })),
                   ),
                   Container(
+                      constraints: BoxConstraints.expand(height: 50, width: 60),
                       padding: EdgeInsets.only(right: 15.0),
-                      child: Text(
+                      child: Center(
+                          child: Text(
                         "$_count",
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.center,
@@ -90,7 +92,7 @@ class BarChartHorizontalState
                             color: ColorUtils.BLACK,
                             fontSize: 12,
                             fontWeight: FontWeight.bold),
-                      )),
+                      ))),
                 ],
               ),
               Row(
@@ -109,8 +111,10 @@ class BarChartHorizontalState
                             })),
                   ),
                   Container(
+                      constraints: BoxConstraints.expand(height: 50, width: 60),
                       padding: EdgeInsets.only(right: 15.0),
-                      child: Text(
+                      child: Center(
+                          child: Text(
                         "${_range.toInt()}",
                         textDirection: TextDirection.ltr,
                         textAlign: TextAlign.center,
@@ -118,7 +122,7 @@ class BarChartHorizontalState
                             color: ColorUtils.BLACK,
                             fontSize: 12,
                             fontWeight: FontWeight.bold),
-                      )),
+                      ))),
                 ],
               )
             ],
