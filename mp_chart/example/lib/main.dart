@@ -1,6 +1,3 @@
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:example/demo/bar_chart/basic.dart';
 import 'package:example/demo/bar_chart/basic2.dart';
 import 'package:example/demo/bar_chart/horizontal.dart';
@@ -31,6 +28,8 @@ import 'package:example/demo/res/styles.dart';
 import 'package:example/demo/scrolling_chart/multiple.dart';
 import 'package:example/demo/scrolling_chart/tall_bar.dart';
 import 'package:example/demo/scrolling_chart/view_pager.dart';
+import 'package:flutter/material.dart';
+import 'package:mp_chart/mp/core/utils/color_utils.dart';
 
 import 'demo/even_more/realtime.dart';
 import 'demo/scrolling_chart/many_bar_chart.dart';
