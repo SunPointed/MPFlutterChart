@@ -1,3 +1,5 @@
+## 0.2.1 2020-06-07
+* add chart control in scrollable view like PageView etc.
 ## 0.2.0 2020-05-18
 * fix chart data's setValueTextSize setValueTypeface not work
 ## 0.1.9 2020-03-18
