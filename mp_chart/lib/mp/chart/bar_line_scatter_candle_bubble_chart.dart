@@ -24,6 +24,8 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
   double _curX = 0.0;
   double _curY = 0.0;
   double _scale = -1.0;
+  bool _isScaleDirectionConfirm = false;
+  bool _isYDirection = false;
 
   MPPointF _getTrans(double x, double y) {
     return Utils.local2Chart(widget.controller, x, y, inverted: _inverted());
@@ -232,6 +234,7 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
     widget.controller.stopDeceleration();
     _curX = details.localPoint.dx;
     _curY = details.localPoint.dy;
+    _isScaleDirectionConfirm = false;
     if (widget.controller.touchEventListener != null) {
       var point = _getTouchValue(
           widget.controller.touchEventListener.valueType(),
@@ -247,12 +250,16 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
   void onScaleUpdate(OpsScaleUpdateDetails details) {
     var needStateIfNotDispose = false;
     var pinchZoomEnabled = widget.controller.pinchZoomEnabled;
-    var isYDirection = details.mainDirection == Direction.Y;
+
+    if(!_isScaleDirectionConfirm){
+      _isScaleDirectionConfirm = true;
+      _isYDirection = details.mainDirection == Direction.Y;
+    }
     if (_scale == -1.0) {
       if (pinchZoomEnabled) {
         _scale = details.scale;
       } else {
-        _scale = isYDirection ? details.verticalScale : details.horizontalScale;
+        _scale = _isYDirection ? details.verticalScale : details.horizontalScale;
       }
       return;
     }
@@ -261,7 +268,7 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
     if (pinchZoomEnabled) {
       scale = details.scale / _scale;
     } else {
-      scale = isYDirection
+      scale = _isYDirection
           ? details.verticalScale / _scale
           : details.horizontalScale / _scale;
     }
@@ -276,7 +283,7 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
           canZoomMoreX ? scale : 1, canZoomMoreY ? scale : 1, trans.x, trans.y);
       needStateIfNotDispose = true;
     } else {
-      if (isYDirection) {
+      if (_isYDirection) {
         if (widget.controller.painter.scaleYEnabled) {
           bool canZoomMoreY =
               scale < 1 ? h.canZoomOutMoreY() : h.canZoomInMoreY();
@@ -315,7 +322,7 @@ class BarLineScatterCandleBubbleState<T extends BarLineScatterCandleBubbleChart>
     if (pinchZoomEnabled) {
       _scale = details.scale;
     } else {
-      _scale = isYDirection ? details.verticalScale : details.horizontalScale;
+      _scale = _isYDirection ? details.verticalScale : details.horizontalScale;
     }
   }
 

@@ -387,8 +387,10 @@ abstract class Utils {
   }
 
   static double optimizeScale(double scale) {
-//    return scale > 1.1 ? 1.0 : scale;
-    return scale;
+    /**
+     * when lower than 0.1, may not zoom as we expect
+     */
+    return scale < 0.1 ? 0.1 : scale;
   }
 
   static MPPointF local2Chart(Controller controller, double x, double y,

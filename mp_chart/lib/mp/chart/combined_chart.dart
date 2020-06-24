@@ -27,6 +27,8 @@ class CombinedChartState extends ChartState<CombinedChart> {
   double _curX = 0.0;
   double _curY = 0.0;
   double _scale = -1.0;
+  bool _isScaleDirectionConfirm = false;
+  bool _isYDirection = false;
 
   Highlight lastHighlighted;
 
@@ -225,6 +227,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
     widget.controller.stopDeceleration();
     _curX = details.localPoint.dx;
     _curY = details.localPoint.dy;
+    _isScaleDirectionConfirm = false;
     if(widget.controller.touchEventListener != null){
       var point = _getTouchValue(
           widget.controller.touchEventListener.valueType(),
@@ -240,12 +243,15 @@ class CombinedChartState extends ChartState<CombinedChart> {
   void onScaleUpdate(OpsScaleUpdateDetails details) {
     var needStateIfNotDispose = false;
     var pinchZoomEnabled = widget.controller.pinchZoomEnabled;
-    var isYDirection = details.mainDirection == Direction.Y;
+    if(!_isScaleDirectionConfirm){
+      _isScaleDirectionConfirm = true;
+      _isYDirection = details.mainDirection == Direction.Y;
+    }
     if (_scale == -1.0) {
       if (pinchZoomEnabled) {
         _scale = details.scale;
       } else {
-        _scale = isYDirection ? details.verticalScale : details.horizontalScale;
+        _scale = _isYDirection ? details.verticalScale : details.horizontalScale;
       }
       return;
     }
@@ -254,7 +260,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
     if (pinchZoomEnabled) {
       scale = details.scale / _scale;
     } else {
-      scale = isYDirection
+      scale = _isYDirection
           ? details.verticalScale / _scale
           : details.horizontalScale / _scale;
     }
@@ -269,7 +275,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
           canZoomMoreX ? scale : 1, canZoomMoreY ? scale : 1, trans.x, trans.y);
       needStateIfNotDispose = true;
     } else {
-      if (isYDirection) {
+      if (_isYDirection) {
         if (widget.controller.painter.scaleYEnabled) {
           bool canZoomMoreY =
               scale < 1 ? h.canZoomOutMoreY() : h.canZoomInMoreY();
@@ -307,7 +313,7 @@ class CombinedChartState extends ChartState<CombinedChart> {
     if (pinchZoomEnabled) {
       _scale = details.scale;
     } else {
-      _scale = isYDirection ? details.verticalScale : details.horizontalScale;
+      _scale = _isYDirection ? details.verticalScale : details.horizontalScale;
     }
   }
 
