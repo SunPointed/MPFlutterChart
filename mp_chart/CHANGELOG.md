@@ -1,3 +1,5 @@
+## 0.2.2 2020-06-27
+* in a single scale do not change the scale direction
 ## 0.2.1 2020-06-07
 * add chart control in scrollable view like PageView etc.
 ## 0.2.0 2020-05-18
