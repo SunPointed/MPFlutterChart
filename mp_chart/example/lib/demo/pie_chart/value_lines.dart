@@ -207,7 +207,9 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
       entries.add(PieEntry(
           icon: img,
           value: (random.nextDouble() * range) + range / 5,
-          label: PARTIES[i % PARTIES.length]));
+          label: PARTIES[i % PARTIES.length],
+          labelColor: ColorUtils.BLACK,
+          labelTextSize: 15));
     }
 
     PieDataSet dataSet = new PieDataSet(entries, "Election Results");

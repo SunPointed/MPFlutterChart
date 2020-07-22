@@ -512,6 +512,8 @@ class PieChartRenderer extends DataRenderer {
             : entry.y;
         String formattedValue = formatter.getPieLabel(value, entry);
         String entryLabel = entry.label;
+        double entryLabelTextSize = entry.labelTextSize;
+        Color entryLabelColor = entry.labelColor;
 
         final double sliceXBase = cos(transformedAngle * Utils.FDEG2RAD);
         final double sliceYBase = sin(transformedAngle * Utils.FDEG2RAD);
@@ -593,12 +595,16 @@ class PieChartRenderer extends DataRenderer {
                 dataSet.getValueTypeface());
 
             if (j < data.getEntryCount() && entryLabel != null) {
-              drawEntryLabel(c, entryLabel, labelPtx, labelPty + lineHeight);
+              drawEntryLabel(c, entryLabel, labelPtx, labelPty + lineHeight,
+                  labelTextSize: entryLabelTextSize,
+                  labelColor: entryLabelColor);
             }
           } else if (drawXOutside) {
             if (j < data.getEntryCount() && entryLabel != null) {
               drawEntryLabel(
-                  c, entryLabel, labelPtx, labelPty + lineHeight / 2.0);
+                  c, entryLabel, labelPtx, labelPty + lineHeight / 2.0,
+                  labelTextSize: entryLabelTextSize,
+                  labelColor: entryLabelColor);
             }
           } else if (drawYOutside) {
             drawValueByHeight(
@@ -631,11 +637,15 @@ class PieChartRenderer extends DataRenderer {
                 dataSet.getValueTypeface());
 
             if (j < data.getEntryCount() && entryLabel != null) {
-              drawEntryLabel(c, entryLabel, x, y + lineHeight);
+              drawEntryLabel(c, entryLabel, x, y + lineHeight,
+                  labelTextSize: entryLabelTextSize,
+                  labelColor: entryLabelColor);
             }
           } else if (drawXInside) {
             if (j < data.getEntryCount() && entryLabel != null) {
-              drawEntryLabel(c, entryLabel, x, y + lineHeight / 2);
+              drawEntryLabel(c, entryLabel, x, y + lineHeight / 2,
+                  labelTextSize: entryLabelTextSize,
+                  labelColor: entryLabelColor);
             }
           } else if (drawYInside) {
             drawValue(
@@ -694,9 +704,13 @@ class PieChartRenderer extends DataRenderer {
   /// @param label
   /// @param x
   /// @param y
-  void drawEntryLabel(Canvas c, String label, double x, double y) {
+  void drawEntryLabel(Canvas c, String label, double x, double y,
+      {double labelTextSize, Color labelColor}) {
     _entryLabelsPaint = PainterUtils.create(
-        _entryLabelsPaint, label, ColorUtils.WHITE, Utils.convertDpToPixel(10));
+        _entryLabelsPaint,
+        label,
+        labelColor ?? ColorUtils.WHITE,
+        labelTextSize ?? Utils.convertDpToPixel(10));
     _entryLabelsPaint.layout();
     _entryLabelsPaint.paint(c,
         Offset(x - _entryLabelsPaint.width / 2, y - _entryLabelsPaint.height));
