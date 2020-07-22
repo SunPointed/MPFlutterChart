@@ -154,13 +154,17 @@ abstract class AxisRenderer extends Renderer {
       interval = interval < _axis.granularity ? _axis.granularity : interval;
 
     // Normalize interval
-    double intervalMagnitude =
-        Utils.roundToNextSignificant(pow(10.0, log(interval) ~/ ln10));
-    int intervalSigDigit = interval ~/ intervalMagnitude;
-    if (intervalSigDigit > 5) {
-      // Use one order of magnitude higher, to avoid intervals like 0.9 or
-      // 90
-      interval = (10 * intervalMagnitude).floorToDouble();
+    try {
+      double intervalMagnitude =
+          Utils.roundToNextSignificant(pow(10.0, log(interval) ~/ ln10));
+      int intervalSigDigit = interval ~/ intervalMagnitude;
+      if (intervalSigDigit > 5) {
+        // Use one order of magnitude higher, to avoid intervals like 0.9 or
+        // 90
+        interval = (10 * intervalMagnitude).floorToDouble();
+      }
+    } catch (e) {
+      return;
     }
 
     int num = _axis.isCenterAxisLabelsEnabled() ? 1 : 0;
