@@ -248,7 +248,7 @@ class ChartData<T extends IDataSet<Entry>> {
   /// @param highlight
   /// @return the entry that is highlighted
   Entry getEntryForHighlight(Highlight highlight) {
-    if (highlight.dataSetIndex >= _dataSets.length)
+    if (highlight == null || highlight.dataSetIndex >= _dataSets.length)
       return null;
     else {
       return _dataSets[highlight.dataSetIndex]
