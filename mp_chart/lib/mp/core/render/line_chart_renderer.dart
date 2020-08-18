@@ -84,7 +84,7 @@ class LineChartRenderer extends LineRadarRenderer {
 //
 //    drawBitmap.eraseColor(Color.TRANSPARENT);
 
-    LineData lineData = _provider.getLineData();
+    LineData lineData =  getData();
 
     for (ILineDataSet set in lineData.dataSets) {
       if (set.isVisible()) drawDataSet(c, set);
@@ -568,7 +568,7 @@ class LineChartRenderer extends LineRadarRenderer {
   @override
   void drawValues(Canvas c) {
     if (isDrawingValuesAllowed(_provider)) {
-      List<ILineDataSet> dataSets = _provider.getLineData().dataSets;
+      List<ILineDataSet> dataSets = getData().dataSets;
 
       for (int i = 0; i < dataSets.length; i++) {
         ILineDataSet dataSet = dataSets[i];
@@ -669,7 +669,7 @@ class LineChartRenderer extends LineRadarRenderer {
     mCirclesBuffer[0] = 0;
     mCirclesBuffer[1] = 0;
 
-    List<ILineDataSet> dataSets = _provider.getLineData().dataSets;
+    List<ILineDataSet> dataSets = getData().dataSets;
 
     Transformer trans;
     for (int i = 0; i < dataSets.length; i++) {
@@ -742,7 +742,7 @@ class LineChartRenderer extends LineRadarRenderer {
 
   @override
   void drawHighlighted(Canvas c, List<Highlight> indices) {
-    LineData lineData = _provider.getLineData();
+    LineData lineData = getData();
 
     for (Highlight high in indices) {
       ILineDataSet set = lineData.getDataSetByIndex(high.dataSetIndex);
@@ -762,6 +762,10 @@ class LineChartRenderer extends LineRadarRenderer {
       // draw the lines
       drawHighlightLines(c, pix.x, pix.y, set);
     }
+  }
+
+  LineData getData() {
+    return _provider.getLineData();
   }
 
 //  /**

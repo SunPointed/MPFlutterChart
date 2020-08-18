@@ -8,6 +8,7 @@ import 'package:mp_chart/mp/core/render/bar_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/bubble_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/candle_stick_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/data_renderer.dart';
+import 'package:mp_chart/mp/core/render/level_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/line_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/scatter_chart_renderer.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
@@ -52,6 +53,11 @@ class CombinedChartRenderer extends DataRenderer {
           if (chart.getLineData() != null)
             _renderers.add(LineChartRenderer(chart, animator, viewPortHandler));
           break;
+        case DrawOrder.LEVEL:
+          if (chart.getLevelData() != null)
+            _renderers.add(LevelChartRenderer(chart, animator, viewPortHandler));
+          break;
+
         case DrawOrder.CANDLE:
           if (chart.getCandleData() != null)
             _renderers.add(
