@@ -12,12 +12,18 @@ import 'package:mp_chart/mp/core/highlight/highlight.dart';
 class CombinedData extends BarLineScatterCandleBubbleData<
     IBarLineScatterCandleBubbleDataSet<Entry>> {
   LineData _lineData;
+  LineData _levelData;
   BarData _barData;
   ScatterData _scatterData;
   CandleData _candleData;
   BubbleData _bubbleData;
 
   CombinedData() : super();
+
+  void setData0(LineData data) {
+    _levelData = data;
+    notifyDataChanged();
+  }
 
   void setData1(LineData data) {
     _lineData = data;
@@ -92,6 +98,10 @@ class CombinedData extends BarLineScatterCandleBubbleData<
   }
 
   LineData getLineData() {
+    return _lineData;
+  }
+
+  LineData getLevelData() {
     return _lineData;
   }
 
