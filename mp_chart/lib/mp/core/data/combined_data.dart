@@ -102,7 +102,7 @@ class CombinedData extends BarLineScatterCandleBubbleData<
   }
 
   LineData getLevelData() {
-    return _lineData;
+    return _levelData;
   }
 
   BarData getBarData() {
