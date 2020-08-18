@@ -220,7 +220,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
 
   @override
   LineData getLevelData() {
-    if (getLevelData() == null) return null;
+    if (getCombinedData() == null) return null;
     return getCombinedData().getLevelData();
   }
 
