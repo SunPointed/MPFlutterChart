@@ -32,6 +32,7 @@ import 'package:flutter/material.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 
 import 'demo/even_more/realtime.dart';
+import 'demo/line_chart/with_range_chart.dart';
 import 'demo/scrolling_chart/many_bar_chart.dart';
 
 void main() {
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'example example'),
       routes: <String, WidgetBuilder>{
+        '/line_chart/with_range': (_) => LineChartWithRange(),
         '/line_chart/basic': (_) => LineChartBasic(),
         '/line_chart/multiple': (_) => LineChartMultiple(),
         '/line_chart/dual_axis': (_) => LineChartDualAxis(),
@@ -190,6 +192,41 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                 ),
+                InkWell(
+                    onTap: () =>
+                        Navigator.of(context).pushNamed('/line_chart/with_range'),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "With range chart",
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ColorUtils.BLACK,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 15),
+                              child: Text(
+                                "Simple line chart with range mini chart.",
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorUtils.BLACK, fontSize: 12),
+                              ),
+                            ),
+                            Gaps.line
+                          ],
+                        ),
+                      ),
+                    )),
                 InkWell(
                     onTap: () =>
                         Navigator.of(context).pushNamed('/line_chart/basic'),

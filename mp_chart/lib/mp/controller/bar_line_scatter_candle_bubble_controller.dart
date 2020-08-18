@@ -8,6 +8,7 @@ import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
+import 'package:mp_chart/mp/core/range_chart_listener.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/touch_listener.dart';
@@ -19,6 +20,7 @@ import 'package:mp_chart/mp/painter/bar_line_chart_painter.dart';
 
 abstract class BarLineScatterCandleBubbleController<
     P extends BarLineChartBasePainter> extends Controller<P> {
+  bool drawRange;
   int maxVisibleCount;
   bool autoScaleMinMaxEnabled;
   bool doubleTapToZoomEnabled;
@@ -46,10 +48,12 @@ abstract class BarLineScatterCandleBubbleController<
 
   Paint gridBackgroundPaint;
   Paint borderPaint;
+  Paint rangePaint;
 
   Paint backgroundPaint;
   Color gridBackColor;
   Color borderColor;
+  Color rangeColor;
   Color backgroundColor;
   double borderStrokeWidth;
 
@@ -58,6 +62,8 @@ abstract class BarLineScatterCandleBubbleController<
 
   /// this is used for have a callback when chart translate or scale
   ChartTransListener chartTransListener;
+
+  ChartPositionListener chartPositionListener;
 
   AxisLeftSettingFunction axisLeftSettingFunction;
   AxisRightSettingFunction axisRightSettingFunction;
@@ -73,7 +79,9 @@ abstract class BarLineScatterCandleBubbleController<
   int _decelerationLastTime = 0;
 
   BarLineScatterCandleBubbleController(
-      {this.maxVisibleCount = 100,
+      {
+        this.drawRange = false,
+        this.maxVisibleCount = 100,
       this.autoScaleMinMaxEnabled = true,
       this.doubleTapToZoomEnabled = true,
       this.highlightPerDragEnabled = true,
@@ -99,15 +107,18 @@ abstract class BarLineScatterCandleBubbleController<
       this.keepPositionOnRotation = false,
       this.gridBackgroundPaint,
       this.borderPaint,
+        this.rangePaint,
       this.backgroundPaint,
       this.gridBackColor,
       this.borderColor,
+        this.rangeColor,
       this.backgroundColor,
       this.borderStrokeWidth = 1.0,
       this.axisLeftSettingFunction,
       this.axisRightSettingFunction,
       this.touchEventListener,
       this.chartTransListener,
+        this.chartPositionListener,
       IMarker marker,
       Description description,
       String noDataText = "No chart data available.",
@@ -186,6 +197,10 @@ abstract class BarLineScatterCandleBubbleController<
       ..color = borderColor == null ? ColorUtils.BLACK : borderColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = Utils.convertDpToPixel(borderStrokeWidth);
+
+    rangePaint = Paint()
+      ..color = rangeColor == null ? ColorUtils.BLUE : rangeColor
+      ..style = PaintingStyle.fill;
 
     backgroundPaint = Paint()
       ..color = backgroundColor == null ? ColorUtils.WHITE : backgroundColor;

@@ -17,6 +17,8 @@ abstract class AxisBase extends ComponentBase {
 
   Color _axisLineColor = ColorUtils.GRAY;
 
+  int _labelAxisPadding = 0;
+
   double _axisLineWidth = 1;
 
   List<double> _entries = List();
@@ -545,4 +547,12 @@ abstract class AxisBase extends ComponentBase {
   set limitLines(List<LimitLine> value) {
     _limitLines = value;
   }
+
+  // ignore: unnecessary_getters_setters
+  set labelAxisPadding(int value) {
+    _labelAxisPadding = value;
+  }
+
+  // ignore: unnecessary_getters_setters
+  int get labelAxisPadding => _labelAxisPadding;
 }

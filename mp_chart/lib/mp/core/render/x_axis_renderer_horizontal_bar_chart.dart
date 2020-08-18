@@ -103,6 +103,10 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
       pointF.x = 1.0;
       pointF.y = 0.5;
       drawLabels(c, viewPortHandler.contentLeft(), pointF, xAxis.position);
+    } else if (xAxis.position == XAxisPosition.BOTTOM_INSIDE_RIGHT) {
+      pointF.x = 1.0;
+      pointF.y = 0.5;
+      drawLabels(c, viewPortHandler.contentLeft(), pointF, xAxis.position);
     } else {
       // BOTH SIDED
       pointF.x = 0.0;

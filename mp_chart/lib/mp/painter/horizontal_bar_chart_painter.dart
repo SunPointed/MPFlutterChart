@@ -20,6 +20,7 @@ import 'package:mp_chart/mp/core/highlight/horizontal_bar_highlighter.dart';
 import 'package:mp_chart/mp/core/legend/legend.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
+import 'package:mp_chart/mp/core/range_chart_listener.dart';
 import 'package:mp_chart/mp/core/render/horizontal_bar_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
@@ -64,6 +65,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
       Paint gridBackgroundPaint,
       Paint backgroundPaint,
       Paint borderPaint,
+      Paint rangePaint,
       bool drawGridBackground,
       bool drawBorders,
       bool clipValuesToContent,
@@ -83,6 +85,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
       bool drawValueAboveBar,
       bool drawBarShadow,
       bool fitBars,
+      ChartPositionListener chartPositionListener,
       ChartTransListener chartTransListener)
       : super(
             data,
@@ -116,6 +119,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
             scaleYEnabled,
             gridBackgroundPaint,
             backgroundPaint,
+            rangePaint,
             borderPaint,
             drawGridBackground,
             drawBorders,
@@ -136,6 +140,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
             drawValueAboveBar,
             drawBarShadow,
             fitBars,
+      chartPositionListener,
             chartTransListener);
 
   @override

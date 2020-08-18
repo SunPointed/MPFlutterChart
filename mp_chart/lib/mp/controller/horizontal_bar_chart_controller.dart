@@ -8,6 +8,7 @@ import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/horizontal_bar_chart_marker.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
+import 'package:mp_chart/mp/core/range_chart_listener.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer_horizontal_bar_chart.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
@@ -79,7 +80,8 @@ class HorizontalBarChartController extends BarChartController {
       Color descTextColor,
       Color infoTextColor,
       Color infoBgColor,
-      ChartTransListener chartTransListener})
+      ChartTransListener chartTransListener,
+        ChartPositionListener chartPositionListener})
       : super(
             highlightFullBarEnabled: highlightFullBarEnabled,
             drawValueAboveBar: drawValueAboveBar,
@@ -139,7 +141,9 @@ class HorizontalBarChartController extends BarChartController {
             axisLeftSettingFunction: axisLeftSettingFunction,
             axisRightSettingFunction: axisRightSettingFunction,
             touchEventListener: touchEventListener,
-            chartTransListener: chartTransListener);
+            chartTransListener: chartTransListener,
+    chartPositionListener: chartPositionListener,
+  );
 
   HorizontalBarChartPainter get painter => super.painter;
 
@@ -178,6 +182,7 @@ class HorizontalBarChartController extends BarChartController {
         gridBackgroundPaint,
         backgroundPaint,
         borderPaint,
+        rangePaint,
         drawGridBackground,
         drawBorders,
         clipValuesToContent,
@@ -197,6 +202,7 @@ class HorizontalBarChartController extends BarChartController {
         drawValueAboveBar,
         drawBarShadow,
         fitBars,
+        chartPositionListener,
         chartTransListener);
   }
 

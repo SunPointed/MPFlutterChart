@@ -115,7 +115,7 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
   /// @param positions
   @override
   void drawYLabels(Canvas c, double fixedPosition, List<double> positions,
-      AxisDependency axisDependency, YAxisLabelPosition position) {
+      AxisDependency axisDependency, YAxisLabelPosition position, {labelAxisOffset = 0}) {
     axisLabelPaint = PainterUtils.create(
         axisLabelPaint, null, yAxis.textColor, yAxis.textSize,
         fontWeight: yAxis.typeface?.fontWeight,

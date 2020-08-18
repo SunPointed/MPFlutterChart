@@ -171,6 +171,7 @@ class BubbleChartController
         gridBackgroundPaint,
         backgroundPaint,
         borderPaint,
+        rangePaint,
         drawGridBackground,
         drawBorders,
         clipValuesToContent,

@@ -8,6 +8,7 @@ import 'package:mp_chart/mp/core/data/candle_data.dart';
 import 'package:mp_chart/mp/core/description.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
+import 'package:mp_chart/mp/core/range_chart_listener.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/touch_listener.dart';
@@ -72,7 +73,8 @@ class CandlestickChartController
       Color descTextColor,
       Color infoTextColor,
       Color infoBgColor,
-      ChartTransListener chartTransListener})
+      ChartTransListener chartTransListener,
+          ChartPositionListener chartPositionListener})
       : super(
             marker: marker,
             description: description,
@@ -128,7 +130,8 @@ class CandlestickChartController
             axisLeftSettingFunction: axisLeftSettingFunction,
             axisRightSettingFunction: axisRightSettingFunction,
             touchEventListener: touchEventListener,
-            chartTransListener: chartTransListener);
+            chartTransListener: chartTransListener,
+  chartPositionListener: chartPositionListener);
 
   CandleData get data => super.data;
 
@@ -171,6 +174,7 @@ class CandlestickChartController
         gridBackgroundPaint,
         backgroundPaint,
         borderPaint,
+        rangePaint,
         drawGridBackground,
         drawBorders,
         clipValuesToContent,
@@ -186,7 +190,8 @@ class CandlestickChartController
         xAxisRenderer,
         zoomMatrixBuffer,
         customViewPortEnabled,
-        chartTransListener);
+        chartTransListener,
+    chartPositionListener);
   }
 
   @override

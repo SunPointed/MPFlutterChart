@@ -171,6 +171,7 @@ class ScatterChartController
         gridBackgroundPaint,
         backgroundPaint,
         borderPaint,
+        rangePaint,
         drawGridBackground,
         drawBorders,
         clipValuesToContent,

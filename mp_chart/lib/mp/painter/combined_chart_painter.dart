@@ -19,6 +19,7 @@ import 'package:mp_chart/mp/core/highlight/combined_highlighter.dart';
 import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/legend/legend.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
+import 'package:mp_chart/mp/core/range_chart_listener.dart';
 import 'package:mp_chart/mp/core/render/combined_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
@@ -78,6 +79,7 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       Paint gridBackgroundPaint,
       Paint backgroundPaint,
       Paint borderPaint,
+      Paint rangePaint,
       bool drawGridBackground,
       bool drawBorders,
       bool clipValuesToContent,
@@ -97,7 +99,9 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       bool drawValueAboveBar,
       bool drawBarShadow,
       bool fitBars,
+      bool drawRange,
       List<DrawOrder> drawOrder,
+      ChartPositionListener chartPositionListener,
       ChartTransListener chartTransListener)
       : _drawBarShadow = drawBarShadow,
         _highlightFullBarEnabled = highlightFullBarEnabled,
@@ -151,7 +155,10 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
             zoomMatrixBuffer,
             customViewPortEnabled,
             backgroundPaint,
-            chartTransListener);
+            rangePaint,
+            chartTransListener,
+            chartPositionListener,
+            drawRange: drawRange,);
 
   List<DrawOrder> initDrawOrder() {
     return List()
@@ -323,4 +330,5 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       marker.draw(canvas, pos[0], pos[1]);
     }
   }
+
 }

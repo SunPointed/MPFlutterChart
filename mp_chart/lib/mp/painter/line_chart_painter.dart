@@ -10,6 +10,7 @@ import 'package:mp_chart/mp/core/description.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/legend/legend.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
+import 'package:mp_chart/mp/core/range_chart_listener.dart';
 import 'package:mp_chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_chart/mp/core/render/line_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
@@ -54,6 +55,7 @@ class LineChartPainter extends BarLineChartBasePainter<LineData>
       Paint gridBackgroundPaint,
       Paint backgroundPaint,
       Paint borderPaint,
+      Paint rangePaint,
       bool drawGridBackground,
       bool drawBorders,
       bool clipValuesToContent,
@@ -69,7 +71,9 @@ class LineChartPainter extends BarLineChartBasePainter<LineData>
       XAxisRenderer xAxisRenderer,
       Matrix4 zoomMatrixBuffer,
       bool customViewPortEnabled,
-      ChartTransListener chartTransListener)
+      ChartTransListener chartTransListener,
+      ChartPositionListener chartPositionListener,
+      bool drawRange)
       : super(
             data,
             animator,
@@ -118,7 +122,10 @@ class LineChartPainter extends BarLineChartBasePainter<LineData>
             zoomMatrixBuffer,
             customViewPortEnabled,
             backgroundPaint,
-            chartTransListener);
+            rangePaint,
+            chartTransListener,
+   chartPositionListener,
+   drawRange: drawRange);
 
   @override
   void initDefaultWithData() {

@@ -53,6 +53,7 @@ class ScatterChartPainter extends BarLineChartBasePainter<ScatterData>
       Paint gridBackgroundPaint,
       Paint backgroundPaint,
       Paint borderPaint,
+      Paint rangePaint,
       bool drawGridBackground,
       bool drawBorders,
       bool clipValuesToContent,
@@ -117,7 +118,9 @@ class ScatterChartPainter extends BarLineChartBasePainter<ScatterData>
             zoomMatrixBuffer,
             customViewPortEnabled,
             backgroundPaint,
-            chartTransListener);
+            rangePaint,
+            chartTransListener,
+  null);
 
   @override
   void initDefaultWithData() {

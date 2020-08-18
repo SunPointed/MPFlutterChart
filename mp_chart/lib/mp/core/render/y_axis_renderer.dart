@@ -75,7 +75,7 @@ class YAxisRenderer extends AxisRenderer {
       }
     }
 
-    drawYLabels(c, xPos, positions, dependency, labelPosition);
+    drawYLabels(c, xPos, positions, dependency, labelPosition, labelAxisOffset: _yAxis.labelAxisPadding);
   }
 
   @override
@@ -121,6 +121,7 @@ class YAxisRenderer extends AxisRenderer {
     List<double> positions,
     AxisDependency axisDependency,
     YAxisLabelPosition position,
+  {int labelAxisOffset = 0}
   ) {
     final int from = _yAxis.drawBottomYLabelEntry ? 0 : 1;
     final int to =
@@ -137,7 +138,7 @@ class YAxisRenderer extends AxisRenderer {
         if (position == YAxisLabelPosition.OUTSIDE_CHART) {
           axisLabelPaint.paint(
               c,
-              Offset(fixedPosition - axisLabelPaint.width,
+              Offset(fixedPosition - axisLabelPaint.width - labelAxisOffset,
                   positions[i * 2 + 1] - axisLabelPaint.height / 2));
         } else {
           axisLabelPaint.paint(
@@ -149,7 +150,7 @@ class YAxisRenderer extends AxisRenderer {
         if (position == YAxisLabelPosition.OUTSIDE_CHART) {
           axisLabelPaint.paint(
               c,
-              Offset(fixedPosition,
+              Offset(fixedPosition + labelAxisOffset,
                   positions[i * 2 + 1] - axisLabelPaint.height / 2));
         } else {
           axisLabelPaint.paint(

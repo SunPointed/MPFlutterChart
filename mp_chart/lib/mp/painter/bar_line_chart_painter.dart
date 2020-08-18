@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mp_chart/mp/core/animator.dart';
@@ -22,6 +23,7 @@ import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/legend/legend.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/poolable/point.dart';
+import 'package:mp_chart/mp/core/range_chart_listener.dart';
 import 'package:mp_chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
@@ -37,6 +39,8 @@ abstract class BarLineChartBasePainter<
             IBarLineScatterCandleBubbleDataSet<Entry>>> extends ChartPainter<T>
     implements BarLineScatterCandleBubbleDataProvider {
   final ChartTransListener _chartTransListener;
+
+  final ChartPositionListener _chartPositionListener;
 
   /// the maximum number of entries to which values will be drawn
   /// (entry numbers greater than this value will cause value-labels to disappear)
@@ -64,6 +68,7 @@ abstract class BarLineChartBasePainter<
 
   final bool _scaleXEnabled;
   final bool _scaleYEnabled;
+  final bool _drawRange;
 
   /// paint object for the (by default) lightgrey background of the grid
   final Paint _gridBackgroundPaint;
@@ -71,6 +76,8 @@ abstract class BarLineChartBasePainter<
   final Paint _backgroundPaint;
 
   final Paint _borderPaint;
+
+  final Paint _rangePaint;
 
   /// flag indicating if the grid background should be drawn or not
   final bool _drawGridBackground;
@@ -189,7 +196,10 @@ abstract class BarLineChartBasePainter<
       Matrix4 zoomMatrixBuffer,
       bool customViewPortEnabled,
       Paint backgroundPaint,
-      ChartTransListener chartTransListener)
+      Paint rangePaint,
+      ChartTransListener chartTransListener,
+      ChartPositionListener chartPositionListener,
+  {bool drawRange = false})
       : _keepPositionOnRotation = keepPositionOnRotation,
         _leftAxisTransformer = leftAxisTransformer,
         _rightAxisTransformer = rightAxisTransformer,
@@ -218,6 +228,9 @@ abstract class BarLineChartBasePainter<
         _borderPaint = borderPaint,
         _backgroundPaint = backgroundPaint,
         _chartTransListener = chartTransListener,
+        _chartPositionListener = chartPositionListener,
+        _drawRange = drawRange,
+  _rangePaint = rangePaint,
         super(
             data,
             animator,
@@ -255,6 +268,26 @@ abstract class BarLineChartBasePainter<
 
     // execute all drawing commands
     drawGridBackground(canvas);
+
+    if(_drawRange) {
+      Offset start;
+      Offset end;
+      if(viewPortHandler.mainChartDimensions.x == 0 || viewPortHandler.mainChartDimensions.y == 0) {
+        start = Offset(0,0);
+        end = Offset(getMeasuredWidth(), getMeasuredHeight());
+      } else {
+        start = Offset((-viewPortHandler.rangeMatrix[12] / viewPortHandler.rangeMatrix[0] /
+            viewPortHandler.mainChartDimensions.x) * getMeasuredWidth(),
+            0);
+        end = Offset(getMeasuredWidth() / viewPortHandler.rangeMatrix[0] -
+            (viewPortHandler.rangeMatrix[12] / viewPortHandler.rangeMatrix[0] /
+                viewPortHandler.mainChartDimensions.x) * getMeasuredWidth(),
+            getMeasuredHeight());
+      }
+      canvas.drawRect(
+          Rect.fromPoints(start, end),
+          _rangePaint);
+    }
 
     compute();
 
@@ -331,6 +364,7 @@ abstract class BarLineChartBasePainter<
     drawDescription(canvas, size);
 
     drawMarkers(canvas);
+
   }
 
   void prepareValuePxMatrix() {
@@ -604,6 +638,7 @@ abstract class BarLineChartBasePainter<
     if (_chartTransListener != null) {
       _chartTransListener.scale(scaleX, scaleY, x, y);
     }
+    _chartPositionListener?.updatePositionMatrix(viewPortHandler.matrixTouch, viewPortHandler.contentRect.width , getMeasuredHeight());
   }
 
   void translate(double dx, double dy) {
@@ -613,6 +648,7 @@ abstract class BarLineChartBasePainter<
     if (_chartTransListener != null) {
       _chartTransListener.translate(dx, dy);
     }
+    _chartPositionListener?.updatePositionMatrix(viewPortHandler.matrixTouch, viewPortHandler.contentRect.width , getMeasuredHeight());
   }
 
   /// Sets the size of the area (range on the y-axis) that should be maximum
@@ -916,4 +952,7 @@ abstract class BarLineChartBasePainter<
       addEntryByIndex(dataSet.getEntryCount(), entry, dataSetIndex);
     }
   }
+
 }
+
+

@@ -121,6 +121,11 @@ class XAxisRenderer extends AxisRenderer {
       pointF.y = 0.0;
       drawLabels(c, viewPortHandler.contentBottom() - _xAxis.labelRotatedHeight,
           pointF, _xAxis.position);
+    } else if (_xAxis.position == XAxisPosition.BOTTOM_INSIDE_RIGHT) {
+      pointF.x = 0.5;
+      pointF.y = 0.0;
+      drawLabels(c, viewPortHandler.contentBottom() - _xAxis.labelRotatedHeight,
+          pointF, _xAxis.position);
     } else {
       // BOTH SIDED
       pointF.x = 0.5;
@@ -245,7 +250,8 @@ class XAxisRenderer extends AxisRenderer {
         axisLabelPaint,
         anchor,
         angleDegrees,
-        position);
+        position,
+    labelAxisOffset: _xAxis.labelAxisPadding);
   }
 
   Path mRenderGridLinesPath = Path();

@@ -9,6 +9,7 @@ import 'package:mp_chart/mp/core/description.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
 import 'package:mp_chart/mp/core/marker/line_chart_marker.dart';
+import 'package:mp_chart/mp/core/range_chart_listener.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/touch_listener.dart';
@@ -17,9 +18,10 @@ import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/painter/line_chart_painter.dart';
 
 class LineChartController
-    extends BarLineScatterCandleBubbleController<LineChartPainter> {
+    extends BarLineScatterCandleBubbleController<LineChartPainter> with ChartPositionListener {
   LineChartController(
-      {int maxVisibleCount = 100,
+      {bool drawRange = false,
+        int maxVisibleCount = 100,
       bool autoScaleMinMaxEnabled = true,
       bool doubleTapToZoomEnabled = true,
       bool highlightPerDragEnabled = true,
@@ -48,6 +50,7 @@ class LineChartController
       Color backgroundColor,
       Color gridBackColor,
       Color borderColor,
+        Color rangeColor,
       double borderStrokeWidth = 1.0,
       AxisLeftSettingFunction axisLeftSettingFunction,
       AxisRightSettingFunction axisRightSettingFunction,
@@ -73,8 +76,10 @@ class LineChartController
       Color descTextColor,
       Color infoTextColor,
       Color infoBgColor,
-      ChartTransListener chartTransListener})
+      ChartTransListener chartTransListener,
+        ChartPositionListener chartPositionListener})
       : super(
+    drawRange: drawRange,
             marker: marker,
             description: description,
             noDataText: noDataText,
@@ -124,12 +129,15 @@ class LineChartController
             borderPaint: borderPaint,
             backgroundColor: backgroundColor,
             gridBackColor: gridBackColor,
+            rangeColor: rangeColor,
             borderColor: borderColor,
             borderStrokeWidth: borderStrokeWidth,
             axisLeftSettingFunction: axisLeftSettingFunction,
             axisRightSettingFunction: axisRightSettingFunction,
             touchEventListener: touchEventListener,
-            chartTransListener: chartTransListener);
+            chartTransListener: chartTransListener,
+    chartPositionListener: chartPositionListener,
+  );
 
   @override
   IMarker initMarker() => LineChartMarker();
@@ -175,6 +183,7 @@ class LineChartController
         gridBackgroundPaint,
         backgroundPaint,
         borderPaint,
+        rangePaint,
         drawGridBackground,
         drawBorders,
         clipValuesToContent,
@@ -190,11 +199,19 @@ class LineChartController
         xAxisRenderer,
         zoomMatrixBuffer,
         customViewPortEnabled,
-        chartTransListener);
+        chartTransListener,
+    chartPositionListener,
+    drawRange);
   }
 
   @override
   LineChartState createRealState() {
     return LineChartState();
+  }
+
+  @override
+  void updatePositionMatrix(Matrix4 positionMatrix, double mainChartWidth, double mainChartHeight) {
+    painter.viewPortHandler.setRangeMatrix(positionMatrix, mainChartWidth, mainChartHeight);
+    state.setStateIfNotDispose();
   }
 }

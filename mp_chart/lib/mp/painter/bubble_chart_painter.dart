@@ -53,6 +53,7 @@ class BubbleChartPainter extends BarLineChartBasePainter<BubbleData>
       Paint gridBackgroundPaint,
       Paint backgroundPaint,
       Paint borderPaint,
+      Paint rangePaint,
       bool drawGridBackground,
       bool drawBorders,
       bool clipValuesToContent,
@@ -117,7 +118,9 @@ class BubbleChartPainter extends BarLineChartBasePainter<BubbleData>
             zoomMatrixBuffer,
             customViewPortEnabled,
             backgroundPaint,
-            chartTransListener);
+            rangePaint,
+            chartTransListener,
+  null);
 
   @override
   void initDefaultWithData() {

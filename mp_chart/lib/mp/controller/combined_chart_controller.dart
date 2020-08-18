@@ -7,6 +7,7 @@ import 'package:mp_chart/mp/core/data/combined_data.dart';
 import 'package:mp_chart/mp/core/description.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
+import 'package:mp_chart/mp/core/range_chart_listener.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/touch_listener.dart';
@@ -15,7 +16,7 @@ import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/painter/combined_chart_painter.dart';
 
 class CombinedChartController
-    extends BarLineScatterCandleBubbleController<CombinedChartPainter> {
+    extends BarLineScatterCandleBubbleController<CombinedChartPainter> with ChartPositionListener {
   bool drawValueAboveBar;
   bool highlightFullBarEnabled;
   bool drawBarShadow;
@@ -54,9 +55,11 @@ class CombinedChartController
       bool keepPositionOnRotation = false,
       Paint gridBackgroundPaint,
       Paint borderPaint,
+        Paint rangePaint,
       Color backgroundColor,
       Color gridBackColor,
       Color borderColor,
+        Color rangeColor,
       double borderStrokeWidth = 1.0,
       AxisLeftSettingFunction axisLeftSettingFunction,
       AxisRightSettingFunction axisRightSettingFunction,
@@ -75,6 +78,7 @@ class CombinedChartController
       double extraBottomOffset = 0.0,
       double extraLeftOffset = 0.0,
       bool drawMarkers = true,
+        bool drawRange = false,
       bool resolveGestureHorizontalConflict = false,
       bool resolveGestureVerticalConflict = false,
       double descTextSize = 12,
@@ -82,7 +86,8 @@ class CombinedChartController
       Color descTextColor,
       Color infoTextColor,
       Color infoBgColor,
-      ChartTransListener chartTransListener})
+      ChartTransListener chartTransListener,
+        ChartPositionListener chartPositionListener})
       : super(
             marker: marker,
             description: description,
@@ -120,6 +125,7 @@ class CombinedChartController
             drawListener: drawListener,
             axisLeft: axisLeft,
             axisRight: axisRight,
+      rangeColor: rangeColor,
             axisRendererLeft: axisRendererLeft,
             axisRendererRight: axisRendererRight,
             leftAxisTransformer: leftAxisTransformer,
@@ -138,7 +144,10 @@ class CombinedChartController
             axisLeftSettingFunction: axisLeftSettingFunction,
             axisRightSettingFunction: axisRightSettingFunction,
             touchEventListener: touchEventListener,
-            chartTransListener: chartTransListener);
+            chartTransListener: chartTransListener,
+  chartPositionListener: chartPositionListener,
+  drawRange: drawRange,
+  rangePaint: rangePaint);
 
   CombinedData get data => super.data;
 
@@ -181,6 +190,7 @@ class CombinedChartController
         gridBackgroundPaint,
         backgroundPaint,
         borderPaint,
+        rangePaint,
         drawGridBackground,
         drawBorders,
         clipValuesToContent,
@@ -200,7 +210,9 @@ class CombinedChartController
         drawValueAboveBar,
         drawBarShadow,
         fitBars,
+        drawRange,
         drawOrder,
+        chartPositionListener,
         chartTransListener);
   }
 
@@ -208,4 +220,11 @@ class CombinedChartController
   CombinedChartState createRealState() {
     return CombinedChartState();
   }
+
+  @override
+  void updatePositionMatrix(Matrix4 positionMatrix, double mainChartWidth, double mainChartHeight) {
+    painter.viewPortHandler.setRangeMatrix(positionMatrix, mainChartWidth, mainChartHeight);
+    state.setStateIfNotDispose();
+  }
+
 }

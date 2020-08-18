@@ -9,6 +9,7 @@ import 'package:mp_chart/mp/core/description.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/legend/legend.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
+import 'package:mp_chart/mp/core/range_chart_listener.dart';
 import 'package:mp_chart/mp/core/render/candle_stick_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/legend_renderer.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
@@ -53,6 +54,7 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
       Paint gridBackgroundPaint,
       Paint backgroundPaint,
       Paint borderPaint,
+      Paint rangePaint,
       bool drawGridBackground,
       bool drawBorders,
       bool clipValuesToContent,
@@ -68,7 +70,8 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
       XAxisRenderer xAxisRenderer,
       Matrix4 zoomMatrixBuffer,
       bool customViewPortEnabled,
-      ChartTransListener chartTransListener)
+      ChartTransListener chartTransListener,
+      ChartPositionListener chartPositionListener,)
       : super(
             data,
             animator,
@@ -117,7 +120,9 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
             zoomMatrixBuffer,
             customViewPortEnabled,
             backgroundPaint,
-            chartTransListener);
+            rangePaint,
+            chartTransListener,
+  chartPositionListener);
 
   @override
   void initDefaultWithData() {

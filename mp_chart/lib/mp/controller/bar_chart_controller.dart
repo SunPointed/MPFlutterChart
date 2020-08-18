@@ -9,6 +9,7 @@ import 'package:mp_chart/mp/core/description.dart';
 import 'package:mp_chart/mp/core/functions.dart';
 import 'package:mp_chart/mp/core/marker/bar_chart_marker.dart';
 import 'package:mp_chart/mp/core/marker/i_marker.dart';
+import 'package:mp_chart/mp/core/range_chart_listener.dart';
 import 'package:mp_chart/mp/core/render/x_axis_renderer.dart';
 import 'package:mp_chart/mp/core/render/y_axis_renderer.dart';
 import 'package:mp_chart/mp/core/touch_listener.dart';
@@ -54,6 +55,7 @@ class BarChartController
     bool keepPositionOnRotation = false,
     Paint gridBackgroundPaint,
     Paint borderPaint,
+    Paint rangePaint,
     Color backgroundColor,
     Color gridBackColor,
     Color borderColor,
@@ -83,6 +85,7 @@ class BarChartController
     Color descTextColor,
     Color infoTextColor,
     Color infoBgColor,
+    ChartPositionListener chartPositionListener,
   }) : super(
             marker: marker,
             description: description,
@@ -131,6 +134,7 @@ class BarChartController
             keepPositionOnRotation: keepPositionOnRotation,
             gridBackgroundPaint: gridBackgroundPaint,
             borderPaint: borderPaint,
+            rangePaint: rangePaint,
             backgroundColor: backgroundColor,
             gridBackColor: gridBackColor,
             borderColor: borderColor,
@@ -138,7 +142,9 @@ class BarChartController
             axisLeftSettingFunction: axisLeftSettingFunction,
             axisRightSettingFunction: axisRightSettingFunction,
             touchEventListener: touchEventListener,
-            chartTransListener: chartTransListener);
+            chartTransListener: chartTransListener,
+    chartPositionListener: chartPositionListener
+  );
 
   @override
   void initialPainter() {
@@ -174,6 +180,7 @@ class BarChartController
         scaleYEnabled,
         gridBackgroundPaint,
         backgroundPaint,
+        rangePaint,
         borderPaint,
         drawGridBackground,
         drawBorders,
@@ -194,6 +201,7 @@ class BarChartController
         drawValueAboveBar,
         drawBarShadow,
         fitBars,
+        chartPositionListener,
         chartTransListener);
   }
 

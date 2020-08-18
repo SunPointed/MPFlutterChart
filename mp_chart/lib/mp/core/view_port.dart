@@ -6,6 +6,8 @@ import 'package:mp_chart/mp/core/utils/matrix4_utils.dart';
 import 'package:mp_chart/mp/core/utils/utils.dart';
 
 class ViewPortHandler {
+  Matrix4 rangeMatrix = Matrix4.identity();
+  MPPointD mainChartDimensions = MPPointD(0, 0);
   /// matrix used for touch events
   final Matrix4 _matrixTouch = Matrix4.identity();
 
@@ -604,6 +606,13 @@ class ViewPortHandler {
   bool canZoomInMoreY() {
     return _scaleY < _maxScaleY;
   }
+
+  void setRangeMatrix(Matrix4 rangeMatrix, double mainChartWidth, double mainChartHeight) {
+     rangeMatrix.copyInto(this.rangeMatrix);
+     mainChartDimensions.x = mainChartWidth;
+     mainChartDimensions.y = mainChartHeight;
+  }
 }
+
 
 class HorizontalViewPortHandler extends ViewPortHandler {}
