@@ -1,18 +1,24 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:mp_chart/mp/chart/combined_chart.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
+import 'package:mp_chart/mp/controller/combined_chart_controller.dart';
 import 'package:mp_chart/mp/controller/line_chart_controller.dart';
+import 'package:mp_chart/mp/core/data/combined_data.dart';
 import 'package:mp_chart/mp/core/data/line_data.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_line_data_set.dart';
 import 'package:mp_chart/mp/core/data_provider/line_data_provider.dart';
+import 'package:mp_chart/mp/core/data_set/filled_line_data_set.dart';
 import 'package:mp_chart/mp/core/data_set/line_data_set.dart';
 import 'package:mp_chart/mp/core/description.dart';
 import 'package:mp_chart/mp/core/entry/entry.dart';
 import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
+import 'package:mp_chart/mp/core/enums/mode.dart';
 import 'package:mp_chart/mp/core/fill_formatter/i_fill_formatter.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:example/demo/action_state.dart';
+import 'package:mp_chart/mp/core/data/filled_line_data.dart';
 
 class LineChartFilled extends StatefulWidget {
   @override
@@ -22,7 +28,7 @@ class LineChartFilled extends StatefulWidget {
 }
 
 class LineChartFilledState extends SimpleActionState<LineChartFilled> {
-  LineChartController _controller;
+  CombinedChartController _controller;
   var random = Random(1);
   int _count = 45;
   double _range = 100.0;
@@ -46,7 +52,7 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
           left: 0,
           top: 0,
           bottom: 100,
-          child: LineChart(_controller),
+          child: CombinedChart(_controller),
         ),
         Positioned(
           left: 0,
@@ -125,7 +131,7 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
 
   void _initController() {
     var desc = Description()..enabled = false;
-    _controller = LineChartController(
+    _controller = CombinedChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..setAxisMaximum(900)
@@ -139,20 +145,20 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
         },
         legendSettingFunction: (legend, controller) {
           legend.enabled = (false);
-          var formatter1 = (controller as LineChartController)
-              .data
-              .getDataSetByIndex(0)
-              .getFillFormatter();
-          if (formatter1 is A) {
-            formatter1.setPainter(controller);
-          }
-          var formatter2 = (controller as LineChartController)
-              .data
-              .getDataSetByIndex(1)
-              .getFillFormatter();
-          if (formatter2 is B) {
-            formatter2.setPainter(controller);
-          }
+//          var formatter1 = (controller as LineChartController)
+//              .data
+//              .getDataSetByIndex(0)
+//              .getFillFormatter();
+//          if (formatter1 is A) {
+//            formatter1.setPainter(controller);
+//          }
+//          var formatter2 = (controller as LineChartController)
+//              .data
+//              .getDataSetByIndex(1)
+//              .getFillFormatter();
+//          if (formatter2 is B) {
+//            formatter2.setPainter(controller);
+//          }
         },
         xAxisSettingFunction: (xAxis, controller) {
           xAxis.enabled = (false);
@@ -184,10 +190,10 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
       values2.add(new Entry(x: i.toDouble(), y: val));
     }
 
-    LineDataSet set1, set2;
+    FilledLineDataSet set1;//, set2;
 
     // create a dataset and give it a type
-    set1 = new LineDataSet(values1, "DataSet 1");
+    set1 = new FilledLineDataSet(values2, values1, "DataSet 1");
 
     set1.setAxisDependency(AxisDependency.LEFT);
     set1.setColor1(Color.fromARGB(255, 255, 241, 46));
@@ -199,24 +205,26 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
     set1.setFillColor(ColorUtils.WHITE);
     set1.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
     set1.setDrawCircleHole(false);
-    set1.setFillFormatter(A());
+//    set1.setFillFormatter(A());
+    set1.setMode(Mode.CUBIC_BEZIER);
 
     // create a dataset and give it a type
-    set2 = new LineDataSet(values2, "DataSet 2");
-    set2.setAxisDependency(AxisDependency.LEFT);
-    set2.setColor1(Color.fromARGB(255, 255, 241, 46));
-    set2.setDrawCircles(false);
-    set2.setLineWidth(2);
-    set2.setCircleRadius(3);
-    set2.setFillAlpha(255);
-    set2.setDrawFilled(true);
-    set2.setFillColor(ColorUtils.WHITE);
-    set2.setDrawCircleHole(false);
-    set2.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
-    set2.setFillFormatter(B());
-
+//    set2 = new LineDataSet(values2, "DataSet 2");
+//    set2.setAxisDependency(AxisDependency.LEFT);
+//    set2.setColor1(Color.fromARGB(255, 255, 241, 46));
+//    set2.setDrawCircles(false);
+//    set2.setLineWidth(2);
+//    set2.setCircleRadius(3);
+//    set2.setFillAlpha(255);
+//    set2.setDrawFilled(true);
+//    set2.setFillColor(ColorUtils.WHITE);
+//    set2.setDrawCircleHole(false);
+//    set2.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
+//    set2.setFillFormatter(B());
+//    set2.setMode(Mode.CUBIC_BEZIER);
+    _controller.data = CombinedData();
     // create a data object with the data sets
-    _controller.data = LineData.fromList(List()..add(set1)..add(set2));
+    _controller.data.setData6(FilledLineData.fromList([set1]));//..add(set2));
     _controller.data.setDrawValues(false);
 
     setState(() {});

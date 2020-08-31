@@ -8,6 +8,7 @@ import 'package:mp_chart/mp/core/data/bar_data.dart';
 import 'package:mp_chart/mp/core/data/bubble_data.dart';
 import 'package:mp_chart/mp/core/data/candle_data.dart';
 import 'package:mp_chart/mp/core/data/combined_data.dart';
+import 'package:mp_chart/mp/core/data/filled_line_data.dart';
 import 'package:mp_chart/mp/core/data/line_data.dart';
 import 'package:mp_chart/mp/core/data/scatter_data.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_data_set.dart';
@@ -29,7 +30,7 @@ import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
 import 'package:mp_chart/mp/painter/bar_line_chart_painter.dart';
 
-enum DrawOrder { BAR, BUBBLE, LINE, CANDLE, SCATTER, LEVEL }
+enum DrawOrder { BAR, FILLED_LINE, BUBBLE, LINE, CANDLE, SCATTER, LEVEL }
 
 class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
     implements CombinedDataProvider {
@@ -108,60 +109,63 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
         _drawValueAboveBar = drawValueAboveBar,
         _drawOrder = drawOrder,
         super(
-            data,
-            animator,
-            viewPortHandler,
-            maxHighlightDistance,
-            highLightPerTapEnabled,
-            extraLeftOffset,
-            extraTopOffset,
-            extraRightOffset,
-            extraBottomOffset,
-            marker,
-            desc,
-            drawMarkers,
-            infoBgColor,
-            infoPainter,
-            descPainter,
-            xAxis,
-            legend,
-            legendRenderer,
-            rendererSettingFunction,
-            selectedListener,
-            maxVisibleCount,
-            autoScaleMinMaxEnabled,
-            pinchZoomEnabled,
-            doubleTapToZoomEnabled,
-            highlightPerDragEnabled,
-            dragXEnabled,
-            dragYEnabled,
-            scaleXEnabled,
-            scaleYEnabled,
-            gridBackgroundPaint,
-            borderPaint,
-            drawGridBackground,
-            drawBorders,
-            clipValuesToContent,
-            minOffset,
-            keepPositionOnRotation,
-            drawListener,
-            axisLeft,
-            axisRight,
-            axisRendererLeft,
-            axisRendererRight,
-            leftAxisTransformer,
-            rightAxisTransformer,
-            xAxisRenderer,
-            zoomMatrixBuffer,
-            customViewPortEnabled,
-            backgroundPaint,
-            rangePaint,
-            chartTransListener,
-            chartPositionListener,
-            drawRange: drawRange,);
+          data,
+          animator,
+          viewPortHandler,
+          maxHighlightDistance,
+          highLightPerTapEnabled,
+          extraLeftOffset,
+          extraTopOffset,
+          extraRightOffset,
+          extraBottomOffset,
+          marker,
+          desc,
+          drawMarkers,
+          infoBgColor,
+          infoPainter,
+          descPainter,
+          xAxis,
+          legend,
+          legendRenderer,
+          rendererSettingFunction,
+          selectedListener,
+          maxVisibleCount,
+          autoScaleMinMaxEnabled,
+          pinchZoomEnabled,
+          doubleTapToZoomEnabled,
+          highlightPerDragEnabled,
+          dragXEnabled,
+          dragYEnabled,
+          scaleXEnabled,
+          scaleYEnabled,
+          gridBackgroundPaint,
+          borderPaint,
+          drawGridBackground,
+          drawBorders,
+          clipValuesToContent,
+          minOffset,
+          keepPositionOnRotation,
+          drawListener,
+          axisLeft,
+          axisRight,
+          axisRendererLeft,
+          axisRendererRight,
+          leftAxisTransformer,
+          rightAxisTransformer,
+          xAxisRenderer,
+          zoomMatrixBuffer,
+          customViewPortEnabled,
+          backgroundPaint,
+          rangePaint,
+          chartTransListener,
+          chartPositionListener,
+          drawRange: drawRange,
+        );
 
   List<DrawOrder> initDrawOrder() {
     return List()
+      ..add(DrawOrder.LEVEL)
+      ..add(DrawOrder.FILLED_LINE)
       ..add(DrawOrder.BAR)
       ..add(DrawOrder.BUBBLE)
       ..add(DrawOrder.LINE)
@@ -246,6 +250,12 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
   BubbleData getBubbleData() {
     if (getCombinedData() == null) return null;
     return getCombinedData().getBubbleData();
+  }
+
+  @override
+  FilledLineData getFilledLineData() {
+    if (getCombinedData() == null) return null;
+    return getCombinedData().getFilledLineData();
   }
 
   @override
@@ -336,5 +346,4 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData>
       marker.draw(canvas, pos[0], pos[1]);
     }
   }
-
 }

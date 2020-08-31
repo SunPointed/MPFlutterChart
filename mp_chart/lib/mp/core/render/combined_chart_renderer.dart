@@ -8,12 +8,14 @@ import 'package:mp_chart/mp/core/render/bar_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/bubble_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/candle_stick_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/data_renderer.dart';
+import 'package:mp_chart/mp/core/render/filled_line_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/level_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/line_chart_renderer.dart';
 import 'package:mp_chart/mp/core/render/scatter_chart_renderer.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
 import 'package:mp_chart/mp/painter/combined_chart_painter.dart';
 import 'package:mp_chart/mp/painter/painter.dart';
+
 
 class CombinedChartRenderer extends DataRenderer {
   /// all rederers for the different kinds of data this combined-renderer can draw
@@ -40,6 +42,10 @@ class CombinedChartRenderer extends DataRenderer {
 
     for (DrawOrder order in orders) {
       switch (order) {
+        case DrawOrder.FILLED_LINE:
+          if (chart.getFilledLineData() != null)
+            _renderers.add(FilledLineChartRenderer(chart, animator, viewPortHandler));
+          break;
         case DrawOrder.BAR:
           if (chart.getBarData() != null)
             _renderers.add(BarChartRenderer(chart, animator, viewPortHandler));
