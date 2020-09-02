@@ -284,12 +284,11 @@ abstract class BarLineChartBasePainter<
                 viewPortHandler.mainChartDimensions.x) * getMeasuredWidth(),
             getMeasuredHeight());
       }
-      if(start.dx == double.nan || end.dx == double.nan) {
-        return;
+      if(start.dx != double.nan && end.dx != double.nan) {
+        canvas.drawRect(
+            Rect.fromPoints(start, end),
+            _rangePaint);
       }
-      canvas.drawRect(
-          Rect.fromPoints(start, end),
-          _rangePaint);
     }
 
     compute();
