@@ -2,7 +2,7 @@
 
 flutter charts just like [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart)
 
-The minimum version currently supported is 1.7.3. If you use flutter with lower version, checkout and use 'localPosition-support' branch, this branch support for flutter version which XXXDetails and PointerXXXEvent not support wiget local postion
+The minimum version currently supported is 1.22.0. If you use flutter with lower version, checkout and use 'localPosition-support' branch, this branch support for flutter version which XXXDetails and PointerXXXEvent not support wiget local postion
 
 Thanks for [**MPAndroidChart**](https://github.com/PhilJay/MPAndroidChart), when translate this library to flutter I learned a lot about matrix use in animation.
 
