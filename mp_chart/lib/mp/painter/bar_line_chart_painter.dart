@@ -295,10 +295,6 @@ abstract class BarLineChartBasePainter<
 
     compute();
 
-    _xAxisRenderer.renderAxisLine(canvas);
-    _axisRendererLeft.renderAxisLine(canvas);
-    _axisRendererRight.renderAxisLine(canvas);
-
     if (xAxis.drawGridLinesBehindData) _xAxisRenderer.renderGridLines(canvas);
 
     if (_axisLeft.drawGridLinesBehindData)
@@ -321,6 +317,10 @@ abstract class BarLineChartBasePainter<
     canvas.clipRect(viewPortHandler.getContentRect());
 
     renderer.drawData(canvas);
+
+    _xAxisRenderer.renderAxisLine(canvas);
+    _axisRendererLeft.renderAxisLine(canvas);
+    _axisRendererRight.renderAxisLine(canvas);
 
     if (!xAxis.drawGridLinesBehindData) _xAxisRenderer.renderGridLines(canvas);
 
