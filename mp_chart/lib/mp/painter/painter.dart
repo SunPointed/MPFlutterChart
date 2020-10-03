@@ -395,7 +395,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>>
   /// @param y
   /// @return
   Highlight getHighlightByTouchPoint(double x, double y) {
-    if (_data == null) {
+    if (_data == null || highlighter == null) {
       return null;
     } else {
       return highlighter.getHighlight(x, y);
