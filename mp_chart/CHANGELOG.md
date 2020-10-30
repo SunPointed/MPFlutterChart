@@ -1,3 +1,5 @@
+## 0.3.1 2020-10-30
+* Updated for Flutter 1.22.0 to use updated Dart intl package 0.17.0-nullsafety.1.
 ## 0.3.0 2020-09-18
 * Updated for Flutter 1.22.0 to use update optimized_gesture_detector package.
 * 0.3.0 is for Flutter 1.22 and newer prior version 0.2.2 is for pre-Flutter 1.22 versions. 
