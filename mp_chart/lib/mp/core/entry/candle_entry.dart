@@ -14,6 +14,9 @@ class CandleEntry extends Entry {
   /// open value
   double _open = 0;
 
+  /// time
+  double time = 0;
+
   CandleEntry(
       {double x,
       double shadowH,
