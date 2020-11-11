@@ -832,7 +832,10 @@ class PieChartRenderer extends DataRenderer {
       c.save();
 
       _centerTextPaint = PainterUtils.create(_centerTextPaint, centerText,
-          ColorUtils.BLACK, Utils.convertDpToPixel(12));
+          _painter.centerTextColor ?? ColorUtils.BLACK,
+          _painter.centerTextSize ?? Utils.convertDpToPixel(12),
+          fontFamily: _painter.centerTextTypeface?.fontFamily,
+          fontWeight: _painter.centerTextTypeface?.fontWeight);
       _centerTextPaint.layout();
       _centerTextPaint.paint(
           c,
