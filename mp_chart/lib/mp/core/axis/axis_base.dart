@@ -199,6 +199,12 @@ abstract class AxisBase extends ComponentBase {
     _forceLabels = false;
   }
 
+  // Like setLabelCount1. But Don't limit label count
+  void setLabelCount3(int count) {
+    _labelCount = count;
+    _forceLabels = false;
+  }
+
   /// sets the number of label entries for the y-axis max = 25, min = 2, default: 6, be aware
   /// that this number is not
   /// fixed (if force == false) and can only be approximated.
@@ -210,6 +216,12 @@ abstract class AxisBase extends ComponentBase {
   ///              to have uneven values
   void setLabelCount2(int count, bool force) {
     setLabelCount1(count);
+    _forceLabels = force;
+  }
+
+  // Like setLabelCount2. But use setLabelCount3
+  void setLabelCount4(int count, bool force) {
+    setLabelCount3(count);
     _forceLabels = force;
   }
 
@@ -369,6 +381,7 @@ abstract class AxisBase extends ComponentBase {
   /// @param spaceLength the length of space in between the pieces
   /// @param phase       offset, in degrees (normally, use 0)
   void enableAxisLineDashedLine(
+
       double lineLength, double spaceLength, double phase) {
     _axisLineDashPathEffect = DashPathEffect(lineLength, spaceLength, phase);
   }
