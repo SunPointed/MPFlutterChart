@@ -11,7 +11,7 @@ class BubbleData extends BarLineScatterCandleBubbleData<IBubbleDataSet> {
   ///
   /// @param width
   void setHighlightCircleWidth(double width) {
-    for (IBubbleDataSet set in dataSets) {
+    for (IBubbleDataSet set in dataSets!) {
       set.setHighlightCircleWidth(width);
     }
   }

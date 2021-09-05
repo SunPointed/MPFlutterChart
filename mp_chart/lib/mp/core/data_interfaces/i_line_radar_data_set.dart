@@ -24,7 +24,7 @@ mixin ILineRadarDataSet<T extends Entry>
   /// Returns the stroke-width of the drawn line
   ///
   /// @return
-  double getLineWidth();
+  double? getLineWidth();
 
   /// Returns true if filled drawing is enabled, false if not
   ///

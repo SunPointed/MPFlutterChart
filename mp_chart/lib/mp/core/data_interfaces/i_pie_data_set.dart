@@ -9,7 +9,7 @@ mixin IPieDataSet implements IDataSet<PieEntry> {
   /// DataSet, in pixels.
   ///
   /// @return
-  double getSliceSpace();
+  double? getSliceSpace();
 
   /// When enabled, slice spacing will be 0.0 when the smallest value is going to be
   ///   smaller than the slice spacing itself.
@@ -21,7 +21,7 @@ mixin IPieDataSet implements IDataSet<PieEntry> {
   /// the chart-center in dp.
   ///
   /// @return
-  double getSelectionShift();
+  double? getSelectionShift();
 
   ValuePosition getXValuePosition();
 

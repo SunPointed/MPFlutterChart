@@ -9,11 +9,11 @@ import 'package:mp_chart/mp/core/utils/utils.dart';
 
 class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
   /// the space in pixels between the chart-slices, default 0f
-  double _sliceSpace = 0;
+  double? _sliceSpace = 0;
   bool _automaticallyDisableSliceSpacing = false;
 
   /// indicates the selection distance of a pie slice
-  double _shift = 18;
+  double? _shift = 18;
 
   ValuePosition _xValuePosition = ValuePosition.INSIDE_SLICE;
   ValuePosition _yValuePosition = ValuePosition.INSIDE_SLICE;
@@ -29,9 +29,9 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
 
   @override
   DataSet<PieEntry> copy1() {
-    List<PieEntry> entries = List();
-    for (int i = 0; i < values.length; i++) {
-      entries.add(values[i].copy());
+    List<PieEntry> entries = List.empty(growable: true);
+    for (int i = 0; i < values!.length; i++) {
+      entries.add(values![i]!.copy());
     }
     PieDataSet copied = PieDataSet(entries, getLabel());
     copy(copied);
@@ -43,7 +43,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
   }
 
   @override
-  void calcMinMax1(PieEntry e) {
+  void calcMinMax1(PieEntry? e) {
     if (e == null) return;
     calcMinMaxY1(e);
   }
@@ -60,7 +60,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
   }
 
   @override
-  double getSliceSpace() {
+  double? getSliceSpace() {
     return _sliceSpace;
   }
 
@@ -90,7 +90,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
   }
 
   @override
-  double getSelectionShift() {
+  double? getSelectionShift() {
     return _shift;
   }
 

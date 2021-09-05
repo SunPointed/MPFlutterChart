@@ -22,7 +22,7 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
   double _shapeSize = 15;
 
   /// Renderer responsible for rendering this DataSet, default: square
-  IShapeRenderer _shapeRenderer = SquareShapeRenderer();
+  IShapeRenderer? _shapeRenderer = SquareShapeRenderer();
 
   /// The radius of the hole in the shape (applies to Square, Circle and Triangle)
   /// - default: 0.0
@@ -37,9 +37,9 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
 
   @override
   DataSet<Entry> copy1() {
-    List<Entry> entries = List<Entry>();
-    for (int i = 0; i < values.length; i++) {
-      entries.add(values[i].copy());
+    List<Entry> entries = List<Entry>.empty(growable: true);
+    for (int i = 0; i < values!.length; i++) {
+      entries.add(values![i]!.copy());
     }
     ScatterDataSet copied = ScatterDataSet(entries, getLabel());
     copy(copied);
@@ -88,7 +88,7 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
   }
 
   @override
-  IShapeRenderer getShapeRenderer() {
+  IShapeRenderer? getShapeRenderer() {
     return _shapeRenderer;
   }
 
@@ -117,7 +117,7 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
     return _scatterShapeHoleColor;
   }
 
-  static IShapeRenderer getRendererForShape(ScatterShape shape) {
+  static IShapeRenderer? getRendererForShape(ScatterShape shape) {
     switch (shape) {
       case ScatterShape.SQUARE:
         return SquareShapeRenderer();

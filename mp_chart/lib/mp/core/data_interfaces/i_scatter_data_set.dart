@@ -23,5 +23,5 @@ mixin IScatterDataSet implements ILineScatterCandleRadarDataSet<Entry> {
   /// Returns the IShapeRenderer responsible for rendering this DataSet.
   ///
   /// @return
-  IShapeRenderer getShapeRenderer();
+  IShapeRenderer? getShapeRenderer();
 }

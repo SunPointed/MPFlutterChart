@@ -18,7 +18,7 @@ abstract class Animator {
   /// The phase of drawn values on the x-axis. 0 - 1
   double phaseX = MAX;
 
-  double angle;
+  double? angle;
 
   Animator(this.listener);
 
@@ -120,7 +120,7 @@ abstract class Animator {
 class ChartAnimator extends Animator {
   static const int REFRESH_RATE = 16;
 
-  Timer _countdownTimer;
+  Timer? _countdownTimer;
 
   bool _isShowed = false;
 
@@ -154,7 +154,7 @@ class ChartAnimator extends Animator {
         angle = fromAngle +
             (toAngle - fromAngle) *
                 (1.0 - easing.getInterpolation(durationMillis / totalTime));
-        if (angle >= toAngle) {
+        if (angle! >= toAngle) {
           angle = toAngle;
         }
         durationMillis -= REFRESH_RATE;
@@ -298,17 +298,17 @@ class ChartAnimatorBySys extends Animator {
   static const int ANIMATE_XY = 2;
   static const int ANIMATE_SPIN = 3;
 
-  AnimationController _controller;
+  AnimationController? _controller;
   ChartTickerProvider _provider = ChartTickerProvider();
 
-  EasingFunction easingFunction_1;
-  EasingFunction easingFunction_2;
+  late EasingFunction easingFunction_1;
+  EasingFunction? easingFunction_2;
 
-  double fromAngle;
-  double toAngle;
+  late double fromAngle;
+  double? toAngle;
 
-  double durationMinPercent;
-  bool xDurationLong;
+  late double durationMinPercent;
+  late bool xDurationLong;
 
   bool animating = false;
 
@@ -317,8 +317,8 @@ class ChartAnimatorBySys extends Animator {
   ChartAnimatorBySys(AnimatorUpdateListener listener) : super(listener) {
     _controller = AnimationController(vsync: _provider);
 
-    _controller.addListener(() {
-      double percent = _controller.value;
+    _controller!.addListener(() {
+      double percent = _controller!.value;
       switch (which) {
         case ANIMATE_X:
           {
@@ -345,12 +345,12 @@ class ChartAnimatorBySys extends Animator {
                 phaseX = easingFunction_1.getInterpolation(percent);
                 var percentMin = percent / durationMinPercent;
                 percentMin = percentMin > 1 ? 1 : percentMin;
-                phaseY = easingFunction_2.getInterpolation(percentMin);
+                phaseY = easingFunction_2!.getInterpolation(percentMin);
               } else {
                 phaseY = easingFunction_1.getInterpolation(percent);
                 var percentMin = percent / durationMinPercent;
                 percentMin = percentMin > 1 ? 1 : percentMin;
-                phaseX = easingFunction_2.getInterpolation(percentMin);
+                phaseX = easingFunction_2!.getInterpolation(percentMin);
               }
             } else {
               if (xDurationLong) {
@@ -371,9 +371,9 @@ class ChartAnimatorBySys extends Animator {
         case ANIMATE_SPIN:
           {
             angle = fromAngle +
-                (toAngle - fromAngle) *
+                (toAngle! - fromAngle) *
                     easingFunction_1.getInterpolation(percent);
-            if (angle >= toAngle) {
+            if (angle! >= toAngle!) {
               angle = toAngle;
             }
             this.listener?.onRotateUpdate(angle);
@@ -383,7 +383,7 @@ class ChartAnimatorBySys extends Animator {
           break;
       }
     });
-    _controller.addStatusListener((status) {
+    _controller!.addStatusListener((status) {
       switch (status) {
         case AnimationStatus.dismissed:
           animating = false;
@@ -406,11 +406,11 @@ class ChartAnimatorBySys extends Animator {
 
     phaseX = MIN;
     phaseY = MAX;
-    _controller.duration = Duration(milliseconds: durationMillis);
+    _controller!.duration = Duration(milliseconds: durationMillis);
     which = ANIMATE_X;
     easingFunction_1 = easing;
     easingFunction_2 = null;
-    _controller.forward();
+    _controller!.forward();
   }
 
   @override
@@ -425,12 +425,12 @@ class ChartAnimatorBySys extends Animator {
     durationMinPercent = xDurationLong
         ? durationMillisY / durationMillisX
         : durationMillisX / durationMillisY;
-    _controller.duration = Duration(
+    _controller!.duration = Duration(
         milliseconds: xDurationLong ? durationMillisX : durationMillisY);
     easingFunction_1 = easing;
     easingFunction_2 = null;
     which = ANIMATE_XY;
-    _controller.forward();
+    _controller!.forward();
   }
 
   @override
@@ -445,12 +445,12 @@ class ChartAnimatorBySys extends Animator {
     durationMinPercent = xDurationLong
         ? durationMillisY / durationMillisX
         : durationMillisX / durationMillisY;
-    _controller.duration = Duration(
+    _controller!.duration = Duration(
         milliseconds: xDurationLong ? durationMillisX : durationMillisY);
     easingFunction_1 = easingX;
     easingFunction_2 = easingY;
     which = ANIMATE_XY;
-    _controller.forward();
+    _controller!.forward();
   }
 
   @override
@@ -460,11 +460,11 @@ class ChartAnimatorBySys extends Animator {
 
     phaseX = MAX;
     phaseY = MIN;
-    _controller.duration = Duration(milliseconds: durationMillis);
+    _controller!.duration = Duration(milliseconds: durationMillis);
     easingFunction_1 = easing;
     easingFunction_2 = null;
     which = ANIMATE_Y;
-    _controller.forward();
+    _controller!.forward();
   }
 
   @override
@@ -481,11 +481,11 @@ class ChartAnimatorBySys extends Animator {
     this.fromAngle = fromAngle;
     this.angle = fromAngle;
     this.toAngle = toAngle;
-    _controller.duration = Duration(milliseconds: durationMillis);
+    _controller!.duration = Duration(milliseconds: durationMillis);
     easingFunction_1 = easing;
     easingFunction_2 = null;
     which = ANIMATE_SPIN;
-    _controller.forward();
+    _controller!.forward();
   }
 }
 
@@ -733,7 +733,7 @@ class EaseOutExpoEasingFunction implements EasingFunction {
 
   @override
   double getInterpolation(double input) {
-    return (input == 1) ? 1 : (-pow(2, -10 * (input + 1)));
+    return (input == 1) ? 1 : -pow(2, -10 * (input + 1)) as double;
   }
 }
 
@@ -742,7 +742,7 @@ class EaseInExpoEasingFunction implements EasingFunction {
 
   @override
   double getInterpolation(double input) {
-    return (input == 0) ? 0 : pow(2, 10 * (input - 1));
+    return (input == 0) ? 0 : pow(2, 10 * (input - 1)) as double;
   }
 }
 
@@ -802,7 +802,7 @@ class EaseInQuartEasingFunction implements EasingFunction {
 
   @override
   double getInterpolation(double input) {
-    return pow(input, 4);
+    return pow(input, 4) as double;
   }
 }
 
@@ -835,7 +835,7 @@ class EaseInCubicEasingFunction implements EasingFunction {
 
   @override
   double getInterpolation(double input) {
-    return pow(input, 3);
+    return pow(input, 3) as double;
   }
 }
 

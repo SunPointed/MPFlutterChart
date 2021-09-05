@@ -23,10 +23,10 @@ mixin ILineDataSet implements ILineRadarDataSet<Entry> {
   bool isDrawSteppedEnabled();
 
   /// Returns the size of the drawn circles.
-  double getCircleRadius();
+  double? getCircleRadius();
 
   /// Returns the hole radius of the drawn circles.
-  double getCircleHoleRadius();
+  double? getCircleHoleRadius();
 
   /// Returns the color at the given index of the DataSet's circle-color array.
   /// Performs a IndexOutOfBounds check by modulus.
@@ -58,7 +58,7 @@ mixin ILineDataSet implements ILineRadarDataSet<Entry> {
   /// Returns the DashPathEffect that is used for drawing the lines.
   ///
   /// @return
-  DashPathEffect getDashPathEffect();
+  DashPathEffect? getDashPathEffect();
 
   /// Returns true if the dashed-line effect is enabled, false if not.
   /// If the DashPathEffect object is null, also return false here.

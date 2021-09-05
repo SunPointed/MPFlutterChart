@@ -44,7 +44,7 @@ class YAxis extends AxisBase {
   YAxisLabelPosition _position = YAxisLabelPosition.OUTSIDE_CHART;
 
   /// the side this axis object represents
-  AxisDependency _axisDependency;
+  AxisDependency? _axisDependency;
 
   /// the minimum width that the axis should take (in dp).
   /// <p/>
@@ -61,7 +61,7 @@ class YAxis extends AxisBase {
     yOffset = 0;
   }
 
-  AxisDependency get axisDependency => _axisDependency;
+  AxisDependency? get axisDependency => _axisDependency;
 
   // ignore: unnecessary_getters_setters
   double get minWidth => _minWidth;
@@ -174,14 +174,14 @@ class YAxis extends AxisBase {
   ///
   /// @param p
   /// @return
-  double getRequiredWidthSpace(TextPainter p) {
+  double getRequiredWidthSpace(TextPainter? p) {
     p = PainterUtils.create(p, null, null, textSize);
     String label = getLongestLabel();
-    double width = Utils.calcTextWidth(p, label) + xOffset * 2;
-    if (minWidth > 0) minWidth = Utils.convertDpToPixel(minWidth);
-    if (maxWidth > 0 && maxWidth != double.infinity)
+    double width = Utils.calcTextWidth(p, label) + xOffset! * 2;
+    if (minWidth! > 0) minWidth = Utils.convertDpToPixel(minWidth);
+    if (maxWidth! > 0 && maxWidth != double.infinity)
       maxWidth = Utils.convertDpToPixel(maxWidth);
-    width = max(minWidth, min(width, maxWidth > 0.0 ? maxWidth : width));
+    width = max(minWidth!, min(width, maxWidth! > 0.0 ? maxWidth! : width));
     return width;
   }
 
@@ -189,11 +189,11 @@ class YAxis extends AxisBase {
   ///
   /// @param p
   /// @return
-  double getRequiredHeightSpace(TextPainter p) {
+  double getRequiredHeightSpace(TextPainter? p) {
     p = PainterUtils.create(p, null, null, textSize);
 
     String label = getLongestLabel();
-    return Utils.calcTextHeight(p, label) + yOffset * 2;
+    return Utils.calcTextHeight(p, label) + yOffset! * 2;
   }
 
   /// Returns true if this axis needs horizontal offset, false if no offset is needed.
@@ -223,9 +223,9 @@ class YAxis extends AxisBase {
   }
 
   @override
-  void calculate(double dataMin, double dataMax) {
-    double min = dataMin;
-    double max = dataMax;
+  void calculate(double? dataMin, double? dataMax) {
+    double min = dataMin!;
+    double max = dataMax!;
 
     double range = (max - min).abs();
 
@@ -246,6 +246,6 @@ class YAxis extends AxisBase {
         ? this.axisMaximum
         : max + (range / 100) * spacePercentTop;
 
-    this.axisRange = (this.axisMinimum - this.axisMaximum).abs();
+    this.axisRange = (this.axisMinimum! - this.axisMaximum!).abs();
   }
 }

@@ -71,7 +71,7 @@ abstract class ColorUtils {
   static const Color HOLO_ORANGE_DARK = Color(0xffff8800);
 
 // ignore: non_constant_identifier_names
-  static final List<Color> VORDIPLOM_COLORS = List()
+  static final List<Color> VORDIPLOM_COLORS = List.empty(growable: true)
     ..add(Color.fromARGB(255, 192, 255, 140))
     ..add(Color.fromARGB(255, 255, 247, 140))
     ..add(Color.fromARGB(255, 255, 208, 140))
@@ -79,7 +79,7 @@ abstract class ColorUtils {
     ..add(Color.fromARGB(255, 255, 140, 157));
 
 // ignore: non_constant_identifier_names
-  static final List<Color> JOYFUL_COLORS = List()
+  static final List<Color> JOYFUL_COLORS = List.empty(growable: true)
     ..add(Color.fromARGB(255, 217, 80, 138))
     ..add(Color.fromARGB(255, 254, 149, 7))
     ..add(Color.fromARGB(255, 254, 247, 120))
@@ -87,14 +87,14 @@ abstract class ColorUtils {
     ..add(Color.fromARGB(255, 53, 194, 209));
 
 // ignore: non_constant_identifier_names
-  static final List<Color> MATERIAL_COLORS = List()
+  static final List<Color> MATERIAL_COLORS = List.empty(growable: true)
     ..add(Color(0xFF2ecc71))
     ..add(Color(0xFFf1c40f))
     ..add(Color(0xFFe74c3c))
     ..add(Color(0xFF3498db));
 
 // ignore: non_constant_identifier_names
-  static final List<Color> COLORFUL_COLORS = List()
+  static final List<Color> COLORFUL_COLORS = List.empty(growable: true)
     ..add(Color.fromARGB(255, 193, 37, 82))
     ..add(Color.fromARGB(255, 255, 102, 0))
     ..add(Color.fromARGB(255, 245, 199, 0))
@@ -102,7 +102,7 @@ abstract class ColorUtils {
     ..add(Color.fromARGB(255, 179, 100, 53));
 
 // ignore: non_constant_identifier_names
-  static final List<Color> LIBERTY_COLORS = List()
+  static final List<Color> LIBERTY_COLORS = List.empty(growable: true)
     ..add(Color.fromARGB(255, 207, 248, 246))
     ..add(Color.fromARGB(255, 148, 212, 212))
     ..add(Color.fromARGB(255, 136, 180, 187))
@@ -110,7 +110,7 @@ abstract class ColorUtils {
     ..add(Color.fromARGB(255, 42, 109, 130));
 
 // ignore: non_constant_identifier_names
-  static final List<Color> PASTEL_COLORS = List()
+  static final List<Color> PASTEL_COLORS = List.empty(growable: true)
     ..add(Color.fromARGB(255, 64, 89, 128))
     ..add(Color.fromARGB(255, 149, 165, 124))
     ..add(Color.fromARGB(255, 217, 184, 162))

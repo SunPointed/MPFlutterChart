@@ -1,5 +1,5 @@
 import 'package:mp_chart/mp/core/highlight/highlight.dart';
 
 mixin IHighlighter {
-  Highlight getHighlight(double x, double y);
+  Highlight? getHighlight(double x, double y);
 }

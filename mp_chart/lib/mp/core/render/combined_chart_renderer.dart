@@ -1,6 +1,7 @@
 import 'package:flutter/painting.dart';
 import 'package:mp_chart/mp/core/adapter_android_mp.dart';
 import 'package:mp_chart/mp/core/animator.dart';
+import 'package:mp_chart/mp/core/data/bar_line_scatter_candle_bubble_data.dart';
 import 'package:mp_chart/mp/core/data/chart_data.dart';
 import 'package:mp_chart/mp/core/data/combined_data.dart';
 import 'package:mp_chart/mp/core/highlight/highlight.dart';
@@ -16,12 +17,12 @@ import 'package:mp_chart/mp/painter/painter.dart';
 
 class CombinedChartRenderer extends DataRenderer {
   /// all rederers for the different kinds of data this combined-renderer can draw
-  List<DataRenderer> _renderers = List<DataRenderer>();
+  List<DataRenderer> _renderers = List<DataRenderer>.empty(growable: true);
 
-  ChartPainter _painter;
+  ChartPainter? _painter;
 
-  CombinedChartRenderer(CombinedChartPainter chart, Animator animator,
-      ViewPortHandler viewPortHandler)
+  CombinedChartRenderer(CombinedChartPainter chart, Animator? animator,
+      ViewPortHandler? viewPortHandler)
       : super(animator, viewPortHandler) {
     _painter = chart;
     createRenderers();
@@ -32,10 +33,10 @@ class CombinedChartRenderer extends DataRenderer {
   void createRenderers() {
     _renderers.clear();
 
-    CombinedChartPainter chart = (_painter as CombinedChartPainter);
+    CombinedChartPainter? chart = (_painter as CombinedChartPainter?);
     if (chart == null) return;
 
-    List<DrawOrder> orders = chart.getDrawOrder();
+    List<DrawOrder> orders = chart.getDrawOrder()!;
 
     for (DrawOrder order in orders) {
       switch (order) {
@@ -90,34 +91,34 @@ class CombinedChartRenderer extends DataRenderer {
     for (DataRenderer renderer in _renderers) renderer.drawExtras(c);
   }
 
-  List<Highlight> mHighlightBuffer = List<Highlight>();
+  List<Highlight> mHighlightBuffer = List<Highlight>.empty(growable: true);
 
   @override
-  void drawHighlighted(Canvas c, List<Highlight> indices) {
-    ChartPainter chart = _painter;
+  void drawHighlighted(Canvas c, List<Highlight>? indices) {
+    ChartPainter? chart = _painter;
     if (chart == null) return;
 
     for (DataRenderer renderer in _renderers) {
-      ChartData data;
+      ChartData? data;
 
       if (renderer is BarChartRenderer)
-        data = renderer.provider.getBarData();
+        data = renderer.provider!.getBarData();
       else if (renderer is LineChartRenderer)
-        data = renderer.provider.getLineData();
+        data = renderer.provider!.getLineData();
       else if (renderer is CandleStickChartRenderer)
-        data = renderer.porvider.getCandleData();
+        data = renderer.porvider!.getCandleData();
       else if (renderer is ScatterChartRenderer)
-        data = renderer.provider.getScatterData();
+        data = renderer.provider!.getScatterData();
       else if (renderer is BubbleChartRenderer)
-        data = renderer.provider.getBubbleData();
+        data = renderer.provider!.getBubbleData();
 
       int dataIndex = data == null
           ? -1
-          : (chart.getData() as CombinedData).getAllData().indexOf(data);
+          : (chart.getData() as CombinedData).getAllData().indexOf(data as BarLineScatterCandleBubbleData);
 
       mHighlightBuffer.clear();
 
-      for (Highlight h in indices) {
+      for (Highlight h in indices!) {
         if (h.dataIndex == dataIndex || h.dataIndex == -1)
           mHighlightBuffer.add(h);
       }
@@ -130,7 +131,7 @@ class CombinedChartRenderer extends DataRenderer {
   ///
   /// @param index
   /// @return
-  DataRenderer getSubRenderer(int index) {
+  DataRenderer? getSubRenderer(int index) {
     if (index >= _renderers.length || index < 0)
       return null;
     else

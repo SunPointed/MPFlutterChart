@@ -22,7 +22,7 @@ abstract class Utils {
   static void drawXAxisValue(
       Canvas c,
       String text,
-      double x,
+      double? x,
       double y,
       TextPainter paint,
       MPPointF anchor,
@@ -35,14 +35,14 @@ abstract class Utils {
     paint.textAlign = TextAlign.left;
 
     if (angleDegrees != 0) {
-      double translateX = x;
+      double translateX = x!;
       double translateY = y;
 
       c.save();
       c.translate(translateX, translateY);
       c.rotate(angleDegrees);
 
-      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.text = TextSpan(text: text, style: paint.text!.style);
       paint.layout();
       switch (position) {
         case XAxisPosition.BOTTOM:
@@ -63,10 +63,10 @@ abstract class Utils {
 
       c.restore();
     } else {
-      drawOffsetX += x;
+      drawOffsetX += x!;
       drawOffsetY += y;
 
-      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.text = TextSpan(text: text, style: paint.text!.style);
       paint.layout();
       switch (position) {
         case XAxisPosition.BOTTOM:
@@ -98,7 +98,7 @@ abstract class Utils {
   static void drawRadarXAxisValue(
       Canvas c,
       String text,
-      double x,
+      double? x,
       double y,
       TextPainter paint,
       MPPointF anchor,
@@ -109,14 +109,14 @@ abstract class Utils {
     double drawOffsetX = 0;
     double drawOffsetY = 0;
     if (angleDegrees != 0) {
-      double translateX = x;
+      double translateX = x!;
       double translateY = y;
 
       c.save();
       c.translate(translateX, translateY);
       c.rotate(angleDegrees);
 
-      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.text = TextSpan(text: text, style: paint.text!.style);
       paint.layout();
       switch (position) {
         case XAxisPosition.BOTTOM:
@@ -137,10 +137,10 @@ abstract class Utils {
 
       c.restore();
     } else {
-      drawOffsetX += x;
+      drawOffsetX += x!;
       drawOffsetY += y;
 
-      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.text = TextSpan(text: text, style: paint.text!.style);
       paint.layout();
       paint.paint(c, Offset(drawOffsetX - paint.width / 2, drawOffsetY));
     }
@@ -151,7 +151,7 @@ abstract class Utils {
       Canvas c,
       String text,
       double x,
-      double y,
+      double? y,
       TextPainter paint,
       MPPointF anchor,
       double angleDegrees,
@@ -164,13 +164,13 @@ abstract class Utils {
 
     if (angleDegrees != 0) {
       double translateX = x;
-      double translateY = y;
+      double translateY = y!;
 
       c.save();
       c.translate(translateX, translateY);
       c.rotate(angleDegrees);
 
-      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.text = TextSpan(text: text, style: paint.text!.style);
       paint.layout();
       switch (position) {
         case XAxisPosition.BOTTOM:
@@ -192,9 +192,9 @@ abstract class Utils {
       c.restore();
     } else {
       drawOffsetX += x;
-      drawOffsetY += y;
+      drawOffsetY += y!;
 
-      paint.text = TextSpan(text: text, style: paint.text.style);
+      paint.text = TextSpan(text: text, style: paint.text!.style);
       paint.layout();
       switch (position) {
         case XAxisPosition.BOTTOM:
@@ -256,7 +256,7 @@ abstract class Utils {
 
   static void calcTextSize4(
       TextPainter paint, String demoText, FSize outputFSize) {
-    paint.text = TextSpan(text: demoText, style: paint.text.style);
+    paint.text = TextSpan(text: demoText, style: paint.text!.style);
     paint.layout();
     outputFSize.width = paint.width;
     outputFSize.height = paint.height;
@@ -309,16 +309,16 @@ abstract class Utils {
     return ScreenUtils.getInstance().getSp(dp);
   }
 
-  static int calcTextWidth(TextPainter p, String demoText) {
+  static int calcTextWidth(TextPainter p, String? demoText) {
     TextPainter painter = PainterUtils.create(
-        p, demoText, p.text.style.color, p.text.style.fontSize);
+        p, demoText, p.text!.style!.color, p.text!.style!.fontSize);
     painter.layout();
     return painter.width.toInt();
   }
 
   static int calcTextHeight(TextPainter p, String demoText) {
     TextPainter painter = PainterUtils.create(
-        p, demoText, p.text.style.color, p.text.style.fontSize);
+        p, demoText, p.text!.style!.color, p.text!.style!.fontSize);
     painter.layout();
     return painter.height.toInt();
   }
@@ -331,7 +331,7 @@ abstract class Utils {
 
   static void calcTextSize2(TextPainter p, String demoText, FSize outputFSize) {
     TextPainter painter = PainterUtils.create(
-        p, demoText, p.text.style.color, p.text.style.fontSize);
+        p, demoText, p.text!.style!.color, p.text!.style!.fontSize);
     painter.layout();
     outputFSize.width = painter.width;
     outputFSize.height = painter.height;
@@ -369,7 +369,7 @@ abstract class Utils {
     final double d =
         (log(number < 0 ? -number : number) / ln10).ceil().toDouble();
     final int pw = 1 - d.toInt();
-    final double magnitude = pow(10.0, pw);
+    final double magnitude = pow(10.0, pw) as double;
     final int shifted = (number * magnitude).round();
     return shifted / magnitude;
   }
@@ -382,8 +382,8 @@ abstract class Utils {
 
   static void getPosition(
       MPPointF center, double dist, double angle, MPPointF outputPoint) {
-    outputPoint.x = (center.x + dist * cos((angle / 180 * pi)));
-    outputPoint.y = (center.y + dist * sin((angle / 180 * pi)));
+    outputPoint.x = (center.x! + dist * cos((angle / 180 * pi)));
+    outputPoint.y = (center.y! + dist * sin((angle / 180 * pi)));
   }
 
   static double optimizeScale(double scale) {
@@ -395,7 +395,7 @@ abstract class Utils {
 
   static MPPointF local2Chart(Controller controller, double x, double y,
       {bool inverted = false}) {
-    ViewPortHandler vph = controller.painter.viewPortHandler;
+    ViewPortHandler vph = controller.painter!.viewPortHandler!;
 
     double xTrans = x - vph.offsetLeft();
     double yTrans = 0.0;
@@ -405,7 +405,7 @@ abstract class Utils {
       yTrans = -(y - vph.offsetTop());
     } else {
       yTrans =
-          -(controller.painter.getMeasuredHeight() - y - vph.offsetBottom());
+          -(controller.painter!.getMeasuredHeight() - y - vph.offsetBottom());
     }
 
     return MPPointF.getInstance1(xTrans, yTrans);

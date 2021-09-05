@@ -13,19 +13,19 @@ import 'package:mp_chart/mp/core/utils/utils.dart';
 
 abstract class DataRenderer extends Renderer {
   /// the animator object used to perform animations on the chart data
-  Animator _animator;
+  Animator? _animator;
 
   /// main paint object used for rendering
-  Paint _renderPaint;
+  Paint? _renderPaint;
 
   /// paint used for highlighting values
-  Paint _highlightPaint;
+  Paint? _highlightPaint;
 
-  Paint _drawPaint;
+  Paint? _drawPaint;
 
-  TextPainter _valuePaint;
+  TextPainter? _valuePaint;
 
-  DataRenderer(Animator animator, ViewPortHandler viewPortHandler)
+  DataRenderer(Animator? animator, ViewPortHandler? viewPortHandler)
       : super(viewPortHandler) {
     this._animator = animator;
 
@@ -46,29 +46,29 @@ abstract class DataRenderer extends Renderer {
   }
 
   bool isDrawingValuesAllowed(ChartInterface chart) {
-    return chart.getData().getEntryCount() <
-        chart.getMaxVisibleCount() * viewPortHandler.getScaleX();
+    return chart.getData()!.getEntryCount() <
+        chart.getMaxVisibleCount() * viewPortHandler!.getScaleX();
   }
 
   // ignore: unnecessary_getters_setters
-  TextPainter get valuePaint => _valuePaint;
+  TextPainter? get valuePaint => _valuePaint;
 
   // ignore: unnecessary_getters_setters
-  set valuePaint(TextPainter value) {
+  set valuePaint(TextPainter? value) {
     _valuePaint = value;
   }
 
   // ignore: unnecessary_getters_setters
-  Paint get highlightPaint => _highlightPaint;
+  Paint? get highlightPaint => _highlightPaint;
 
-  Paint get renderPaint => _renderPaint;
+  Paint? get renderPaint => _renderPaint;
 
-  Animator get animator => _animator;
+  Animator? get animator => _animator;
 
-  Paint get drawPaint => _drawPaint;
+  Paint? get drawPaint => _drawPaint;
 
   // ignore: unnecessary_getters_setters
-  set highlightPaint(Paint value) {
+  set highlightPaint(Paint? value) {
     _highlightPaint = value;
   }
 
@@ -116,5 +116,5 @@ abstract class DataRenderer extends Renderer {
   ///
   /// @param c
   /// @param indices the highlighted values
-  void drawHighlighted(Canvas c, List<Highlight> indices);
+  void drawHighlighted(Canvas c, List<Highlight>? indices);
 }

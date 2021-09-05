@@ -14,9 +14,9 @@ mixin ILineScatterCandleRadarDataSet<T extends Entry>
 
   /// Returns the line-width in which highlight lines are to be drawn.
   /// @return
-  double getHighlightLineWidth();
+  double? getHighlightLineWidth();
 
   /// Returns the DashPathEffect that is used for highlighting.
   /// @return
-  DashPathEffect getDashPathEffectHighlight();
+  DashPathEffect? getDashPathEffectHighlight();
 }

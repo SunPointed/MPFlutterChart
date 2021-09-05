@@ -10,7 +10,7 @@ abstract class Chart<C extends Controller> extends StatefulWidget {
 
   @override
   State createState() {
-    return controller.createChartState();
+    return controller.createChartState()!;
   }
 
   const Chart(this.controller);
@@ -33,7 +33,7 @@ abstract class ChartState<T extends Chart> extends State<T> {
     isCapturing = true;
 
     _screenshotController.capture(pixelRatio: 3.0).then((imgFile) {
-      ImageGallerySaver.saveImage(imgFile);
+      ImageGallerySaver.saveImage(imgFile!);
       isCapturing = false;
     }).catchError((error) {
       isCapturing = false;

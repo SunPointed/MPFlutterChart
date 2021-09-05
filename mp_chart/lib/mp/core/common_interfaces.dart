@@ -63,7 +63,7 @@ mixin OnChartValueSelectedListener {
   /// @param e The selected Entry
   /// @param h The corresponding highlight object that contains information
   ///          about the highlighted position such as dataSetIndex, ...
-  void onValueSelected(Entry e, Highlight h);
+  void onValueSelected(Entry? e, Highlight? h);
 
   /// Called when nothing has been selected or an "un-select" has been made.
   void onNothingSelected();
@@ -72,5 +72,5 @@ mixin OnChartValueSelectedListener {
 mixin AnimatorUpdateListener {
   void onAnimationUpdate(double x, double y);
 
-  void onRotateUpdate(double angle);
+  void onRotateUpdate(double? angle);
 }

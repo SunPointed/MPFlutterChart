@@ -21,7 +21,7 @@ mixin ICandleDataSet implements ILineScatterCandleRadarDataSet<CandleEntry> {
   /// Returns the width of the candle-shadow-line in pixels.
   ///
   /// @return
-  double getShadowWidth();
+  double? getShadowWidth();
 
   /// Returns shadow color for all entries
   ///

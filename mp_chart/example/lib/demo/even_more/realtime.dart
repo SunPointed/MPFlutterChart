@@ -115,7 +115,7 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
         },
         xAxisSettingFunction: (xAxis, controller) {
           xAxis
-            ..typeface = Util.LIGHT
+            ..typeface = Util.EXTRA_BOLD
             ..textColor = ColorUtils.WHITE
             ..drawGridLines = true
             ..avoidFirstLastClipping = true
@@ -124,7 +124,7 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
         axisLeftSettingFunction: (axisLeft, controller) {
           axisLeft
             ..typeface = Util.LIGHT
-            ..textColor = ColorUtils.WHITE
+            ..textColor = ColorUtils.BLUE
             ..axisMaximum = 100.0
             ..axisMinimum = 0.0
             ..drawGridLines = true;
@@ -136,10 +136,10 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
         dragXEnabled: true,
         dragYEnabled: true,
         scaleXEnabled: true,
-        scaleYEnabled: true,
+        scaleYEnabled: false,
         backgroundColor: ColorUtils.LTGRAY,
         selectionListener: this,
-        pinchZoomEnabled: true,
+        pinchZoomEnabled: false,
         description: desc);
 
     LineData data = controller?.data;
@@ -244,11 +244,12 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
 
   LineDataSet _createSet() {
     LineDataSet set = LineDataSet(null, "Dynamic Data");
+    set.setDrawCircles(true);
     set.setAxisDependency(AxisDependency.LEFT);
     set.setColor1(ColorUtils.getHoloBlue());
     set.setCircleColor(ColorUtils.WHITE);
     set.setLineWidth(2.0);
-    set.setCircleRadius(4.0);
+    set.setCircleRadius(14.0);
     set.setFillAlpha(65);
     set.setFillColor(ColorUtils.getHoloBlue());
     set.setHighLightColor(Color.fromARGB(255, 244, 117, 117));

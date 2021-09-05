@@ -8,19 +8,19 @@ import 'package:mp_chart/mp/core/view_port.dart';
 
 abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
   /// buffer for storing the current minimum and maximum visible x
-  XBounds _xBounds;
+  XBounds? _xBounds;
 
   BarLineScatterCandleBubbleRenderer(
-      Animator animator, ViewPortHandler viewPortHandler)
+      Animator? animator, ViewPortHandler? viewPortHandler)
       : super(animator, viewPortHandler) {
     _xBounds = XBounds(this.animator);
   }
 
   // ignore: unnecessary_getters_setters
-  XBounds get xBounds => _xBounds;
+  XBounds? get xBounds => _xBounds;
 
   // ignore: unnecessary_getters_setters
-  set xBounds(XBounds value) {
+  set xBounds(XBounds? value) {
     _xBounds = value;
   }
 
@@ -38,12 +38,12 @@ abstract class BarLineScatterCandleBubbleRenderer extends DataRenderer {
   /// @param e
   /// @param set
   /// @return
-  bool isInBoundsX(Entry e, IBarLineScatterCandleBubbleDataSet set) {
+  bool isInBoundsX(Entry? e, IBarLineScatterCandleBubbleDataSet set) {
     if (e == null) return false;
 
     double entryIndex = set.getEntryIndex2(e).toDouble();
 
-    if (e == null || entryIndex >= set.getEntryCount() * animator.getPhaseX()) {
+    if (e == null || entryIndex >= set.getEntryCount() * animator!.getPhaseX()) {
       return false;
     } else {
       return true;

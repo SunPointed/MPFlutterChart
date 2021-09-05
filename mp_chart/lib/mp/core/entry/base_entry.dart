@@ -5,30 +5,30 @@ abstract class BaseEntry {
   double _y = 0;
 
   /// optional spot for additional data this Entry represents
-  Object _data;
+  Object? _data;
 
   /// optional icon image
-  ui.Image _icon;
+  ui.Image? _icon;
 
-  BaseEntry({double y, ui.Image icon, Object data}) {
+  BaseEntry({required double y, ui.Image? icon, Object? data}) {
     this._y = y;
     this._icon = icon;
     this._data = data;
   }
 
   // ignore: unnecessary_getters_setters
-  ui.Image get mIcon => _icon;
+  ui.Image? get mIcon => _icon;
 
   // ignore: unnecessary_getters_setters
-  set mIcon(ui.Image value) {
+  set mIcon(ui.Image? value) {
     _icon = value;
   }
 
   // ignore: unnecessary_getters_setters
-  Object get mData => _data;
+  Object? get mData => _data;
 
   // ignore: unnecessary_getters_setters
-  set mData(Object value) {
+  set mData(Object? value) {
     _data = value;
   }
 
