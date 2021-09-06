@@ -112,7 +112,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
     _barBorderPaint?..color = dataSet.getBarBorderColor();
     _barBorderPaint
-      ?..strokeWidth = Utils.convertDpToPixel(dataSet.getBarBorderWidth())!;
+      ?..strokeWidth = Utils.convertDpToPixel(dataSet.getBarBorderWidth());
 
     final bool drawBorder = dataSet.getBarBorderWidth() > 0.0;
 
@@ -139,7 +139,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
         x = e.x;
 
         _barShadowRectBuffer =
-            Rect.fromLTRB(x! - barWidthHalf, 0.0, x + barWidthHalf, 0.0);
+            Rect.fromLTRB(x - barWidthHalf, 0.0, x + barWidthHalf, 0.0);
 
         trans!.rectValueToPixel(_barShadowRectBuffer);
 
@@ -255,7 +255,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
       bool drawValueAboveBar = _provider!.isDrawValueAboveBarEnabled();
 
       for (int i = 0; i < _provider!.getBarData()!.getDataSetCount(); i++) {
-        IBarDataSet dataSet = dataSets![i];
+        IBarDataSet dataSet = dataSets[i];
 
         if (!shouldDrawValues(dataSet)) continue;
 
@@ -304,14 +304,14 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                 !viewPortHandler!.isInBoundsLeft(x)) continue;
 
             BarEntry entry = dataSet.getEntryForIndex(j ~/ 4)!;
-            double? val = entry.y;
+            double val = entry.y;
 
             if (dataSet.isDrawValuesEnabled()) {
               drawValue(
                   c,
                   formatter!.getBarLabel(entry),
                   x,
-                  val! >= 0
+                  val >= 0
                       ? (buffer.buffer![j + 1]! + posOffset)
                       : (buffer.buffer![j + 3]! + negOffset),
                   dataSet.getValueTextColor2(j ~/ 4),
@@ -321,12 +321,12 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
             if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
               double px = x;
-              double py = val! >= 0
+              double py = val >= 0
                   ? (buffer.buffer![j + 1]! + posOffset)
                   : (buffer.buffer![j + 3]! + negOffset);
 
-              px += iconsOffset.x!;
-              py += iconsOffset.y!;
+              px += iconsOffset.x;
+              py += iconsOffset.y;
 
               if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
                 CanvasUtils.drawImage(
@@ -368,7 +368,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                     formatter!.getBarLabel(entry),
                     x,
                     buffer.buffer![bufferIndex + 1]! +
-                        (entry.y! >= 0 ? posOffset : negOffset),
+                        (entry.y >= 0 ? posOffset : negOffset),
                     color,
                     dataSet.getValueTextSize(),
                     dataSet.getValueTypeface());
@@ -377,10 +377,10 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
               if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
                 double px = x;
                 double py = buffer.buffer![bufferIndex + 1]! +
-                    (entry.y! >= 0 ? posOffset : negOffset);
+                    (entry.y >= 0 ? posOffset : negOffset);
 
-                px += iconsOffset.x!;
-                py += iconsOffset.y!;
+                px += iconsOffset.x;
+                py += iconsOffset.y;
 
                 if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
                   CanvasUtils.drawImage(
@@ -441,7 +441,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                 if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
                   CanvasUtils.drawImage(
                       c,
-                      Offset(x + iconsOffset.x!, y + iconsOffset.y!),
+                      Offset(x + iconsOffset.x, y + iconsOffset.y),
                       entry.mIcon!,
                       Size(15, 15),
                       drawPaint!);
@@ -509,7 +509,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
         y2 = 0.0;
       }
 
-      prepareBarHighlight(e.x!, y1!, y2, barData.barWidth / 2.0, trans);
+      prepareBarHighlight(e.x, y1!, y2, barData.barWidth / 2.0, trans);
 
       setHighlightDrawPos(high, _barRect);
       c.drawRect(_barRect, highlightPaint!);

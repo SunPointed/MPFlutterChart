@@ -159,7 +159,7 @@ class ChartAnimator extends Animator {
         }
         durationMillis -= REFRESH_RATE;
       }
-      listener?.onRotateUpdate(angle);
+      listener.onRotateUpdate(angle);
     });
   }
 
@@ -184,7 +184,7 @@ class ChartAnimator extends Animator {
         }
         durationMillis -= REFRESH_RATE;
       }
-      listener?.onAnimationUpdate(phaseX, phaseY);
+      listener.onAnimationUpdate(phaseX, phaseY);
     });
   }
 
@@ -223,7 +223,7 @@ class ChartAnimator extends Animator {
         durationMillisX -= REFRESH_RATE;
         durationMillisY -= REFRESH_RATE;
       }
-      listener?.onAnimationUpdate(phaseX, phaseY);
+      listener.onAnimationUpdate(phaseX, phaseY);
     });
   }
 
@@ -262,7 +262,7 @@ class ChartAnimator extends Animator {
         durationMillisX -= REFRESH_RATE;
         durationMillisY -= REFRESH_RATE;
       }
-      listener?.onAnimationUpdate(phaseX, phaseY);
+      listener.onAnimationUpdate(phaseX, phaseY);
     });
   }
 
@@ -287,7 +287,7 @@ class ChartAnimator extends Animator {
         }
         durationMillis -= REFRESH_RATE;
       }
-      listener?.onAnimationUpdate(phaseX, phaseY);
+      listener.onAnimationUpdate(phaseX, phaseY);
     });
   }
 }
@@ -326,7 +326,7 @@ class ChartAnimatorBySys extends Animator {
             if (phaseX >= MAX) {
               phaseX = MAX;
             }
-            this.listener?.onAnimationUpdate(phaseX, phaseY);
+            this.listener.onAnimationUpdate(phaseX, phaseY);
           }
           break;
         case ANIMATE_Y:
@@ -335,7 +335,7 @@ class ChartAnimatorBySys extends Animator {
             if (phaseY >= MAX) {
               phaseY = MAX;
             }
-            this.listener?.onAnimationUpdate(phaseX, phaseY);
+            this.listener.onAnimationUpdate(phaseX, phaseY);
           }
           break;
         case ANIMATE_XY:
@@ -365,7 +365,7 @@ class ChartAnimatorBySys extends Animator {
                 phaseX = easingFunction_1.getInterpolation(percentMin);
               }
             }
-            this.listener?.onAnimationUpdate(phaseX, phaseY);
+            this.listener.onAnimationUpdate(phaseX, phaseY);
           }
           break;
         case ANIMATE_SPIN:
@@ -376,7 +376,7 @@ class ChartAnimatorBySys extends Animator {
             if (angle! >= toAngle!) {
               angle = toAngle;
             }
-            this.listener?.onRotateUpdate(angle);
+            this.listener.onRotateUpdate(angle);
           }
           break;
         default:

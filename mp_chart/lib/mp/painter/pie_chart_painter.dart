@@ -223,8 +223,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData?> {
 
     // create the circle box that will contain the pie-chart (the bounds of
     // the pie-chart)
-    _circleBox = Rect.fromLTRB(c.x! - radius + shift, c.y! - radius + shift,
-        c.x! + radius - shift, c.y! + radius - shift);
+    _circleBox = Rect.fromLTRB(c.x - radius + shift, c.y - radius + shift,
+        c.x + radius - shift, c.y + radius - shift);
 
     MPPointF.recycleInstance(c);
   }
@@ -260,13 +260,13 @@ class PieChartPainter extends PieRadarChartPainter<PieData?> {
                     animator!.getPhaseY()) /
                 180 *
                 pi) +
-        center.x!);
+        center.x);
     double y = (r *
             sin((rotationAngle + _absoluteAngles[entryIndex]! - offset) *
                 animator!.getPhaseY() /
                 180 *
                 pi) +
-        center.y!);
+        center.y);
 
     MPPointF.recycleInstance(center);
     return List.empty(growable: true)..add(x)..add(y);
@@ -308,7 +308,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData?> {
 
       for (int j = 0; j < set.getEntryCount(); j++) {
         double drawAngle =
-            calcAngle2(set.getEntryForIndex(j)!.y!.abs(), yValueSum);
+            calcAngle2(set.getEntryForIndex(j)!.y.abs(), yValueSum);
 
         if (hasMinAngle) {
           double temp = drawAngle - _minAngleForSlices;
@@ -337,11 +337,11 @@ class PieChartPainter extends PieRadarChartPainter<PieData?> {
       // Correct bigger slices by relatively reducing their angles based on the total angle needed to subtract
       // This requires that `entryCount * _minAngleForSlices <= _maxAngle` be true to properly work!
       for (int i = 0; i < entryCount; i++) {
-        minAngles[i] -= (minAngles[i]! - _minAngleForSlices) / diff * offset;
+        minAngles[i] -= (minAngles[i] - _minAngleForSlices) / diff * offset;
         if (i == 0) {
           _absoluteAngles[0] = minAngles[0];
         } else {
-          _absoluteAngles[i] = _absoluteAngles[i - 1]! + minAngles[i]!;
+          _absoluteAngles[i] = _absoluteAngles[i - 1]! + minAngles[i];
         }
       }
 

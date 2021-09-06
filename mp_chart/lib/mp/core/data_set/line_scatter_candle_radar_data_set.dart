@@ -117,6 +117,7 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
   /// and Cur's x value(Cur: Entry at index).
   @override
   bool addEntryByIndex(int index, T? e) {
+    // TODO : should be optional? T?e
     if(index < 0 || index > getEntryCount()){
       return false;
     }
@@ -128,18 +129,18 @@ abstract class LineScatterCandleRadarDataSet<T extends Entry>
 
     if(index == 0){
       T cur = valueDatas![index]!;
-      if (e!.x! >= cur.x!) {
+      if (e!.x >= cur.x) {
         return false;
       }
     } else if(index == getEntryCount()){
       T pre = valueDatas![index - 1]!;
-      if(e!.x! <= pre.x!){
+      if(e!.x <= pre.x){
         return false;
       }
     }else {
       T cur = valueDatas![index]!;
       var pre = valueDatas[index - 1];
-      if (e!.x! >= cur.x! || e.x! <= pre!.x!) {
+      if (e!.x >= cur.x || e.x <= pre!.x) {
         return false;
       }
     }

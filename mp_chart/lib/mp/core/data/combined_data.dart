@@ -46,10 +46,8 @@ class CombinedData extends BarLineScatterCandleBubbleData<
 
   @override
   void calcMinMax1() {
-    if (dataSets == null) {
-      dataSets = List.empty(growable: true);
-    }
-    dataSets!.clear();
+
+    dataSets.clear();
 
     yMax = -double.infinity;
     yMin = double.infinity;
@@ -67,7 +65,7 @@ class CombinedData extends BarLineScatterCandleBubbleData<
       data!.calcMinMax1();
 
       List<IBarLineScatterCandleBubbleDataSet<Entry>> sets = data.dataSets as List<IBarLineScatterCandleBubbleDataSet<Entry>>;
-      dataSets!.addAll(sets);
+      dataSets.addAll(sets);
 
       if (data.getYMax1()! > yMax!) yMax = data.getYMax1();
 
@@ -175,7 +173,7 @@ class CombinedData extends BarLineScatterCandleBubbleData<
 
     if (highlight.dataSetIndex! >= data.getDataSetCount()) return null;
 
-    return data.dataSets![highlight.dataSetIndex!];
+    return data.dataSets[highlight.dataSetIndex!];
   }
 
   int getDataIndex(ChartData data) {
@@ -184,14 +182,15 @@ class CombinedData extends BarLineScatterCandleBubbleData<
 
   @override
   bool removeDataSet1(IBarLineScatterCandleBubbleDataSet<Entry> d) {
+    // TODO fix that
     List<BarLineScatterCandleBubbleData?> datas = getAllData();
     bool success = false;
     for (ChartData? data in datas) {
-      if (data!.dataSets == null || data.dataSets!.length == 0) {
+      if (data?.dataSets == null || data!.dataSets.length == 0) {
         continue;
       }
 
-      if (d.runtimeType != data.dataSets![0].runtimeType) {
+      if (d.runtimeType != data.dataSets[0].runtimeType) {
         continue;
       }
 

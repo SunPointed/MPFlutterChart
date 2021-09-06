@@ -168,8 +168,8 @@ class YAxisRendererRadarChart extends YAxisRenderer {
       axisLabelPaint!.layout();
       axisLabelPaint!.paint(
           c,
-          Offset(pOut.x! + 10 - axisLabelPaint!.width,
-              pOut.y! - axisLabelPaint!.height));
+          Offset(pOut.x + 10 - axisLabelPaint!.width,
+              pOut.y - axisLabelPaint!.height));
     }
     MPPointF.recycleInstance(center);
     MPPointF.recycleInstance(pOut);
@@ -213,9 +213,9 @@ class YAxisRendererRadarChart extends YAxisRenderer {
             center, r, sliceangle * j + _painter!.getRotationAngle(), pOut);
 
         if (j == 0)
-          limitPath.moveTo(pOut.x!, pOut.y!);
+          limitPath.moveTo(pOut.x, pOut.y);
         else
-          limitPath.lineTo(pOut.x!, pOut.y!);
+          limitPath.lineTo(pOut.x, pOut.y);
       }
       limitPath.close();
 

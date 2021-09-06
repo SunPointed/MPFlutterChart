@@ -40,7 +40,7 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
   void drawData(Canvas c) {
     CandleData candleData = _porvider!.getCandleData()!;
 
-    for (ICandleDataSet set in candleData.dataSets!) {
+    for (ICandleDataSet set in candleData.dataSets) {
       if (set.isVisible()) drawDataSet(c, set);
     }
   }
@@ -227,7 +227,7 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
   void drawValues(Canvas c) {
     // if values are drawn
     if (isDrawingValuesAllowed(_porvider!)) {
-      List<ICandleDataSet> dataSets = _porvider!.getCandleData()!.dataSets!;
+      List<ICandleDataSet> dataSets = _porvider!.getCandleData()!.dataSets;
 
       for (int i = 0; i < dataSets.length; i++) {
         ICandleDataSet dataSet = dataSets[i];
@@ -273,7 +273,7 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
                 c,
                 formatter!.getCandleLabel(entry),
                 x!,
-                y! - yOffset!,
+                y! - yOffset,
                 dataSet.getValueTextColor2(j ~/ 2),
                 dataSet.getValueTextSize(),
                 dataSet.getValueTypeface());
@@ -282,7 +282,7 @@ class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
           if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
             CanvasUtils.drawImage(
                 c,
-                Offset(x! + iconsOffset.x!, y! + iconsOffset.y!),
+                Offset(x! + iconsOffset.x, y! + iconsOffset.y),
                 entry.mIcon!,
                 Size(15, 15),
                 drawPaint!);

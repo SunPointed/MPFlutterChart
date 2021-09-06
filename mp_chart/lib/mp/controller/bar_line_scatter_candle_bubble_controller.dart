@@ -185,7 +185,7 @@ abstract class BarLineScatterCandleBubbleController<
     borderPaint = Paint()
       ..color = borderColor == null ? ColorUtils.BLACK : borderColor!
       ..style = PaintingStyle.stroke
-      ..strokeWidth = Utils.convertDpToPixel(borderStrokeWidth)!;
+      ..strokeWidth = Utils.convertDpToPixel(borderStrokeWidth);
 
     backgroundPaint = Paint()
       ..color = backgroundColor == null ? ColorUtils.WHITE : backgroundColor!;
@@ -296,8 +296,8 @@ abstract class BarLineScatterCandleBubbleController<
     double? xOrigin = bounds.x;
     double? yOrigin = bounds.y;
     ChartAnimator(UpdateListener((x, y) {
-      pts[0] = xOrigin! + (xValue - xOrigin) * x;
-      pts[1] = yOrigin! + (yValue - yOrigin) * y;
+      pts[0] = xOrigin + (xValue - xOrigin) * x;
+      pts[1] = yOrigin + (yValue - yOrigin) * y;
       painter?.getTransformer(axis)?.pointValuesToPixel(pts);
       viewPortHandler!.centerViewPort(pts);
       state?.setStateIfNotDispose();
@@ -359,8 +359,8 @@ abstract class BarLineScatterCandleBubbleController<
     double? xOrigin = bounds.x;
     double? yOrigin = bounds.y;
     ChartAnimator(UpdateListener((x, y) {
-      pts[0] = xOrigin! + (xValue - xOrigin) * x;
-      pts[1] = yOrigin! + (yValue - yOrigin) * y;
+      pts[0] = xOrigin + (xValue - xOrigin) * x;
+      pts[1] = yOrigin + (yValue - yOrigin) * y;
       painter?.getTransformer(axis)?.pointValuesToPixel(pts);
       viewPortHandler!.centerViewPort(pts);
       state?.setStateIfNotDispose();
@@ -478,8 +478,8 @@ abstract class BarLineScatterCandleBubbleController<
 
       double timeInterval = (currentTime - _decelerationLastTime) / 1000;
 
-      double distanceX = _decelerationVelocity.x! * timeInterval;
-      double distanceY = _decelerationVelocity.y! * timeInterval;
+      double distanceX = _decelerationVelocity.x * timeInterval;
+      double distanceY = _decelerationVelocity.y * timeInterval;
 
       double dragDistanceX = dragXEnabled ? distanceX : 0;
       double dragDistanceY = dragYEnabled ? distanceY : 0;
@@ -489,8 +489,8 @@ abstract class BarLineScatterCandleBubbleController<
       _decelerationLastTime = currentTime;
     }
 
-    if (_decelerationVelocity.x!.abs() >= 20 ||
-        _decelerationVelocity.y!.abs() >= 20) {
+    if (_decelerationVelocity.x.abs() >= 20 ||
+        _decelerationVelocity.y.abs() >= 20) {
       state!.setStateIfNotDispose();
       Future.delayed(Duration(milliseconds: 16), () {
         computeScroll();

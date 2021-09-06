@@ -382,8 +382,8 @@ abstract class Utils {
 
   static void getPosition(
       MPPointF center, double dist, double angle, MPPointF outputPoint) {
-    outputPoint.x = (center.x! + dist * cos((angle / 180 * pi)));
-    outputPoint.y = (center.y! + dist * sin((angle / 180 * pi)));
+    outputPoint.x = (center.x + dist * cos((angle / 180 * pi)));
+    outputPoint.y = (center.y + dist * sin((angle / 180 * pi)));
   }
 
   static double optimizeScale(double scale) {

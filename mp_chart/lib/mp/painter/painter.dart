@@ -165,7 +165,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>?>
         _selectionListener = selectedListener,
         super() {
     initDefaultNormal();
-    if (data == null || data.dataSets == null || data.dataSets!.length == 0) {
+    if (data == null || data.dataSets.length == 0) {
       return;
     }
     initDefaultWithData();
@@ -180,7 +180,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>?>
     // calculate how many digits are needed
     _setupDefaultFormatter(_data?.getYMin1(), _data?.getYMax1());
 
-    for (IDataSet set in _data!.dataSets!) {
+    for (IDataSet set in _data!.dataSets) {
       if (set.needsFormatter() ||
           set.getValueFormatter() == _defaultValueFormatter)
         set.setValueFormatter(_defaultValueFormatter);
@@ -235,7 +235,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>?>
       MPPointF c = getCenter(size);
       _infoPaint!.layout();
       _infoPaint!.paint(canvas,
-          Offset(c.x! - _infoPaint!.width / 2, c.y! - _infoPaint!.height / 2));
+          Offset(c.x - _infoPaint!.width / 2, c.y - _infoPaint!.height / 2));
       return;
     }
 
@@ -259,16 +259,16 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>?>
       double? x, y;
       // if no position specified, draw on default position
       if (position == null) {
-        x = size.width - _viewPortHandler!.offsetRight() - _description!.xOffset!;
+        x = size.width - _viewPortHandler!.offsetRight() - _description!.xOffset;
         y = size.height -
             _viewPortHandler!.offsetBottom() -
-            _description!.yOffset!;
+            _description!.yOffset;
       } else {
         x = position.x;
         y = position.y;
       }
       _descPaint!.layout();
-      _descPaint!.paint(c, Offset(x!, y!));
+      _descPaint!.paint(c, Offset(x, y));
     }
   }
 
@@ -278,9 +278,9 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry>>?>
   ///
   /// @return
   bool valuesToHighlight() {
+    // TODO: Removed (_indicesToHighlight![0] == null), correct?
     var res = _indicesToHighlight == null ||
-        _indicesToHighlight!.length <= 0 ||
-        _indicesToHighlight![0] == null
+        _indicesToHighlight!.length <= 0
         ? false
         : true;
     return res;

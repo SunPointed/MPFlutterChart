@@ -39,7 +39,7 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
   DataSet<Entry> copy1() {
     List<Entry> entries = List<Entry>.empty(growable: true);
     for (int i = 0; i < values!.length; i++) {
-      entries.add(values![i]!.copy());
+      entries.add(values![i].copy());
     }
     ScatterDataSet copied = ScatterDataSet(entries, getLabel());
     copy(copied);
@@ -118,6 +118,7 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
   }
 
   static IShapeRenderer? getRendererForShape(ScatterShape shape) {
+    // TODO : should be optional? IShapeRenderer
     switch (shape) {
       case ScatterShape.SQUARE:
         return SquareShapeRenderer();
@@ -134,7 +135,5 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
       case ScatterShape.CHEVRON_DOWN:
         return ChevronDownShapeRenderer();
     }
-
-    return null;
   }
 }

@@ -97,7 +97,7 @@ class Transformer {
 
       if (e != null) {
         valuePoints[j] = e.x;
-        valuePoints[j + 1] = e.y! * phaseY;
+        valuePoints[j + 1] = e.y * phaseY;
       } else {
         valuePoints[j] = 0;
         valuePoints[j + 1] = 0;
@@ -131,7 +131,7 @@ class Transformer {
 
       if (e != null) {
         valuePoints[j] = e.x;
-        valuePoints[j + 1] = e.y! * phaseY;
+        valuePoints[j + 1] = e.y * phaseY;
       } else {
         valuePoints[j] = 0;
         valuePoints[j + 1] = 0;
@@ -164,7 +164,7 @@ class Transformer {
 
       if (e != null) {
         valuePoints[j] = e.x;
-        valuePoints[j + 1] = e.y! * phaseY;
+        valuePoints[j + 1] = e.y * phaseY;
       } else {
         valuePoints[j] = 0;
         valuePoints[j + 1] = 0;

@@ -99,7 +99,7 @@ class RadarDataSet extends LineRadarDataSet<RadarEntry>
   DataSet<RadarEntry> copy1() {
     List<RadarEntry> entries = List<RadarEntry>.empty(growable: true);
     for (int i = 0; i < values!.length; i++) {
-      entries.add(values![i]!.copy());
+      entries.add(values![i].copy());
     }
     RadarDataSet copied = RadarDataSet(entries, getLabel());
     copy(copied);

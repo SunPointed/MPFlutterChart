@@ -53,7 +53,7 @@ class CandleDataSet extends LineScatterCandleRadarDataSet<CandleEntry>
   DataSet<CandleEntry> copy1() {
     List<CandleEntry> entries = List<CandleEntry>.empty(growable: true);
     for (int i = 0; i < values!.length; i++) {
-      entries.add(values![i]!.copy());
+      entries.add(values![i].copy());
     }
     CandleDataSet copied = CandleDataSet(entries, getLabel());
     copy(copied);

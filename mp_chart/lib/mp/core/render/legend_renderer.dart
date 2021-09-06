@@ -89,7 +89,6 @@ class LegendRenderer extends Renderer {
                 clrs[j]));
           }
 
-          if (bds.getLabel() != null) {
             // add the legend description label
             _computedEntries.add(LegendEntry(
                 dataSet.getLabel(),
@@ -98,7 +97,6 @@ class LegendRenderer extends Renderer {
                 double.nan,
                 null,
                 ColorUtils.COLOR_NONE));
-          }
         } else if (dataSet is IPieDataSet) {
           IPieDataSet pds = dataSet;
 
@@ -112,7 +110,6 @@ class LegendRenderer extends Renderer {
                 clrs[j]));
           }
 
-          if (pds.getLabel() != null) {
             // add the legend description label
             _computedEntries.add(LegendEntry(
                 dataSet.getLabel(),
@@ -121,7 +118,6 @@ class LegendRenderer extends Renderer {
                 double.nan,
                 null,
                 ColorUtils.COLOR_NONE));
-          }
         } else if (dataSet is ICandleDataSet &&
             dataSet.getDecreasingColor() != ColorUtils.COLOR_NONE) {
           Color decreasingColor = dataSet.getDecreasingColor();
@@ -194,7 +190,7 @@ class LegendRenderer extends Renderer {
 
     double labelLineHeight = Utils.getLineHeight1(_legendLabelPaint!);
     double labelLineSpacing = Utils.getLineSpacing1(_legendLabelPaint!) +
-        Utils.convertDpToPixel(_legend!.yEntrySpace)!;
+        Utils.convertDpToPixel(_legend!.yEntrySpace);
     double formYOffset =
         labelLineHeight - Utils.calcTextHeight(_legendLabelPaint!, "ABC") / 2;
 
@@ -220,7 +216,7 @@ class LegendRenderer extends Renderer {
         if (orientation == LegendOrientation.VERTICAL)
           originPosX = xoffset;
         else
-          originPosX = viewPortHandler!.contentLeft() + xoffset!;
+          originPosX = viewPortHandler!.contentLeft() + xoffset;
 
         if (direction == LegendDirection.RIGHT_TO_LEFT)
           originPosX += _legend!.neededWidth;
@@ -229,9 +225,9 @@ class LegendRenderer extends Renderer {
 
       case LegendHorizontalAlignment.RIGHT:
         if (orientation == LegendOrientation.VERTICAL)
-          originPosX = viewPortHandler!.getChartWidth() - xoffset!;
+          originPosX = viewPortHandler!.getChartWidth() - xoffset;
         else
-          originPosX = viewPortHandler!.contentRight() - xoffset!;
+          originPosX = viewPortHandler!.contentRight() - xoffset;
 
         if (direction == LegendDirection.LEFT_TO_RIGHT)
           originPosX -= _legend!.neededWidth;
@@ -246,7 +242,7 @@ class LegendRenderer extends Renderer {
               viewPortHandler!.contentWidth() / 2;
 
         originPosX +=
-            (direction == LegendDirection.LEFT_TO_RIGHT ? xoffset! : -xoffset!);
+            (direction == LegendDirection.LEFT_TO_RIGHT ? xoffset : -xoffset);
 
         // Horizontally layed out legends do the center offset on a line basis,
         // So here we offset the vertical ones only.
@@ -277,14 +273,14 @@ class LegendRenderer extends Renderer {
 
             case LegendVerticalAlignment.BOTTOM:
               posY = viewPortHandler!.getChartHeight() -
-                  yoffset! -
+                  yoffset -
                   _legend!.neededHeight;
               break;
 
             case LegendVerticalAlignment.CENTER:
               posY = (viewPortHandler!.getChartHeight() - _legend!.neededHeight) /
                       2 +
-                  yoffset!;
+                  yoffset;
               break;
           }
 
@@ -316,34 +312,34 @@ class LegendRenderer extends Renderer {
             bool isStacked = e.label == null; // grouped forms have null labels
 
             if (drawingForm) {
-              if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= formSize!;
+              if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= formSize;
 
-              drawForm(c, posX, posY! + formYOffset, e, _legend);
+              drawForm(c, posX, posY + formYOffset, e, _legend);
 
-              if (direction == LegendDirection.LEFT_TO_RIGHT) posX += formSize!;
+              if (direction == LegendDirection.LEFT_TO_RIGHT) posX += formSize;
             }
 
             if (!isStacked) {
               if (drawingForm)
                 posX += direction == LegendDirection.RIGHT_TO_LEFT
-                    ? -formToTextSpace!
-                    : formToTextSpace!;
+                    ? -formToTextSpace
+                    : formToTextSpace;
 
               if (direction == LegendDirection.RIGHT_TO_LEFT)
                 posX -= calculatedLabelSizes[i]!.width;
 
-              drawLabel(c, posX!, posY! + labelLineHeight, e.label);
+              drawLabel(c, posX, posY + labelLineHeight, e.label);
 
               if (direction == LegendDirection.LEFT_TO_RIGHT)
                 posX += calculatedLabelSizes[i]!.width;
 
               posX += direction == LegendDirection.RIGHT_TO_LEFT
-                  ? -xEntrySpace!
-                  : xEntrySpace!;
+                  ? -xEntrySpace
+                  : xEntrySpace;
             } else
               posX += direction == LegendDirection.RIGHT_TO_LEFT
-                  ? -stackSpace!
-                  : stackSpace!;
+                  ? -stackSpace
+                  : stackSpace;
           }
 
           break;
@@ -361,20 +357,20 @@ class LegendRenderer extends Renderer {
               posY = (horizontalAlignment == LegendHorizontalAlignment.CENTER
                   ? 0
                   : viewPortHandler!.contentTop());
-              posY += yoffset!;
+              posY += yoffset;
               break;
 
             case LegendVerticalAlignment.BOTTOM:
               posY = (horizontalAlignment == LegendHorizontalAlignment.CENTER
                   ? viewPortHandler!.getChartHeight()
                   : viewPortHandler!.contentBottom());
-              posY -= _legend!.neededHeight + yoffset!;
+              posY -= _legend!.neededHeight + yoffset;
               break;
 
             case LegendVerticalAlignment.CENTER:
               posY = viewPortHandler!.getChartHeight() / 2 -
                   _legend!.neededHeight / 2 +
-                  _legend!.yOffset!;
+                  _legend!.yOffset;
               break;
           }
 
@@ -391,35 +387,35 @@ class LegendRenderer extends Renderer {
               if (direction == LegendDirection.LEFT_TO_RIGHT)
                 posX += stack;
               else
-                posX -= formSize! - stack;
+                posX -= formSize - stack;
 
               drawForm(c, posX, posY + formYOffset, e, _legend);
 
-              if (direction == LegendDirection.LEFT_TO_RIGHT) posX += formSize!;
+              if (direction == LegendDirection.LEFT_TO_RIGHT) posX += formSize;
             }
 
             if (e.label != null) {
               if (drawingForm && !wasStacked)
                 posX += direction == LegendDirection.LEFT_TO_RIGHT
-                    ? formToTextSpace!
-                    : -formToTextSpace!;
+                    ? formToTextSpace
+                    : -formToTextSpace;
               else if (wasStacked) posX = originPosX;
 
               if (direction == LegendDirection.RIGHT_TO_LEFT)
                 posX -= Utils.calcTextWidth(_legendLabelPaint!, e.label);
 
               if (!wasStacked) {
-                drawLabel(c, posX!, posY + labelLineHeight, e.label);
+                drawLabel(c, posX, posY + labelLineHeight, e.label);
               } else {
                 posY += labelLineHeight + labelLineSpacing;
-                drawLabel(c, posX!, posY + labelLineHeight, e.label);
+                drawLabel(c, posX, posY + labelLineHeight, e.label);
               }
 
               // make a step down
               posY += labelLineHeight + labelLineSpacing;
               stack = 0;
             } else {
-              stack += formSize! + stackSpace!;
+              stack += formSize + stackSpace;
               wasStacked = true;
             }
           }
@@ -449,7 +445,7 @@ class LegendRenderer extends Renderer {
     if (form == LegendForm.DEFAULT) form = legend!.shape;
 
     final double formSize = Utils.convertDpToPixel(
-        entry.formSize.isNaN ? legend!.formSize : entry.formSize)!;
+        entry.formSize.isNaN ? legend!.formSize : entry.formSize);
     final double half = formSize / 2;
 
     switch (form) {
@@ -484,7 +480,7 @@ class LegendRenderer extends Renderer {
           final double formLineWidth = Utils.convertDpToPixel(
               entry.formLineWidth.isNaN
                   ? legend!.formLineWidth
-                  : entry.formLineWidth)!;
+                  : entry.formLineWidth);
           final DashPathEffect? formLineDashEffect =
               entry.formLineDashEffect == null
                   ? legend!.getFormLineDashEffect()

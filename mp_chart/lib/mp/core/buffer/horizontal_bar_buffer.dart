@@ -21,14 +21,14 @@ class HorizontalBarBuffer extends BarBuffer {
       List<double>? vals = e.yVals;
 
       if (!containsStacks || vals == null) {
-        double bottom = x! - barWidthHalf;
+        double bottom = x - barWidthHalf;
         double top = x + barWidthHalf;
         double? left, right;
         if (inverted) {
-          left = y! >= 0 ? y : 0;
+          left = y >= 0 ? y : 0;
           right = y <= 0 ? y : 0;
         } else {
-          right = y! >= 0 ? y : 0;
+          right = y >= 0 ? y : 0;
           left = y <= 0 ? y : 0;
         }
 
@@ -58,7 +58,7 @@ class HorizontalBarBuffer extends BarBuffer {
             negY += value.abs();
           }
 
-          double bottom = x! - barWidthHalf;
+          double bottom = x - barWidthHalf;
           double top = x + barWidthHalf;
           double left, right;
           if (inverted) {

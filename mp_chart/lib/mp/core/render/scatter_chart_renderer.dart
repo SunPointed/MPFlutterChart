@@ -36,7 +36,7 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
   void drawData(Canvas c) {
     ScatterData scatterData = _provider!.getScatterData()!;
 
-    for (IScatterDataSet set in scatterData.dataSets!) {
+    for (IScatterDataSet set in scatterData.dataSets) {
       if (set.isVisible()) drawDataSet(c, set);
     }
   }
@@ -62,7 +62,7 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
       Entry e = dataSet.getEntryForIndex(i)!;
 
       mPixelBuffer[0] = e.x;
-      mPixelBuffer[1] = e.y! * phaseY;
+      mPixelBuffer[1] = e.y * phaseY;
 
       trans!.pointValuesToPixel(mPixelBuffer);
 
@@ -84,7 +84,7 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
       List<IScatterDataSet>? dataSets = _provider!.getScatterData()!.dataSets;
 
       for (int i = 0; i < _provider!.getScatterData()!.getDataSetCount(); i++) {
-        IScatterDataSet dataSet = dataSets![i];
+        IScatterDataSet dataSet = dataSets[i];
 
         if (!shouldDrawValues(dataSet) || dataSet.getEntryCount() < 1) continue;
 
@@ -121,7 +121,7 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
                 c,
                 formatter!.getPointLabel(entry),
                 positions[j]!,
-                positions[j + 1]! - shapeSize!,
+                positions[j + 1]! - shapeSize,
                 dataSet.getValueTextColor2(j ~/ 2 + xBounds!.min!),
                 dataSet.getValueTextSize(),
                 dataSet.getValueTypeface());
@@ -130,8 +130,8 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
           if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
             CanvasUtils.drawImage(
                 c,
-                Offset(positions[j]! + iconsOffset.x!,
-                    positions[j + 1]! + iconsOffset.y!),
+                Offset(positions[j]! + iconsOffset.x,
+                    positions[j + 1]! + iconsOffset.y),
                 entry.mIcon!,
                 Size(15, 15),
                 drawPaint!);
@@ -171,7 +171,7 @@ class ScatterChartRenderer extends LineScatterCandleRadarRenderer {
 
       MPPointD pix = _provider!
           .getTransformer(set.getAxisDependency())!
-          .getPixelForValues(e!.x, e.y! * animator!.getPhaseY());
+          .getPixelForValues(e!.x, e.y * animator!.getPhaseY());
 
       high.setDraw(pix.x, pix.y);
 

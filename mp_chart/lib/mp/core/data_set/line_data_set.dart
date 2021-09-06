@@ -279,7 +279,8 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   /// filled-line for each DataSet. Set this to null to use the default logic.
   ///
   /// @param formatter
-  void setFillFormatter(IFillFormatter formatter) {
+  void setFillFormatter(IFillFormatter? formatter) {
+    // TODO : should be optional?
     if (formatter == null)
       _fillFormatter = DefaultFillFormatter();
     else
@@ -296,10 +297,10 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
     List<Entry> entries = List.empty(growable: true);
     for (int i = 0; i < values!.length; i++) {
       entries.add(Entry(
-          x: values![i]!.x,
-          y: values![i]!.y,
-          icon: values![i]!.mIcon,
-          data: values![i]!.mData));
+          x: values![i].x,
+          y: values![i].y,
+          icon: values![i].mIcon,
+          data: values![i].mData));
     }
     LineDataSet copied = LineDataSet(entries, getLabel());
     copy(copied);

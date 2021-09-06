@@ -97,8 +97,7 @@ abstract class PieRadarChartState<T extends PieRadarChart>
   @override
   void updatePainter() {
     if (widget.controller.painter!.getData() != null &&
-        widget.controller.painter!.getData()!.dataSets != null &&
-        widget.controller.painter!.getData()!.dataSets!.length > 0)
+        widget.controller.painter!.getData()!.dataSets.length > 0)
       widget.controller.painter!.highlightValue6(lastHighlighted, false);
   }
 }

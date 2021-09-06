@@ -17,7 +17,7 @@ class Description extends ComponentBase {
 
   Description() : super() {
     // default size
-    textSize = Utils.convertDpToPixel(8)!;
+    textSize = Utils.convertDpToPixel(8);
   }
 
   // ignore: unnecessary_getters_setters

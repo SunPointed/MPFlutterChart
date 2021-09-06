@@ -18,7 +18,7 @@ class XShapeRenderer implements IShapeRenderer {
 
     renderPaint
       ?..style = PaintingStyle.stroke
-      ..strokeWidth = Utils.convertDpToPixel(1)!;
+      ..strokeWidth = Utils.convertDpToPixel(1);
 
     c.drawLine(Offset(posX! - shapeHalf, posY! - shapeHalf),
         Offset(posX + shapeHalf, posY + shapeHalf), renderPaint!);

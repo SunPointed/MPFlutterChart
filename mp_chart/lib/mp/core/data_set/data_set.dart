@@ -58,7 +58,7 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
     for (int i = indexFrom; i <= indexTo; i++) {
       // only recalculate y
-      calcMinMaxY1(_values![i]!);
+      calcMinMaxY1(_values![i]);
     }
   }
 
@@ -74,15 +74,15 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
   }
 
   void calcMinMaxX1(T e) {
-    if (e.x! < _xMin!) _xMin = e.x;
+    if (e.x < _xMin!) _xMin = e.x;
 
-    if (e.x! > _xMax!) _xMax = e.x;
+    if (e.x > _xMax!) _xMax = e.x;
   }
 
   void calcMinMaxY1(T e) {
-    if (e.y! < _yMin!) _yMin = e.y;
+    if (e.y < _yMin!) _yMin = e.y;
 
-    if (e.y! > _yMax!) _yMax = e.y;
+    if (e.y > _yMax!) _yMax = e.y;
   }
 
   @override
@@ -123,7 +123,7 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
   String toSimpleString() {
     StringBuffer buffer = StringBuffer();
     buffer.write("DataSet, label: " +
-        (getLabel() == null ? "" : getLabel()) +
+        getLabel() +
         ", entries:${_values!.length}\n");
     return buffer.toString();
   }
@@ -174,7 +174,7 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
     calcMinMax1(e);
 
-    if (_values!.length > 0 && _values![_values!.length - 1]!.x! > e.x!) {
+    if (_values!.length > 0 && _values![_values!.length - 1].x > e.x) {
       int closestIndex = getEntryIndex1(e.x, e.y, Rounding.UP);
       _values!.insert(closestIndex, e);
     } else {
@@ -278,8 +278,8 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     while (low < high) {
       int m = (low + high) ~/ 2;
 
-      final double d1 = _values![m]!.x! - xValue!,
-          d2 = _values![m + 1]!.x! - xValue,
+      final double d1 = _values![m].x - xValue!,
+          d2 = _values![m + 1].x - xValue,
           ad1 = d1.abs(),
           ad2 = d2.abs();
 
@@ -307,36 +307,36 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
     }
 
     if (closest != -1) {
-      double? closestXValue = _values![closest]!.x;
+      double? closestXValue = _values![closest].x;
       if (rounding == Rounding.UP) {
         // If rounding up, and found x-value is lower than specified x, and we can go upper...
-        if (closestXValue! < xValue! && closest < _values!.length - 1) {
+        if (closestXValue < xValue! && closest < _values!.length - 1) {
           ++closest;
         }
       } else if (rounding == Rounding.DOWN) {
         // If rounding down, and found x-value is upper than specified x, and we can go lower...
-        if (closestXValue! > xValue! && closest > 0) {
+        if (closestXValue > xValue! && closest > 0) {
           --closest;
         }
       }
 
       // Search by closest to y-value
       if (!(closestToY!.isNaN)) {
-        while (closest > 0 && _values![closest - 1]!.x == closestXValue)
+        while (closest > 0 && _values![closest - 1].x == closestXValue)
           closest -= 1;
 
-        double? closestYValue = _values![closest]!.y;
+        double? closestYValue = _values![closest].y;
         int closestYIndex = closest;
 
         while (true) {
           closest += 1;
           if (closest >= _values!.length) break;
 
-          final Entry value = _values![closest]!;
+          final Entry value = _values![closest];
 
           if (value.x != closestXValue) break;
 
-          if ((value.y! - closestToY).abs() <
+          if ((value.y - closestToY).abs() <
               (closestYValue! - closestToY).abs()) {
             closestYValue = closestToY;
             closestYIndex = closest;
@@ -359,17 +359,17 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
     while (low <= high) {
       int m = (high + low) ~/ 2;
-      T entry = _values![m]!;
+      T entry = _values![m];
 
       // if we have a match
       if (xValue == entry.x) {
-        while (m > 0 && _values![m - 1]!.x == xValue) m--;
+        while (m > 0 && _values![m - 1].x == xValue) m--;
 
         high = _values!.length;
 
         // loop over all "equal" entries
         for (; m < high; m++) {
-          entry = _values![m]!;
+          entry = _values![m];
           if (entry.x == xValue) {
             entries.add(entry);
           } else {
@@ -379,7 +379,7 @@ abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
 
         break;
       } else {
-        if (xValue! > entry.x!)
+        if (xValue! > entry.x)
           low = m + 1;
         else
           high = m - 1;

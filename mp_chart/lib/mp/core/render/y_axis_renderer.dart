@@ -273,8 +273,8 @@ class YAxisRenderer extends AxisRenderer {
     Path zeroLinePath = _drawZeroLinePath;
     zeroLinePath.reset();
 
-    zeroLinePath.moveTo(viewPortHandler!.contentLeft(), pos.y!);
-    zeroLinePath.lineTo(viewPortHandler!.contentRight(), pos.y!);
+    zeroLinePath.moveTo(viewPortHandler!.contentLeft(), pos.y);
+    zeroLinePath.lineTo(viewPortHandler!.contentRight(), pos.y);
 
     // draw a path because lines don't support dashing on lower android versions
     c.drawPath(zeroLinePath, _zeroLinePaint!);
@@ -350,8 +350,8 @@ class YAxisRenderer extends AxisRenderer {
             fontFamily: l.typeface?.fontFamily);
         final double labelLineHeight =
             Utils.calcTextHeight(painter, label).toDouble();
-        double xOffset = Utils.convertDpToPixel(4)! + l.xOffset!;
-        double yOffset = l.lineWidth! + labelLineHeight + l.yOffset!;
+        double xOffset = Utils.convertDpToPixel(4) + l.xOffset;
+        double yOffset = l.lineWidth! + labelLineHeight + l.yOffset;
         painter.layout();
         final LimitLabelPosition position = l.labelPosition;
         if (position == LimitLabelPosition.RIGHT_TOP) {

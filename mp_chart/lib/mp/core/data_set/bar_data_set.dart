@@ -39,7 +39,7 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
   DataSet<BarEntry> copy1() {
     List<BarEntry> entries = List.empty(growable: true);
     for (int i = 0; i < values!.length; i++) {
-      entries.add(values![i]!.copy());
+      entries.add(values![i].copy());
     }
     BarDataSet copied = BarDataSet(entries, getLabel());
     copy(copied);
@@ -85,11 +85,11 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
 
   @override
   void calcMinMax1(BarEntry? e) {
-    if (e != null && !e.y!.isNaN) {
+    if (e != null && !e.y.isNaN) {
       if (e.yVals == null) {
-        if (e.y! < getYMin()!) yMin = e.y;
+        if (e.y < getYMin()!) yMin = e.y;
 
-        if (e.y! > getYMax()!) yMax = e.y;
+        if (e.y > getYMax()!) yMax = e.y;
       } else {
         if (-e.negativeSum! < getYMin()!) yMin = -e.negativeSum!;
 

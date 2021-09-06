@@ -224,7 +224,8 @@ abstract class BaseDataSet<T extends Entry> implements IDataSet<T> {
   }
 
   @override
-  void setValueFormatter(ValueFormatter f) {
+  void setValueFormatter(ValueFormatter? f) {
+    // TODO : should be optional?
     if (f == null)
       return;
     else

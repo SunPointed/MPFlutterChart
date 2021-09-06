@@ -54,7 +54,7 @@ class LineChartMarker implements IMarker {
 //    canvas.translate(posX + offset.x, posY + offset.y);
     painter.layout();
     Offset pos = calculatePos(
-        posX! + offset.x!, posY! + offset.y!, painter.width, painter.height);
+        posX! + offset.x, posY! + offset.y, painter.width, painter.height);
     canvas.drawRRect(
         RRect.fromLTRBR(pos.dx - 5, pos.dy - 5, pos.dx + painter.width + 5,
             pos.dy + painter.height + 5, Radius.circular(5)),

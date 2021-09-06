@@ -47,7 +47,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
     barBorderPaint
       ?..color = dataSet.getBarBorderColor()
-      ..strokeWidth = Utils.convertDpToPixel(dataSet.getBarBorderWidth())!;
+      ..strokeWidth = Utils.convertDpToPixel(dataSet.getBarBorderWidth());
 
     final bool drawBorder = dataSet.getBarBorderWidth() > 0.0;
 
@@ -74,7 +74,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
         x = e.x;
 
         mBarShadowRectBuffer = Rect.fromLTRB(mBarShadowRectBuffer.left,
-            x! - barWidthHalf, mBarShadowRectBuffer.right, x + barWidthHalf);
+            x - barWidthHalf, mBarShadowRectBuffer.right, x + barWidthHalf);
 
         trans!.rectValueToPixel(mBarShadowRectBuffer);
 
@@ -140,7 +140,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
     // if values are drawn
     if (!isDrawingValuesAllowed(provider!)) return;
 
-    List<IBarDataSet>? dataSets = provider!.getBarData()!.dataSets;
+    List<IBarDataSet> dataSets = provider!.getBarData()!.dataSets;
 
     final double? valueOffsetPlus = Utils.convertDpToPixel(5);
     double? posOffset = 0;
@@ -148,7 +148,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
     final bool drawValueAboveBar = provider!.isDrawValueAboveBarEnabled();
 
     for (int i = 0; i < provider!.getBarData()!.getDataSetCount(); i++) {
-      IBarDataSet dataSet = dataSets![i];
+      IBarDataSet dataSet = dataSets[i];
 
       if (!shouldDrawValues(dataSet)) continue;
 
@@ -204,7 +204,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
             drawValue(
                 c,
                 formattedValue,
-                buffer.buffer![j + 2]! + (val! >= 0 ? posOffset! : negOffset!),
+                buffer.buffer![j + 2]! + (val >= 0 ? posOffset! : negOffset!),
                 y,
                 dataSet.getValueTextColor2(j ~/ 2),
                 dataSet.getValueTextSize(),
@@ -212,11 +212,11 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
           }
           if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
             double px =
-                buffer.buffer![j + 2]! + (val! >= 0 ? posOffset! : negOffset!);
+                buffer.buffer![j + 2]! + (val >= 0 ? posOffset! : negOffset!);
             double py = y;
 
-            px += iconsOffset.x!;
-            py += iconsOffset.y!;
+            px += iconsOffset.x;
+            py += iconsOffset.y;
 
             CanvasUtils.drawImage(
                 c, Offset(px, py), entry.mIcon!, Size(15, 15), drawPaint!);
@@ -272,7 +272,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
                   c,
                   formattedValue,
                   buffer.buffer![bufferIndex + 2]! +
-                      (entry.y! >= 0 ? posOffset! : negOffset!),
+                      (entry.y >= 0 ? posOffset! : negOffset!),
                   buffer.buffer![bufferIndex + 1]!,
                   color,
                   dataSet.getValueTextSize(),
@@ -280,11 +280,11 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
             }
             if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
               double px = buffer.buffer![bufferIndex + 2]! +
-                  (entry.y! >= 0 ? posOffset! : negOffset!);
+                  (entry.y >= 0 ? posOffset! : negOffset!);
               double py = buffer.buffer![bufferIndex + 1]!;
 
-              px += iconsOffset.x!;
-              py += iconsOffset.y!;
+              px += iconsOffset.x;
+              py += iconsOffset.y;
 
               CanvasUtils.drawImage(
                   c, Offset(px, py), entry.mIcon!, Size(15, 15), drawPaint!);
@@ -356,7 +356,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
               if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
                 CanvasUtils.drawImage(
                     c,
-                    Offset(x + iconsOffset.x!, y + iconsOffset.y!),
+                    Offset(x + iconsOffset.x, y + iconsOffset.y),
                     entry.mIcon!,
                     Size(15, 15),
                     drawPaint!);

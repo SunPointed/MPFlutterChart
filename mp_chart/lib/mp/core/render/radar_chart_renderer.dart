@@ -30,7 +30,7 @@ class RadarChartRenderer extends LineRadarRenderer {
     _highlightCirclePaint = Paint()
       ..isAntiAlias = true
       ..style = PaintingStyle.stroke
-      ..strokeWidth = Utils.convertDpToPixel(2)!
+      ..strokeWidth = Utils.convertDpToPixel(2)
       ..color = Color.fromARGB(255, 255, 187, 115);
 
     _webPaint = Paint()
@@ -55,7 +55,7 @@ class RadarChartRenderer extends LineRadarRenderer {
 
     int mostEntries = radarData.getMaxEntryCountSet()!.getEntryCount();
 
-    for (IRadarDataSet set in radarData.dataSets!) {
+    for (IRadarDataSet set in radarData.dataSets) {
       if (set.isVisible()) {
         drawDataSet(c, set, mostEntries);
       }
@@ -93,22 +93,22 @@ class RadarChartRenderer extends LineRadarRenderer {
 
       Utils.getPosition(
           center,
-          (e.y! - _painter!.getYChartMin()!) * factor * phaseY,
+          (e.y - _painter!.getYChartMin()!) * factor * phaseY,
           sliceangle * j * phaseX + _painter!.getRotationAngle(),
           pOut);
 
-      if (pOut.x!.isNaN) continue;
+      if (pOut.x.isNaN) continue;
 
       if (!hasMovedToPoint) {
-        surface.moveTo(pOut.x!, pOut.y!);
+        surface.moveTo(pOut.x, pOut.y);
         hasMovedToPoint = true;
       } else
-        surface.lineTo(pOut.x!, pOut.y!);
+        surface.lineTo(pOut.x, pOut.y);
     }
 
     if (dataSet.getEntryCount() > mostEntries) {
       // if this is not the largest set, draw a line to the center before closing
-      surface.lineTo(center.x!, center.y!);
+      surface.lineTo(center.x, center.y);
     }
 
     surface.close();
@@ -182,7 +182,7 @@ class RadarChartRenderer extends LineRadarRenderer {
 
         Utils.getPosition(
             center,
-            (entry.y! - _painter!.getYChartMin()!) * factor * phaseY,
+            (entry.y - _painter!.getYChartMin()!) * factor * phaseY,
             sliceangle * j * phaseX + _painter!.getRotationAngle(),
             pOut);
 
@@ -190,21 +190,21 @@ class RadarChartRenderer extends LineRadarRenderer {
           drawValue(
               c,
               formatter!.getRadarLabel(entry),
-              pOut.x!,
-              pOut.y! - yoffset!,
+              pOut.x,
+              pOut.y - yoffset,
               dataSet.getValueTextColor2(j),
               dataSet.getValueTextSize(),
               dataSet.getValueTypeface());
         }
 
         if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
-          Utils.getPosition(center, entry.y! * factor * phaseY + iconsOffset.y!,
+          Utils.getPosition(center, entry.y * factor * phaseY + iconsOffset.y,
               sliceangle * j * phaseX + _painter!.getRotationAngle(), pIcon);
 
           //noinspection SuspiciousNameCombination
-          pIcon.y += iconsOffset.x!;
+          pIcon.y += iconsOffset.x;
 
-          CanvasUtils.drawImage(c, Offset(pIcon.x!, pIcon.y!), entry.mIcon!,
+          CanvasUtils.drawImage(c, Offset(pIcon.x, pIcon.y), entry.mIcon!,
               Size(15, 15), drawPaint!);
         }
       }
@@ -258,7 +258,7 @@ class RadarChartRenderer extends LineRadarRenderer {
       Utils.getPosition(center, _painter!.yAxis!.axisRange * factor,
           sliceangle * i + rotationangle, p);
 
-      c.drawLine(Offset(center.x!, center.y!), Offset(p.x!, p.y!), _webPaint!);
+      c.drawLine(Offset(center.x, center.y), Offset(p.x, p.y), _webPaint!);
     }
     MPPointF.recycleInstance(p);
 
@@ -283,7 +283,7 @@ class RadarChartRenderer extends LineRadarRenderer {
             center, r, sliceangle * (i + 1) + rotationangle, p2out);
 
         c.drawLine(
-            Offset(p1out.x!, p1out.y!), Offset(p2out.x!, p2out.y!), _webPaint!);
+            Offset(p1out.x, p1out.y), Offset(p2out.x, p2out.y), _webPaint!);
       }
     }
     MPPointF.recycleInstance(p1out);
@@ -312,7 +312,7 @@ class RadarChartRenderer extends LineRadarRenderer {
 
       if (!isInBoundsX(e, set)) continue;
 
-      double y = (e!.y! - _painter!.getYChartMin()!);
+      double y = (e!.y - _painter!.getYChartMin()!);
 
       Utils.getPosition(
           center,
@@ -327,7 +327,7 @@ class RadarChartRenderer extends LineRadarRenderer {
       drawHighlightLines(c, pOut.x, pOut.y, set);
 
       if (set.isDrawHighlightCircleEnabled()) {
-        if (!pOut.x!.isNaN && !pOut.y!.isNaN) {
+        if (!pOut.x.isNaN && !pOut.y.isNaN) {
           Color strokeColor = set.getHighlightCircleStrokeColor();
           if (strokeColor == ColorUtils.COLOR_NONE) {
             strokeColor = set.getColor2(0);
@@ -372,12 +372,12 @@ class RadarChartRenderer extends LineRadarRenderer {
     if (fillColor != ColorUtils.COLOR_NONE) {
       Path p = mDrawHighlightCirclePathBuffer;
       p.reset();
-      p.addOval(Rect.fromLTRB(point.x! - outerRadius!, point.y! - outerRadius,
-          point.x! + outerRadius, point.y! + outerRadius));
+      p.addOval(Rect.fromLTRB(point.x - outerRadius, point.y - outerRadius,
+          point.x + outerRadius, point.y + outerRadius));
 //      p.addCircle(point.x, point.y, outerRadius, Path.Direction.CW);
-      if (innerRadius! > 0.0) {
-        p.addOval(Rect.fromLTRB(point.x! - innerRadius, point.y! - innerRadius,
-            point.x! + innerRadius, point.y! + innerRadius));
+      if (innerRadius > 0.0) {
+        p.addOval(Rect.fromLTRB(point.x - innerRadius, point.y - innerRadius,
+            point.x + innerRadius, point.y + innerRadius));
 //        p.addCircle(point.x, point.y, innerRadius, Path.Direction.CCW);
       }
       _highlightCirclePaint
@@ -390,9 +390,9 @@ class RadarChartRenderer extends LineRadarRenderer {
       _highlightCirclePaint
         ?..color = strokeColor
         ..style = PaintingStyle.stroke
-        ..strokeWidth = Utils.convertDpToPixel(strokeWidth)!;
+        ..strokeWidth = Utils.convertDpToPixel(strokeWidth);
       c.drawCircle(
-          Offset(point.x!, point.y!), outerRadius!, _highlightCirclePaint!);
+          Offset(point.x, point.y), outerRadius, _highlightCirclePaint!);
     }
 
     c.restore();

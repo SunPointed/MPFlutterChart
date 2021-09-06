@@ -214,8 +214,8 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     Path zeroLinePath = mDrawZeroLinePathBuffer;
     zeroLinePath.reset();
 
-    zeroLinePath.moveTo(pos.x! - 1, viewPortHandler!.contentTop());
-    zeroLinePath.lineTo(pos.x! - 1, viewPortHandler!.contentBottom());
+    zeroLinePath.moveTo(pos.x - 1, viewPortHandler!.contentTop());
+    zeroLinePath.lineTo(pos.x- 1, viewPortHandler!.contentBottom());
 
     // draw a path because lines don't support dashing on lower android versions
     c.drawPath(zeroLinePath, zeroLinePaint!);
@@ -292,15 +292,15 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         if (position == LimitLabelPosition.RIGHT_TOP) {
           final double labelLineHeight =
               Utils.calcTextHeight(axisLabelPaint!, label).toDouble();
-          var offset = Offset(pts[0]! + l.xOffset!,
+          var offset = Offset(pts[0]! + l.xOffset,
               viewPortHandler!.contentTop() + labelLineHeight);
           CanvasUtils.renderLimitLabelBackground(c, axisLabelPaint, offset, l);
           axisLabelPaint!.paint(c, offset);
         } else if (position == LimitLabelPosition.RIGHT_BOTTOM) {
           var offset = Offset(
-              pts[0]! + l.xOffset!,
+              pts[0]! + l.xOffset,
               viewPortHandler!.contentBottom() -
-                  l.yOffset! -
+                  l.yOffset -
                   axisLabelPaint!.height);
           CanvasUtils.renderLimitLabelBackground(c, axisLabelPaint, offset, l);
           axisLabelPaint!.paint(c, offset);
@@ -308,7 +308,7 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
           var offset = Offset(
               pts[0]! - axisLabelPaint!.width / 2,
               viewPortHandler!.contentBottom() -
-                  l.yOffset! -
+                  l.yOffset -
                   axisLabelPaint!.height);
           CanvasUtils.renderLimitLabelBackground(c, axisLabelPaint, offset, l);
           axisLabelPaint!.paint(c, offset);
@@ -322,15 +322,15 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
         } else if (position == LimitLabelPosition.LEFT_TOP) {
           final double labelLineHeight =
               Utils.calcTextHeight(axisLabelPaint!, label).toDouble();
-          var offset = Offset(pts[0]! - l.xOffset! - axisLabelPaint!.width,
+          var offset = Offset(pts[0]! - l.xOffset - axisLabelPaint!.width,
               viewPortHandler!.contentTop() + labelLineHeight);
           CanvasUtils.renderLimitLabelBackground(c, axisLabelPaint, offset, l);
           axisLabelPaint!.paint(c, offset);
         } else {
           var offset = Offset(
-              pts[0]! - l.xOffset! - axisLabelPaint!.width,
+              pts[0]! - l.xOffset - axisLabelPaint!.width,
               viewPortHandler!.contentBottom() -
-                  l.yOffset! -
+                  l.yOffset -
                   axisLabelPaint!.height);
           CanvasUtils.renderLimitLabelBackground(c, axisLabelPaint, offset, l);
           axisLabelPaint!.paint(c, offset);

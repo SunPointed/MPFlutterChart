@@ -301,7 +301,7 @@ abstract class AxisBase extends ComponentBase {
     for (int i = 0; i < _entries.length; i++) {
       String text = getFormattedLabel(i);
 
-      if (text != null && longest.length < text.length) longest = text;
+      if (longest.length < text.length) longest = text;
     }
 
     return longest;
@@ -321,7 +321,7 @@ abstract class AxisBase extends ComponentBase {
   /// the chart. Use chart.getDefaultValueFormatter() to use the formatter calculated by the chart.
   ///
   /// @param f
-  void setValueFormatter(ValueFormatter f) {
+  void setValueFormatter(ValueFormatter? f) {
     if (f == null)
       _axisValueFormatter = DefaultAxisValueFormatter(_decimals);
     else
@@ -332,6 +332,7 @@ abstract class AxisBase extends ComponentBase {
   ///
   /// @return
   ValueFormatter? getValueFormatter() {
+    // TODO: ALWAYS not null, remove optional
     if (_axisValueFormatter == null ||
         (_axisValueFormatter is DefaultAxisValueFormatter &&
             (_axisValueFormatter as DefaultAxisValueFormatter).digits !=

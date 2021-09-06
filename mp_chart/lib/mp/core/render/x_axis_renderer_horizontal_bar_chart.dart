@@ -61,7 +61,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
     final FSize labelSize = Utils.calcTextSize1(axisLabelPaint!, longest);
 
     final double labelWidth =
-        (labelSize.width + xAxis!.xOffset! * 3.5).toInt().toDouble();
+        (labelSize.width + xAxis!.xOffset * 3.5).toInt().toDouble();
     final double labelHeight = labelSize.height;
 
     final FSize labelRotatedSize = Utils.getSizeOfRotatedRectangleByDegrees(
@@ -70,7 +70,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
     xAxis!.labelWidth = labelWidth.round();
     xAxis!.labelHeight = labelHeight.round();
     xAxis!.labelRotatedWidth =
-        (labelRotatedSize.width + xAxis!.xOffset! * 3.5).toInt();
+        (labelRotatedSize.width + xAxis!.xOffset * 3.5).toInt();
     xAxis!.labelRotatedHeight = labelRotatedSize.height.round();
 
     FSize.recycleInstance(labelRotatedSize);
@@ -256,7 +256,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
         final double labelLineHeight =
             Utils.calcTextHeight(axisLabelPaint!, label).toDouble();
         double? xOffset = l.xOffset;
-        double yOffset = l.lineWidth! + labelLineHeight + l.yOffset!;
+        double yOffset = l.lineWidth! + labelLineHeight + l.yOffset;
 
         final LimitLabelPosition position = l.labelPosition;
 
@@ -265,7 +265,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
               axisLabelPaint, label, l.textColor, l.textSize);
           axisLabelPaint!.layout();
           var offset = Offset(
-              viewPortHandler!.contentRight() - xOffset! - axisLabelPaint!.width,
+              viewPortHandler!.contentRight() - xOffset - axisLabelPaint!.width,
               pts[1]! - yOffset);
           CanvasUtils.renderLimitLabelBackground(c, axisLabelPaint, offset, l);
           axisLabelPaint!.paint(c, offset);
@@ -274,7 +274,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
               axisLabelPaint, label, l.textColor, l.textSize);
           axisLabelPaint!.layout();
           var offset = Offset(
-              viewPortHandler!.contentRight() - xOffset! - axisLabelPaint!.width,
+              viewPortHandler!.contentRight() - xOffset - axisLabelPaint!.width,
               pts[1]! + yOffset);
           CanvasUtils.renderLimitLabelBackground(c, axisLabelPaint, offset, l);
           axisLabelPaint!.paint(c, offset);
@@ -283,7 +283,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
               axisLabelPaint, label, l.textColor, l.textSize);
           axisLabelPaint!.layout();
           var offset = Offset(
-              viewPortHandler!.contentRight() - xOffset! - axisLabelPaint!.width,
+              viewPortHandler!.contentRight() - xOffset - axisLabelPaint!.width,
               pts[1]! - axisLabelPaint!.height / 2);
           CanvasUtils.renderLimitLabelBackground(c, axisLabelPaint, offset, l);
           axisLabelPaint!.paint(c, offset);
@@ -291,7 +291,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
           axisLabelPaint = PainterUtils.create(
               axisLabelPaint, label, l.textColor, l.textSize);
           axisLabelPaint!.layout();
-          var offset = Offset(viewPortHandler!.contentLeft() + xOffset!,
+          var offset = Offset(viewPortHandler!.contentLeft() + xOffset,
               pts[1]! - axisLabelPaint!.height / 2);
           CanvasUtils.renderLimitLabelBackground(c, axisLabelPaint, offset, l);
           axisLabelPaint!.paint(c, offset);
@@ -300,7 +300,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
               axisLabelPaint, label, l.textColor, l.textSize);
           axisLabelPaint!.layout();
           var offset =
-              Offset(viewPortHandler!.contentLeft() + xOffset!, pts[1]! - yOffset);
+              Offset(viewPortHandler!.contentLeft() + xOffset, pts[1]! - yOffset);
           CanvasUtils.renderLimitLabelBackground(c, axisLabelPaint, offset, l);
           axisLabelPaint!.paint(c, offset);
         } else {
@@ -308,7 +308,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
               axisLabelPaint, label, l.textColor, l.textSize);
           axisLabelPaint!.layout();
           var offset =
-              Offset(viewPortHandler!.offsetLeft() + xOffset!, pts[1]! + yOffset);
+              Offset(viewPortHandler!.offsetLeft() + xOffset, pts[1]! + yOffset);
           CanvasUtils.renderLimitLabelBackground(c, axisLabelPaint, offset, l);
           axisLabelPaint!.paint(c, offset);
         }

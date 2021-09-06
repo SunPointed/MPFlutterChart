@@ -41,7 +41,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
   void drawData(Canvas c) {
     BubbleData bubbleData = _provider!.getBubbleData()!;
 
-    for (IBubbleDataSet set in bubbleData.dataSets!) {
+    for (IBubbleDataSet set in bubbleData.dataSets) {
       if (set.isVisible()) drawDataSet(c, set);
     }
   }
@@ -84,7 +84,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
       final BubbleEntry entry = dataSet.getEntryForIndex(j)!;
 
       pointBuffer[0] = entry.x;
-      pointBuffer[1] = entry.y! * phaseY;
+      pointBuffer[1] = entry.y * phaseY;
       trans.pointValuesToPixel(pointBuffer);
 
       double shapeHalf = getShapeSize(
@@ -99,7 +99,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
       if (!viewPortHandler!.isInBoundsRight(pointBuffer[0]! - shapeHalf)) break;
 
-      final Color color = dataSet.getColor2(entry.x!.toInt());
+      final Color color = dataSet.getColor2(entry.x.toInt());
 
       renderPaint!.color = color;
       c.drawCircle(
@@ -115,7 +115,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
     // if values are drawn
     if (isDrawingValuesAllowed(_provider!)) {
-      final List<IBubbleDataSet> dataSets = bubbleData.dataSets!;
+      final List<IBubbleDataSet> dataSets = bubbleData.dataSets;
 
       double lineHeight = Utils.calcTextHeight(valuePaint!, "1").toDouble();
 
@@ -175,7 +175,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
           if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
             CanvasUtils.drawImage(
                 c,
-                Offset(x! + iconsOffset.x!, y! + iconsOffset.y!),
+                Offset(x! + iconsOffset.x, y! + iconsOffset.y),
                 entry.mIcon!,
                 Size(15, 15),
                 drawPaint!);
@@ -234,7 +234,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
       final double referenceSize = min(maxBubbleHeight, maxBubbleWidth);
 
       pointBuffer[0] = entry.x;
-      pointBuffer[1] = entry.y! * phaseY;
+      pointBuffer[1] = entry.y * phaseY;
       trans.pointValuesToPixel(pointBuffer);
 
       high.setDraw(pointBuffer[0], pointBuffer[1]);
@@ -251,7 +251,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
       if (!viewPortHandler!.isInBoundsRight(pointBuffer[0]! - shapeHalf)) break;
 
-      final Color originalColor = set.getColor2(entry.x!.toInt());
+      final Color originalColor = set.getColor2(entry.x.toInt());
 
       var hsv = HSVColor.fromColor(originalColor);
       var color = hsv.toColor();

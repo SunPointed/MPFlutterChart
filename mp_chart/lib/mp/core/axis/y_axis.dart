@@ -177,11 +177,11 @@ class YAxis extends AxisBase {
   double getRequiredWidthSpace(TextPainter? p) {
     p = PainterUtils.create(p, null, null, textSize);
     String label = getLongestLabel();
-    double width = Utils.calcTextWidth(p, label) + xOffset! * 2;
-    if (minWidth! > 0) minWidth = Utils.convertDpToPixel(minWidth);
-    if (maxWidth! > 0 && maxWidth != double.infinity)
+    double width = Utils.calcTextWidth(p, label) + xOffset * 2;
+    if (minWidth > 0) minWidth = Utils.convertDpToPixel(minWidth);
+    if (maxWidth > 0 && maxWidth != double.infinity)
       maxWidth = Utils.convertDpToPixel(maxWidth);
-    width = max(minWidth!, min(width, maxWidth! > 0.0 ? maxWidth! : width));
+    width = max(minWidth, min(width, maxWidth > 0.0 ? maxWidth : width));
     return width;
   }
 
@@ -193,7 +193,7 @@ class YAxis extends AxisBase {
     p = PainterUtils.create(p, null, null, textSize);
 
     String label = getLongestLabel();
-    return Utils.calcTextHeight(p, label) + yOffset! * 2;
+    return Utils.calcTextHeight(p, label) + yOffset * 2;
   }
 
   /// Returns true if this axis needs horizontal offset, false if no offset is needed.

@@ -212,8 +212,8 @@ class BarChartPainter extends BarLineChartBasePainter<BarData?>
       return bounds;
     }
 
-    double y = e.y!;
-    double x = e.x!;
+    double y = e.y;
+    double x = e.x;
 
     double barWidth = getBarData()!.barWidth;
 

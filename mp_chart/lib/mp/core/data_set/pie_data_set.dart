@@ -31,7 +31,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
   DataSet<PieEntry> copy1() {
     List<PieEntry> entries = List.empty(growable: true);
     for (int i = 0; i < values!.length; i++) {
-      entries.add(values![i]!.copy());
+      entries.add(values![i].copy());
     }
     PieDataSet copied = PieDataSet(entries, getLabel());
     copy(copied);

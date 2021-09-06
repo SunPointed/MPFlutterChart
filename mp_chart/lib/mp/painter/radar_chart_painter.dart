@@ -235,7 +235,7 @@ class RadarChartPainter extends PieRadarChartPainter<RadarData?> {
   @override
   double getRequiredLegendOffset() {
     var size = legendRenderer!.legendLabelPaint!.text!.style!.fontSize;
-    return (size == null ? Utils.convertDpToPixel(9) : size)! * 4.0;
+    return (size == null ? Utils.convertDpToPixel(9) : size) * 4.0;
   }
 
   @override

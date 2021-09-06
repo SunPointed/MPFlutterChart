@@ -51,7 +51,7 @@ class XAxisRendererRadarChart extends XAxisRenderer {
           angle,
           pOut);
 
-      drawLabel(c, label, pOut.x, pOut.y! - xAxis!.labelRotatedHeight / 2.0,
+      drawLabel(c, label, pOut.x, pOut.y - xAxis!.labelRotatedHeight / 2.0,
           drawLabelAnchor, labelRotationAngleDegrees, xAxis!.position);
     }
 

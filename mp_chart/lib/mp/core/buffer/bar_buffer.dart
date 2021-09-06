@@ -50,15 +50,15 @@ class BarBuffer extends AbstractBuffer<IBarDataSet> {
       List<double>? vals = e.yVals;
 
       if (!_containsStacks || vals == null) {
-        double left = x! - barWidthHalf;
+        double left = x - barWidthHalf;
         double right = x + barWidthHalf;
         double? bottom, top;
 
         if (_inverted) {
-          bottom = y! >= 0 ? y : 0;
+          bottom = y >= 0 ? y : 0;
           top = y <= 0 ? y : 0;
         } else {
-          top = y! >= 0 ? y : 0;
+          top = y >= 0 ? y : 0;
           bottom = y <= 0 ? y : 0;
         }
 
@@ -92,7 +92,7 @@ class BarBuffer extends AbstractBuffer<IBarDataSet> {
             negY += value.abs();
           }
 
-          double left = x! - barWidthHalf;
+          double left = x - barWidthHalf;
           double right = x + barWidthHalf;
           double bottom, top;
 

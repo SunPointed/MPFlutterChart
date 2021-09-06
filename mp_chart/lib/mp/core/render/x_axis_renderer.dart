@@ -365,7 +365,7 @@ class XAxisRenderer extends AxisRenderer {
       trans!.pointValuesToPixel(position);
 
       renderLimitLineLine(c, l, position);
-      renderLimitLineLabel(c, l, position, 2.0 + l.yOffset!);
+      renderLimitLineLabel(c, l, position, 2.0 + l.yOffset);
 
       c.restore();
     }
@@ -410,7 +410,7 @@ class XAxisRenderer extends AxisRenderer {
           fontFamily: limitLine.typeface?.fontFamily,
           fontWeight: limitLine.typeface?.fontWeight);
 
-      double xOffset = limitLine.lineWidth! + limitLine.xOffset!;
+      double xOffset = limitLine.lineWidth! + limitLine.xOffset;
 
       final LimitLabelPosition labelPosition = limitLine.labelPosition;
 

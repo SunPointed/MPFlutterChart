@@ -18,7 +18,7 @@ class ChevronDownShapeRenderer implements IShapeRenderer {
 
     renderPaint
       ?..style = PaintingStyle.stroke
-      ..strokeWidth = Utils.convertDpToPixel(1)!;
+      ..strokeWidth = Utils.convertDpToPixel(1);
 
     c.drawLine(Offset(posX!, posY! + (2 * shapeHalf)),
         Offset(posX + (2 * shapeHalf), posY), renderPaint!);

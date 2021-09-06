@@ -86,7 +86,7 @@ class LineChartRenderer extends LineRadarRenderer {
 
     LineData lineData = _provider!.getLineData()!;
 
-    for (ILineDataSet set in lineData.dataSets!) {
+    for (ILineDataSet set in lineData.dataSets) {
       if (set.isVisible()) drawDataSet(c, set);
     }
 //    c.drawBitmap(drawBitmap, 0, 0, renderPaint);
@@ -125,22 +125,22 @@ class LineChartRenderer extends LineRadarRenderer {
       Entry prev = dataSet.getEntryForIndex(xBounds!.min)!;
       Entry cur = prev;
       // let the spline start
-      _cubicPath.moveTo(cur.x!, cur.y! * phaseY);
+      _cubicPath.moveTo(cur.x, cur.y * phaseY);
       list.add(cur.x);
-      list.add(cur.y! * phaseY);
+      list.add(cur.y * phaseY);
 
       for (int j = xBounds!.min! + 1; j <= xBounds!.range! + xBounds!.min!; j++) {
         prev = cur;
         cur = dataSet.getEntryForIndex(j)!;
 
-        final double cpx = prev.x! + (cur.x! - prev.x!) / 2.0;
+        final double cpx = prev.x + (cur.x - prev.x) / 2.0;
 
         list.add(cpx);
-        list.add(prev.y! * phaseY);
+        list.add(prev.y * phaseY);
         list.add(cpx);
-        list.add(cur.y! * phaseY);
+        list.add(cur.y * phaseY);
         list.add(cur.x);
-        list.add(cur.y! * phaseY);
+        list.add(cur.y * phaseY);
       }
     }
 
@@ -221,7 +221,7 @@ class LineChartRenderer extends LineRadarRenderer {
 
       // let the spline start
       list.add(cur.x);
-      list.add(cur.y! * phaseY);
+      list.add(cur.y * phaseY);
 
       for (int j = xBounds!.min! + 1; j <= xBounds!.range! + xBounds!.min!; j++) {
         prevPrev = prev;
@@ -231,17 +231,17 @@ class LineChartRenderer extends LineRadarRenderer {
         nextIndex = j + 1 < dataSet.getEntryCount() ? j + 1 : j;
         next = dataSet.getEntryForIndex(nextIndex);
 
-        prevDx = (cur!.x! - prevPrev!.x!) * intensity;
-        prevDy = (cur.y! - prevPrev.y!) * intensity;
-        curDx = (next!.x! - prev!.x!) * intensity;
-        curDy = (next.y! - prev.y!) * intensity;
+        prevDx = (cur!.x - prevPrev!.x) * intensity;
+        prevDy = (cur.y - prevPrev.y) * intensity;
+        curDx = (next!.x - prev!.x) * intensity;
+        curDy = (next.y - prev.y) * intensity;
 
-        list.add(prev.x! + prevDx);
-        list.add((prev.y! + prevDy) * phaseY);
-        list.add(cur.x! - curDx);
-        list.add((cur.y! - curDy) * phaseY);
+        list.add(prev.x + prevDx);
+        list.add((prev.y + prevDy) * phaseY);
+        list.add(cur.x - curDx);
+        list.add((cur.y - curDy) * phaseY);
         list.add(cur.x);
-        list.add(cur.y! * phaseY);
+        list.add(cur.y * phaseY);
       }
     }
 
@@ -363,7 +363,7 @@ class LineChartRenderer extends LineRadarRenderer {
         if (e == null) continue;
 
         mLineBuffer[0] = e.x;
-        mLineBuffer[1] = e.y! * phaseY;
+        mLineBuffer[1] = e.y * phaseY;
 
         if (j < xBounds!.max!) {
           e = dataSet.getEntryForIndex(j + 1);
@@ -376,10 +376,10 @@ class LineChartRenderer extends LineRadarRenderer {
             mLineBuffer[4] = mLineBuffer[2];
             mLineBuffer[5] = mLineBuffer[3];
             mLineBuffer[6] = e.x;
-            mLineBuffer[7] = e.y! * phaseY;
+            mLineBuffer[7] = e.y * phaseY;
           } else {
             mLineBuffer[2] = e.x;
-            mLineBuffer[3] = e.y! * phaseY;
+            mLineBuffer[3] = e.y * phaseY;
           }
         } else {
           mLineBuffer[2] = mLineBuffer[0];
@@ -424,17 +424,17 @@ class LineChartRenderer extends LineRadarRenderer {
           if (e1 == null || e2 == null) continue;
 
           mLineBuffer[j++] = e1.x;
-          mLineBuffer[j++] = e1.y! * phaseY;
+          mLineBuffer[j++] = e1.y * phaseY;
 
           if (isDrawSteppedEnabled) {
             mLineBuffer[j++] = e2.x;
-            mLineBuffer[j++] = e1.y! * phaseY;
+            mLineBuffer[j++] = e1.y * phaseY;
             mLineBuffer[j++] = e2.x;
-            mLineBuffer[j++] = e1.y! * phaseY;
+            mLineBuffer[j++] = e1.y * phaseY;
           }
 
           mLineBuffer[j++] = e2.x;
-          mLineBuffer[j++] = e2.y! * phaseY;
+          mLineBuffer[j++] = e2.y * phaseY;
         }
 
         if (j > 0) {
@@ -524,7 +524,7 @@ class LineChartRenderer extends LineRadarRenderer {
     points.add(entry.x);
     points.add(fillMin);
     points.add(entry.x);
-    points.add(entry.y! * phaseY);
+    points.add(entry.y * phaseY);
 //    filled.moveTo(entry.x, fillMin);
 //    filled.lineTo(entry.x, entry.y * phaseY);
 
@@ -536,12 +536,12 @@ class LineChartRenderer extends LineRadarRenderer {
 
       if (isDrawSteppedEnabled) {
         points.add(currentEntry!.x);
-        points.add(previousEntry!.y! * phaseY);
+        points.add(previousEntry!.y * phaseY);
 //        filled.lineTo(currentEntry.x, previousEntry.y * phaseY);
       }
 
       points.add(currentEntry!.x);
-      points.add(currentEntry.y! * phaseY);
+      points.add(currentEntry.y * phaseY);
 //      filled.lineTo(currentEntry.x, currentEntry.y * phaseY);
 
       previousEntry = currentEntry;
@@ -568,7 +568,7 @@ class LineChartRenderer extends LineRadarRenderer {
   @override
   void drawValues(Canvas c) {
     if (isDrawingValuesAllowed(_provider!)) {
-      List<ILineDataSet> dataSets = _provider!.getLineData()!.dataSets!;
+      List<ILineDataSet> dataSets = _provider!.getLineData()!.dataSets;
 
       for (int i = 0; i < dataSets.length; i++) {
         ILineDataSet dataSet = dataSets[i];
@@ -625,7 +625,7 @@ class LineChartRenderer extends LineRadarRenderer {
           if (entry.mIcon != null && dataSet.isDrawIconsEnabled()) {
             CanvasUtils.drawImage(
                 c,
-                Offset(x! + iconsOffset.x!, y! + iconsOffset.y!),
+                Offset(x! + iconsOffset.x, y! + iconsOffset.y),
                 entry.mIcon!,
                 Size(15, 15),
                 drawPaint!);
@@ -669,7 +669,7 @@ class LineChartRenderer extends LineRadarRenderer {
     mCirclesBuffer[0] = 0;
     mCirclesBuffer[1] = 0;
 
-    List<ILineDataSet> dataSets = _provider!.getLineData()!.dataSets!;
+    List<ILineDataSet> dataSets = _provider!.getLineData()!.dataSets;
 
     Transformer? trans;
     for (int i = 0; i < dataSets.length; i++) {
@@ -700,7 +700,7 @@ class LineChartRenderer extends LineRadarRenderer {
         if (e == null) break;
 
         mCirclesBuffer[0] = e.x;
-        mCirclesBuffer[1] = e.y! * phaseY;
+        mCirclesBuffer[1] = e.y * phaseY;
 
         trans!.pointValuesToPixel(mCirclesBuffer);
 
@@ -735,7 +735,7 @@ class LineChartRenderer extends LineRadarRenderer {
   }
 
   // ignore: unused_element
-  Future<Codec> _loadImage(ByteData data) async {
+  Future<Codec> _loadImage(ByteData? data) async {
     if (data == null) throw 'Unable to read data';
     return await instantiateImageCodec(data.buffer.asUint8List());
   }
@@ -755,7 +755,7 @@ class LineChartRenderer extends LineRadarRenderer {
 
       MPPointD pix = _provider!
           .getTransformer(set.getAxisDependency())!
-          .getPixelForValues(e!.x, e.y! * animator!.getPhaseY());
+          .getPixelForValues(e!.x, e.y * animator!.getPhaseY());
 
       high.setDraw(pix.x, pix.y);
 

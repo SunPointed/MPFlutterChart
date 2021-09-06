@@ -129,12 +129,12 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>?>
                 legend!.horizontalAlignment == LegendHorizontalAlignment.RIGHT) {
               if (legend!.verticalAlignment == LegendVerticalAlignment.CENTER) {
                 // this is the space between the legend and the chart
-                final double spacing = Utils.convertDpToPixel(13)!;
+                final double spacing = Utils.convertDpToPixel(13);
 
                 xLegendOffset = fullLegendWidth + spacing;
               } else {
                 // this is the space between the legend and the chart
-                double spacing = Utils.convertDpToPixel(8)!;
+                double spacing = Utils.convertDpToPixel(8);
 
                 double legendWidth = fullLegendWidth + spacing;
                 double legendHeight =
@@ -153,15 +153,15 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>?>
                     center, getRadius(), getAngleForPoint(bottomX, bottomY));
 
                 double distReference =
-                    distanceToCenter(reference.x!, reference.y!);
+                    distanceToCenter(reference.x, reference.y);
                 double? minOffset = Utils.convertDpToPixel(5);
 
-                if (bottomY >= center.y! &&
+                if (bottomY >= center.y &&
                     size!.height - legendWidth > size!.width) {
                   xLegendOffset = legendWidth;
                 } else if (distLegend < distReference) {
                   double diff = distReference - distLegend;
-                  xLegendOffset = minOffset! + diff;
+                  xLegendOffset = minOffset + diff;
                 } else {
                   xLegendOffset = legendWidth;
                 }
@@ -241,7 +241,7 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>?>
       XAxis x = this.xAxis!;
 
       if (x.enabled && x.drawLabels) {
-        minOffset = max(minOffset!, x.labelRotatedWidth.toDouble());
+        minOffset = max(minOffset, x.labelRotatedWidth.toDouble());
       }
     }
 
@@ -250,7 +250,7 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>?>
     legendBottom += extraBottomOffset;
     legendLeft += extraLeftOffset;
 
-    double offsetLeft = max(minOffset!, legendLeft);
+    double offsetLeft = max(minOffset, legendLeft);
     double offsetTop = max(minOffset, legendTop);
     double offsetRight = max(minOffset, legendRight);
     double offsetBottom =
@@ -270,13 +270,13 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>?>
   double getAngleForPoint(double x, double y) {
     MPPointF c = getCenterOffsets();
 
-    double tx = x - c.x!, ty = y - c.y!;
+    double tx = x - c.x, ty = y - c.y;
     double length = sqrt(tx * tx + ty * ty);
     double r = acos(ty / length);
 
     double angle = r * 180.0 / pi;
 
-    if (x > c.x!) angle = 360 - angle;
+    if (x > c.x) angle = 360 - angle;
 
     // add 90° because chart starts EAST
     angle = angle + 90;
@@ -305,8 +305,8 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>?>
 
   void getPosition2(
       MPPointF center, double dist, double angle, MPPointF outputPoint) {
-    outputPoint.x = (center.x! + dist * cos(angle / 180.0 * pi));
-    outputPoint.y = (center.y! + dist * sin(angle / 180.0 * pi));
+    outputPoint.x = (center.x + dist * cos(angle / 180.0 * pi));
+    outputPoint.y = (center.y + dist * sin(angle / 180.0 * pi));
   }
 
   /// Returns the distance of a certain point on the chart to the center of the
@@ -323,16 +323,16 @@ abstract class PieRadarChartPainter<T extends ChartData<IDataSet<Entry>>?>
     double xDist = 0;
     double yDist = 0;
 
-    if (x > c.x!) {
-      xDist = x - c.x!;
+    if (x > c.x) {
+      xDist = x - c.x;
     } else {
-      xDist = c.x! - x;
+      xDist = c.x - x;
     }
 
-    if (y > c.y!) {
-      yDist = y - c.y!;
+    if (y > c.y) {
+      yDist = y - c.y;
     } else {
-      yDist = c.y! - y;
+      yDist = c.y - y;
     }
 
     // pythagoras

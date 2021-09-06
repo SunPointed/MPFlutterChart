@@ -83,7 +83,7 @@ class Legend extends ComponentBase {
 
   /// default constructor
   Legend() {
-    this.textSize = Utils.convertDpToPixel(10)!;
+    this.textSize = Utils.convertDpToPixel(10);
     this.xOffset = Utils.convertDpToPixel(5);
     this.yOffset = Utils.convertDpToPixel(3); // 2
   }
@@ -92,12 +92,9 @@ class Legend extends ComponentBase {
   ///
   /// @param entries
   Legend.fromList(List<LegendEntry> entries) {
-    this.textSize = Utils.convertDpToPixel(10)!;
+    this.textSize = Utils.convertDpToPixel(10);
     this.xOffset = Utils.convertDpToPixel(5);
     this.yOffset = Utils.convertDpToPixel(3);
-    if (entries == null) {
-      throw new Exception("entries array is NULL");
-    }
 
     this._entries = entries;
   }
@@ -121,7 +118,7 @@ class Legend extends ComponentBase {
     double? formToTextSpace = Utils.convertDpToPixel(_formToTextSpace);
     for (LegendEntry? entry in _entries) {
       final double formSize = Utils.convertDpToPixel(
-          double.nan == entry!.formSize ? _formSize : entry.formSize)!;
+          double.nan == entry!.formSize ? _formSize : entry.formSize);
       if (formSize > maxFormSize) maxFormSize = formSize;
 
       String? label = entry.label;
@@ -132,7 +129,7 @@ class Legend extends ComponentBase {
       if (length > max) max = length;
     }
 
-    return max + maxFormSize + formToTextSpace!;
+    return max + maxFormSize + formToTextSpace;
   }
 
   /// returns the maximum height in pixels across all legend labels
@@ -376,18 +373,18 @@ class Legend extends ComponentBase {
             if (!wasStacked) width = 0;
 
             if (drawingForm) {
-              if (wasStacked) width += stackSpace!;
-              width += formSize!;
+              if (wasStacked) width += stackSpace;
+              width += formSize;
             }
 
             // grouped forms have null labels
             if (label != null) {
               // make a step to the left
               if (drawingForm && !wasStacked)
-                width += formToTextSpace!;
+                width += formToTextSpace;
               else if (wasStacked) {
                 maxWidth = max(maxWidth, width);
-                maxHeight += labelLineHeight + yEntrySpace!;
+                maxHeight += labelLineHeight + yEntrySpace;
                 width = 0;
                 wasStacked = false;
               }
@@ -395,11 +392,11 @@ class Legend extends ComponentBase {
               width += Utils.calcTextWidth(labelpainter, label);
 
               if (i < entryCount - 1)
-                maxHeight += labelLineHeight + yEntrySpace!;
+                maxHeight += labelLineHeight + yEntrySpace;
             } else {
               wasStacked = true;
-              width += formSize!;
-              if (i < entryCount - 1) width += stackSpace!;
+              width += formSize;
+              if (i < entryCount - 1) width += stackSpace;
             }
 
             maxWidth = max(maxWidth, width);
@@ -414,7 +411,7 @@ class Legend extends ComponentBase {
         {
           double labelLineHeight = Utils.getLineHeight1(labelpainter!);
           double labelLineSpacing =
-              Utils.getLineSpacing1(labelpainter) + yEntrySpace!;
+              Utils.getLineSpacing1(labelpainter) + yEntrySpace;
           double contentWidth = viewPortHandler!.chartWidth() * _maxSizePercent;
 
           // Start calculating layout
@@ -443,18 +440,18 @@ class Legend extends ComponentBase {
               requiredWidth = 0;
             } else {
               // add the spacing appropriate for stacked labels/forms
-              requiredWidth += stackSpace!;
+              requiredWidth += stackSpace;
             }
 
             // grouped forms have null labels
             if (label != null) {
               _calculatedLabelSizes
                   .add(Utils.calcTextSize1(labelpainter, label));
-              requiredWidth += drawingForm ? formToTextSpace! + formSize! : 0;
+              requiredWidth += drawingForm ? formToTextSpace + formSize : 0;
               requiredWidth += _calculatedLabelSizes[i]!.width;
             } else {
               _calculatedLabelSizes.add(FSize.getInstance(0, 0));
-              requiredWidth += drawingForm ? formSize! : 0;
+              requiredWidth += drawingForm ? formSize : 0;
 
               if (stackedStartIndex == -1) {
                 // mark this index as we might want to break here later
@@ -472,9 +469,9 @@ class Legend extends ComponentBase {
                   // It simply fits
                   ||
                   (contentWidth - currentLineWidth >=
-                      requiredSpacing! + requiredWidth)) {
+                      requiredSpacing + requiredWidth)) {
                 // Expand current line
-                currentLineWidth += requiredSpacing! + requiredWidth;
+                currentLineWidth += requiredSpacing + requiredWidth;
               } else {
                 // It doesn't fit, we need to wrap a line
 
@@ -511,7 +508,7 @@ class Legend extends ComponentBase {
           break;
         }
     }
-    _neededHeight += yOffset!;
-    _neededWidth += xOffset!;
+    _neededHeight += yOffset;
+    _neededWidth += xOffset;
   }
 }
