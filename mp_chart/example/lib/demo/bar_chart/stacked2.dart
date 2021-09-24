@@ -94,7 +94,7 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
     set.setStackLabels(List()..add("Men")..add("Women"));
 
     controller.data = BarData(List()..add(set));
-    controller.data.barWidth = (8.5);
+    controller.data!.barWidth = (8.5);
 
     setState(() {});
   }
@@ -103,7 +103,7 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
     var desc = Description()..enabled = false;
     controller = HorizontalBarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft.enabled = (false);
+          axisLeft!.enabled = (false);
         },
         axisRightSettingFunction: (axisRight, controller) {
           axisRight
@@ -155,31 +155,31 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {}
+  void onValueSelected(Entry? e, Highlight? h) {}
 }
 
 class A extends ValueFormatter {
-  NumberFormat mFormat;
+  late NumberFormat mFormat;
 
   A() {
     mFormat = NumberFormat("###");
   }
 
   @override
-  String getFormattedValue1(double value) {
-    return mFormat.format(value.abs()) + "m";
+  String getFormattedValue1(double? value) {
+    return mFormat.format(value!.abs()) + "m";
   }
 }
 
 class B extends ValueFormatter {
-  NumberFormat mFormat;
+  late NumberFormat mFormat;
 
   B() {
     mFormat = NumberFormat("###");
   }
 
   @override
-  String getFormattedValue1(double value) {
-    return mFormat.format(value) + "-" + mFormat.format(value + 10);
+  String getFormattedValue1(double? value) {
+    return mFormat.format(value) + "-" + mFormat.format(value! + 10);
   }
 }

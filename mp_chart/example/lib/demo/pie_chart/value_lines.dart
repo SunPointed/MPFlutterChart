@@ -164,7 +164,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
     var desc = Description()..enabled = false;
     controller = PieChartController(
         legendSettingFunction: (legend, controller) {
-          _formatter.setPieChartPainter(controller);
+          _formatter.setPieChartPainter(controller as PieChartController);
           legend
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
@@ -254,5 +254,5 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {}
+  void onValueSelected(Entry? e, Highlight? h) {}
 }

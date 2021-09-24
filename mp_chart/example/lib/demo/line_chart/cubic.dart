@@ -138,21 +138,21 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
             ..axisLineColor = (ColorUtils.WHITE);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
           (controller as LineChartController).setViewPortOffsets(0, 0, 0, 0);
-          legend.enabled = (false);
-          var data = (controller as LineChartController).data;
+          legend!.enabled = (false);
+          var data = controller.data;
           if (data != null) {
-            var formatter = data.getDataSetByIndex(0).getFillFormatter();
+            var formatter = data.getDataSetByIndex(0)!.getFillFormatter();
             if (formatter is A) {
               formatter.setPainter(controller);
             }
           }
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis.enabled = (false);
+          xAxis!.enabled = (false);
         },
         drawGridBackground: true,
         dragXEnabled: true,
@@ -193,7 +193,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
     set1.setFillFormatter(A());
 
     // create a data object with the data sets
-    controller.data = LineData.fromList(List()..add(set1))
+    controller!.data = LineData.fromList(List()..add(set1))
       ..setValueTypeface(Util.LIGHT)
       ..setValueTextSize(9)
       ..setDrawValues(false);
@@ -202,8 +202,8 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
   }
 
   Widget _initLineChart() {
-    var lineChart = LineChart(controller);
-    controller.animator
+    var lineChart = LineChart(controller!);
+    controller!.animator
       ..reset()
       ..animateXY1(2000, 2000);
     return lineChart;
@@ -211,7 +211,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
 }
 
 class A implements IFillFormatter {
-  LineChartController _controller;
+  late LineChartController _controller;
 
   void setPainter(LineChartController controller) {
     _controller = controller;
@@ -219,7 +219,7 @@ class A implements IFillFormatter {
 
   @override
   double getFillLinePosition(
-      ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return _controller?.painter?.axisLeft?.axisMinimum;
+      ILineDataSet dataSet, LineDataProvider? dataProvider) {
+    return _controller?.painter?.axisLeft?.axisMinimum!;
   }
 }

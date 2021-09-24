@@ -23,7 +23,7 @@ class BarChartSine extends StatefulWidget {
 }
 
 class BarChartSineState extends BarActionState<BarChartSine> {
-  List<BarEntry> _data;
+  List<BarEntry>? _data;
   var random = Random(1);
   int _count = 150;
 
@@ -37,7 +37,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
         var datas = lines[i].split("#");
         var x = double.parse(datas[1]);
         var y = double.parse(datas[0]);
-        _data.add(BarEntry(x: x, y: y));
+        _data!.add(BarEntry(x: x, y: y));
       }
       _initBarData(_count);
     });
@@ -137,7 +137,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
             ..xEntrySpace = (4);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis.enabled = (false);
+          xAxis!.enabled = (false);
         },
         drawGridBackground: false,
         dragXEnabled: true,
@@ -156,7 +156,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
 
     List<BarEntry> entries = List();
     for (int i = 0; i < count; i++) {
-      entries.add(_data[i]);
+      entries.add(_data![i]);
     }
 
     BarDataSet set = BarDataSet(entries, "Sinus Function");

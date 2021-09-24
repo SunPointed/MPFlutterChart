@@ -182,7 +182,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
             ..setAxisMinimum(0);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
           legend
@@ -196,7 +196,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
             ..xEntrySpace = (6);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis.position = (XAxisPosition.TOP);
+          xAxis!.position = (XAxisPosition.TOP);
         },
         drawGridBackground: false,
         dragXEnabled: true,
@@ -217,5 +217,5 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {}
+  void onValueSelected(Entry? e, Highlight? h) {}
 }

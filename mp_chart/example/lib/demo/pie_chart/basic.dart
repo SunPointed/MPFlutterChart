@@ -165,7 +165,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
       ..enabled = true;
     controller = PieChartController(
         legendSettingFunction: (legend, controller) {
-          _formatter.setPieChartPainter(controller);
+          _formatter.setPieChartPainter(controller as PieChartController);
           legend
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
@@ -245,7 +245,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {}
+  void onValueSelected(Entry? e, Highlight? h) {}
 
   String _generateCenterSpannableText() {
     return "basic pie chart";

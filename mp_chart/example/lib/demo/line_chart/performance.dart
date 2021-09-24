@@ -20,7 +20,7 @@ class LineChartPerformance extends StatefulWidget {
 
 class LineChartPerformanceState
     extends SimpleActionState<LineChartPerformance> {
-  LineChartController _controller;
+  late LineChartController _controller;
   var random = Random(1);
   double _range = 100.0;
   int _count = 0;
@@ -94,13 +94,13 @@ class LineChartPerformanceState
     var desc = Description()..enabled = false;
     _controller = LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft.drawGridLines = (false);
+          axisLeft!.drawGridLines = (false);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.enabled = (false);
+          legend!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
           xAxis

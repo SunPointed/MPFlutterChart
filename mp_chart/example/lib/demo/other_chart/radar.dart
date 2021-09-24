@@ -76,7 +76,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
             ..typeface = Util.LIGHT
             ..xEntrySpace = (7)
             ..yEntrySpace = (5)
-            ..formSize = Utils.convertDpToPixel(25)
+            ..formSize = Utils.convertDpToPixel(25)!
             ..textColor = (ColorUtils.RED);
         },
         xAxisSettingFunction: (xAxis, controller) {
@@ -166,7 +166,7 @@ class A extends ValueFormatter {
     ..add("Pizza");
 
   @override
-  String getFormattedValue1(double value) {
-    return mActivities[value.toInt() % mActivities.length];
+  String getFormattedValue1(double? value) {
+    return mActivities[value!.toInt() % mActivities.length];
   }
 }

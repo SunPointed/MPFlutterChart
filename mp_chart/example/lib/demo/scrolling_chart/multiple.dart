@@ -104,13 +104,13 @@ class ScrollingChartMultipleState
   }
 
   Widget _renderItem(int index) {
-    Chart chart;
+    Chart? chart;
     if (_controllers[index] is LineChartController) {
-      chart = _getLineChart(_controllers[index]);
+      chart = _getLineChart(_controllers[index] as LineChartController);
     } else if (_controllers[index] is BarChartController) {
-      chart = _getBarChart(_controllers[index]);
+      chart = _getBarChart(_controllers[index] as BarChartController);
     } else if (_controllers[index] is PieChartController) {
-      chart = _getPieChart(_controllers[index]);
+      chart = _getPieChart(_controllers[index] as PieChartController);
     }
 
     return Container(height: 200, child: chart);
@@ -225,7 +225,7 @@ class ScrollingChartMultipleState
     List<Entry> values2 = List();
 
     for (int i = 0; i < 12; i++) {
-      values2.add(Entry(x: i.toDouble(), y: values1[i].y - 30));
+      values2.add(Entry(x: i.toDouble(), y: values1[i].y! - 30));
     }
 
     LineDataSet d2 = LineDataSet(values2, "New DataSet $cnt, (2)");

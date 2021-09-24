@@ -152,10 +152,10 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
     var desc = Description()..enabled = false;
     controller = BarChartController(
       axisLeftSettingFunction: (axisLeft, controller) {
-        axisLeft.drawGridLines = false;
+        axisLeft!.drawGridLines = false;
       },
       legendSettingFunction: (legend, controller) {
-        legend.enabled = false;
+        legend!.enabled = false;
       },
       xAxisSettingFunction: (xAxis, controller) {
         xAxis

@@ -19,7 +19,7 @@ class LineChartColorful extends StatefulWidget {
 }
 
 class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
-  List<LineChartController> _controllers = List(4);
+  List<LineChartController?> _controllers = List(4);
   var random = Random(1);
   int _count = 36;
   double _range = 100.0;
@@ -54,19 +54,19 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
-                child: getLineChart(_controllers[0]),
+                child: getLineChart(_controllers[0]!),
                 flex: 1,
               ),
               Expanded(
-                child: getLineChart(_controllers[1]),
+                child: getLineChart(_controllers[1]!),
                 flex: 1,
               ),
               Expanded(
-                child: getLineChart(_controllers[2]),
+                child: getLineChart(_controllers[2]!),
                 flex: 1,
               ),
               Expanded(
-                child: getLineChart(_controllers[3]),
+                child: getLineChart(_controllers[3]!),
                 flex: 1,
               ),
             ],
@@ -84,9 +84,9 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
 
   void _initLineData(int count, double range) {
     for (int i = 0; i < _controllers.length; i++) {
-      _controllers[i].data = _getData(36, 100);
-      _controllers[i].data.setValueTypeface(Util.BOLD);
-      (_controllers[i].data.getDataSetByIndex(0) as LineDataSet)
+      _controllers[i]!.data = _getData(36, 100);
+      _controllers[i]!.data!.setValueTypeface(Util.BOLD);
+      (_controllers[i]!.data!.getDataSetByIndex(0) as LineDataSet)
           .setCircleHoleColor(_colors[i % _colors.length]);
     }
   }
@@ -126,14 +126,14 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
             ..spacePercentBottom = (40);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.enabled = (false);
+          legend!.enabled = (false);
           (controller as LineChartController).setViewPortOffsets(0, 0, 0, 0);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis.enabled = (false);
+          xAxis!.enabled = (false);
         },
         drawGridBackground: true,
         dragXEnabled: true,

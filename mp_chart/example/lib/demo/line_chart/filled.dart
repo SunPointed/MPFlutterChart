@@ -22,7 +22,7 @@ class LineChartFilled extends StatefulWidget {
 }
 
 class LineChartFilledState extends SimpleActionState<LineChartFilled> {
-  LineChartController _controller;
+  late LineChartController _controller;
   var random = Random(1);
   int _count = 45;
   double _range = 100.0;
@@ -135,27 +135,27 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
             ..drawGridLines = (false);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.enabled = (false);
+          legend!.enabled = (false);
           var formatter1 = (controller as LineChartController)
-              .data
-              .getDataSetByIndex(0)
+              .data!
+              .getDataSetByIndex(0)!
               .getFillFormatter();
           if (formatter1 is A) {
             formatter1.setPainter(controller);
           }
-          var formatter2 = (controller as LineChartController)
-              .data
-              .getDataSetByIndex(1)
+          var formatter2 = controller
+              .data!
+              .getDataSetByIndex(1)!
               .getFillFormatter();
           if (formatter2 is B) {
             formatter2.setPainter(controller);
           }
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis.enabled = (false);
+          xAxis!.enabled = (false);
         },
         drawBorders: true,
         drawGridBackground: true,
@@ -217,7 +217,7 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
 
     // create a data object with the data sets
     _controller.data = LineData.fromList(List()..add(set1)..add(set2));
-    _controller.data.setDrawValues(false);
+    _controller.data!.setDrawValues(false);
 
     setState(() {});
   }
@@ -226,7 +226,7 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
 }
 
 class A implements IFillFormatter {
-  LineChartController _controller;
+  late LineChartController _controller;
 
   void setPainter(LineChartController controller) {
     _controller = controller;
@@ -234,13 +234,13 @@ class A implements IFillFormatter {
 
   @override
   double getFillLinePosition(
-      ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return _controller?.painter?.axisLeft?.axisMinimum;
+      ILineDataSet dataSet, LineDataProvider? dataProvider) {
+    return _controller?.painter?.axisLeft?.axisMinimum!;
   }
 }
 
 class B implements IFillFormatter {
-  LineChartController _controller;
+  late LineChartController _controller;
 
   void setPainter(LineChartController controller) {
     _controller = controller;
@@ -248,7 +248,7 @@ class B implements IFillFormatter {
 
   @override
   double getFillLinePosition(
-      ILineDataSet dataSet, LineDataProvider dataProvider) {
-    return _controller?.painter?.axisLeft?.axisMaximum;
+      ILineDataSet dataSet, LineDataProvider? dataProvider) {
+    return _controller?.painter?.axisLeft?.axisMaximum!;
   }
 }

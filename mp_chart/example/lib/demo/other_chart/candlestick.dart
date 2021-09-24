@@ -136,10 +136,10 @@ class OtherChartCandlestickState
             ..drawAxisLine = (false);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.enabled = (false);
+          legend!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
           xAxis

@@ -94,7 +94,7 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
             ..setGranularity(1)
             ..setValueFormatter(A())
             ..setAxisMaximum(
-                controller.data == null ? 0 : controller.data.xMax + 0.25);
+                controller.data == null ? 0 : controller.data!.xMax! + 0.25);
         },
         drawGridBackground: false,
         drawBarShadow: false,
@@ -275,7 +275,7 @@ final List<String> months = List()
 
 class A extends ValueFormatter {
   @override
-  String getFormattedValue1(double value) {
-    return months[value.toInt() % months.length];
+  String getFormattedValue1(double? value) {
+    return months[value!.toInt() % months.length];
   }
 }

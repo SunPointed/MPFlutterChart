@@ -173,10 +173,10 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
             ..setAxisMinimum(-50);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.shape = (LegendForm.LINE);
+          legend!.shape = (LegendForm.LINE);
         },
         xAxisSettingFunction: (xAxis, controller) {
           xAxis
@@ -249,14 +249,14 @@ class LineChartBasicState extends LineActionState<LineChartBasic> {
     dataSets.add(set1); // add the data sets
 
     // create a data object with the data sets
-    controller.data = LineData.fromList(dataSets);
+    controller!.data = LineData.fromList(dataSets);
 
     setState(() {});
   }
 
   Widget _initLineChart() {
-    var lineChart = LineChart(controller);
-    controller.animator
+    var lineChart = LineChart(controller!);
+    controller!.animator
       ..reset()
       ..animateX1(1500);
     return lineChart;

@@ -178,7 +178,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..drawGridLines = false
             ..setGranularity(1.0)
             ..setLabelCount1(7)
-            ..setValueFormatter(DayAxisValueFormatter(controller));
+            ..setValueFormatter(DayAxisValueFormatter(controller as BarLineScatterCandleBubbleController<BarLineChartBasePainter<BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<Entry?>>?>>));
         },
         selectionListener: this,
         drawBarShadow: false,
@@ -257,7 +257,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {
+  void onValueSelected(Entry? e, Highlight? h) {
 //    if (e == null)
 //      return;
 //
@@ -278,7 +278,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
 
 class MyChartTransListener with ChartTransListener {
   @override
-  void scale(double scaleX, double scaleY, double x, double y) {
+  void scale(double scaleX, double scaleY, double? x, double? y) {
     print("scale scaleX: $scaleX, scaleY: $scaleY, x: $x, y: $y");
   }
 
@@ -290,47 +290,47 @@ class MyChartTransListener with ChartTransListener {
 
 class MyTouchEventListener with OnTouchEventListener {
   @override
-  void onDoubleTapUp(double x, double y) {
+  void onDoubleTapUp(double? x, double? y) {
     print("onDoubleTapUp x: $x, y: $y");
   }
 
   @override
-  void onMoveEnd(double x, double y) {
+  void onMoveEnd(double? x, double? y) {
     print("onMoveEnd x: $x, y: $y");
   }
 
   @override
-  void onMoveStart(double x, double y) {
+  void onMoveStart(double? x, double? y) {
     print("onMoveStart x: $x, y: $y");
   }
 
   @override
-  void onMoveUpdate(double x, double y) {
+  void onMoveUpdate(double? x, double? y) {
     print("onMoveUpdate x: $x, y: $y");
   }
 
   @override
-  void onScaleEnd(double x, double y) {
+  void onScaleEnd(double? x, double? y) {
     print("onScaleEnd x: $x, y: $y");
   }
 
   @override
-  void onScaleStart(double x, double y) {
+  void onScaleStart(double? x, double? y) {
     print("onScaleStart x: $x, y: $y");
   }
 
   @override
-  void onScaleUpdate(double x, double y) {
+  void onScaleUpdate(double? x, double? y) {
     print("onScaleUpdate x: $x, y: $y");
   }
 
   @override
-  void onSingleTapUp(double x, double y) {
+  void onSingleTapUp(double? x, double? y) {
     print("onSingleTapUp x: $x, y: $y");
   }
 
   @override
-  void onTapDown(double x, double y) {
+  void onTapDown(double? x, double? y) {
     print("onTapDown x: $x, y: $y");
   }
 
@@ -340,17 +340,17 @@ class MyTouchEventListener with OnTouchEventListener {
   }
 
   @override
-  void onDragEnd(double x, double y) {
+  void onDragEnd(double? x, double? y) {
     print("onDragEnd x: $x, y: $y");
   }
 
   @override
-  void onDragStart(double x, double y) {
+  void onDragStart(double? x, double? y) {
     print("onDragStart x: $x, y: $y");
   }
 
   @override
-  void onDragUpdate(double x, double y) {
+  void onDragUpdate(double? x, double? y) {
     print("onDragUpdate x: $x, y: $y");
   }
 }

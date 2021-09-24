@@ -46,7 +46,7 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
             left: 0,
             top: 0,
             bottom: 100,
-            child: LineChart(controller)),
+            child: LineChart(controller!)),
         Positioned(
           left: 0,
           right: 0,
@@ -126,7 +126,7 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {}
+  void onValueSelected(Entry? e, Highlight? h) {}
 
   void _initController() {
     var desc = Description()..enabled = false;
@@ -137,10 +137,10 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
             ..inverted = (true);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.shape = (LegendForm.LINE);
+          legend!.shape = (LegendForm.LINE);
         },
         xAxisSettingFunction: (xAxis, controller) {
           xAxis
@@ -169,7 +169,7 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
 
     // sort by x-value
     entries.sort((entry1, entry2) {
-      double diff = entry1.x - entry2.x;
+      double diff = entry1.x! - entry2.x!;
 
       if (diff == 0)
         return 0;
@@ -187,7 +187,7 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
     set1.setCircleRadius(4);
 
     // create a data object with the data sets
-    controller.data = LineData.fromList(List()..add(set1));
+    controller!.data = LineData.fromList(List()..add(set1));
 
     setState(() {});
   }

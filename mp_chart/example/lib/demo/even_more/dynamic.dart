@@ -25,7 +25,7 @@ class EvenMoreDynamic extends StatefulWidget {
 
 class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
     implements OnChartValueSelectedListener {
-  LineChartController controller;
+  LineChartController? controller;
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
           left: 0,
           top: 0,
           bottom: 0,
-          child: LineChart(controller),
+          child: LineChart(controller!),
         ),
       ],
     );
@@ -51,13 +51,13 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   @override
   getBuilder() {
     return (BuildContext context) => <PopupMenuItem<String>>[
-          item('View on GitHub', 'A'),
-          item('Add Entry', 'B'),
-          item('Remove Entry', 'C'),
-          item('Add Data Set', 'D'),
-          item('Remove Data Set', 'E'),
-          item('Clear chart', 'F'),
-          item('Save to Gallery', 'G'),
+          item('View on GitHub', 'A') as PopupMenuItem<String>,
+          item('Add Entry', 'B') as PopupMenuItem<String>,
+          item('Remove Entry', 'C') as PopupMenuItem<String>,
+          item('Add Data Set', 'D') as PopupMenuItem<String>,
+          item('Remove Data Set', 'E') as PopupMenuItem<String>,
+          item('Clear chart', 'F') as PopupMenuItem<String>,
+          item('Save to Gallery', 'G') as PopupMenuItem<String>,
         ];
   }
 
@@ -68,7 +68,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
 
   @override
   void itemClick(String action) {
-    if (controller.state == null) {
+    if (controller!.state == null) {
       return;
     }
 
@@ -78,27 +78,27 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
         break;
       case 'B':
         _addEntry();
-        controller.state.setStateIfNotDispose();
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'C':
         _removeLastEntry();
-        controller.state.setStateIfNotDispose();
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'D':
         _addDataSet();
-        controller.state.setStateIfNotDispose();
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'E':
         _removeDataSet();
-        controller.state.setStateIfNotDispose();
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'F':
-        controller.data = null;
-        controller.state.setStateIfNotDispose();
+        controller!.data = null;
+        controller!.state!.setStateIfNotDispose();
         break;
       case 'G':
         captureImg(() {
-          controller.state.capture();
+          controller!.state!.capture();
         });
         break;
     }
@@ -124,20 +124,20 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {}
+  void onValueSelected(Entry? e, Highlight? h) {}
 
   final List<Color> colors = ColorUtils.VORDIPLOM_COLORS;
   var random = Random(1);
 
   void _addEntry() {
-    LineData data = controller?.data;
+    LineData? data = controller?.data;
 
     if (data == null) {
       data = LineData();
-      controller.data = data;
+      controller!.data = data;
     }
 
-    ILineDataSet set = data.getDataSetByIndex(0);
+    ILineDataSet? set = data.getDataSetByIndex(0);
     // set.addEntry(...); // can be called as well
 
     if (set == null) {
@@ -148,7 +148,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
     // choose a random dataSet
     int randomDataSetIndex =
         (random.nextDouble() * data.getDataSetCount()).toInt();
-    ILineDataSet randomSet = data.getDataSetByIndex(randomDataSetIndex);
+    ILineDataSet randomSet = data.getDataSetByIndex(randomDataSetIndex)!;
     double value = (random.nextDouble() * 50) + 50 * (randomDataSetIndex + 1);
 
 
@@ -161,10 +161,10 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
         randomDataSetIndex);
     data.notifyDataChanged();
 
-    controller.setVisibleXRangeMaximum(6);
-    controller.moveViewTo(
+    controller!.setVisibleXRangeMaximum(6);
+    controller!.moveViewTo(
         (data.getEntryCount() - 7).toDouble(), 50, AxisDependency.LEFT);
-    controller.state?.setStateIfNotDispose();
+    controller!.state?.setStateIfNotDispose();
   }
 
   LineDataSet _createSet() {
@@ -180,24 +180,24 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   }
 
   void _removeLastEntry() {
-    LineData data = controller?.data;
+    LineData? data = controller?.data;
     if (data != null) {
-      ILineDataSet set = data.getDataSetByIndex(0);
+      ILineDataSet? set = data.getDataSetByIndex(0);
       if (set != null) {
         Entry e = set.getEntryForXValue2(
-            (set.getEntryCount() - 1).toDouble(), double.nan);
+            (set.getEntryCount() - 1).toDouble(), double.nan)!;
         data.removeEntry1(e, 0);
       }
     }
   }
 
   void _addDataSet() {
-    LineData data = controller?.data;
+    LineData? data = controller?.data;
     if (data == null) {
-      controller.data = LineData();
+      controller!.data = LineData();
     } else {
       int count = (data.getDataSetCount() + 1);
-      int amount = data.getDataSetByIndex(0).getEntryCount();
+      int amount = data.getDataSetByIndex(0)!.getEntryCount();
       List<Entry> values = List();
       for (int i = 0; i < amount; i++) {
         values.add(new Entry(
@@ -217,9 +217,9 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   }
 
   void _removeDataSet() {
-    LineData data = controller.data;
+    LineData? data = controller!.data;
     if (data != null) {
-      data.removeDataSet1(data.getDataSetByIndex(data.getDataSetCount() - 1));
+      data.removeDataSet1(data.getDataSetByIndex(data.getDataSetCount() - 1)!);
     }
   }
 }

@@ -22,7 +22,7 @@ class ScrollingChartTallBar extends StatefulWidget {
 
 class ScrollingChartTallBarState
     extends SimpleActionState<ScrollingChartTallBar> {
-  BarChartController _controller;
+  late BarChartController _controller;
   var random = Random(1);
   bool _isParentMove = true;
   double _curX = 0.0;
@@ -132,10 +132,10 @@ class ScrollingChartTallBarState
     var desc = Description()..enabled = false;
     _controller = BarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft.drawGridLines = (false);
+          axisLeft!.drawGridLines = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.enabled = (false);
+          legend!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
           xAxis

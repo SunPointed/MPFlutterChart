@@ -140,7 +140,7 @@ class OtherChartScatterPlotState
             ..typeface = Util.LIGHT;
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
           legend
@@ -169,7 +169,7 @@ class OtherChartScatterPlotState
   }
 
   void _initScatterData(int count, double range) async {
-    List<ui.Image> imgs = List(3);
+    List<ui.Image?> imgs = List(3);
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
     imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
     imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
@@ -217,7 +217,7 @@ class OtherChartScatterPlotState
 
     // create a data object with the data sets
     controller.data = ScatterData.fromList(dataSets);
-    controller.data.setValueTypeface(Util.LIGHT);
+    controller.data!.setValueTypeface(Util.LIGHT);
 
     setState(() {});
   }
@@ -226,7 +226,7 @@ class OtherChartScatterPlotState
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {}
+  void onValueSelected(Entry? e, Highlight? h) {}
 }
 
 class CustomScatterShapeRenderer implements IShapeRenderer {
@@ -234,13 +234,13 @@ class CustomScatterShapeRenderer implements IShapeRenderer {
   void renderShape(
       Canvas c,
       IScatterDataSet dataSet,
-      ViewPortHandler viewPortHandler,
-      double posX,
-      double posY,
-      Paint renderPaint) {
+      ViewPortHandler? viewPortHandler,
+      double? posX,
+      double? posY,
+      Paint? renderPaint) {
     final double shapeHalf = dataSet.getScatterShapeSize() / 2;
 
-    c.drawLine(Offset(posX - shapeHalf, posY - shapeHalf),
-        Offset(posX + shapeHalf, posY + shapeHalf), renderPaint);
+    c.drawLine(Offset(posX! - shapeHalf, posY! - shapeHalf),
+        Offset(posX + shapeHalf, posY + shapeHalf), renderPaint!);
   }
 }

@@ -251,7 +251,7 @@ class BarChartHorizontalState
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {
+  void onValueSelected(Entry? e, Highlight? h) {
 //    if (e == null)
 //      return;
 //
