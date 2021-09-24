@@ -11,8 +11,8 @@ class PieData extends ChartData<IPieDataSet> {
   ///
   /// @param dataSet
   void setDataSet(IPieDataSet dataSet) {
-    dataSets.clear();
-    dataSets.add(dataSet);
+    dataSets!.clear();
+    dataSets!.add(dataSet);
     notifyDataChanged();
   }
 
@@ -21,7 +21,7 @@ class PieData extends ChartData<IPieDataSet> {
   ///
   /// @return
   IPieDataSet getDataSet() {
-    return dataSets[0];
+    return dataSets![0];
   }
 
   /// The PieData object can only have one DataSet. Use getDataSet() method instead.
@@ -29,22 +29,22 @@ class PieData extends ChartData<IPieDataSet> {
   /// @param index
   /// @return
   @override
-  IPieDataSet getDataSetByIndex(int index) {
+  IPieDataSet? getDataSetByIndex(int? index) {
     return index == 0 ? getDataSet() : null;
   }
 
   @override
-  IPieDataSet getDataSetByLabel(String label, bool ignorecase) {
+  IPieDataSet? getDataSetByLabel(String label, bool ignorecase) {
     return ignorecase
-        ? DartAdapterUtils.equalsIgnoreCase(label, dataSets[0].getLabel())
-            ? dataSets[0]
+        ? DartAdapterUtils.equalsIgnoreCase(label, dataSets![0].getLabel())
+            ? dataSets![0]
             : null
-        : (label == dataSets[0].getLabel()) ? dataSets[0] : null;
+        : (label == dataSets![0].getLabel()) ? dataSets![0] : null;
   }
 
   @override
-  Entry getEntryForHighlight(Highlight highlight) {
-    return getDataSet().getEntryForIndex(highlight.x.toInt());
+  Entry? getEntryForHighlight(Highlight? highlight) {
+    return getDataSet().getEntryForIndex(highlight!.x!.toInt());
   }
 
   /// Returns the sum of all values in this PieData object.
@@ -53,7 +53,7 @@ class PieData extends ChartData<IPieDataSet> {
   double getYValueSum() {
     double sum = 0;
     for (int i = 0; i < getDataSet().getEntryCount(); i++)
-      sum += getDataSet().getEntryForIndex(i).getValue();
+      sum += getDataSet().getEntryForIndex(i)!.getValue()!;
     return sum;
   }
 }

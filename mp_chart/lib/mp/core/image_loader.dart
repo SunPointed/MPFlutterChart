@@ -10,7 +10,7 @@ abstract class ImageLoader {
     final ByteData data = await rootBundle.load(path);
     List<int> img = Uint8List.view(data.buffer);
     final Completer<Image> completer = Completer();
-    decodeImageFromList(img, (Image img) {
+    decodeImageFromList(img as Uint8List, (Image img) {
       return completer.complete(img);
     });
     return await completer.future;

@@ -18,15 +18,15 @@ class DayAxisValueFormatter extends ValueFormatter {
     ..add("Nov")
     ..add("Dec");
 
-  BarLineScatterCandleBubbleController _controller;
+  late BarLineScatterCandleBubbleController _controller;
 
   DayAxisValueFormatter(BarLineScatterCandleBubbleController controller) {
     this._controller = controller;
   }
 
   @override
-  String getFormattedValue1(double value) {
-    int days = value.toInt();
+  String getFormattedValue1(double? value) {
+    int days = value!.toInt();
 
     int year = determineYear(days);
 
@@ -34,7 +34,7 @@ class DayAxisValueFormatter extends ValueFormatter {
     String monthName = _months[month % _months.length];
     String yearName = year.toString();
 
-    if (_controller.painter.getVisibleXRange() > 30 * 6) {
+    if (_controller.painter!.getVisibleXRange() > 30 * 6) {
       return monthName + " " + yearName;
     } else {
       int dayOfMonth = determineDayOfMonth(days, month + 12 * (year - 2016));

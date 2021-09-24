@@ -12,23 +12,23 @@ class HorizontalBarBuffer extends BarBuffer {
     double barWidthHalf = barWidth / 2;
 
     for (int i = 0; i < size; i++) {
-      BarEntry e = data.getEntryForIndex(i);
+      BarEntry? e = data.getEntryForIndex(i);
 
       if (e == null) continue;
 
-      double x = e.x;
-      double y = e.y;
-      List<double> vals = e.yVals;
+      double? x = e.x;
+      double? y = e.y;
+      List<double>? vals = e.yVals;
 
       if (!containsStacks || vals == null) {
-        double bottom = x - barWidthHalf;
+        double bottom = x! - barWidthHalf;
         double top = x + barWidthHalf;
-        double left, right;
+        double? left, right;
         if (inverted) {
-          left = y >= 0 ? y : 0;
+          left = y! >= 0 ? y : 0;
           right = y <= 0 ? y : 0;
         } else {
-          right = y >= 0 ? y : 0;
+          right = y! >= 0 ? y : 0;
           left = y <= 0 ? y : 0;
         }
 
@@ -41,7 +41,7 @@ class HorizontalBarBuffer extends BarBuffer {
         addBar(left, top, right, bottom);
       } else {
         double posY = 0;
-        double negY = -e.negativeSum;
+        double negY = -e.negativeSum!;
         double yStart = 0;
 
         // fill the stack
@@ -58,7 +58,7 @@ class HorizontalBarBuffer extends BarBuffer {
             negY += value.abs();
           }
 
-          double bottom = x - barWidthHalf;
+          double bottom = x! - barWidthHalf;
           double top = x + barWidthHalf;
           double left, right;
           if (inverted) {

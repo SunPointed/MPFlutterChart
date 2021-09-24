@@ -5,7 +5,7 @@ author: SunPointed<410338643@qq.com>
 homepage: https://github.com/SunPointed/MPFlutterChart
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   intl: ^0.17.0
@@ -13,7 +13,11 @@ dependencies:
   screenshot: ^1.0.0-nullsafety.1
   path_drawing: ^0.5.0
   image_gallery_saver: ^1.6.9
-  optimized_gesture_detector: ^0.0.6
+  optimized_gesture_detector:
+    git:
+      url: https://github.com/tkakoi-orphe/OptimizedGestureDetector.git
+      ref: null-safety
+      path: ./
   vector_math: ^2.1.0
   flutter:
     sdk: flutter

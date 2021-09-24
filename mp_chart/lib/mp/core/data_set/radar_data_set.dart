@@ -96,10 +96,10 @@ class RadarDataSet extends LineRadarDataSet<RadarEntry>
   }
 
   @override
-  DataSet<RadarEntry> copy1() {
+  DataSet<RadarEntry?> copy1() {
     List<RadarEntry> entries = List<RadarEntry>();
-    for (int i = 0; i < values.length; i++) {
-      entries.add(values[i].copy());
+    for (int i = 0; i < values!.length; i++) {
+      entries.add(values![i]!.copy());
     }
     RadarDataSet copied = RadarDataSet(entries, getLabel());
     copy(copied);
@@ -121,7 +121,7 @@ class RadarDataSet extends LineRadarDataSet<RadarEntry>
   }
 
   @override
-  bool addEntryByIndex(int index, RadarEntry e) {
+  bool addEntryByIndex(int index, RadarEntry? e) {
     return false;
   }
 }

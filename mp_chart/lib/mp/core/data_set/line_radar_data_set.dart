@@ -21,7 +21,7 @@ abstract class LineRadarDataSet<T extends Entry>
   int _fillAlpha = 85;
 
   /// the width of the drawn data lines
-  double _lineWidth = 2.5;
+  double? _lineWidth = 2.5;
 
   /// if true, the data will also be drawn filled
   bool _drawFilled = false;
@@ -90,7 +90,7 @@ abstract class LineRadarDataSet<T extends Entry>
   }
 
   @override
-  double getLineWidth() {
+  double? getLineWidth() {
     return _lineWidth;
   }
 

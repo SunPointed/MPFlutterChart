@@ -32,5 +32,5 @@ mixin IMarker {
   /// @param canvas
   /// @param posX
   /// @param posY
-  void draw(Canvas canvas, double posX, double posY);
+  void draw(Canvas canvas, double? posX, double? posY);
 }

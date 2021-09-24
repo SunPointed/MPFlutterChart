@@ -38,7 +38,7 @@ class ScreenUtils {
   double _statusBarHeight = 0.0;
   double _bottomBarHeight = 0.0;
   double _appBarHeight = 0.0;
-  MediaQueryData _mediaQueryData;
+  MediaQueryData? _mediaQueryData;
 
   static final ScreenUtils _singleton = ScreenUtils();
 
@@ -84,7 +84,7 @@ class ScreenUtils {
   double get bottomBarHeight => _bottomBarHeight;
 
   /// media Query Data
-  MediaQueryData get mediaQueryData => _mediaQueryData;
+  MediaQueryData? get mediaQueryData => _mediaQueryData;
 
   /// screen width
   /// 当前屏幕 宽
@@ -193,8 +193,8 @@ class ScreenUtils {
   /// returns the font size after adaptation according to the screen density.
   /// 返回根据屏幕宽适配后字体尺寸
   /// fontSize 字体尺寸
-  double getSp(double fontSize) {
+  double? getSp(double? fontSize) {
     if (_screenDensity == 0.0) return fontSize;
-    return fontSize * _screenWidth / _designW;
+    return fontSize! * _screenWidth / _designW;
   }
 }

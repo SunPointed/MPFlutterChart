@@ -38,8 +38,8 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
   @override
   DataSet<BarEntry> copy1() {
     List<BarEntry> entries = List();
-    for (int i = 0; i < values.length; i++) {
-      entries.add(values[i].copy());
+    for (int i = 0; i < values!.length; i++) {
+      entries.add(values![i]!.copy());
     }
     BarDataSet copied = BarDataSet(entries, getLabel());
     copy(copied);
@@ -64,7 +64,7 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
     _entryCountStacks = 0;
 
     for (int i = 0; i < yVals.length; i++) {
-      List<double> vals = yVals[i].yVals;
+      List<double>? vals = yVals[i].yVals;
 
       if (vals == null)
         _entryCountStacks++;
@@ -77,23 +77,23 @@ class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry>
   /// DataSet
   void calcStackSize(List<BarEntry> yVals) {
     for (int i = 0; i < yVals.length; i++) {
-      List<double> vals = yVals[i].yVals;
+      List<double>? vals = yVals[i].yVals;
 
       if (vals != null && vals.length > _stackSize) _stackSize = vals.length;
     }
   }
 
   @override
-  void calcMinMax1(BarEntry e) {
-    if (e != null && !e.y.isNaN) {
+  void calcMinMax1(BarEntry? e) {
+    if (e != null && !e.y!.isNaN) {
       if (e.yVals == null) {
-        if (e.y < getYMin()) yMin = e.y;
+        if (e.y! < getYMin()!) yMin = e.y;
 
-        if (e.y > getYMax()) yMax = e.y;
+        if (e.y! > getYMax()!) yMax = e.y;
       } else {
-        if (-e.negativeSum < getYMin()) yMin = -e.negativeSum;
+        if (-e.negativeSum! < getYMin()!) yMin = -e.negativeSum!;
 
-        if (e.positiveSum > getYMax()) yMax = e.positiveSum;
+        if (e.positiveSum! > getYMax()!) yMax = e.positiveSum;
       }
 
       calcMinMaxX1(e);

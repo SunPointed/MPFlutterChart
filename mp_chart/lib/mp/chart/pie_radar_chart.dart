@@ -13,24 +13,24 @@ abstract class PieRadarChart<C extends PieRadarController> extends Chart<C> {
 
 abstract class PieRadarChartState<T extends PieRadarChart>
     extends ChartState<T> {
-  Highlight lastHighlighted;
+  Highlight? lastHighlighted;
   MPPointF _touchStartPoint = MPPointF.getInstance1(0, 0);
   double _startAngle = 0.0;
 
   void _setGestureStartAngle(double x, double y) {
     if(widget.controller.rotateEnabled) {
-      _startAngle = widget.controller.painter.getAngleForPoint(x, y) -
-          widget.controller.painter.getRawRotationAngle();
+      _startAngle = widget.controller.painter!.getAngleForPoint(x, y) -
+          widget.controller.painter!.getRawRotationAngle()!;
     }
   }
 
   void _updateGestureRotation(double x, double y) {
     if(widget.controller.rotateEnabled) {
       double angle =
-          widget.controller.painter.getAngleForPoint(x, y) - _startAngle;
+          widget.controller.painter!.getAngleForPoint(x, y) - _startAngle;
       widget.controller.rawRotationAngle = angle;
       widget.controller.rotationAngle =
-          Utils.getNormalizedAngle(widget.controller.rawRotationAngle);
+          Utils.getNormalizedAngle(widget.controller.rawRotationAngle!);
     }
   }
 
@@ -39,8 +39,8 @@ abstract class PieRadarChartState<T extends PieRadarChart>
 
   @override
   void onSingleTapUp(TapUpDetails details) {
-    if (widget.controller.painter.highLightPerTapEnabled) {
-      Highlight h = widget.controller.painter.getHighlightByTouchPoint(
+    if (widget.controller.painter!.highLightPerTapEnabled) {
+      Highlight? h = widget.controller.painter!.getHighlightByTouchPoint(
           details.localPosition.dx, details.localPosition.dy);
       lastHighlighted = HighlightUtils.performHighlight(
           widget.controller.painter, h, lastHighlighted);
@@ -96,9 +96,9 @@ abstract class PieRadarChartState<T extends PieRadarChart>
 
   @override
   void updatePainter() {
-    if (widget.controller.painter.getData() != null &&
-        widget.controller.painter.getData().dataSets != null &&
-        widget.controller.painter.getData().dataSets.length > 0)
-      widget.controller.painter.highlightValue6(lastHighlighted, false);
+    if (widget.controller.painter!.getData() != null &&
+        widget.controller.painter!.getData()!.dataSets != null &&
+        widget.controller.painter!.getData()!.dataSets!.length > 0)
+      widget.controller.painter!.highlightValue6(lastHighlighted, false);
   }
 }
