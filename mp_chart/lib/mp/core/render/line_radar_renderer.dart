@@ -53,14 +53,14 @@ abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
       Color previousColor = renderPaint!.color;
 
       // set
-      renderPaint
+      renderPaint!
         ..style = PaintingStyle.fill
         ..color = Color(color);
 
       c.drawPath(filledPath, renderPaint!);
 
       // restore
-      renderPaint
+      renderPaint!
         ..style = previous
         ..color = previousColor;
 //    }
@@ -88,7 +88,7 @@ abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
       );
       Rect bounds = filledPath.getBounds();
       // set
-      renderPaint
+      renderPaint!
         ..style = PaintingStyle.fill
         ..shader = gradient.createShader(Rect.fromLTWH(
           bounds.left,
@@ -100,7 +100,7 @@ abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
       c.drawPath(filledPath, renderPaint!);
 
       // restore
-      renderPaint
+      renderPaint!
         ..style = previous
         ..color = previousColor;
 //    }

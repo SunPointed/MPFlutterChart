@@ -28,7 +28,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
   @override
   void initBuffers() {
     BarData barData = provider!.getBarData()!;
-    barBuffers = List(barData.getDataSetCount());
+    barBuffers = []..length = (barData.getDataSetCount());
 
     for (int i = 0; i < barBuffers!.length; i++) {
       IBarDataSet set = barData.getDataSetByIndex(i)!;
@@ -45,7 +45,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
   void drawDataSet(Canvas c, IBarDataSet dataSet, int index) {
     Transformer? trans = provider!.getTransformer(dataSet.getAxisDependency());
 
-    barBorderPaint
+    barBorderPaint!
       ..color = dataSet.getBarBorderColor()
       ..strokeWidth = Utils.convertDpToPixel(dataSet.getBarBorderWidth())!;
 
@@ -56,7 +56,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
 
     // draw the bar shadow before the values
     if (provider!.isDrawBarShadowEnabled()) {
-      shadowPaint..color = dataSet.getBarShadowColor();
+      shadowPaint!..color = dataSet.getBarShadowColor();
 
       BarData barData = provider!.getBarData()!;
 
@@ -107,7 +107,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
     final bool isSingleColor = dataSet.getColors()!.length == 1;
 
     if (isSingleColor) {
-      renderPaint..color = dataSet.getColor1();
+      renderPaint!..color = dataSet.getColor1();
     }
 
     for (int j = 0; j < buffer.size(); j += 4) {
@@ -118,7 +118,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
       if (!isSingleColor) {
         // Set the color for the currently drawn value. If the index
         // is out of bounds, reuse colors.
-        renderPaint..color = (dataSet.getColor2(j ~/ 4));
+        renderPaint!..color = (dataSet.getColor2(j ~/ 4));
       }
 
       c.drawRect(
@@ -290,7 +290,7 @@ class HorizontalBarChartRenderer extends BarChartRenderer {
                   c, Offset(px, py), entry.mIcon!, Size(15, 15), drawPaint!);
             }
           } else {
-            List<double?> transformed = List(vals.length * 2);
+            List<double?> transformed = []..length = (vals.length * 2);
 
             double posY = 0;
             double negY = -entry.negativeSum!;

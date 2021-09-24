@@ -184,7 +184,7 @@ class XAxisRenderer extends AxisRenderer {
     final double labelRotationAngleDegrees = _xAxis!.labelRotationAngle;
     bool centeringEnabled = _xAxis!.isCenterAxisLabelsEnabled();
 
-    List<double?> positions = List(_xAxis!.entryCount * 2);
+    List<double?> positions = []..length = (_xAxis!.entryCount * 2);
 
     for (int i = 0; i < positions.length; i += 2) {
       // only fill x values
@@ -219,7 +219,7 @@ class XAxisRenderer extends AxisRenderer {
           } else if (i == 0) {
             double width =
             Utils.calcTextWidth(axisLabelPaint!, label).toDouble();
-            x += width / 2;
+            x = x! + width / 2;
           }
         }
 
@@ -249,7 +249,7 @@ class XAxisRenderer extends AxisRenderer {
   }
 
   Path mRenderGridLinesPath = Path();
-  List<double?> mRenderGridLinesBuffer = List(2);
+  List<double?> mRenderGridLinesBuffer = []..length = 2;
 
   @override
   void renderGridLines(Canvas c) {
@@ -259,7 +259,7 @@ class XAxisRenderer extends AxisRenderer {
     c.clipRect(getGridClippingRect());
 
     if (mRenderGridLinesBuffer.length != axis!.entryCount * 2) {
-      mRenderGridLinesBuffer = List(_xAxis!.entryCount * 2);
+      mRenderGridLinesBuffer = []..length = (_xAxis!.entryCount * 2);
     }
     List<double?> positions = mRenderGridLinesBuffer;
 
@@ -320,7 +320,7 @@ class XAxisRenderer extends AxisRenderer {
     path.reset();
   }
 
-  List<double?> mRenderLimitLinesBuffer = List(2);
+  List<double?> mRenderLimitLinesBuffer = []..length = 2;
   Rect mLimitLineClippingRect = Rect.zero;
 
   /// Draws the LimitLines associated with this axis to the screen.
@@ -369,7 +369,7 @@ class XAxisRenderer extends AxisRenderer {
     }
   }
 
-  List<double?> _limitLineSegmentsBuffer = List(4);
+  List<double?> _limitLineSegmentsBuffer = []..length = 4;
   Path _limitLinePath = Path();
 
   void renderLimitLineLine(Canvas c, LimitLine limitLine,
@@ -385,7 +385,7 @@ class XAxisRenderer extends AxisRenderer {
     _limitLinePath.lineTo(
         _limitLineSegmentsBuffer[2]!, _limitLineSegmentsBuffer[3]!);
 
-    limitLinePaint
+    limitLinePaint!
       ..style = PaintingStyle.stroke
       ..color = limitLine.lineColor
       ..strokeWidth = limitLine.lineWidth!;

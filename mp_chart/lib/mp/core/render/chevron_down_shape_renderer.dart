@@ -16,7 +16,7 @@ class ChevronDownShapeRenderer implements IShapeRenderer {
       Paint? renderPaint) {
     final double shapeHalf = dataSet.getScatterShapeSize() / 2;
 
-    renderPaint
+    renderPaint!
       ..style = PaintingStyle.stroke
       ..strokeWidth = Utils.convertDpToPixel(1)!;
 

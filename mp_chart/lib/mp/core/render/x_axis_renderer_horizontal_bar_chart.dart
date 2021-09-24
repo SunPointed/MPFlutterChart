@@ -122,7 +122,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
     final double labelRotationAngleDegrees = xAxis!.labelRotationAngle;
     bool centeringEnabled = xAxis!.isCenterAxisLabelsEnabled();
 
-    List<double?> positions = List(xAxis!.entryCount * 2);
+    List<double?> positions = []..length = (xAxis!.entryCount * 2);
 
     for (int i = 0; i < positions.length; i += 2) {
       // only fill x values
@@ -231,7 +231,7 @@ class XAxisRendererHorizontalBarChart extends XAxisRenderer {
           viewPortHandler!.getContentRect().bottom + l.lineWidth!);
       c.clipRect(mLimitLineClippingRect);
 
-      limitLinePaint
+      limitLinePaint!
         ..style = PaintingStyle.stroke
         ..color = l.lineColor
         ..strokeWidth = l.lineWidth!;

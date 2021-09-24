@@ -42,7 +42,7 @@ class PieChartRenderer extends DataRenderer {
 
   // ignore: unused_field
   Rect _centerTextLastBounds = Rect.zero;
-  List<Rect> _rectBuffer = List()
+  List<Rect> _rectBuffer = <Rect>[]
     ..add(Rect.zero)
     ..add(Rect.zero)
     ..add(Rect.zero);
@@ -229,7 +229,7 @@ class PieChartRenderer extends DataRenderer {
       }
     }
 
-    renderPaint..color = _painter!.getHoleColor();
+    renderPaint!..color = _painter!.getHoleColor();
     c.drawCircle(Offset(center.x!, center.y!), radius, renderPaint!);
 
     final double? sliceSpace =
@@ -256,7 +256,7 @@ class PieChartRenderer extends DataRenderer {
       final bool accountForSliceSpacing =
           sliceSpace! > 0.0 && sliceAngle! <= 180.0;
 
-      renderPaint..color = dataSet.getColor2(j);
+      renderPaint!..color = dataSet.getColor2(j);
 
       final double sliceSpaceAngleOuter =
           visibleAngleCount == 1 ? 0.0 : sliceSpace / (Utils.FDEG2RAD * radius);
@@ -406,7 +406,7 @@ class PieChartRenderer extends DataRenderer {
       angle += sliceAngle * phaseX;
     }
 
-    renderPaint..color = _painter!.getHoleColor();
+    renderPaint!..color = _painter!.getHoleColor();
     c.drawCircle(
         Offset(center.x!, center.y!), mInnerRectBuffer.width / 2, renderPaint!);
 
@@ -477,7 +477,7 @@ class PieChartRenderer extends DataRenderer {
 
       int entryCount = dataSet.getEntryCount();
 
-      _valueLinePaint
+      _valueLinePaint!
         ..color = dataSet.getValueLineColor()
         ..strokeWidth = Utils.convertDpToPixel(dataSet.getValueLineWidth())!;
 
@@ -576,7 +576,7 @@ class PieChartRenderer extends DataRenderer {
 
           if (dataSet.getValueLineColor() != ColorUtils.COLOR_NONE) {
             if (dataSet.isUsingSliceColorAsValueLineColor()) {
-              _valueLinePaint..color = dataSet.getColor2(j);
+              _valueLinePaint!..color = dataSet.getColor2(j);
             }
 
             c.drawLine(Offset(pt0x, pt0y), Offset(pt1x, pt1y), _valueLinePaint!);
@@ -1051,7 +1051,7 @@ class PieChartRenderer extends DataRenderer {
 
 //      mBitmapCanvas.drawPath(mPathBuffer, renderPaint);
       c.drawPath(mPathBuffer, renderPaint!);
-      renderPaint..color = _painter!.getHoleColor();
+      renderPaint!..color = _painter!.getHoleColor();
       c.drawOval(mInnerRectBuffer, renderPaint!);
     }
 
@@ -1131,7 +1131,7 @@ class PieChartRenderer extends DataRenderer {
   /// @param color
   void setTransparentCircleColor(Color color) {
     Paint p = transparentCirclePaint!;
-    p.color = Color.fromARGB(p.color?.alpha == null ? 255 : p.color?.alpha,
+    p.color = Color.fromARGB(p.color.alpha == null ? 255 : p.color.alpha,
         color.red, color.green, color.blue);
   }
 

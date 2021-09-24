@@ -19,11 +19,11 @@ import 'package:mp_chart/mp/core/utils/utils.dart';
 class CandleStickChartRenderer extends LineScatterCandleRadarRenderer {
   CandleDataProvider? _porvider;
 
-  List<double?> _shadowBuffers = List(8);
-  List<double?> _bodyBuffers = List(4);
-  List<double?> _rangeBuffers = List(4);
-  List<double?> _openBuffers = List(4);
-  List<double?> _closeBuffers = List(4);
+  List<double?> _shadowBuffers = []..length = (8);
+  List<double?> _bodyBuffers = []..length = (4);
+  List<double?> _rangeBuffers = []..length = (4);
+  List<double?> _openBuffers = []..length = (4);
+  List<double?> _closeBuffers = []..length = (4);
 
   CandleStickChartRenderer(CandleDataProvider chart, Animator? animator,
       ViewPortHandler? viewPortHandler)

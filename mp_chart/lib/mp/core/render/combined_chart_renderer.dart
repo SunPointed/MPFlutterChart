@@ -13,10 +13,15 @@ import 'package:mp_chart/mp/core/render/scatter_chart_renderer.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
 import 'package:mp_chart/mp/painter/combined_chart_painter.dart';
 import 'package:mp_chart/mp/painter/painter.dart';
+import 'package:mp_chart/mp/core/data_interfaces/i_bar_line_scatter_candle_bubble_data_set.dart';
+import 'package:mp_chart/mp/core/data/bar_line_scatter_candle_bubble_data.dart';
+import 'package:mp_chart/mp/core/entry/entry.dart';
+
+
 
 class CombinedChartRenderer extends DataRenderer {
   /// all rederers for the different kinds of data this combined-renderer can draw
-  List<DataRenderer> _renderers = List<DataRenderer>();
+  List<DataRenderer> _renderers = List<DataRenderer>.empty();
 
   ChartPainter? _painter;
 
@@ -90,7 +95,7 @@ class CombinedChartRenderer extends DataRenderer {
     for (DataRenderer renderer in _renderers) renderer.drawExtras(c);
   }
 
-  List<Highlight> mHighlightBuffer = List<Highlight>();
+  List<Highlight> mHighlightBuffer = List<Highlight>.empty();
 
   @override
   void drawHighlighted(Canvas c, List<Highlight>? indices) {

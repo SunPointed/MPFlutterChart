@@ -162,7 +162,7 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
   @override
   List<double?> getTransformedPositions() {
     if (mGetTransformedPositionsBuffer.length != yAxis!.entryCount * 2) {
-      mGetTransformedPositionsBuffer = List(yAxis!.entryCount * 2);
+      mGetTransformedPositionsBuffer = []..length = (yAxis!.entryCount * 2);
     }
     List<double?> positions = mGetTransformedPositionsBuffer;
 
@@ -207,7 +207,7 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
     // draw zero line
     MPPointD pos = trans!.getPixelForValues(0, 0);
 
-    zeroLinePaint
+    zeroLinePaint!
       ..color = yAxis!.zeroLineColor
       ..strokeWidth = yAxis!.zeroLineWidth;
 
@@ -224,7 +224,7 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
   }
 
   Path mRenderLimitLinesPathBuffer = Path();
-  List<double?> mRenderLimitLinesBuffer = List(4);
+  List<double?> mRenderLimitLinesBuffer = []..length = 4;
 
   /// Draws the LimitLines associated with this axis to the screen.
   /// This is the standard XAxis renderer using the YAxis limit lines.
@@ -268,7 +268,7 @@ class YAxisRendererHorizontalBarChart extends YAxisRenderer {
       limitLinePath.moveTo(pts[0]!, pts[1]!);
       limitLinePath.lineTo(pts[2]!, pts[3]!);
 
-      limitLinePaint
+      limitLinePaint!
         ..style = PaintingStyle.stroke
         ..color = l.lineColor
         ..strokeWidth = l.lineWidth!;

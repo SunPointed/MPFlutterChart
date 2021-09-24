@@ -134,7 +134,7 @@ class RadarChartRenderer extends LineRadarRenderer {
 //      }
     }
 
-    renderPaint
+    renderPaint!
       ..strokeWidth = dataSet.getLineWidth()!
       ..style = PaintingStyle.stroke;
 
@@ -202,7 +202,7 @@ class RadarChartRenderer extends LineRadarRenderer {
               sliceangle * j * phaseX + _painter!.getRotationAngle(), pIcon);
 
           //noinspection SuspiciousNameCombination
-          pIcon.y += iconsOffset.x!;
+          pIcon.y = pIcon.y! + iconsOffset.x!;
 
           CanvasUtils.drawImage(c, Offset(pIcon.x!, pIcon.y!), entry.mIcon!,
               Size(15, 15), drawPaint!);
@@ -244,7 +244,7 @@ class RadarChartRenderer extends LineRadarRenderer {
 
     // draw the web lines that come from the center
     var color = _painter!.webColor!;
-    _webPaint
+    _webPaint!
       ..strokeWidth = _painter!.webLineWidth
       ..color =
           Color.fromARGB(_painter!.webAlpha, color.red, color.green, color.blue);
@@ -264,7 +264,7 @@ class RadarChartRenderer extends LineRadarRenderer {
 
     // draw the inner-web
     color = _painter!.webColorInner!;
-    _webPaint
+    _webPaint!
       ..strokeWidth = _painter!.innerWebLineWidth
       ..color =
           Color.fromARGB(_painter!.webAlpha, color.red, color.green, color.blue);
@@ -380,14 +380,14 @@ class RadarChartRenderer extends LineRadarRenderer {
             point.x! + innerRadius, point.y! + innerRadius));
 //        p.addCircle(point.x, point.y, innerRadius, Path.Direction.CCW);
       }
-      _highlightCirclePaint
+      _highlightCirclePaint!
         ..color = fillColor
         ..style = PaintingStyle.fill;
       c.drawPath(p, _highlightCirclePaint!);
     }
 
     if (strokeColor != ColorUtils.COLOR_NONE) {
-      _highlightCirclePaint
+      _highlightCirclePaint!
         ..color = strokeColor
         ..style = PaintingStyle.stroke
         ..strokeWidth = Utils.convertDpToPixel(strokeWidth)!;

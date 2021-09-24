@@ -83,7 +83,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
   @override
   void initBuffers() {
     BarData barData = _provider!.getBarData()!;
-    _barBuffers = List(barData.getDataSetCount());
+    _barBuffers = []..length = (barData.getDataSetCount());
 
     for (int i = 0; i < _barBuffers!.length; i++) {
       IBarDataSet set = barData.getDataSetByIndex(i)!;
@@ -110,8 +110,8 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
   void drawDataSet(Canvas c, IBarDataSet dataSet, int index) {
     Transformer? trans = _provider!.getTransformer(dataSet.getAxisDependency());
 
-    _barBorderPaint..color = dataSet.getBarBorderColor();
-    _barBorderPaint
+    _barBorderPaint!..color = dataSet.getBarBorderColor();
+    _barBorderPaint!
       ..strokeWidth = Utils.convertDpToPixel(dataSet.getBarBorderWidth())!;
 
     final bool drawBorder = dataSet.getBarBorderWidth() > 0.0;
@@ -121,7 +121,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
     // draw the bar shadow before the values
     if (_provider!.isDrawBarShadowEnabled()) {
-      _shadowPaint..color = dataSet.getBarShadowColor();
+      _shadowPaint!..color = dataSet.getBarShadowColor();
 
       BarData barData = _provider!.getBarData()!;
 
@@ -172,7 +172,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
     final bool isSingleColor = dataSet.getColors()!.length == 1;
 
     if (isSingleColor) {
-      renderPaint..color = dataSet.getColor1();
+      renderPaint!..color = dataSet.getColor1();
     }
 
     for (int j = 0; j < buffer.size(); j += 4) {
@@ -183,15 +183,15 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
       if (!isSingleColor) {
         // Set the color for the currently drawn value. If the index
         // is out of bounds, reuse colors.
-        renderPaint..color = dataSet.getColor2(j ~/ 4);
+        renderPaint!..color = dataSet.getColor2(j ~/ 4);
       }
 
       if (dataSet.getGradientColor1() != null) {
         GradientColor gradientColor = dataSet.getGradientColor1()!;
 
-        renderPaint
+        renderPaint!
           ..shader = (LinearGradient(
-                  colors: List()
+                  colors: List<Color>.empty()
                     ..add(gradientColor.startColor)
                     ..add(gradientColor.endColor),
                   tileMode: TileMode.mirror))
@@ -203,9 +203,9 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
       }
 
       if (dataSet.getGradientColors() != null) {
-        renderPaint
+        renderPaint!
           ..shader = (LinearGradient(
-                  colors: List()
+                  colors: List<Color>.empty()
                     ..add(dataSet.getGradientColor2(j ~/ 4).startColor)
                     ..add(dataSet.getGradientColor2(j ~/ 4).endColor),
                   tileMode: TileMode.mirror))
@@ -390,7 +390,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
               // draw stack values
             } else {
-              List<double?> transformed = List(vals.length * 2);
+              List<double?> transformed = []..length = (vals.length * 2);
 
               double posY = 0.0;
               double negY = -entry.negativeSum!;

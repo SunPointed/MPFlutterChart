@@ -173,7 +173,7 @@ class YAxisRenderer extends AxisRenderer {
 
       List<double?> positions = getTransformedPositions();
 
-      gridPaint
+      gridPaint!
         ..style = PaintingStyle.stroke
         ..color = _yAxis!.gridColor
         ..strokeWidth = _yAxis!.gridLineWidth;
@@ -227,7 +227,7 @@ class YAxisRenderer extends AxisRenderer {
     return p;
   }
 
-  List<double?> mGetTransformedPositionsBuffer = List(2);
+  List<double?> mGetTransformedPositionsBuffer = []..length = 2;
 
   /// Transforms the values contained in the axis entries to screen pixels and returns them in form of a double array
   /// of x- and y-coordinates.
@@ -235,7 +235,7 @@ class YAxisRenderer extends AxisRenderer {
   /// @return
   List<double?> getTransformedPositions() {
     if (mGetTransformedPositionsBuffer.length != _yAxis!.entryCount * 2) {
-      mGetTransformedPositionsBuffer = List(_yAxis!.entryCount * 2);
+      mGetTransformedPositionsBuffer = []..length = (_yAxis!.entryCount * 2);
     }
     List<double?> positions = mGetTransformedPositionsBuffer;
 
@@ -265,7 +265,7 @@ class YAxisRenderer extends AxisRenderer {
     // draw zero line
     MPPointD pos = trans!.getPixelForValues(0, 0);
 
-    _zeroLinePaint
+    _zeroLinePaint!
       ..style = PaintingStyle.stroke
       ..color = _yAxis!.zeroLineColor
       ..strokeWidth = _yAxis!.zeroLineWidth;
@@ -283,7 +283,7 @@ class YAxisRenderer extends AxisRenderer {
   }
 
   Path _renderLimitLines = Path();
-  List<double?> _renderLimitLinesBuffer = List(2);
+  List<double?> _renderLimitLinesBuffer = []..length = 2;
   Rect _limitLineClippingRect = Rect.zero;
 
   // ignore: unnecessary_getters_setters
@@ -322,7 +322,7 @@ class YAxisRenderer extends AxisRenderer {
           viewPortHandler!.getContentRect().bottom + l.lineWidth!);
       c.clipRect(_limitLineClippingRect);
 
-      limitLinePaint
+      limitLinePaint!
         ..style = PaintingStyle.stroke
         ..strokeWidth = l.lineWidth!
         ..color = l.lineColor;

@@ -6,5 +6,5 @@ import 'package:mp_chart/mp/core/enums/axis_dependency.dart';
 mixin LineDataProvider implements BarLineScatterCandleBubbleDataProvider {
   LineData? getLineData();
 
-  YAxis getAxis(AxisDependency dependency);
+  YAxis? getAxis(AxisDependency dependency);
 }

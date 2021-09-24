@@ -16,12 +16,12 @@ class XShapeRenderer implements IShapeRenderer {
       Paint? renderPaint) {
     final double shapeHalf = dataSet.getScatterShapeSize() / 2;
 
-    renderPaint
+    renderPaint!
       ..style = PaintingStyle.stroke
       ..strokeWidth = Utils.convertDpToPixel(1)!;
 
     c.drawLine(Offset(posX! - shapeHalf, posY! - shapeHalf),
-        Offset(posX + shapeHalf, posY + shapeHalf), renderPaint!);
+        Offset(posX + shapeHalf, posY + shapeHalf), renderPaint);
     c.drawLine(Offset(posX + shapeHalf, posY - shapeHalf),
         Offset(posX - shapeHalf, posY + shapeHalf), renderPaint);
   }

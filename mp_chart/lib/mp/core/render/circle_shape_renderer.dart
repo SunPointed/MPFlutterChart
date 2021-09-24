@@ -26,7 +26,7 @@ class CircleShapeRenderer implements IShapeRenderer {
     final Color shapeHoleColor = dataSet.getScatterShapeHoleColor();
 
     if (shapeSize > 0.0) {
-      renderPaint
+      renderPaint!
         ..style = PaintingStyle.stroke
         ..strokeWidth = shapeStrokeSize;
 

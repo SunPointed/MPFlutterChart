@@ -59,14 +59,14 @@ class LegendRenderer extends Renderer {
     _legendLabelPaint = value;
   }
 
-  List<LegendEntry?> _computedEntries = List(16);
+  List<LegendEntry?> _computedEntries = []..length = 16;
 
   /// Prepares the legend and calculates all needed forms, labels and colors.
   ///
   /// @param data
   void computeLegend(ChartData<IDataSet>? data) {
     if (!_legend!.isLegendCustom) {
-      _computedEntries = List();
+      _computedEntries = List<LegendEntry?>.empty();
 
       // loop for building up the colors and labels used in the legend
       for (int i = 0; i < data!.getDataSetCount(); i++) {
@@ -223,7 +223,7 @@ class LegendRenderer extends Renderer {
           originPosX = viewPortHandler!.contentLeft() + xoffset!;
 
         if (direction == LegendDirection.RIGHT_TO_LEFT)
-          originPosX += _legend!.neededWidth;
+          originPosX = originPosX! + _legend!.neededWidth;
 
         break;
 
@@ -300,13 +300,13 @@ class LegendRenderer extends Renderer {
             if (i < calculatedLabelBreakPoints.length &&
                 calculatedLabelBreakPoints[i]!) {
               posX = originPosX;
-              posY += labelLineHeight + labelLineSpacing;
+              posY = posY! + labelLineHeight + labelLineSpacing;
             }
 
             if (posX == originPosX &&
                 horizontalAlignment == LegendHorizontalAlignment.CENTER &&
                 lineIndex < calculatedLineSizes.length) {
-              posX += (direction == LegendDirection.RIGHT_TO_LEFT
+              posX = posX! + (direction == LegendDirection.RIGHT_TO_LEFT
                       ? calculatedLineSizes[lineIndex]!.width
                       : -calculatedLineSizes[lineIndex]!.width) /
                   2;
@@ -316,21 +316,22 @@ class LegendRenderer extends Renderer {
             bool isStacked = e.label == null; // grouped forms have null labels
 
             if (drawingForm) {
-              if (direction == LegendDirection.RIGHT_TO_LEFT) posX -= formSize!;
+              if (direction == LegendDirection.RIGHT_TO_LEFT) posX = posX! - formSize!;
 
               drawForm(c, posX, posY! + formYOffset, e, _legend);
 
-              if (direction == LegendDirection.LEFT_TO_RIGHT) posX += formSize!;
+              if (direction == LegendDirection.LEFT_TO_RIGHT) posX = posX! + formSize!;
             }
 
             if (!isStacked) {
-              if (drawingForm)
-                posX += direction == LegendDirection.RIGHT_TO_LEFT
+              if (drawingForm){
+                posX = posX! + direction.index;
+                posX == LegendDirection.RIGHT_TO_LEFT
                     ? -formToTextSpace!
                     : formToTextSpace!;
-
+              }
               if (direction == LegendDirection.RIGHT_TO_LEFT)
-                posX -= calculatedLabelSizes[i]!.width;
+                posX = posX! - calculatedLabelSizes[i]!.width;
 
               drawLabel(c, posX!, posY! + labelLineHeight, e.label);
 
@@ -341,7 +342,8 @@ class LegendRenderer extends Renderer {
                   ? -xEntrySpace!
                   : xEntrySpace!;
             } else
-              posX += direction == LegendDirection.RIGHT_TO_LEFT
+              posX = posX! + direction.index;
+              posX == LegendDirection.RIGHT_TO_LEFT
                   ? -stackSpace!
                   : stackSpace!;
           }
@@ -389,9 +391,9 @@ class LegendRenderer extends Renderer {
 
             if (drawingForm) {
               if (direction == LegendDirection.LEFT_TO_RIGHT)
-                posX += stack;
+                posX = posX! + stack;
               else
-                posX -= formSize! - stack;
+                posX = posX! - formSize! - stack;
 
               drawForm(c, posX, posY + formYOffset, e, _legend);
 
@@ -399,14 +401,16 @@ class LegendRenderer extends Renderer {
             }
 
             if (e.label != null) {
-              if (drawingForm && !wasStacked)
-                posX += direction == LegendDirection.LEFT_TO_RIGHT
+              if (drawingForm && !wasStacked){
+                posX = posX! + direction.index;
+                posX == LegendDirection.LEFT_TO_RIGHT
                     ? formToTextSpace!
                     : -formToTextSpace!;
+              }
               else if (wasStacked) posX = originPosX;
 
               if (direction == LegendDirection.RIGHT_TO_LEFT)
-                posX -= Utils.calcTextWidth(_legendLabelPaint!, e.label);
+                posX = posX! - Utils.calcTextWidth(_legendLabelPaint!, e.label);
 
               if (!wasStacked) {
                 drawLabel(c, posX!, posY + labelLineHeight, e.label);

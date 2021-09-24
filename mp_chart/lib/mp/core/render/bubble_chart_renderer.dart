@@ -25,9 +25,9 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
       : super(animator, viewPortHandler) {
     _provider = chart;
 
-    renderPaint..style = PaintingStyle.fill;
+    renderPaint!..style = PaintingStyle.fill;
 
-    highlightPaint
+    highlightPaint!
       ..style = PaintingStyle.stroke
       ..strokeWidth = Utils.convertDpToPixel(1.5)!;
   }
@@ -46,8 +46,8 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
     }
   }
 
-  List<double?> sizeBuffer = List(4);
-  List<double?> pointBuffer = List(2);
+  List<double?> sizeBuffer = []..length = (4);
+  List<double?> pointBuffer = []..length = (2);
 
   double getShapeSize(
       double? entrySize, double maxSize, double reference, bool normalizeSize) {
@@ -256,7 +256,7 @@ class BubbleChartRenderer extends BarLineScatterCandleBubbleRenderer {
       var hsv = HSVColor.fromColor(originalColor);
       var color = hsv.toColor();
 
-      highlightPaint
+      highlightPaint!
         ..color = color
         ..strokeWidth = set.getHighlightCircleWidth()!;
       c.drawCircle(
