@@ -33,7 +33,7 @@ class HorizontalBarHighlighter extends BarHighlighter {
   @override
   List<Highlight> buildHighlights(
       IDataSet set, int dataSetIndex, double? xVal, Rounding rounding) {
-    List<Highlight> highlights = List();
+    List<Highlight> highlights = List<Highlight>.empty();
 
     //noinspection unchecked
     List<Entry?> entries = set.getEntriesForXValue(xVal);

@@ -3,7 +3,7 @@ import 'package:mp_chart/mp/core/data_interfaces/i_bar_line_scatter_candle_bubbl
 import 'package:mp_chart/mp/core/entry/entry.dart';
 
 mixin ILineScatterCandleRadarDataSet<T extends Entry?>
-    implements IBarLineScatterCandleBubbleDataSet<T> {
+    implements IBarLineScatterCandleBubbleDataSet<T?> {
   /// Returns true if vertical highlight indicator lines are enabled (drawn)
   /// @return
   bool isVerticalHighlightIndicatorEnabled();

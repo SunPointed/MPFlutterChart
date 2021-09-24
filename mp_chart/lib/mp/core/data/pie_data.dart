@@ -5,7 +5,7 @@ import 'package:mp_chart/mp/core/highlight/highlight.dart';
 import 'package:mp_chart/mp/core/utils/dart_adapter_utils.dart';
 
 class PieData extends ChartData<IPieDataSet> {
-  PieData(IPieDataSet dataSet) : super.fromList(List()..add(dataSet));
+  PieData(IPieDataSet dataSet) : super.fromList(<IPieDataSet>[]..add(dataSet));
 
   /// Sets the PieDataSet this data object should represent.
   ///

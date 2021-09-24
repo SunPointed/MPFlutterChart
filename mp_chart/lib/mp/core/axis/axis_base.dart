@@ -19,9 +19,9 @@ abstract class AxisBase extends ComponentBase {
 
   double _axisLineWidth = 1;
 
-  List<double?> _entries = List();
+  List<double?> _entries = List<double?>.empty();
 
-  List<double?> _centeredEntries = List();
+  List<double?> _centeredEntries = List<double?>.empty();
 
   /// the number of entries the legend contains
   int _entryCount = 0;
@@ -95,7 +95,7 @@ abstract class AxisBase extends ComponentBase {
     textSize = 10;
     xOffset = 5;
     yOffset = 5;
-    this._limitLines = List<LimitLine>();
+    this._limitLines = List<LimitLine>.empty();
   }
 
   // ignore: unnecessary_getters_setters

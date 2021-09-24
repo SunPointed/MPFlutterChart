@@ -24,7 +24,7 @@ abstract class AbstractBuffer<T> {
   /// @param size
   AbstractBuffer(int size) {
     _index = 0;
-    _buffer = List(size);
+    _buffer = []..length = (size);
   }
 
   /// limits the drawing on the x-axis

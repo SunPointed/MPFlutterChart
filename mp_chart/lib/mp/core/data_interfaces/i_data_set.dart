@@ -26,11 +26,11 @@ mixin IDataSet<T extends Entry?> {
 
   T getEntryForXValue1(double? xValue, double closestToY, Rounding rounding);
 
-  T getEntryForXValue2(double? xValue, double? closestToY);
+  T? getEntryForXValue2(double? xValue, double? closestToY);
 
-  List<T> getEntriesForXValue(double? xValue);
+  List<T?> getEntriesForXValue(double? xValue);
 
-  T getEntryForIndex(int? index);
+  T? getEntryForIndex(int? index);
 
   int getEntryIndex1(double xValue, double closestToY, Rounding rounding);
 

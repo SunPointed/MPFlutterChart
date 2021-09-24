@@ -16,7 +16,7 @@ import 'package:mp_chart/mp/core/utils/utils.dart';
 
 class Legend extends ComponentBase {
   /// The legend entries array
-  List<LegendEntry?> _entries = List();
+  List<LegendEntry?> _entries = List<LegendEntry?>.empty();
 
   /// Entries that will be appended to the end of the auto calculated entries after calculating the legend.
   /// (if the legend has already been calculated, you will need to call notifyDataSetChanged() to let the changes take effect)
@@ -77,9 +77,9 @@ class Legend extends ComponentBase {
   /// flag that indicates if word wrapping is enabled
   bool _wordWrapEnabled = false;
 
-  List<FSize?> _calculatedLabelSizes = List(16);
-  List<bool?> _calculatedLabelBreakPoints = List(16);
-  List<FSize?> _calculatedLineSizes = List(16);
+  List<FSize?> _calculatedLabelSizes = []..length = (16);
+  List<bool?> _calculatedLabelBreakPoints = []..length = (16);
+  List<FSize?> _calculatedLineSizes = []..length = (16);
 
   /// default constructor
   Legend() {
@@ -164,7 +164,7 @@ class Legend extends ComponentBase {
   /// (if the legend has already been calculated, you will need to call notifyDataSetChanged()
   ///   to let the changes take effect)
   void setExtra2(List<Color> colors, List<String> labels) {
-    List<LegendEntry> entries = List();
+    List<LegendEntry> entries = List<LegendEntry>.empty();
     for (int i = 0; i < min(colors.length, labels.length); i++) {
       final LegendEntry entry = LegendEntry.empty();
       entry.formColor = colors[i];
@@ -423,9 +423,9 @@ class Legend extends ComponentBase {
           double requiredWidth = 0;
           int stackedStartIndex = -1;
 
-          _calculatedLabelBreakPoints = List();
-          _calculatedLabelSizes = List();
-          _calculatedLineSizes = List();
+          _calculatedLabelBreakPoints = List<bool?>.empty();
+          _calculatedLabelSizes = List<FSize?>.empty();
+          _calculatedLineSizes = List<FSize?>.empty();
 
           for (int i = 0; i < entryCount; i++) {
             LegendEntry e = entries[i]!;

@@ -8,7 +8,7 @@ import 'package:mp_chart/mp/core/utils/utils.dart';
 
 abstract class LineRadarDataSet<T extends Entry>
     extends LineScatterCandleRadarDataSet<T>
-    implements ILineRadarDataSet<T> {
+    implements ILineRadarDataSet<T?> {
   /// the color that is used for filling the line surface
   Color _fillColor = Color.fromARGB(255, 140, 234, 255);
 

@@ -60,8 +60,8 @@ abstract class BaseDataSet<T extends Entry?> implements IDataSet<T> {
 
   /// Default constructor.
   BaseDataSet() {
-    _colors = List();
-    _valueColors = List();
+    _colors = List<Color>.empty();
+    _valueColors = List<Color>.empty();
     // default color
     _colors!.add(ui.Color.fromARGB(255, 140, 234, 255));
     _valueColors!.add(ColorUtils.BLACK);
@@ -71,8 +71,8 @@ abstract class BaseDataSet<T extends Entry?> implements IDataSet<T> {
   ///
   /// @param label
   BaseDataSet.withLabel(String label) {
-    _colors = List();
-    _valueColors = List();
+    _colors = List<Color>.empty();
+    _valueColors = List<Color>.empty();
 
     // default color
     _colors!.add(ui.Color.fromARGB(255, 140, 234, 255));
@@ -140,7 +140,7 @@ abstract class BaseDataSet<T extends Entry?> implements IDataSet<T> {
   ///
   /// @param color
   void addColor(ui.Color color) {
-    if (_colors == null) _colors = List();
+    if (_colors == null) _colors = List<Color>.empty();
     _colors!.add(color);
   }
 
@@ -196,7 +196,7 @@ abstract class BaseDataSet<T extends Entry?> implements IDataSet<T> {
   /// Resets all colors of this DataSet and recreates the colors array.
   void resetColors() {
     if (_colors == null) {
-      _colors = List();
+      _colors = List<Color>.empty();
     }
     _colors!.clear();
   }
@@ -375,7 +375,7 @@ abstract class BaseDataSet<T extends Entry?> implements IDataSet<T> {
   @override
   int getIndexInEntries(int xIndex) {
     for (int i = 0; i < getEntryCount(); i++) {
-      if (xIndex == getEntryForIndex(i).x) return i;
+      if (xIndex == getEntryForIndex(i)!.x) return i;
     }
 
     return -1;
@@ -384,8 +384,8 @@ abstract class BaseDataSet<T extends Entry?> implements IDataSet<T> {
   @override
   bool removeFirst() {
     if (getEntryCount() > 0) {
-      T entry = getEntryForIndex(0);
-      return removeEntry1(entry);
+      T? entry = getEntryForIndex(0);
+      return removeEntry1(entry!);
     } else
       return false;
   }
@@ -393,22 +393,22 @@ abstract class BaseDataSet<T extends Entry?> implements IDataSet<T> {
   @override
   bool removeLast() {
     if (getEntryCount() > 0) {
-      T e = getEntryForIndex(getEntryCount() - 1);
-      return removeEntry1(e);
+      T? e = getEntryForIndex(getEntryCount() - 1);
+      return removeEntry1(e!);
     } else
       return false;
   }
 
   @override
   bool removeEntryByXValue(double xValue) {
-    T e = getEntryForXValue2(xValue, double.nan);
-    return removeEntry1(e);
+    T? e = getEntryForXValue2(xValue, double.nan);
+    return removeEntry1(e!);
   }
 
   @override
   bool removeEntry2(int index) {
-    T e = getEntryForIndex(index);
-    return removeEntry1(e);
+    T? e = getEntryForIndex(index);
+    return removeEntry1(e!);
   }
 
   @override

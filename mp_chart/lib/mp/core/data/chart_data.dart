@@ -34,7 +34,7 @@ class ChartData<T extends IDataSet<Entry?>> {
 
   /// Default constructor.
   ChartData() {
-    _dataSets = List<T>();
+    _dataSets = List<T>.empty();
   }
 
   /// Constructor taking single or multiple DataSet objects.
@@ -234,7 +234,7 @@ class ChartData<T extends IDataSet<Entry?>> {
   ///
   /// @return
   List<String?> getDataSetLabels() {
-    List<String?> types = List(_dataSets!.length);
+    List<String?> types = []..length = (_dataSets!.length);
 
     for (int i = 0; i < _dataSets!.length; i++) {
       types[i] = _dataSets![i].getLabel();
@@ -467,7 +467,7 @@ class ChartData<T extends IDataSet<Entry?>> {
       clrcnt += _dataSets![i].getColors()!.length;
     }
 
-    List<ui.Color?> colors = List(clrcnt);
+    List<ui.Color?> colors = []..length = (clrcnt);
     int cnt = 0;
 
     for (int i = 0; i < _dataSets!.length; i++) {
