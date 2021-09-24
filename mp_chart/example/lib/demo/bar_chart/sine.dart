@@ -31,7 +31,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
   void initState() {
     _initController();
     Util.loadAsset("othersine.txt").then((value) {
-      _data = List();
+      _data = List<BarEntry>.empty();
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
         var datas = lines[i].split("#");
@@ -108,7 +108,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
     var desc = Description()..enabled = false;
     controller = BarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..setLabelCount2(6, false)
             ..typeface = Util.LIGHT
             ..setAxisMaximum(2.5)
@@ -117,7 +117,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
             ..setGranularity(0.1);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight
+          axisRight!
             ..drawGridLines = (false)
             ..typeface = Util.LIGHT
             ..setLabelCount2(6, false)
@@ -126,7 +126,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
             ..setGranularity(0.1);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
             ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
             ..orientation = (LegendOrientation.HORIZONTAL)
@@ -154,7 +154,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
   void _initBarData(int count) {
     if (_data == null) return;
 
-    List<BarEntry> entries = List();
+    List<BarEntry> entries = List<BarEntry> .empty();
     for (int i = 0; i < count; i++) {
       entries.add(_data![i]);
     }
@@ -162,8 +162,8 @@ class BarChartSineState extends BarActionState<BarChartSine> {
     BarDataSet set = BarDataSet(entries, "Sinus Function");
     set.setColor1(Color.fromARGB(255, 240, 120, 124));
 
-    controller.data = BarData(List()..add(set));
-    controller.data
+    controller.data = BarData(<BarDataSet>[]..add(set));
+    controller.data!
       ..setValueTextSize(10)
       ..setValueTypeface(Util.LIGHT)
       ..setDrawValues(false)
@@ -174,7 +174,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
 
   Widget _initBarChart() {
     var barChart = BarChart(controller);
-    controller.animator
+    controller.animator!
       ..reset()
       ..animateXY1(1500, 1500);
     return barChart;

@@ -108,13 +108,13 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
       ..enabled = false;
     controller = LineChartController(
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..shape = LegendForm.LINE
             ..typeface = Util.LIGHT
             ..textColor = ColorUtils.WHITE;
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..typeface = Util.LIGHT
             ..textColor = ColorUtils.WHITE
             ..drawGridLines = true
@@ -122,7 +122,7 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
             ..enabled = true;
         },
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..typeface = Util.LIGHT
             ..textColor = ColorUtils.WHITE
             ..axisMaximum = 100.0
@@ -243,7 +243,7 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
   }
 
   LineDataSet _createSet() {
-    LineDataSet set = LineDataSet(null, "Dynamic Data");
+    LineDataSet set = LineDataSet(List<Entry>.empty(), "Dynamic Data");
     set.setAxisDependency(AxisDependency.LEFT);
     set.setColor1(ColorUtils.getHoloBlue());
     set.setCircleColor(ColorUtils.WHITE);

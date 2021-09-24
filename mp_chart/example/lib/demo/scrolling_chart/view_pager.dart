@@ -146,7 +146,7 @@ class ScrollingChartViewPagerState
     _lineChartController1 = LineChartController(
         resolveGestureHorizontalConflict: true,
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..setAxisMaximum(1.2)
             ..setAxisMinimum(-1.2);
         },
@@ -202,7 +202,7 @@ class ScrollingChartViewPagerState
           axisRight!.drawGridLines = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..wordWrapEnabled = (true)
             ..formSize = (14)
             ..textSize = (9)
@@ -222,7 +222,7 @@ class ScrollingChartViewPagerState
     _pieChartController = PieChartController(
         resolveGestureHorizontalConflict: true,
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
             ..orientation = (LegendOrientation.VERTICAL)
@@ -235,10 +235,10 @@ class ScrollingChartViewPagerState
   }
 
   void _initLineData1() {
-    List<ILineDataSet> sets = List();
+    List<ILineDataSet> sets = List<ILineDataSet>.empty();
 
     Util.loadAsset("sine.txt").then((value) {
-      List<Entry> data = List();
+      List<Entry> data = List<Entry>.empty();
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
         var datas = lines[i].split("#");
@@ -259,7 +259,7 @@ class ScrollingChartViewPagerState
     });
 
     Util.loadAsset("cosine.txt").then((value) {
-      List<Entry> data = List();
+      List<Entry> data = List<Entry>.empty();
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
         var datas = lines[i].split("#");
@@ -281,10 +281,10 @@ class ScrollingChartViewPagerState
   }
 
   void _initLineData2() {
-    List<ILineDataSet> sets = List();
+    List<ILineDataSet> sets = List<ILineDataSet>.empty();
 
     Util.loadAsset("n.txt").then((value) {
-      List<Entry> data = List();
+      List<Entry> data = List<Entry>.empty();
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
         var datas = lines[i].split("#");
@@ -307,7 +307,7 @@ class ScrollingChartViewPagerState
     });
 
     Util.loadAsset("nlogn.txt").then((value) {
-      List<Entry> data = List();
+      List<Entry> data = List<Entry>.empty();
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
         var datas = lines[i].split("#");
@@ -330,7 +330,7 @@ class ScrollingChartViewPagerState
     });
 
     Util.loadAsset("square.txt").then((value) {
-      List<Entry> data = List();
+      List<Entry> data = List<Entry>.empty();
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
         var datas = lines[i].split("#");
@@ -353,7 +353,7 @@ class ScrollingChartViewPagerState
     });
 
     Util.loadAsset("three.txt").then((value) {
-      List<Entry> data = List();
+      List<Entry> data = List<Entry>.empty();
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
         var datas = lines[i].split("#");
@@ -376,7 +376,7 @@ class ScrollingChartViewPagerState
     });
   }
 
-  List<String> _labels = List()
+  List<String> _labels = <String>[]
     ..add("Company A")
     ..add("Company B")
     ..add("Company C")
@@ -385,11 +385,11 @@ class ScrollingChartViewPagerState
     ..add("Company F");
 
   void _initBarData() {
-    List<IBarDataSet> sets = List();
+    List<IBarDataSet> sets = List<IBarDataSet>.empty();
 
     var range = 20000;
     for (int i = 0; i < 1; i++) {
-      List<BarEntry> entries = List();
+      List<BarEntry> entries = List<BarEntry>.empty();
 
       for (int j = 0; j < 12; j++) {
         entries.add(BarEntry(
@@ -409,12 +409,12 @@ class ScrollingChartViewPagerState
     var dataSets = 6;
     var range = 10000;
     var count = 200;
-    List<IScatterDataSet> sets = List();
+    List<IScatterDataSet> sets = List<IScatterDataSet>.empty();
 
     List<ScatterShape> shapes = ScatterShape.values;
 
     for (int i = 0; i < dataSets; i++) {
-      List<Entry> entries = List();
+      List<Entry> entries = List<Entry>.empty();
 
       for (int j = 0; j < count; j++) {
         entries.add(Entry(
@@ -436,7 +436,7 @@ class ScrollingChartViewPagerState
   void _initPieData() {
     int count = 4;
 
-    List<PieEntry> entries1 = List();
+    List<PieEntry> entries1 = List<PieEntry>.empty();
 
     for (int i = 0; i < count; i++) {
       entries1.add(PieEntry(
@@ -455,7 +455,7 @@ class ScrollingChartViewPagerState
 
   Widget _initLineChart1() {
     var lineChart = LineChart(_lineChartController1);
-    _lineChartController1.animator
+    _lineChartController1.animator!
       ..reset()
       ..animateX1(3000);
     return lineChart;
@@ -463,7 +463,7 @@ class ScrollingChartViewPagerState
 
   Widget _initLineChart2() {
     var lineChart = LineChart(_lineChartController2);
-    _lineChartController2.animator
+    _lineChartController2.animator!
       ..reset()
       ..animateX1(3000);
     return lineChart;

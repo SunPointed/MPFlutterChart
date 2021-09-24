@@ -130,7 +130,7 @@ class OtherChartCandlestickState
     var desc = Description()..enabled = false;
     controller = CandlestickChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..setLabelCount2(7, false)
             ..drawGridLines = (false)
             ..drawAxisLine = (false);
@@ -142,7 +142,7 @@ class OtherChartCandlestickState
           legend!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..position = (XAxisPosition.BOTTOM)
             ..drawGridLines = (true);
         },
@@ -161,7 +161,7 @@ class OtherChartCandlestickState
     var img = await ImageLoader.loadImage('assets/img/star.png');
 //    chart.resetTracking();
 
-    List<CandleEntry> values = List();
+    List<CandleEntry> values = List<CandleEntry>.empty();
 
     for (int i = 0; i < count; i++) {
       double multi = (range + 1);
@@ -198,7 +198,7 @@ class OtherChartCandlestickState
     set1.setNeutralColor(ColorUtils.BLUE);
     //set1.setHighlightLineWidth(1f);
 
-    controller.data = CandleData.fromList(List()..add(set1));
+    controller.data = CandleData.fromList(<CandleDataSet>[]..add(set1));
 
     setState(() {});
   }

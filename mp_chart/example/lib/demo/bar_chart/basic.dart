@@ -26,6 +26,10 @@ import 'package:mp_chart/mp/core/chart_trans_listener.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/day_axis_value_formatter.dart';
 import 'package:mp_chart/mp/core/value_formatter/my_value_formatter.dart';
+import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
+import 'package:mp_chart/mp/painter/bar_line_chart_painter.dart';
+import 'package:mp_chart/mp/core/data_interfaces/i_bar_line_scatter_candle_bubble_data_set.dart';
+import 'package:mp_chart/mp/core/data/bar_line_scatter_candle_bubble_data.dart';
 
 class BarChartBasic extends StatefulWidget {
   @override
@@ -143,7 +147,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     controller = BarChartController(
         chartTransListener: MyChartTransListener(),
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..setLabelCount2(8, false)
             ..typeface = Util.LIGHT
             ..setValueFormatter(MyValueFormatter("\$"))
@@ -152,7 +156,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..setAxisMinimum(0);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight
+          axisRight!
             ..drawGridLines = false
             ..typeface = Util.LIGHT
             ..setLabelCount2(8, false)
@@ -161,7 +165,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..setAxisMinimum(0);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = LegendVerticalAlignment.BOTTOM
             ..orientation = LegendOrientation.HORIZONTAL
             ..drawInside = false
@@ -172,7 +176,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..xEntrySpace = 4;
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..typeface = Util.LIGHT
             ..position = XAxisPosition.BOTTOM
             ..drawGridLines = false
@@ -197,7 +201,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
   void _initData(int count, double range, ui.Image img) {
     double start = 1;
 
-    List<BarEntry> values = List();
+    List<BarEntry> values = List<BarEntry>.empty();
 
     for (int i = start.toInt(); i < start + count; i++) {
       double val = (random.nextDouble() * (range + 1));
@@ -228,7 +232,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     Color endColor4 = ColorUtils.HOLO_RED_DARK;
     Color endColor5 = ColorUtils.HOLO_ORANGE_DARK;
 
-    List<GradientColor> gradientColors = List();
+    List<GradientColor> gradientColors = List<GradientColor>.empty();
     gradientColors.add(GradientColor(startColor1, endColor1));
     gradientColors.add(GradientColor(startColor2, endColor2));
     gradientColors.add(GradientColor(startColor3, endColor3));
@@ -237,11 +241,11 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
 
     set1.setGradientColors(gradientColors);
 
-    List<IBarDataSet> dataSets = List();
+    List<IBarDataSet> dataSets = List<IBarDataSet>.empty();
     dataSets.add(set1);
 
     controller.data = BarData(dataSets);
-    controller.data
+    controller.data!
       ..setValueTextSize(10)
       ..setValueTypeface(Util.LIGHT)
       ..barWidth = 0.9;

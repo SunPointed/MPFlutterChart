@@ -132,7 +132,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
   }
 
   // ignore: non_constant_identifier_names
-  final List<String> PARTIES = List()
+  final List<String> PARTIES = List<String>.empty()
     ..add("Party A")
     ..add("Party B")
     ..add("Party C")
@@ -165,7 +165,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
     controller = PieChartController(
         legendSettingFunction: (legend, controller) {
           _formatter.setPieChartPainter(controller as PieChartController);
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
             ..orientation = (LegendOrientation.VERTICAL)
@@ -199,7 +199,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
 
   void _initPieData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
-    List<PieEntry> entries = List();
+    List<PieEntry> entries = List<PieEntry>.empty();
 
     // NOTE: The order of the entries when being added to the entries array determines their position around the center of
     // the chart.
@@ -217,7 +217,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
     dataSet.setSelectionShift(5);
 
     // add a lot of colors
-    List<Color> colors = List();
+    List<Color> colors = List<Color>.empty();
     for (Color c in ColorUtils.VORDIPLOM_COLORS) colors.add(c);
     for (Color c in ColorUtils.JOYFUL_COLORS) colors.add(c);
     for (Color c in ColorUtils.COLORFUL_COLORS) colors.add(c);
@@ -244,7 +244,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
 
   Widget _initPieChart() {
     var pieChart = PieChart(controller);
-    controller.animator
+    controller.animator!
       ..reset()
       ..animateY2(1400, Easing.EaseInOutQuad);
     return pieChart;

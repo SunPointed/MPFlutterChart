@@ -129,7 +129,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
     var desc = Description()..enabled = false;
     controller = LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..typeface = Util.LIGHT
             ..setLabelCount2(6, false)
             ..textColor = (ColorUtils.WHITE)
@@ -167,7 +167,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
 
   void _initLineData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
-    List<Entry> values = List();
+    List<Entry> values = List<Entry>.empty();
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * (range + 1)) + 20;
@@ -193,7 +193,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
     set1.setFillFormatter(A());
 
     // create a data object with the data sets
-    controller!.data = LineData.fromList(List()..add(set1))
+    controller!.data = LineData.fromList(<LineDataSet>[]..add(set1))
       ..setValueTypeface(Util.LIGHT)
       ..setValueTextSize(9)
       ..setDrawValues(false);
@@ -203,7 +203,7 @@ class LineChartCubicState extends LineActionState<LineChartCubic> {
 
   Widget _initLineChart() {
     var lineChart = LineChart(controller!);
-    controller!.animator
+    controller!.animator!
       ..reset()
       ..animateXY1(2000, 2000);
     return lineChart;
@@ -220,6 +220,6 @@ class A implements IFillFormatter {
   @override
   double getFillLinePosition(
       ILineDataSet dataSet, LineDataProvider? dataProvider) {
-    return _controller?.painter?.axisLeft?.axisMinimum!;
+    return _controller.painter!.axisLeft!.axisMinimum!;
   }
 }

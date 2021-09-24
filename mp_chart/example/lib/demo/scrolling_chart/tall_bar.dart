@@ -89,7 +89,7 @@ class ScrollingChartTallBarState
 
   Widget _renderItem() {
     var barChart = BarChart(_controller);
-    _controller.animator
+    _controller.animator!
       ..reset()
       ..animateY1(800);
     return Column(
@@ -138,7 +138,7 @@ class ScrollingChartTallBarState
           legend!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..position = (XAxisPosition.BOTTOM)
             ..drawGridLines = (false);
         },
@@ -158,7 +158,7 @@ class ScrollingChartTallBarState
   }
 
   BarData generateData() {
-    List<BarEntry> entries = List();
+    List<BarEntry> entries = List<BarEntry>.empty();
 
     for (int i = 0; i < 10; i++) {
       entries
@@ -169,7 +169,7 @@ class ScrollingChartTallBarState
     d.setColors1(ColorUtils.VORDIPLOM_COLORS);
     d.setDrawValues(false);
 
-    List<IBarDataSet> sets = List();
+    List<IBarDataSet> sets = List<IBarDataSet>.empty();
     sets.add(d);
 
     return BarData(sets);

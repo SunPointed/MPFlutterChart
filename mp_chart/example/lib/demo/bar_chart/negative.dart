@@ -23,7 +23,7 @@ class BarChartNegative extends StatefulWidget {
 
 class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
   late BarChartController _controller;
-  List<Data> _data = List();
+  List<Data> _data = List<Data>.empty();
 
   @override
   void initState() {
@@ -58,8 +58,8 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
   }
 
   void _initBarData() {
-    List<BarEntry> values = List();
-    List<Color> colors = List();
+    List<BarEntry> values = List<BarEntry>.empty();
+    List<Color> colors = List<Color>.empty();
 
     Color green = Color.fromARGB(255, 110, 190, 102);
     Color red = Color.fromARGB(255, 211, 74, 88);
@@ -82,8 +82,8 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
     set.setColors1(colors);
     set.setValueTextColors(colors);
 
-    _controller.data = BarData(List()..add(set));
-    _controller.data
+    _controller.data = BarData(<BarDataSet>[]..add(set));
+    _controller.data!
       ..setValueTextSize(13)
       ..setValueTypeface(Util.REGULAR)
       ..setValueFormatter(Formatter())
@@ -94,7 +94,7 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
     var desc = Description()..enabled = false;
     _controller = BarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..drawLabels = (false)
             ..spacePercentTop = (25)
             ..spacePercentBottom = (25)
@@ -111,7 +111,7 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
           legend!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..position = (XAxisPosition.BOTTOM)
             ..typeface = Util.LIGHT
             ..drawGridLines = (false)

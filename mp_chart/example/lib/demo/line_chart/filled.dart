@@ -127,7 +127,7 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
     var desc = Description()..enabled = false;
     _controller = LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..setAxisMaximum(900)
             ..setAxisMinimum(-250)
             ..drawAxisLine = (false)
@@ -170,14 +170,14 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
   }
 
   void _initLineData(int count, double range) {
-    List<Entry> values1 = new List();
+    List<Entry> values1 = new List<Entry>.empty();
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 50;
       values1.add(new Entry(x: i.toDouble(), y: val));
     }
 
-    List<Entry> values2 = new List();
+    List<Entry> values2 = new List<Entry>.empty();
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 450;
@@ -216,7 +216,7 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
     set2.setFillFormatter(B());
 
     // create a data object with the data sets
-    _controller.data = LineData.fromList(List()..add(set1)..add(set2));
+    _controller.data = LineData.fromList(<LineDataSet>[]..add(set1)..add(set2));
     _controller.data!.setDrawValues(false);
 
     setState(() {});
@@ -235,7 +235,7 @@ class A implements IFillFormatter {
   @override
   double getFillLinePosition(
       ILineDataSet dataSet, LineDataProvider? dataProvider) {
-    return _controller?.painter?.axisLeft?.axisMinimum!;
+    return _controller.painter!.axisLeft!.axisMinimum!;
   }
 }
 
@@ -249,6 +249,6 @@ class B implements IFillFormatter {
   @override
   double getFillLinePosition(
       ILineDataSet dataSet, LineDataProvider? dataProvider) {
-    return _controller?.painter?.axisLeft?.axisMaximum!;
+    return _controller.painter!.axisLeft!.axisMaximum!;
   }
 }

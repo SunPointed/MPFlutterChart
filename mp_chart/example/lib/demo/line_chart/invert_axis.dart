@@ -132,7 +132,7 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
     var desc = Description()..enabled = false;
     controller = LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..setAxisMinimum(0)
             ..inverted = (true);
         },
@@ -143,7 +143,7 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
           legend!.shape = (LegendForm.LINE);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..avoidFirstLastClipping = (true)
             ..setAxisMinimum(0);
         },
@@ -159,7 +159,7 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
 
   void _initLineData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
-    List<Entry> entries = List();
+    List<Entry> entries = List<Entry>.empty();
 
     for (int i = 0; i < count; i++) {
       double xVal = (random.nextDouble() * range);
@@ -187,7 +187,7 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
     set1.setCircleRadius(4);
 
     // create a data object with the data sets
-    controller!.data = LineData.fromList(List()..add(set1));
+    controller!.data = LineData.fromList(<LineDataSet>[]..add(set1));
 
     setState(() {});
   }

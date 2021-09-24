@@ -133,7 +133,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
 
   void _initBarData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
-    List<BarEntry> values = List();
+    List<BarEntry> values = List<BarEntry>.empty();
 
     for (int i = 0; i < count; i++) {
       double mul = (range + 1);
@@ -143,7 +143,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
 
       values.add(BarEntry.fromListYVals(
           x: i.toDouble(),
-          vals: List()..add(val1)..add(val2)..add(val3),
+          vals: <double>[]..add(val1)..add(val2)..add(val3),
           icon: img));
     }
 
@@ -153,13 +153,13 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
     set1.setDrawIcons(false);
     set1.setColors1(_getColors());
     set1.setStackLabels(
-        List()..add("Births")..add("Divorces")..add("Marriages"));
+        <String>[]..add("Births")..add("Divorces")..add("Marriages"));
 
-    List<IBarDataSet> dataSets = List();
+    List<IBarDataSet> dataSets = List<IBarDataSet>.empty();
     dataSets.add(set1);
 
     controller.data = BarData(dataSets);
-    controller.data
+    controller.data!
       ..setValueFormatter(StackedValueFormatter(false, "", 1))
       ..setValueTextColor(ColorUtils.WHITE);
 
@@ -167,7 +167,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
   }
 
   List<Color> _getColors() {
-    return List()
+    return <Color>[]
       ..add(ColorUtils.MATERIAL_COLORS[0])
       ..add(ColorUtils.MATERIAL_COLORS[1])
       ..add(ColorUtils.MATERIAL_COLORS[2]);
@@ -177,7 +177,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
     var desc = Description()..enabled = false;
     controller = BarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..setValueFormatter(MyValueFormatter("K"))
             ..setAxisMinimum(0);
         },
@@ -185,7 +185,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
           axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
             ..orientation = (LegendOrientation.HORIZONTAL)

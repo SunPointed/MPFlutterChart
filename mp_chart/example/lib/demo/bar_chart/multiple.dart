@@ -139,7 +139,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
     controller = BarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
           ValueFormatter formatter = LargeValueFormatter();
-          axisLeft
+          axisLeft!
             ..typeface = Util.LIGHT
             ..setValueFormatter(formatter)
             ..drawGridLines = (false)
@@ -150,7 +150,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
           axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
             ..orientation = (LegendOrientation.VERTICAL)
@@ -162,7 +162,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
             ..textSize = (8);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..typeface = Util.LIGHT
             ..setGranularity(1.0)
             ..centerAxisLabels = true
@@ -194,7 +194,7 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
   bool isDataInitial = false;
 
   void _initBarData(int count, double range) async {
-    List<ui.Image?> imgs = List(3);
+    List<ui.Image?> imgs = []..length = (3);
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
     imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
     imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
@@ -202,10 +202,10 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
     startYear = 1980;
     endYear = startYear + groupCount;
 
-    List<BarEntry> values1 = List();
-    List<BarEntry> values2 = List();
-    List<BarEntry> values3 = List();
-    List<BarEntry> values4 = List();
+    List<BarEntry> values1 = List<BarEntry>.empty();
+    List<BarEntry> values2 = List<BarEntry>.empty();
+    List<BarEntry> values3 = List<BarEntry>.empty();
+    List<BarEntry> values4 = List<BarEntry>.empty();
 
     double randomMultiplier = range * 100000;
 
@@ -239,8 +239,8 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
     set4.setColor1(Color.fromARGB(255, 255, 102, 0));
 
     controller.data =
-        BarData(List()..add(set1)..add(set2)..add(set3)..add(set4));
-    controller.data
+        BarData(<BarDataSet>[]..add(set1)..add(set2)..add(set3)..add(set4));
+    controller.data!
       ..setValueFormatter(LargeValueFormatter())
       ..setValueTypeface(Util.LIGHT)
       // specify the width each bar should have

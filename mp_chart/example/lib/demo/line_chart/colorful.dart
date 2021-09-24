@@ -19,12 +19,12 @@ class LineChartColorful extends StatefulWidget {
 }
 
 class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
-  List<LineChartController?> _controllers = List(4);
+  List<LineChartController?> _controllers = []..length = (4);
   var random = Random(1);
   int _count = 36;
   double _range = 100.0;
 
-  List<Color> _colors = List()
+  List<Color> _colors = <Color>[]
     ..add(Color.fromARGB(255, 137, 230, 81))
     ..add(Color.fromARGB(255, 240, 240, 30))
     ..add(Color.fromARGB(255, 89, 199, 250))
@@ -92,7 +92,7 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
   }
 
   LineData _getData(int count, double range) {
-    List<Entry> values = List();
+    List<Entry> values = List<Entry>.empty();
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 3;
@@ -113,14 +113,14 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
     set1.setDrawValues(false);
 
     // create a data object with the data sets
-    return LineData.fromList(List()..add(set1));
+    return LineData.fromList(<LineDataSet>[]..add(set1));
   }
 
   LineChartController _setupChartController(Color color) {
     var desc = Description()..enabled = false;
     return LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..enabled = (false)
             ..spacePercentTop = (40)
             ..spacePercentBottom = (40);
@@ -148,7 +148,7 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
 
   Widget getLineChart(LineChartController controller) {
     var lineChart = LineChart(controller);
-    controller.animator
+    controller.animator!
       ..reset()
       ..animateX1(2500);
     return lineChart;

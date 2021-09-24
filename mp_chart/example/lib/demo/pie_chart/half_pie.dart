@@ -49,7 +49,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
   }
 
   // ignore: non_constant_identifier_names
-  final List<String> PARTIES = List()
+  final List<String> PARTIES = <String>[]
     ..add("Party A")
     ..add("Party B")
     ..add("Party C")
@@ -82,7 +82,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
     _controller = PieChartController(
         legendSettingFunction: (legend, controller) {
           _formatter.setPieChartPainter(controller as PieChartController);
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
             ..orientation = (LegendOrientation.HORIZONTAL)
@@ -124,7 +124,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
     var count = 4;
     var range = 100;
 
-    List<PieEntry> values = List();
+    List<PieEntry> values = List<PieEntry>.empty();
 
     for (int i = 0; i < count; i++) {
       values.add(new PieEntry(

@@ -135,7 +135,7 @@ class OtherChartScatterPlotState
     var desc = Description()..enabled = false;
     controller = ScatterChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..setAxisMinimum(0)
             ..typeface = Util.LIGHT;
         },
@@ -143,7 +143,7 @@ class OtherChartScatterPlotState
           axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
             ..orientation = (LegendOrientation.VERTICAL)
@@ -152,7 +152,7 @@ class OtherChartScatterPlotState
             ..xOffset = (5);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..drawGridLines = (false)
             ..typeface = Util.LIGHT;
         },
@@ -169,14 +169,14 @@ class OtherChartScatterPlotState
   }
 
   void _initScatterData(int count, double range) async {
-    List<ui.Image?> imgs = List(3);
+    List<ui.Image?> imgs = []..length =(3);
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
     imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
     imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
 
-    List<Entry> values1 = List();
-    List<Entry> values2 = List();
-    List<Entry> values3 = List();
+    List<Entry> values1 = List<Entry>.empty();
+    List<Entry> values2 = List<Entry>.empty();
+    List<Entry> values3 = List<Entry>.empty();
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 3;
@@ -210,7 +210,7 @@ class OtherChartScatterPlotState
     set2.setScatterShapeSize(8);
     set3.setScatterShapeSize(8);
 
-    List<IScatterDataSet> dataSets = List();
+    List<IScatterDataSet> dataSets = List<IScatterDataSet>.empty();
     dataSets.add(set1); // add the data sets
     dataSets.add(set2);
     dataSets.add(set3);
