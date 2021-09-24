@@ -21,7 +21,7 @@ class ChevronUpShapeRenderer implements IShapeRenderer {
       ..strokeWidth = Utils.convertDpToPixel(1)!;
 
     c.drawLine(Offset(posX!, posY! - (2 * shapeHalf)),
-        Offset(posX + (2 * shapeHalf), posY), renderPaint!);
+        Offset(posX + (2 * shapeHalf), posY), renderPaint);
 
     c.drawLine(Offset(posX, posY - (2 * shapeHalf)),
         Offset(posX - (2 * shapeHalf), posY), renderPaint);

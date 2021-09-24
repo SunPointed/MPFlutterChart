@@ -79,8 +79,8 @@ abstract class DataRenderer extends Renderer {
   void applyValueTextStyle(IDataSet set) {
     _valuePaint = PainterUtils.create(_valuePaint, null,
         Color.fromARGB(255, 63, 63, 63), Utils.convertDpToPixel(9),
-        fontFamily: set?.getValueTypeface()?.fontFamily,
-        fontWeight: set?.getValueTypeface()?.fontWeight);
+        fontFamily: set.getValueTypeface()?.fontFamily,
+        fontWeight: set.getValueTypeface()?.fontWeight);
   }
 
   /// Initializes the buffers used for rendering with a  size. Since this

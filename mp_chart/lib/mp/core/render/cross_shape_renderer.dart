@@ -21,7 +21,7 @@ class CrossShapeRenderer implements IShapeRenderer {
       ..strokeWidth = Utils.convertDpToPixel(1)!;
 
     c.drawLine(Offset(posX! - shapeHalf, posY!), Offset(posX + shapeHalf, posY),
-        renderPaint!);
+        renderPaint);
     c.drawLine(Offset(posX, posY - shapeHalf), Offset(posX, posY + shapeHalf),
         renderPaint);
   }

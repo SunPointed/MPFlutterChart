@@ -31,7 +31,7 @@ class CircleShapeRenderer implements IShapeRenderer {
         ..strokeWidth = shapeStrokeSize;
 
       c.drawCircle(Offset(posX!, posY!), shapeHoleSizeHalf + shapeStrokeSizeHalf,
-          renderPaint!);
+          renderPaint);
 
       if (shapeHoleColor != ColorUtils.COLOR_NONE) {
         renderPaint
