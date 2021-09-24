@@ -214,7 +214,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
 
   @override
   List<double?> getMarkerPosition(Highlight high) {
-    return new List()..add(high.drawY)..add(high.drawX);
+    return <double?>[high.drawY,high.drawX];//new List()..add(high.drawY)..add(high.drawX);
   }
 
   @override
@@ -243,7 +243,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
     return getTransformer(set.getAxisDependency())!.rectValueToPixel(bounds);
   }
 
-  List<double?> mGetPositionBuffer = List(2);
+  List<double?> mGetPositionBuffer = []..length = 2;
 
   /// Returns a recyclable MPPointF instance.
   ///
@@ -251,7 +251,7 @@ class HorizontalBarChartPainter extends BarChartPainter {
   /// @param axis
   /// @return
   @override
-  MPPointF getPosition(Entry e, AxisDependency axis) {
+  MPPointF? getPosition(Entry e, AxisDependency axis) {
     if (e == null) return null;
 
     List<double?> vals = mGetPositionBuffer;

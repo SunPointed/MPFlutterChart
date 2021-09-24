@@ -31,7 +31,7 @@ import 'package:mp_chart/mp/painter/bar_line_chart_painter.dart';
 enum DrawOrder { BAR, BUBBLE, LINE, CANDLE, SCATTER }
 
 class CombinedChartPainter extends BarLineChartBasePainter<CombinedData?>
-    implements CombinedDataProvider {
+    implements CombinedDataProvider? {
   /// if set to true, all values are drawn above their bars, instead of below
   /// their top
   bool _drawValueAboveBar = true;
@@ -154,12 +154,12 @@ class CombinedChartPainter extends BarLineChartBasePainter<CombinedData?>
             chartTransListener);
 
   List<DrawOrder> initDrawOrder() {
-    return List()
-      ..add(DrawOrder.BAR)
-      ..add(DrawOrder.BUBBLE)
-      ..add(DrawOrder.LINE)
-      ..add(DrawOrder.CANDLE)
-      ..add(DrawOrder.SCATTER);
+    return <DrawOrder>[
+      DrawOrder.BAR,
+      DrawOrder.BUBBLE,
+      DrawOrder.LINE,
+      DrawOrder.CANDLE,
+      DrawOrder.SCATTER];
   }
 
   @override

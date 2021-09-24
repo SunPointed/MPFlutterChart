@@ -140,7 +140,7 @@ class ObjectPool<T extends Poolable> {
           "Object Pool must be instantiated with a capacity greater than 0!");
     }
     this.desiredCapacity = withCapacity;
-    this.objects = List(this.desiredCapacity);
+    this.objects = <Object?>[this.desiredCapacity];
     this.objectsPointer = 0;
     this.modelObject = object;
     this.replenishPercentage = 1.0;
@@ -196,7 +196,7 @@ class ObjectPool<T extends Poolable> {
 
     T result = objects[this.objectsPointer!] as T;
     result.currentOwnerId = Poolable.NO_OWNER;
-    this.objectsPointer--;
+    this.objectsPointer = this.objectsPointer! - 1;
 
     return result;
   }
@@ -216,7 +216,7 @@ class ObjectPool<T extends Poolable> {
       }
     }
 
-    this.objectsPointer++;
+    this.objectsPointer = this.objectsPointer! + 1;
     if (this.objectsPointer! >= objects.length) {
       this.resizePool();
     }
@@ -250,13 +250,13 @@ class ObjectPool<T extends Poolable> {
       object.currentOwnerId = this.poolId;
       this.objects[this.objectsPointer! + 1 + i] = object;
     }
-    this.objectsPointer += objectsListSize;
+    this.objectsPointer = this.objectsPointer! + objectsListSize;
   }
 
   void resizePool() {
     final int oldCapacity = this.desiredCapacity!;
-    this.desiredCapacity *= 2;
-    List<Object?> temp = List(this.desiredCapacity);
+    this.desiredCapacity = this.desiredCapacity! * 2;
+    List<Object?> temp = <Object?>[this.desiredCapacity];
     for (int i = 0; i < oldCapacity; i++) {
       temp[i] = this.objects[i];
     }

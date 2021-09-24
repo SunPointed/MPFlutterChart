@@ -4,19 +4,19 @@ import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller
 import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
 
 class DayAxisValueFormatter extends ValueFormatter {
-  final List<String> _months = List()
-    ..add("Jan")
-    ..add("Feb")
-    ..add("Mar")
-    ..add("Apr")
-    ..add("May")
-    ..add("Jun")
-    ..add("Jul")
-    ..add("Aug")
-    ..add("Sep")
-    ..add("Oct")
-    ..add("Nov")
-    ..add("Dec");
+  final List<String> _months = <String>[
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",];
 
   late BarLineScatterCandleBubbleController _controller;
 

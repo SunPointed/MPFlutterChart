@@ -662,7 +662,7 @@ abstract class BarLineChartBasePainter<
       return _axisRight!.axisRange;
   }
 
-  List<double?> mGetPositionBuffer = List(2);
+  List<double?> mGetPositionBuffer = []..length = 2;
 
   /// Returns a recyclable MPPointF instance.
   /// Returns the position (in pixels) the provided Entry has inside the chart
@@ -670,7 +670,7 @@ abstract class BarLineChartBasePainter<
   ///
   /// @param e
   /// @return
-  MPPointF getPosition(Entry e, AxisDependency axis) {
+  MPPointF? getPosition(Entry e, AxisDependency axis) {
     if (e == null) return null;
 
     mGetPositionBuffer[0] = e.x;
@@ -686,21 +686,21 @@ abstract class BarLineChartBasePainter<
   ///
   /// @param color
   void setGridBackgroundColor(Color color) {
-    _gridBackgroundPaint..color = color;
+    _gridBackgroundPaint!..color = color;
   }
 
   /// Sets the width of the border lines in dp.
   ///
   /// @param width
   void setBorderWidth(double width) {
-    _borderPaint..strokeWidth = Utils.convertDpToPixel(width)!;
+    _borderPaint!..strokeWidth = Utils.convertDpToPixel(width)!;
   }
 
   /// Sets the color of the chart border lines.
   ///
   /// @param color
   void setBorderColor(Color color) {
-    _borderPaint..color = color;
+    _borderPaint!..color = color;
   }
 
   /// Returns a recyclable MPPointD instance

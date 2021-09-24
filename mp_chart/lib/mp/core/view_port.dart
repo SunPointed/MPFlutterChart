@@ -255,7 +255,7 @@ class ViewPortHandler {
     return save;
   }
 
-  List<double?> valsBufferForFitScreen = List(16);
+  List<double?> valsBufferForFitScreen = []..length = 16;
 
   /// Resets all zooming and dragging and makes the chart fit exactly it's
   /// bounds.
@@ -326,7 +326,7 @@ class ViewPortHandler {
     refresh(save);
   }
 
-  List<double?> matrixBuffer = List(16);
+  List<double?> matrixBuffer = []..length = 16;
 
   /// call this method to refresh the graph with a given matrix
   ///

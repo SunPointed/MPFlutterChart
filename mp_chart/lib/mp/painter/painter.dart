@@ -178,9 +178,9 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry?>>?>
 
   void initDefaultWithData() {
     // calculate how many digits are needed
-    _setupDefaultFormatter(_data.getYMin1(), _data.getYMax1());
+    _setupDefaultFormatter(_data!.getYMin1(), _data!.getYMax1());
 
-    for (IDataSet set in _data.dataSets!) {
+    for (IDataSet set in _data!.dataSets!) {
       if (set.needsFormatter() ||
           set.getValueFormatter() == _defaultValueFormatter)
         set.setValueFormatter(_defaultValueFormatter);
@@ -204,7 +204,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry?>>?>
   void _setupDefaultFormatter(double? min1, double? max1) {
     double reference = 0;
 
-    if (_data == null || _data.getEntryCount() < 2) {
+    if (_data == null || _data!.getEntryCount() < 2) {
       reference = max(min1!.abs(), max1!.abs());
     } else {
       reference = (max1! - min1!).abs();
@@ -333,7 +333,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry?>>?>
   /// @param callListener Should the listener be called for this change
   void highlightValue4(double x, double y, int dataSetIndex,
       bool callListener) {
-    if (dataSetIndex < 0 || dataSetIndex >= _data.getDataSetCount()) {
+    if (dataSetIndex < 0 || dataSetIndex >= _data!.getDataSetCount()) {
       highlightValue6(null, callListener);
     } else {
       highlightValue6(
@@ -361,14 +361,15 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry?>>?>
     if (high == null) {
       _indicesToHighlight = null;
     } else {
-      e = _data.getEntryForHighlight(high);
+      e = _data!.getEntryForHighlight(high);
       if (e == null) {
         _indicesToHighlight = null;
         high = null;
       } else {
         // set the indices to highlight
-        _indicesToHighlight = List()
-          ..add(high);
+        _indicesToHighlight = <Highlight>[
+          high
+          ];
       }
     }
 
@@ -383,7 +384,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry?>>?>
   }
 
   void selectedValue(Highlight? high) {
-    Entry? e = _data.getEntryForHighlight(high);
+    Entry? e = _data!.getEntryForHighlight(high);
     _selectionListener?.onValueSelected(e, null);
   }
 
@@ -409,9 +410,9 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry?>>?>
     for (int i = 0; i < _indicesToHighlight!.length; i++) {
       Highlight highlight = _indicesToHighlight![i];
 
-      IDataSet set = _data.getDataSetByIndex(highlight.dataSetIndex)!;
+      IDataSet set = _data!.getDataSetByIndex(highlight.dataSetIndex)!;
 
-      Entry? e = _data.getEntryForHighlight(_indicesToHighlight![i]);
+      Entry? e = _data!.getEntryForHighlight(_indicesToHighlight![i]);
       int entryIndex = set.getEntryIndex2(e);
       // make sure entry not null
       if (e == null || entryIndex > set.getEntryCount() * _animator!.getPhaseX())
@@ -436,8 +437,7 @@ abstract class ChartPainter<T extends ChartData<IDataSet<Entry?>>?>
   /// @param high
   /// @return
   List<double?> getMarkerPosition(Highlight high) {
-    return List<double?>()
-      ..add(high.drawX)..add(high.drawY);
+    return <double?>[high.drawX,high.drawY];
   }
 
   @override

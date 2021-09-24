@@ -2,12 +2,12 @@ import 'package:intl/intl.dart';
 import 'package:mp_chart/mp/core/value_formatter/value_formatter.dart';
 
 class LargeValueFormatter extends ValueFormatter {
-  List<String> _suffix = List()
-    ..add("")
-    ..add("k")
-    ..add("m")
-    ..add("b")
-    ..add("t");
+  List<String> _suffix = <String>[
+    "",
+    "k",
+    "m",
+    "b",
+    "t",];
   int _maxLength = 5;
   late NumberFormat _format;
   String _text = "";
