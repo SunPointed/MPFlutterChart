@@ -36,7 +36,7 @@ class SquareShapeRenderer implements IShapeRenderer {
               posY! - shapeHoleSizeHalf - shapeStrokeSizeHalf,
               posX + shapeHoleSizeHalf + shapeStrokeSizeHalf,
               posY + shapeHoleSizeHalf + shapeStrokeSizeHalf),
-          renderPaint!);
+          renderPaint);
 
       if (shapeHoleColor != ColorUtils.COLOR_NONE) {
         renderPaint
