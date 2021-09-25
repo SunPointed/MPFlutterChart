@@ -140,7 +140,7 @@ class ObjectPool<T extends Poolable> {
           "Object Pool must be instantiated with a capacity greater than 0!");
     }
     this.desiredCapacity = withCapacity;
-    this.objects = <Object?>[this.desiredCapacity];
+    this.objects =  []..length = this.desiredCapacity!;//<Object?>[this.desiredCapacity];
     this.objectsPointer = 0;
     this.modelObject = object;
     this.replenishPercentage = 1.0;

@@ -34,7 +34,7 @@ class ChartData<T extends IDataSet<Entry?>> {
 
   /// Default constructor.
   ChartData() {
-    _dataSets = List<T>.empty();
+    _dataSets = <T>[];
   }
 
   /// Constructor taking single or multiple DataSet objects.

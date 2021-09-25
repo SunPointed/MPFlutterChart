@@ -161,7 +161,7 @@ class OtherChartCandlestickState
     var img = await ImageLoader.loadImage('assets/img/star.png');
 //    chart.resetTracking();
 
-    List<CandleEntry> values = List<CandleEntry>.empty();
+    List<CandleEntry> values = <CandleEntry>[];
 
     for (int i = 0; i < count; i++) {
       double multi = (range + 1);

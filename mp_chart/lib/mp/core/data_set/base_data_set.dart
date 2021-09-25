@@ -60,8 +60,8 @@ abstract class BaseDataSet<T extends Entry?> implements IDataSet<T> {
 
   /// Default constructor.
   BaseDataSet() {
-    _colors = List<Color>.empty();
-    _valueColors = List<Color>.empty();
+    _colors = <Color>[];
+    _valueColors = <Color>[];
     // default color
     _colors!.add(ui.Color.fromARGB(255, 140, 234, 255));
     _valueColors!.add(ColorUtils.BLACK);
@@ -71,8 +71,8 @@ abstract class BaseDataSet<T extends Entry?> implements IDataSet<T> {
   ///
   /// @param label
   BaseDataSet.withLabel(String label) {
-    _colors = List<Color>.empty();
-    _valueColors = List<Color>.empty();
+    _colors = <Color>[];
+    _valueColors = <Color>[];
 
     // default color
     _colors!.add(ui.Color.fromARGB(255, 140, 234, 255));
@@ -140,7 +140,7 @@ abstract class BaseDataSet<T extends Entry?> implements IDataSet<T> {
   ///
   /// @param color
   void addColor(ui.Color color) {
-    if (_colors == null) _colors = List<Color>.empty();
+    if (_colors == null) _colors = <Color>[];
     _colors!.add(color);
   }
 
@@ -196,7 +196,7 @@ abstract class BaseDataSet<T extends Entry?> implements IDataSet<T> {
   /// Resets all colors of this DataSet and recreates the colors array.
   void resetColors() {
     if (_colors == null) {
-      _colors = List<Color>.empty();
+      _colors = <Color>[];
     }
     _colors!.clear();
   }

@@ -29,7 +29,7 @@ class PieDataSet extends DataSet<PieEntry> implements IPieDataSet {
 
   @override
   DataSet<PieEntry> copy1() {
-    List<PieEntry> entries = List<PieEntry>.empty();
+    List<PieEntry> entries = <PieEntry>[];
     for (int i = 0; i < values!.length; i++) {
       entries.add(values![i]!.copy());
     }

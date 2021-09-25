@@ -30,8 +30,8 @@ class YAxisRendererRadarChart extends YAxisRenderer {
     double range = (yMax - yMin).abs();
 
     if (labelCount == 0 || range <= 0 || range.isInfinite) {
-      axis!.entries = List<double?>.empty();
-      axis!.centeredEntries = List<double?>.empty();
+      axis!.entries = <double?>[];
+      axis!.centeredEntries = <double?>[];
       axis!.entryCount = 0;
       return;
     }

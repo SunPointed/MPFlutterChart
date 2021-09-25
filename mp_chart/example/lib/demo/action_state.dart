@@ -74,6 +74,7 @@ abstract class ActionState<T extends StatefulWidget> extends State<T> {
   PopupMenuItemBuilder<String> getBuilder();
 
   void captureImg(CaptureCallback callback) {
+    /*
     PermissionHandler()
         .checkPermissionStatus(PermissionGroup.storage)
         .then((permission) {
@@ -94,6 +95,7 @@ abstract class ActionState<T extends StatefulWidget> extends State<T> {
         callback();
       }
     });
+    */
   }
 }
 
@@ -236,17 +238,17 @@ abstract class LineActionState<T extends StatefulWidget>
         }
         break;
       case 'L':
-        controller!.animator
+        controller!.animator!
           ..reset()
           ..animateX1(2000);
         break;
       case 'M':
-        controller!.animator
+        controller!.animator!
           ..reset()
           ..animateY2(2000, Easing.EaseInCubic);
         break;
       case 'N':
-        controller!.animator
+        controller!.animator!
           ..reset()
           ..animateXY1(2000, 2000);
         break;
@@ -324,17 +326,17 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
         controller.state!.setStateIfNotDispose();
         break;
       case 'H':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateX1(2000);
         break;
       case 'I':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateY1(2000);
         break;
       case 'J':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateXY1(2000, 2000);
         break;
@@ -413,17 +415,17 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
         controller.state!.setStateIfNotDispose();
         break;
       case 'H':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateX1(2000);
         break;
       case 'I':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateY1(2000);
         break;
       case 'J':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateXY1(2000, 2000);
         break;
@@ -515,23 +517,23 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
         controller.state!.setStateIfNotDispose();
         break;
       case 'J':
-        controller.animator
+        controller.animator!
           ..reset()
           ..spin(2000, controller.rotationAngle, controller.rotationAngle + 360,
               Easing.EaseInOutCubic);
         break;
       case 'K':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateX1(1400);
         break;
       case 'L':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateY1(1400);
         break;
       case 'M':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateXY1(1400, 1400);
         break;
@@ -654,17 +656,17 @@ abstract class ScatterActionState<T extends StatefulWidget>
         }
         break;
       case 'E':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateX1(3000);
         break;
       case 'F':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateY1(3000);
         break;
       case 'G':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateXY1(3000, 3000);
         break;
@@ -733,17 +735,17 @@ abstract class BubbleActionState<T extends StatefulWidget>
         }
         break;
       case 'E':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateX1(2000);
         break;
       case 'F':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateY1(2000);
         break;
       case 'G':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateXY1(2000, 2000);
         break;
@@ -813,17 +815,17 @@ abstract class CandlestickActionState<T extends StatefulWidget>
         }
         break;
       case 'E':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateX1(2000);
         break;
       case 'F':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateY1(2000);
         break;
       case 'G':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateXY1(2000, 2000);
         break;
@@ -933,23 +935,23 @@ abstract class RadarActionState<T extends StatefulWidget>
         controller.state!.setStateIfNotDispose();
         break;
       case 'J':
-        controller.animator
+        controller.animator!
           ..reset()
           ..spin(2000, controller.rotationAngle, controller.rotationAngle + 360,
               Easing.EaseInOutCubic);
         break;
       case 'K':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateX1(1400);
         break;
       case 'L':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateY1(1400);
         break;
       case 'M':
-        controller.animator
+        controller.animator!
           ..reset()
           ..animateXY1(1400, 1400);
         break;

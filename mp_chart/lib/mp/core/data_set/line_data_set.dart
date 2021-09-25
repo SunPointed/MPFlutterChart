@@ -47,7 +47,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
     // mLineWidth = Utils.convertDpToPixel(1f);
 
     if (_circleColors == null) {
-      _circleColors = List<Color>.empty();
+      _circleColors = <Color>[];
     }
     _circleColors!.clear();
 
@@ -246,7 +246,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   /// resets the circle-colors array and creates a  one
   void resetCircleColors() {
     if (_circleColors == null) {
-      _circleColors = List<Color>.empty();
+      _circleColors = <Color>[];
     }
     _circleColors!.clear();
   }
@@ -293,7 +293,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
 
   @override
   DataSet<Entry?> copy1() {
-    List<Entry> entries = List<Entry>.empty();
+    List<Entry> entries = <Entry>[];
     for (int i = 0; i < values!.length; i++) {
       entries.add(Entry(
           x: values![i]!.x,

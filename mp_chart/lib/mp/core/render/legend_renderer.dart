@@ -66,7 +66,7 @@ class LegendRenderer extends Renderer {
   /// @param data
   void computeLegend(ChartData<IDataSet>? data) {
     if (!_legend!.isLegendCustom) {
-      _computedEntries = List<LegendEntry?>.empty();
+      _computedEntries = <LegendEntry?>[];
 
       // loop for building up the colors and labels used in the legend
       for (int i = 0; i < data!.getDataSetCount(); i++) {

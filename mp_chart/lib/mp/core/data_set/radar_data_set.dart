@@ -97,7 +97,7 @@ class RadarDataSet extends LineRadarDataSet<RadarEntry>
 
   @override
   DataSet<RadarEntry?> copy1() {
-    List<RadarEntry> entries = List<RadarEntry>.empty();
+    List<RadarEntry> entries = <RadarEntry>[];
     for (int i = 0; i < values!.length; i++) {
       entries.add(values![i]!.copy());
     }

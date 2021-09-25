@@ -27,7 +27,7 @@ abstract class DataSet<T extends Entry?> extends BaseDataSet<T?> {
   DataSet(List<T> values, String label) : super.withLabel(label) {
     this._values = values;
 
-    if (_values == null) _values = List<T>.empty();
+    if (_values == null) _values = <T>[];
 
     calcMinMax();
   }
@@ -169,7 +169,7 @@ abstract class DataSet<T extends Entry?> extends BaseDataSet<T?> {
     if (e == null) return;
 
     if (_values == null) {
-      _values = List<T>.empty();
+      _values = <T>[];
     }
 
     calcMinMax1(e);
@@ -194,7 +194,7 @@ abstract class DataSet<T extends Entry?> extends BaseDataSet<T?> {
 
     List<T?>? valueDatas = values;
     if (valueDatas == null) {
-      valueDatas = List<T>.empty();
+      valueDatas = <T>[];
     }
 
     calcMinMax1(e);
@@ -352,7 +352,7 @@ abstract class DataSet<T extends Entry?> extends BaseDataSet<T?> {
 
   @override
   List<T?> getEntriesForXValue(double? xValue) {
-    List<T?> entries = List<T?>.empty();
+    List<T?> entries = <T?>[];
 
     int low = 0;
     int high = _values!.length - 1;

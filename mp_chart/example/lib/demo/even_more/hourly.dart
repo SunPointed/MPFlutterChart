@@ -146,7 +146,7 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
     // now in hours
     int now = Util.currentTimeMillis();
 
-    List<Entry> values = List<Entry>.empty();
+    List<Entry> values = <Entry>[];
 
     // count = hours
     double to = now + count;

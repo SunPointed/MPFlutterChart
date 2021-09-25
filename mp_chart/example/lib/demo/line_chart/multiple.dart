@@ -202,10 +202,10 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
     imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
     imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
-    List<ILineDataSet> dataSets = List<ILineDataSet>.empty();
+    List<ILineDataSet> dataSets = <ILineDataSet>[];
 
     for (int z = 0; z < 3; z++) {
-      List<Entry> values = List<Entry>.empty();
+      List<Entry> values = <Entry>[];
 
       for (int i = 0; i < count; i++) {
         double val = (random.nextDouble() * range) + 3;

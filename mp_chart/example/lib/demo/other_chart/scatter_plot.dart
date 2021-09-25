@@ -174,9 +174,9 @@ class OtherChartScatterPlotState
     imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
     imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
 
-    List<Entry> values1 = List<Entry>.empty();
-    List<Entry> values2 = List<Entry>.empty();
-    List<Entry> values3 = List<Entry>.empty();
+    List<Entry> values1 = <Entry>[];
+    List<Entry> values2 = <Entry>[];
+    List<Entry> values3 = <Entry>[];
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 3;
@@ -210,7 +210,7 @@ class OtherChartScatterPlotState
     set2.setScatterShapeSize(8);
     set3.setScatterShapeSize(8);
 
-    List<IScatterDataSet> dataSets = List<IScatterDataSet>.empty();
+    List<IScatterDataSet> dataSets = <IScatterDataSet>[];
     dataSets.add(set1); // add the data sets
     dataSets.add(set2);
     dataSets.add(set3);

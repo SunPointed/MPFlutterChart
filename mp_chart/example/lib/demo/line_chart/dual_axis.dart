@@ -201,21 +201,21 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
     imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
     imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
-    List<Entry> values1 = List<Entry>.empty();;
+    List<Entry> values1 = <Entry>[];;
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * (range / 2.0)) + 50;
       values1.add(Entry(x: i.toDouble(), y: val, icon: imgs[0]));
     }
 
-    List<Entry> values2 = List<Entry>.empty();
+    List<Entry> values2 = <Entry>[];
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 450;
       values2.add(new Entry(x: i.toDouble(), y: val, icon: imgs[1]));
     }
 
-    List<Entry> values3 = List<Entry>.empty();
+    List<Entry> values3 = <Entry>[];
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 500;

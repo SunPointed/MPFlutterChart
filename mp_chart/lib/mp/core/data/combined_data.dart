@@ -47,7 +47,7 @@ class CombinedData extends BarLineScatterCandleBubbleData<
   @override
   void calcMinMax1() {
     if (dataSets == null) {
-      dataSets = List<IBarLineScatterCandleBubbleDataSet<Entry?>>.empty();
+      dataSets = <IBarLineScatterCandleBubbleDataSet<Entry?>>[];
     }
     dataSets!.clear();
 
@@ -112,7 +112,7 @@ class CombinedData extends BarLineScatterCandleBubbleData<
   /// @return
   List<BarLineScatterCandleBubbleData?> getAllData() {
     List<BarLineScatterCandleBubbleData?> data =
-        List<BarLineScatterCandleBubbleData?>.empty();
+        <BarLineScatterCandleBubbleData?>[];
     if (_lineData != null) data.add(_lineData);
     if (_barData != null) data.add(_barData);
     if (_scatterData != null) data.add(_scatterData);

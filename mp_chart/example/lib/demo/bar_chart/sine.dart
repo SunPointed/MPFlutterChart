@@ -31,7 +31,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
   void initState() {
     _initController();
     Util.loadAsset("othersine.txt").then((value) {
-      _data = List<BarEntry>.empty();
+      _data = <BarEntry>[];
       List<String> lines = value.split("\n");
       for (int i = 0; i < lines.length; i++) {
         var datas = lines[i].split("#");
@@ -154,7 +154,7 @@ class BarChartSineState extends BarActionState<BarChartSine> {
   void _initBarData(int count) {
     if (_data == null) return;
 
-    List<BarEntry> entries = List<BarEntry> .empty();
+    List<BarEntry> entries = <BarEntry> [];
     for (int i = 0; i < count; i++) {
       entries.add(_data![i]);
     }

@@ -8,7 +8,7 @@ abstract class PieRadarHighlighter<T extends PieRadarChartPainter>
   T? _painter;
 
   /// buffer for storing previously highlighted values
-  List<Highlight> _highlightBuffer = List<Highlight>.empty();
+  List<Highlight> _highlightBuffer = <Highlight>[];
 
   PieRadarHighlighter(T painter) {
     this._painter = painter;

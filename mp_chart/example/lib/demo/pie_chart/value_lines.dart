@@ -199,7 +199,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
 
   void _initPieData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
-    List<PieEntry> entries = List<PieEntry>.empty();
+    List<PieEntry> entries = <PieEntry>[];
 
     // NOTE: The order of the entries when being added to the entries array determines their position around the center of
     // the chart.
@@ -217,7 +217,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
     dataSet.setSelectionShift(5);
 
     // add a lot of colors
-    List<Color> colors = List<Color>.empty();
+    List<Color> colors = <Color>[];
     for (Color c in ColorUtils.VORDIPLOM_COLORS) colors.add(c);
     for (Color c in ColorUtils.JOYFUL_COLORS) colors.add(c);
     for (Color c in ColorUtils.COLORFUL_COLORS) colors.add(c);

@@ -16,7 +16,7 @@ import 'package:mp_chart/mp/core/utils/utils.dart';
 
 class Legend extends ComponentBase {
   /// The legend entries array
-  List<LegendEntry?> _entries = List<LegendEntry?>.empty();
+  List<LegendEntry?> _entries = <LegendEntry?>[];
 
   /// Entries that will be appended to the end of the auto calculated entries after calculating the legend.
   /// (if the legend has already been calculated, you will need to call notifyDataSetChanged() to let the changes take effect)
@@ -164,7 +164,7 @@ class Legend extends ComponentBase {
   /// (if the legend has already been calculated, you will need to call notifyDataSetChanged()
   ///   to let the changes take effect)
   void setExtra2(List<Color> colors, List<String> labels) {
-    List<LegendEntry> entries = List<LegendEntry>.empty();
+    List<LegendEntry> entries = <LegendEntry>[];
     for (int i = 0; i < min(colors.length, labels.length); i++) {
       final LegendEntry entry = LegendEntry.empty();
       entry.formColor = colors[i];
@@ -423,9 +423,9 @@ class Legend extends ComponentBase {
           double requiredWidth = 0;
           int stackedStartIndex = -1;
 
-          _calculatedLabelBreakPoints = List<bool?>.empty();
-          _calculatedLabelSizes = List<FSize?>.empty();
-          _calculatedLineSizes = List<FSize?>.empty();
+          _calculatedLabelBreakPoints = <bool?>[];
+          _calculatedLabelSizes = <FSize?>[];
+          _calculatedLineSizes = <FSize?>[];
 
           for (int i = 0; i < entryCount; i++) {
             LegendEntry e = entries[i]!;

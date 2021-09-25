@@ -236,7 +236,7 @@ abstract class BarLineScatterCandleBubbleController<
   ///
   /// @param xValue
   void moveViewToX(double xValue) {
-    List<double> pts = List<double>.empty();
+    List<double> pts = <double>[];
     pts.add(xValue);
     pts.add(0.0);
 
@@ -251,7 +251,7 @@ abstract class BarLineScatterCandleBubbleController<
   /// @param axis   - which axis should be used as a reference for the y-axis
   void moveViewToY(double yValue, AxisDependency axis) {
     double yInView = getAxisRange(axis) / viewPortHandler!.getScaleY();
-    List<double> pts = List<double>.empty();
+    List<double> pts = <double>[];
     pts.add(0.0);
     pts.add(yValue + yInView / 2);
 
@@ -268,7 +268,7 @@ abstract class BarLineScatterCandleBubbleController<
   /// @param axis   - which axis should be used as a reference for the y-axis
   void moveViewTo(double xValue, double yValue, AxisDependency axis) {
     double yInView = getAxisRange(axis) / viewPortHandler!.getScaleY();
-    List<double> pts = List<double>.empty();
+    List<double> pts = <double>[];
     pts.add(xValue);
     pts.add(yValue + yInView / 2);
     painter?.getTransformer(axis)?.pointValuesToPixel(pts);
@@ -290,7 +290,7 @@ abstract class BarLineScatterCandleBubbleController<
     double yInView = getAxisRange(axis) / viewPortHandler!.getScaleY();
 
     yValue = yValue + yInView / 2;
-    List<double> pts = List<double>.empty();
+    List<double> pts = <double>[];
     pts.add(xValue);
     pts.add(yValue);
     double? xOrigin = bounds.x;
@@ -313,7 +313,7 @@ abstract class BarLineScatterCandleBubbleController<
   /// @param axis   - which axis should be used as a reference for the y-axis
   void centerViewToY(double yValue, AxisDependency axis) {
     double valsInView = getAxisRange(axis) / viewPortHandler!.getScaleY();
-    List<double> pts = List<double>.empty();
+    List<double> pts = <double>[];
     pts.add(0.0);
     pts.add(yValue + valsInView / 2);
     painter?.getTransformer(axis)?.pointValuesToPixel(pts);
@@ -330,7 +330,7 @@ abstract class BarLineScatterCandleBubbleController<
   void centerViewTo(double xValue, double yValue, AxisDependency axis) {
     double yInView = getAxisRange(axis) / viewPortHandler!.getScaleY();
     double xInView = xAxis!.axisRange / viewPortHandler!.getScaleX();
-    List<double> pts = List<double>.empty();
+    List<double> pts = <double>[];
     pts.add(xValue - xInView / 2);
     pts.add(yValue + yInView / 2);
     painter?.getTransformer(axis)?.pointValuesToPixel(pts);
@@ -353,7 +353,7 @@ abstract class BarLineScatterCandleBubbleController<
 
     xValue = xValue - xInView / 2;
     yValue = yValue + yInView / 2;
-    List<double> pts = List<double>.empty();
+    List<double> pts = <double>[];
     pts.add(xValue);
     pts.add(yValue);
     double? xOrigin = bounds.x;

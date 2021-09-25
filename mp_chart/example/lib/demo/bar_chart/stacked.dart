@@ -133,7 +133,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
 
   void _initBarData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
-    List<BarEntry> values = List<BarEntry>.empty();
+    List<BarEntry> values = <BarEntry>[];
 
     for (int i = 0; i < count; i++) {
       double mul = (range + 1);
@@ -155,7 +155,7 @@ class BarChartStackedState extends BarActionState<BarChartStacked>
     set1.setStackLabels(
         <String>[]..add("Births")..add("Divorces")..add("Marriages"));
 
-    List<IBarDataSet> dataSets = List<IBarDataSet>.empty();
+    List<IBarDataSet> dataSets = <IBarDataSet>[];
     dataSets.add(set1);
 
     controller.data = BarData(dataSets);

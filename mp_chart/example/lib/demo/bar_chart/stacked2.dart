@@ -55,7 +55,7 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
   void _initBarData() async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     // IMPORTANT: When using negative values in stacked bars, always make sure the negative values are in the array first
-    List<BarEntry> values = List<BarEntry>.empty();
+    List<BarEntry> values = <BarEntry>[];
     values.add(BarEntry.fromListYVals(
         x: 5, vals: <double>[]..add(-10)..add(10), icon: img));
     values.add(BarEntry.fromListYVals(

@@ -198,7 +198,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
     } else {
       int count = (data.getDataSetCount() + 1);
       int amount = data.getDataSetByIndex(0)!.getEntryCount();
-      List<Entry> values = List<Entry>.empty();
+      List<Entry> values = <Entry>[];
       for (int i = 0; i < amount; i++) {
         values.add(new Entry(
             x: i.toDouble(), y: (random.nextDouble() * 50) + 50 * count));

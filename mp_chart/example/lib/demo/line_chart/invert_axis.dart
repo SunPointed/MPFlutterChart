@@ -159,7 +159,7 @@ class LineChartInvertAxisState extends LineActionState<LineChartInvertAxis>
 
   void _initLineData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
-    List<Entry> entries = List<Entry>.empty();
+    List<Entry> entries = <Entry>[];
 
     for (int i = 0; i < count; i++) {
       double xVal = (random.nextDouble() * range);
