@@ -16,7 +16,7 @@ class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider>
   T? _provider;
 
   /// buffer for storing previously highlighted values
-  List<Highlight> _highlightBuffer = <Highlight>[];
+  List<Highlight> _highlightBuffer = [];
 
   ChartHighlighter(T provider) {
     this._provider = provider;
@@ -144,7 +144,7 @@ class ChartHighlighter<T extends BarLineScatterCandleBubbleDataProvider>
   /// @return
   List<Highlight> buildHighlights(
       IDataSet set, int dataSetIndex, double? xVal, Rounding rounding) {
-    List<Highlight> highlights = <Highlight>[];
+    List<Highlight> highlights = [];
 
     //noinspection unchecked
     List<Entry?> entries = set.getEntriesForXValue(xVal);

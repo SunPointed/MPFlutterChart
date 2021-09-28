@@ -132,7 +132,7 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   LineData generateLineData() {
     LineData d = LineData();
 
-    List<Entry> entries = <Entry>[];
+    List<Entry> entries = [];
 
     for (int index = 0; index < _count; index++)
       entries.add(Entry(x: index + 0.5, y: getRandom(15, 5)));
@@ -155,8 +155,8 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   }
 
   BarData generateBarData() {
-    List<BarEntry> entries1 = <BarEntry>[];
-    List<BarEntry> entries2 = <BarEntry>[];
+    List<BarEntry> entries1 = [];
+    List<BarEntry> entries2 = [];
 
     for (int index = 0; index < _count; index++) {
       entries1.add(BarEntry(x: 0, y: getRandom(25, 25)));
@@ -201,7 +201,7 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   ScatterData generateScatterData() {
     ScatterData d = ScatterData();
 
-    List<Entry> entries = <Entry>[];
+    List<Entry> entries = [];
 
     for (double index = 0; index < _count; index += 0.5)
       entries.add(Entry(x: index + 0.25, y: getRandom(10, 55)));
@@ -219,7 +219,7 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   CandleData generateCandleData() {
     CandleData d = CandleData();
 
-    List<CandleEntry> entries = <CandleEntry>[];
+    List<CandleEntry> entries = [];
 
     for (int index = 0; index < _count; index += 2)
       entries.add(CandleEntry(
@@ -239,7 +239,7 @@ class OtherChartCombinedState extends CombinedActionState<OtherChartCombined> {
   BubbleData generateBubbleData() {
     BubbleData bd = BubbleData();
 
-    List<BubbleEntry> entries = <BubbleEntry>[];
+    List<BubbleEntry> entries = [];
 
     for (int index = 0; index < _count; index++) {
       double y = getRandom(10, 105);

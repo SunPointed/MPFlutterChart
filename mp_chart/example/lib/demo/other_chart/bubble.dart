@@ -172,9 +172,9 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
     imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
     imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
-    List<BubbleEntry> values1 = <BubbleEntry>[];
-    List<BubbleEntry> values2 = <BubbleEntry>[];
-    List<BubbleEntry> values3 = <BubbleEntry>[];
+    List<BubbleEntry> values1 = [];
+    List<BubbleEntry> values2 = [];
+    List<BubbleEntry> values3 = [];
 
     for (int i = 0; i < count; i++) {
       values1.add(BubbleEntry(
@@ -210,7 +210,7 @@ class OtherChartBubbleState extends BubbleActionState<OtherChartBubble>
     set3.setColor3(ColorUtils.COLORFUL_COLORS[2], 130);
     set3.setDrawValues(true);
 
-    List<IBubbleDataSet> dataSets = <IBubbleDataSet>[];
+    List<IBubbleDataSet> dataSets = [];
     dataSets.add(set1); // add the data sets
     dataSets.add(set2);
     dataSets.add(set3);

@@ -201,7 +201,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
   void _initData(int count, double range, ui.Image img) {
     double start = 1;
 
-    List<BarEntry> values = <BarEntry>[];
+    List<BarEntry> values = [];
 
     for (int i = start.toInt(); i < start + count; i++) {
       double val = (random.nextDouble() * (range + 1));
@@ -232,7 +232,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     Color endColor4 = ColorUtils.HOLO_RED_DARK;
     Color endColor5 = ColorUtils.HOLO_ORANGE_DARK;
 
-    List<GradientColor> gradientColors = <GradientColor>[];
+    List<GradientColor> gradientColors = [];
     gradientColors.add(GradientColor(startColor1, endColor1));
     gradientColors.add(GradientColor(startColor2, endColor2));
     gradientColors.add(GradientColor(startColor3, endColor3));
@@ -241,7 +241,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
 
     set1.setGradientColors(gradientColors);
 
-    List<IBarDataSet> dataSets = <IBarDataSet>[];
+    List<IBarDataSet> dataSets = [];
     dataSets.add(set1);
 
     controller.data = BarData(dataSets);

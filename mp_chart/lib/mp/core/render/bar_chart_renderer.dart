@@ -191,7 +191,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
 
         renderPaint!
           ..shader = (LinearGradient(
-                  colors: List<Color>.empty()
+                  colors: []
                     ..add(gradientColor.startColor)
                     ..add(gradientColor.endColor),
                   tileMode: TileMode.mirror))
@@ -205,7 +205,7 @@ class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
       if (dataSet.getGradientColors() != null) {
         renderPaint!
           ..shader = (LinearGradient(
-                  colors: List<Color>.empty()
+                  colors: []
                     ..add(dataSet.getGradientColor2(j ~/ 4).startColor)
                     ..add(dataSet.getGradientColor2(j ~/ 4).endColor),
                   tileMode: TileMode.mirror))

@@ -31,38 +31,42 @@ import 'package:permission_handler/permission_handler.dart';
 
 PopupMenuItem item(String text, String id) {
   return PopupMenuItem<String>(
-      value: id,
-      child: Container(
-          padding: EdgeInsets.only(top: 15.0),
-          child: Center(
-              child: Text(
-            text,
-            textDirection: TextDirection.ltr,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: ColorUtils.BLACK,
-                fontSize: 18,
-                fontWeight: FontWeight.bold),
-          ))));
+    value: id,
+    child: Container(
+      padding: EdgeInsets.only(top: 15),
+      child: Center(
+        child: Text(
+          text,
+          textDirection: TextDirection.ltr,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: ColorUtils.BLACK,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 abstract class ActionState<T extends StatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            actions: <Widget>[
-              PopupMenuButton<String>(
-                itemBuilder: getBuilder(),
-                onSelected: (String action) {
-                  itemClick(action);
-                },
-              ),
-            ],
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text(getTitle())),
-        body: getBody());
+      appBar: AppBar(
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            itemBuilder: getBuilder(),
+            onSelected: itemClick,
+          ),
+        ],
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(getTitle()),
+      ),
+      body: getBody(),
+    );
   }
 
   void itemClick(String action);
@@ -73,29 +77,18 @@ abstract class ActionState<T extends StatefulWidget> extends State<T> {
 
   PopupMenuItemBuilder<String> getBuilder();
 
-  void captureImg(CaptureCallback callback) {
-    /*
-    PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage)
-        .then((permission) {
-      if (permission.value != PermissionStatus.granted.value) {
-        PermissionHandler()
-            .requestPermissions([PermissionGroup.storage]).then((permissions) {
-          if (permissions.containsKey(PermissionGroup.storage)) {
-            if (permissions[PermissionGroup.storage] ==
-                    PermissionStatus.granted ||
-                ((permissions[PermissionGroup.storage] ==
-                        PermissionStatus.unknown) &&
-                    Platform.isIOS)) {
-              callback();
-            }
-          }
-        });
-      } else {
+  Future<void> captureImg(CaptureCallback callback) async {
+    final status = await Permission.storage.request();
+    if (status.isGranted) {
+      callback();
+      return;
+    }
+    if (Platform.isIOS) {
+      if (status.isRestricted) {
         callback();
+        return;
       }
-    });
-    */
+    }
   }
 }
 
@@ -110,8 +103,9 @@ abstract class SimpleActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) =>
-        <PopupMenuItem<String>>[item('View on GitHub', 'A') as PopupMenuItem<String>];
+    return (context) => <PopupMenuItem<String>>[
+          item('View on GitHub', 'A') as PopupMenuItem<String>
+        ];
   }
 }
 
@@ -121,7 +115,7 @@ abstract class LineActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
+    return (context) => <PopupMenuItem<String>>[
           item('View on GitHub', 'A') as PopupMenuItem<String>,
           item('Toggle Values', 'B') as PopupMenuItem<String>,
           item('Toggle Icons', 'C') as PopupMenuItem<String>,
@@ -227,7 +221,8 @@ abstract class LineActionState<T extends StatefulWidget>
         controller!.state!.setStateIfNotDispose();
         break;
       case 'J':
-        controller!.autoScaleMinMaxEnabled = !controller!.autoScaleMinMaxEnabled;
+        controller!.autoScaleMinMaxEnabled =
+            !controller!.autoScaleMinMaxEnabled;
         controller!.state!.setStateIfNotDispose();
         break;
       case 'K':
@@ -266,7 +261,7 @@ abstract class BarActionState<T extends StatefulWidget> extends ActionState<T> {
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
+    return (context) => <PopupMenuItem<String>>[
           item('View on GitHub', 'A') as PopupMenuItem<String>,
           item('Toggle Bar Borders', 'B') as PopupMenuItem<String>,
           item('Toggle Values', 'C') as PopupMenuItem<String>,
@@ -355,7 +350,7 @@ abstract class HorizontalBarActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
+    return (context) => <PopupMenuItem<String>>[
           item('View on GitHub', 'A') as PopupMenuItem<String>,
           item('Toggle Bar Borders', 'B') as PopupMenuItem<String>,
           item('Toggle Values', 'C') as PopupMenuItem<String>,
@@ -443,7 +438,7 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
+    return (context) => <PopupMenuItem<String>>[
           item('View on GitHub', 'A') as PopupMenuItem<String>,
           item('Toggle Y-Values', 'B') as PopupMenuItem<String>,
           item('Toggle X-Values', 'C') as PopupMenuItem<String>,
@@ -552,7 +547,7 @@ abstract class CombinedActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
+    return (context) => <PopupMenuItem<String>>[
           item('View on GitHub', 'A') as PopupMenuItem<String>,
           item('Toggle Line Values', 'B') as PopupMenuItem<String>,
           item('Toggle Bar Values', 'C') as PopupMenuItem<String>,
@@ -611,7 +606,7 @@ abstract class ScatterActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
+    return (context) => <PopupMenuItem<String>>[
           item('View on GitHub', 'A') as PopupMenuItem<String>,
           item('Toggle Values', 'B') as PopupMenuItem<String>,
           item('Toggle Icons', 'C') as PopupMenuItem<String>,
@@ -693,7 +688,7 @@ abstract class BubbleActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
+    return (context) => <PopupMenuItem<String>>[
           item('View on GitHub', 'A') as PopupMenuItem<String>,
           item('Toggle Values', 'B') as PopupMenuItem<String>,
           item('Toggle Icons', 'C') as PopupMenuItem<String>,
@@ -772,7 +767,7 @@ abstract class CandlestickActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
+    return (context) => <PopupMenuItem<String>>[
           item('View on GitHub', 'A') as PopupMenuItem<String>,
           item('Toggle Values', 'B') as PopupMenuItem<String>,
           item('Toggle Icons', 'C') as PopupMenuItem<String>,
@@ -859,7 +854,7 @@ abstract class RadarActionState<T extends StatefulWidget>
 
   @override
   getBuilder() {
-    return (BuildContext context) => <PopupMenuItem<String>>[
+    return (context) => <PopupMenuItem<String>>[
           item('View on GitHub', 'A') as PopupMenuItem<String>,
           item('Toggle Values', 'B') as PopupMenuItem<String>,
           item('Toggle Icons', 'C') as PopupMenuItem<String>,

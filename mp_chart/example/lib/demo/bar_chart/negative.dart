@@ -23,7 +23,7 @@ class BarChartNegative extends StatefulWidget {
 
 class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
   late BarChartController _controller;
-  List<Data> _data = <Data>[];
+  List<Data> _data = [];
 
   @override
   void initState() {
@@ -58,8 +58,8 @@ class BarChartNegativeState extends SimpleActionState<BarChartNegative> {
   }
 
   void _initBarData() {
-    List<BarEntry> values = <BarEntry>[];
-    List<Color> colors = <Color>[];
+    List<BarEntry> values = [];
+    List<Color> colors = [];
 
     Color green = Color.fromARGB(255, 110, 190, 102);
     Color red = Color.fromARGB(255, 211, 74, 88);

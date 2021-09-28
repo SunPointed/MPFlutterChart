@@ -168,7 +168,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   }
 
   LineDataSet _createSet() {
-    LineDataSet set = LineDataSet(List<Entry>.empty(), "DataSet 1");
+    LineDataSet set = LineDataSet([], "DataSet 1");
     set.setLineWidth(2.5);
     set.setCircleRadius(4.5);
     set.setColor1(Color.fromARGB(255, 240, 99, 99));
@@ -198,7 +198,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
     } else {
       int count = (data.getDataSetCount() + 1);
       int amount = data.getDataSetByIndex(0)!.getEntryCount();
-      List<Entry> values = <Entry>[];
+      List<Entry> values = [];
       for (int i = 0; i < amount; i++) {
         values.add(new Entry(
             x: i.toDouble(), y: (random.nextDouble() * 50) + 50 * count));

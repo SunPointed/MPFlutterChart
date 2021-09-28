@@ -170,14 +170,14 @@ class LineChartFilledState extends SimpleActionState<LineChartFilled> {
   }
 
   void _initLineData(int count, double range) {
-    List<Entry> values1 = new List<Entry>.empty();
+    List<Entry> values1 = [];
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 50;
       values1.add(new Entry(x: i.toDouble(), y: val));
     }
 
-    List<Entry> values2 = new List<Entry>.empty();
+    List<Entry> values2 = [];
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 450;

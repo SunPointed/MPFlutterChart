@@ -202,10 +202,10 @@ class BarChartMultipleState extends BarActionState<BarChartMultiple>
     startYear = 1980;
     endYear = startYear + groupCount;
 
-    List<BarEntry> values1 = <BarEntry>[];
-    List<BarEntry> values2 = <BarEntry>[];
-    List<BarEntry> values3 = <BarEntry>[];
-    List<BarEntry> values4 = <BarEntry>[];
+    List<BarEntry> values1 = [];
+    List<BarEntry> values2 = [];
+    List<BarEntry> values3 = [];
+    List<BarEntry> values4 = [];
 
     double randomMultiplier = range * 100000;
 

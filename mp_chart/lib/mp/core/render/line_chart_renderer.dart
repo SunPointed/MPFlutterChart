@@ -119,7 +119,7 @@ class LineChartRenderer extends LineRadarRenderer {
 
     xBounds!.set(_provider!, dataSet);
 
-    List<double?> list = <double?>[];
+    List<double?> list = [];
 
     if (xBounds!.range! >= 1) {
       Entry prev = dataSet.getEntryForIndex(xBounds!.min)!;
@@ -195,7 +195,7 @@ class LineChartRenderer extends LineRadarRenderer {
 
     double intensity = dataSet.getCubicIntensity();
 
-    List<double?> list = <double?>[];
+    List<double?> list = [];
 
     if (xBounds!.range! >= 1) {
       double prevDx = 0;
@@ -291,7 +291,7 @@ class LineChartRenderer extends LineRadarRenderer {
     double fillMin =
         dataSet.getFillFormatter().getFillLinePosition(dataSet, _provider);
 
-    List<double?> list = <double?>[];
+    List<double?> list = [];
     list.add(dataSet.getEntryForIndex(bounds.min! + bounds.range!)!.x);
     list.add(fillMin);
     list.add(dataSet.getEntryForIndex(bounds.min)!.x);
@@ -515,7 +515,7 @@ class LineChartRenderer extends LineRadarRenderer {
     final double phaseY = animator!.getPhaseY();
     final bool isDrawSteppedEnabled = dataSet.getMode() == Mode.STEPPED;
 
-    List<double?> points = <double?>[];
+    List<double?> points = [];
     final Path filled = outputPath;
     filled.reset();
 

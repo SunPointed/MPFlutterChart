@@ -124,7 +124,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
     var count = 4;
     var range = 100;
 
-    List<PieEntry> values = <PieEntry>[];
+    List<PieEntry> values = [];
 
     for (int i = 0; i < count; i++) {
       values.add(new PieEntry(

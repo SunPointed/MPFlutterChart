@@ -117,7 +117,7 @@ class LineChartPerformanceState
   }
 
   void _initLineData(double range) {
-    List<Entry> values = <Entry>[];
+    List<Entry> values = [];
 
     _count = (range + 1000).toInt();
 

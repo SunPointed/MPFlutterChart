@@ -243,7 +243,7 @@ class EvenMoreRealtimeState extends ActionState<EvenMoreRealtime>
   }
 
   LineDataSet _createSet() {
-    LineDataSet set = LineDataSet(List<Entry>.empty(), "Dynamic Data");
+    LineDataSet set = LineDataSet([], "Dynamic Data");
     set.setAxisDependency(AxisDependency.LEFT);
     set.setColor1(ColorUtils.getHoloBlue());
     set.setCircleColor(ColorUtils.WHITE);

@@ -92,7 +92,7 @@ class LineChartColorfulState extends SimpleActionState<LineChartColorful> {
   }
 
   LineData _getData(int count, double range) {
-    List<Entry> values = <Entry>[];
+    List<Entry> values = [];
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 3;

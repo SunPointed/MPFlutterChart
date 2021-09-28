@@ -201,7 +201,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
 
   void _initPieData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
-    List<PieEntry> entries = <PieEntry>[];
+    List<PieEntry> entries = [];
 
     // NOTE: The order of the entries when being added to the entries array determines their position around the center of
     // the chart.
@@ -222,7 +222,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
     dataSet.setSelectionShift(5);
 
     // add a lot of colors
-    List<Color> colors = <Color>[];
+    List<Color> colors = [];
     for (Color c in ColorUtils.VORDIPLOM_COLORS) colors.add(c);
     for (Color c in ColorUtils.JOYFUL_COLORS) colors.add(c);
     for (Color c in ColorUtils.COLORFUL_COLORS) colors.add(c);

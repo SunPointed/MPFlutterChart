@@ -123,7 +123,7 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
 
   void _initBarData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
-    List<BarEntry> values = <BarEntry>[];
+    List<BarEntry> values = [];
 
     for (int i = 0; i < count; i++) {
       double multi = (range + 1);
@@ -137,7 +137,7 @@ class BarChartBasic2State extends BarActionState<BarChartBasic2> {
     set1.setColors1(ColorUtils.VORDIPLOM_COLORS);
     set1.setDrawValues(false);
 
-    List<IBarDataSet> dataSets = <IBarDataSet>[];
+    List<IBarDataSet> dataSets = [];
     dataSets.add(set1);
 
     controller.data = BarData(dataSets);
