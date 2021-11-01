@@ -12,5 +12,5 @@ mixin CombinedDataProvider
         BubbleDataProvider,
         CandleDataProvider,
         ScatterDataProvider {
-  CombinedData getCombinedData();
+  CombinedData? getCombinedData();
 }

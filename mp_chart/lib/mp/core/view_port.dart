@@ -40,10 +40,10 @@ class ViewPortHandler {
   double _transY = 0;
 
   /// offset that allows the chart to be dragged over its bounds on the x-axis
-  double _transOffsetX = 0;
+  double? _transOffsetX = 0;
 
   /// offset that allows the chart to be dragged over its bounds on the y-axis
-  double _transOffsetY = 0;
+  double? _transOffsetY = 0;
 
   /// Constructor - don't forget calling setChartDimens(...)
   ViewPortHandler();
@@ -255,7 +255,7 @@ class ViewPortHandler {
     return save;
   }
 
-  List<double> valsBufferForFitScreen = List(16);
+  List<double?> valsBufferForFitScreen = []..length = 16;
 
   /// Resets all zooming and dragging and makes the chart fit exactly it's
   /// bounds.
@@ -278,7 +278,7 @@ class ViewPortHandler {
       ..storage[7] = 0
       ..storage[0] = 1
       ..storage[5] = 1;
-    List<double> vals = valsBufferForFitScreen;
+    List<double?> vals = valsBufferForFitScreen;
     for (int i = 0; i < 16; i++) {
       vals[i] = outputMatrix.storage[i];
     }
@@ -326,7 +326,7 @@ class ViewPortHandler {
     refresh(save);
   }
 
-  List<double> matrixBuffer = List(16);
+  List<double?> matrixBuffer = []..length = 16;
 
   /// call this method to refresh the graph with a given matrix
   ///
@@ -348,11 +348,11 @@ class ViewPortHandler {
       matrixBuffer[i] = matrix.storage[i];
     }
 
-    double curTransX = matrixBuffer[12];
-    double curScaleX = matrixBuffer[0];
+    double curTransX = matrixBuffer[12]!;
+    double curScaleX = matrixBuffer[0]!;
 
-    double curTransY = matrixBuffer[13];
-    double curScaleY = matrixBuffer[5];
+    double curTransY = matrixBuffer[13]!;
+    double curScaleY = matrixBuffer[5]!;
 
     // min scale-x is 1f
     _scaleX = min(max(_minScaleX, curScaleX), _maxScaleX);
@@ -369,10 +369,10 @@ class ViewPortHandler {
     }
 
     double maxTransX = -width * (_scaleX - 1);
-    _transX = min(max(curTransX, maxTransX - _transOffsetX), _transOffsetX);
+    _transX = min(max(curTransX, maxTransX - _transOffsetX!), _transOffsetX!);
 
     double maxTransY = height * (_scaleY - 1);
-    _transY = max(min(curTransY, maxTransY + _transOffsetY), -_transOffsetY);
+    _transY = max(min(curTransY, maxTransY + _transOffsetY!), -_transOffsetY!);
 
     matrixBuffer[12] = _transX;
     matrixBuffer[0] = _scaleX;
@@ -381,7 +381,7 @@ class ViewPortHandler {
     matrixBuffer[5] = _scaleY;
 
     for (int i = 0; i < 16; i++) {
-      matrix.storage[i] = matrixBuffer[i];
+      matrix.storage[i] = matrixBuffer[i]!;
     }
   }
 
@@ -458,35 +458,35 @@ class ViewPortHandler {
 
   /// BELOW METHODS FOR BOUNDS CHECK
 
-  bool isInBoundsX(double x) {
+  bool isInBoundsX(double? x) {
     return isInBoundsLeft(x) && isInBoundsRight(x);
   }
 
-  bool isInBoundsY(double y) {
+  bool isInBoundsY(double? y) {
     return isInBoundsTop(y) && isInBoundsBottom(y);
   }
 
-  bool isInBounds(double x, double y) {
+  bool isInBounds(double? x, double? y) {
     return isInBoundsX(x) && isInBoundsY(y);
   }
 
-  bool isInBoundsLeft(double x) {
+  bool isInBoundsLeft(double? x) {
     if (x == null) return false;
     return _contentRect.left <= x + 1;
   }
 
-  bool isInBoundsRight(double x) {
+  bool isInBoundsRight(double? x) {
     if (x == null) return false;
     x = ((x * 100.0).toInt()) / 100.0;
     return _contentRect.right >= x - 1;
   }
 
-  bool isInBoundsTop(double y) {
+  bool isInBoundsTop(double? y) {
     if (y == null) return false;
     return _contentRect.top <= y;
   }
 
-  bool isInBoundsBottom(double y) {
+  bool isInBoundsBottom(double? y) {
     if (y == null) return false;
     y = ((y * 100.0).toInt()) / 100.0;
     return _contentRect.bottom >= y;
@@ -574,7 +574,7 @@ class ViewPortHandler {
   ///
   /// @return
   bool hasNoDragOffset() {
-    return _transOffsetX <= 0 && _transOffsetY <= 0;
+    return _transOffsetX! <= 0 && _transOffsetY! <= 0;
   }
 
   /// Returns true if the chart is not yet fully zoomed out on the x-axis

@@ -9,19 +9,19 @@ class CandleEntry extends Entry {
   double _shadowLow = 0;
 
   /// close value
-  double _close = 0;
+  double? _close = 0;
 
   /// open value
-  double _open = 0;
+  double? _open = 0;
 
   CandleEntry(
-      {double x,
-      double shadowH,
-      double shadowL,
-      double open,
-      double close,
-      ui.Image icon,
-      Object data})
+      {double? x,
+      required double shadowH,
+      required double shadowL,
+      double? open,
+      double? close,
+      ui.Image? icon,
+      Object? data})
       : super(x: x, y: (shadowH + shadowL) / 2, icon: icon, data: data) {
     this._shadowHigh = shadowH;
     this._shadowLow = shadowL;
@@ -41,7 +41,7 @@ class CandleEntry extends Entry {
   ///
   /// @return
   double getBodyRange() {
-    return (_open - _close).abs();
+    return (_open! - _close!).abs();
   }
 
   CandleEntry copy() {
@@ -56,18 +56,18 @@ class CandleEntry extends Entry {
   }
 
   // ignore: unnecessary_getters_setters
-  double get open => _open;
+  double? get open => _open;
 
   // ignore: unnecessary_getters_setters
-  set open(double value) {
+  set open(double? value) {
     _open = value;
   }
 
   // ignore: unnecessary_getters_setters
-  double get close => _close;
+  double? get close => _close;
 
   // ignore: unnecessary_getters_setters
-  set close(double value) {
+  set close(double? value) {
     _close = value;
   }
 

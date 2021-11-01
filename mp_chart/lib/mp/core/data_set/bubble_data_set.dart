@@ -10,7 +10,7 @@ class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry>
   double _maxSize = 0.0;
   bool _normalizeSize = true;
 
-  double _highlightCircleWidth = 2.5;
+  double? _highlightCircleWidth = 2.5;
 
   BubbleDataSet(List<BubbleEntry> yVals, String label) : super(yVals, label);
 
@@ -20,15 +20,15 @@ class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry>
   }
 
   @override
-  double getHighlightCircleWidth() {
+  double? getHighlightCircleWidth() {
     return _highlightCircleWidth;
   }
 
   @override
-  void calcMinMax1(BubbleEntry e) {
+  void calcMinMax1(BubbleEntry? e) {
     super.calcMinMax1(e);
 
-    final double size = e.size;
+    final double size = e!.size!;
 
     if (size > _maxSize) {
       _maxSize = size;
@@ -37,9 +37,9 @@ class BubbleDataSet extends BarLineScatterCandleBubbleDataSet<BubbleEntry>
 
   @override
   DataSet<BubbleEntry> copy1() {
-    List<BubbleEntry> entries = List<BubbleEntry>();
-    for (int i = 0; i < values.length; i++) {
-      entries.add(values[i].copy());
+    List<BubbleEntry> entries = [];
+    for (int i = 0; i < values!.length; i++) {
+      entries.add(values![i]!.copy());
     }
     BubbleDataSet copied = BubbleDataSet(entries, getLabel());
     copy(copied);

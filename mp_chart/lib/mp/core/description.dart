@@ -10,14 +10,14 @@ class Description extends ComponentBase {
   String _text = "Description Label";
 
   /// the custom position of the description text
-  MPPointF _position;
+  MPPointF? _position;
 
   /// the alignment of the description text
   TextAlign _textAlign = TextAlign.center;
 
   Description() : super() {
     // default size
-    textSize = Utils.convertDpToPixel(8);
+    textSize = Utils.convertDpToPixel(8)!;
   }
 
   // ignore: unnecessary_getters_setters
@@ -36,12 +36,12 @@ class Description extends ComponentBase {
     if (_position == null) {
       _position = MPPointF.getInstance1(x, y);
     } else {
-      _position.x = x;
-      _position.y = y;
+      _position!.x = x;
+      _position!.y = y;
     }
   }
 
-  MPPointF get position => _position;
+  MPPointF? get position => _position;
 
   // ignore: unnecessary_getters_setters
   TextAlign get textAlign => _textAlign;

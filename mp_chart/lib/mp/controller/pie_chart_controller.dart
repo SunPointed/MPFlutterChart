@@ -26,12 +26,12 @@ class PieChartController extends PieRadarController<PieChartPainter> {
   double minAngleForSlices; // = 0
   double centerTextOffsetX;
   double centerTextOffsetY;
-  TypeFace centerTextTypeface;
-  TypeFace entryLabelTypeface;
-  Color backgroundColor;
+  TypeFace? centerTextTypeface;
+  TypeFace? entryLabelTypeface;
+  Color? backgroundColor;
   Color holeColor;
-  Color centerTextColor;
-  double centerTextSize;
+  Color? centerTextColor;
+  double? centerTextSize;
 
   PieChartController({
     this.drawEntryLabels = true,
@@ -54,12 +54,12 @@ class PieChartController extends PieRadarController<PieChartPainter> {
     this.holeColor = ColorUtils.WHITE,
     this.centerTextColor,
     this.centerTextSize,
-    IMarker marker,
-    Description description,
-    XAxisSettingFunction xAxisSettingFunction,
-    LegendSettingFunction legendSettingFunction,
-    DataRendererSettingFunction rendererSettingFunction,
-    OnChartValueSelectedListener selectionListener,
+    IMarker? marker,
+    Description? description,
+    XAxisSettingFunction? xAxisSettingFunction,
+    LegendSettingFunction? legendSettingFunction,
+    DataRendererSettingFunction? rendererSettingFunction,
+    OnChartValueSelectedListener? selectionListener,
     double rotationAngle = 270,
     double rawRotationAngle = 270,
     bool rotateEnabled = true,
@@ -76,9 +76,9 @@ class PieChartController extends PieRadarController<PieChartPainter> {
     bool resolveGestureVerticalConflict = false,
     double descTextSize = 12,
     double infoTextSize = 12,
-    Color descTextColor,
-    Color infoTextColor,
-    Color infoBgColor,
+    Color? descTextColor,
+    Color? infoTextColor,
+    Color? infoBgColor,
   }) : super(
             marker: marker,
             noDataText: noDataText,
@@ -109,11 +109,11 @@ class PieChartController extends PieRadarController<PieChartPainter> {
   @override
   IMarker initMarker() => BarChartMarker();
 
-  PieData get data => super.data;
+  PieData? get data => super.data as PieData?;
 
-  PieChartPainter get painter => super.painter;
+  PieChartPainter? get painter => super.painter;
 
-  PieChartState get state => super.state;
+  PieChartState? get state => super.state as PieChartState?;
 
   @override
   void initialPainter() {

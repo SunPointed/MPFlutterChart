@@ -136,7 +136,7 @@ class BarChartHorizontalState
     var img = await ImageLoader.loadImage('assets/img/star.png');
     double barWidth = 9;
     double spaceForBar = 10;
-    List<BarEntry> values = List();
+    List<BarEntry> values = [];
 
     for (int i = 0; i < count; i++) {
       double val = random.nextDouble() * range;
@@ -149,11 +149,11 @@ class BarChartHorizontalState
 
     set1.setDrawIcons(false);
 
-    List<IBarDataSet> dataSets = List();
+    List<IBarDataSet> dataSets = [];
     dataSets.add(set1);
 
     controller.data = BarData(dataSets);
-    controller.data
+    controller.data!
       ..setValueTextSize(10)
       ..setValueTypeface(Util.LIGHT)
       ..barWidth = barWidth;
@@ -191,7 +191,7 @@ class BarChartHorizontalState
     ll4.typeface = Util.EXTRA_BOLD;
     controller = HorizontalBarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..addLimitLine(ll1)
             ..addLimitLine(ll2)
             ..typeface = Util.LIGHT
@@ -200,14 +200,14 @@ class BarChartHorizontalState
             ..setAxisMinimum(0);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight
+          axisRight!
             ..typeface = Util.LIGHT
             ..drawAxisLine = true
             ..drawGridLines = false
             ..setAxisMinimum(0);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
             ..horizontalAlignment = (LegendHorizontalAlignment.LEFT)
             ..orientation = (LegendOrientation.HORIZONTAL)
@@ -216,7 +216,7 @@ class BarChartHorizontalState
             ..xEntrySpace = (4);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..addLimitLine(ll3)
             ..addLimitLine(ll4)
             ..position = XAxisPosition.BOTTOM
@@ -241,7 +241,7 @@ class BarChartHorizontalState
 
   Widget _initBarChart() {
     var barChart = HorizontalBarChart(controller);
-    controller.animator
+    controller.animator!
       ..reset()
       ..animateY1(2500);
     return barChart;
@@ -251,7 +251,7 @@ class BarChartHorizontalState
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {
+  void onValueSelected(Entry? e, Highlight? h) {
 //    if (e == null)
 //      return;
 //

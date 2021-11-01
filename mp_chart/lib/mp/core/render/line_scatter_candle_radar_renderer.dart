@@ -10,7 +10,7 @@ abstract class LineScatterCandleRadarRenderer
   Path _highlightLinePath = Path();
 
   LineScatterCandleRadarRenderer(
-      Animator animator, ViewPortHandler viewPortHandler)
+      Animator? animator, ViewPortHandler? viewPortHandler)
       : super(animator, viewPortHandler);
 
   /// Draws vertical & horizontal highlight-lines if enabled.
@@ -20,40 +20,40 @@ abstract class LineScatterCandleRadarRenderer
   /// @param y y-position of the highlight line intersection
   /// @param set the currently drawn dataset
   void drawHighlightLines(
-      Canvas c, double x, double y, ILineScatterCandleRadarDataSet set) {
+      Canvas c, double? x, double? y, ILineScatterCandleRadarDataSet set) {
     // set color and stroke-width
-    highlightPaint
+    highlightPaint!
       ..color = set.getHighLightColor()
-      ..strokeWidth = set.getHighlightLineWidth();
+      ..strokeWidth = set.getHighlightLineWidth()!;
 
     // draw vertical highlight lines
     if (set.isVerticalHighlightIndicatorEnabled()) {
       // create vertical path
       _highlightLinePath.reset();
-      _highlightLinePath.moveTo(x, viewPortHandler.contentTop());
-      _highlightLinePath.lineTo(x, viewPortHandler.contentBottom());
+      _highlightLinePath.moveTo(x!, viewPortHandler!.contentTop());
+      _highlightLinePath.lineTo(x, viewPortHandler!.contentBottom());
 
       if (set.getDashPathEffectHighlight() != null) {
         _highlightLinePath = set
-            .getDashPathEffectHighlight()
+            .getDashPathEffectHighlight()!
             .convert2DashPath(_highlightLinePath);
       }
-      c.drawPath(_highlightLinePath, highlightPaint);
+      c.drawPath(_highlightLinePath, highlightPaint!);
     }
 
     // draw horizontal highlight lines
     if (set.isHorizontalHighlightIndicatorEnabled()) {
       // create horizontal path
       _highlightLinePath.reset();
-      _highlightLinePath.moveTo(viewPortHandler.contentLeft(), y);
-      _highlightLinePath.lineTo(viewPortHandler.contentRight(), y);
+      _highlightLinePath.moveTo(viewPortHandler!.contentLeft(), y!);
+      _highlightLinePath.lineTo(viewPortHandler!.contentRight(), y);
 
       if (set.getDashPathEffectHighlight() != null) {
         _highlightLinePath = set
-            .getDashPathEffectHighlight()
+            .getDashPathEffectHighlight()!
             .convert2DashPath(_highlightLinePath);
       }
-      c.drawPath(_highlightLinePath, highlightPaint);
+      c.drawPath(_highlightLinePath, highlightPaint!);
     }
   }
 }

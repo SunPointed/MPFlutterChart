@@ -4,7 +4,7 @@ import 'package:mp_chart/mp/core/render/line_scatter_candle_radar_renderer.dart'
 import 'package:mp_chart/mp/core/view_port.dart';
 
 abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
-  LineRadarRenderer(Animator animator, ViewPortHandler viewPortHandler)
+  LineRadarRenderer(Animator? animator, ViewPortHandler? viewPortHandler)
       : super(animator, viewPortHandler);
 
   /// Draws the provided path in filled mode with the provided drawable.
@@ -49,18 +49,18 @@ abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
 //      c.restore();
 //    } else {
     // save
-      var previous = renderPaint.style;
-      Color previousColor = renderPaint.color;
+      var previous = renderPaint!.style;
+      Color previousColor = renderPaint!.color;
 
       // set
-      renderPaint
+      renderPaint!
         ..style = PaintingStyle.fill
         ..color = Color(color);
 
-      c.drawPath(filledPath, renderPaint);
+      c.drawPath(filledPath, renderPaint!);
 
       // restore
-      renderPaint
+      renderPaint!
         ..style = previous
         ..color = previousColor;
 //    }
@@ -78,8 +78,8 @@ abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
 //      c.restore();
 //    } else {
       // save
-      var previous = renderPaint.style;
-      Color previousColor = renderPaint.color;
+      var previous = renderPaint!.style;
+      Color previousColor = renderPaint!.color;
 
       final Gradient gradient = LinearGradient(
         begin: Alignment.topCenter,
@@ -88,7 +88,7 @@ abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
       );
       Rect bounds = filledPath.getBounds();
       // set
-      renderPaint
+      renderPaint!
         ..style = PaintingStyle.fill
         ..shader = gradient.createShader(Rect.fromLTWH(
           bounds.left,
@@ -97,10 +97,10 @@ abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
           bounds.height,
         ));
 
-      c.drawPath(filledPath, renderPaint);
+      c.drawPath(filledPath, renderPaint!);
 
       // restore
-      renderPaint
+      renderPaint!
         ..style = previous
         ..color = previousColor;
 //    }

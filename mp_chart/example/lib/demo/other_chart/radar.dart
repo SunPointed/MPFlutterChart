@@ -59,7 +59,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     var desc = Description()..enabled = false;
     controller = RadarChartController(
         yAxisSettingFunction: (yAxis, controller) {
-          yAxis
+          yAxis!
             ..typeface = Util.LIGHT
             ..setLabelCount2(5, false)
             ..textSize = (9)
@@ -68,7 +68,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
             ..drawLabels = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.CENTER)
             ..orientation = (LegendOrientation.HORIZONTAL)
@@ -76,11 +76,11 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
             ..typeface = Util.LIGHT
             ..xEntrySpace = (7)
             ..yEntrySpace = (5)
-            ..formSize = Utils.convertDpToPixel(25)
+            ..formSize = Utils.convertDpToPixel(25)!
             ..textColor = (ColorUtils.RED);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..textSize = (9)
             ..typeface = Util.LIGHT
             ..yOffset = (0)
@@ -103,8 +103,8 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     double min = 20;
     int cnt = 5;
 
-    List<RadarEntry> entries1 = List();
-    List<RadarEntry> entries2 = List();
+    List<RadarEntry> entries1 = [];
+    List<RadarEntry> entries2 = [];
 
     // NOTE: The order of the entries when being added to the entries array determines their position around the center of
     // the chart.
@@ -134,12 +134,12 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     set2.setDrawHighlightCircleEnabled(true);
     set2.setDrawHighlightIndicators(false);
 
-    List<IRadarDataSet> sets = List();
+    List<IRadarDataSet> sets = [];
     sets.add(set1);
     sets.add(set2);
 
     controller.data = RadarData.fromList(sets);
-    controller.data
+    controller.data!
       ..setValueTypeface(Util.LIGHT)
       ..setValueTextSize(8)
       ..setDrawValues(false)
@@ -150,7 +150,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
 
   Widget _initCandleChart() {
     var radarChart = RadarChart(controller);
-    controller.animator
+    controller.animator!
       ..reset()
       ..animateXY2(1400, 1400, Easing.EaseInOutQuad);
     return radarChart;
@@ -158,7 +158,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
 }
 
 class A extends ValueFormatter {
-  final List<String> mActivities = List()
+  final List<String> mActivities = <String>[]
     ..add("Burger")
     ..add("Steak")
     ..add("Salad")
@@ -166,7 +166,7 @@ class A extends ValueFormatter {
     ..add("Pizza");
 
   @override
-  String getFormattedValue1(double value) {
-    return mActivities[value.toInt() % mActivities.length];
+  String getFormattedValue1(double? value) {
+    return mActivities[value!.toInt() % mActivities.length];
   }
 }

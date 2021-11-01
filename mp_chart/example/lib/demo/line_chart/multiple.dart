@@ -31,7 +31,7 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
   int _count = 20;
   double _range = 100.0;
 
-  List<Color> colors = List()
+  List<Color> colors = <Color>[]
     ..add(ColorUtils.VORDIPLOM_COLORS[0])
     ..add(ColorUtils.VORDIPLOM_COLORS[1])
     ..add(ColorUtils.VORDIPLOM_COLORS[2]);
@@ -62,9 +62,9 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {
+  void onValueSelected(Entry? e, Highlight? h) {
     print(
-        "VAL SELECTED Value: ${e.y}, xIndex: ${e.x}, DataSet index: ${h.dataSetIndex}");
+        "VAL SELECTED Value: ${e!.y}, xIndex: ${e.x}, DataSet index: ${h!.dataSetIndex}");
   }
 
   @override
@@ -86,7 +86,7 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
             left: 0,
             top: 0,
             bottom: 100,
-            child: LineChart(controller)),
+            child: LineChart(controller!)),
         Positioned(
           left: 0,
           right: 0,
@@ -166,22 +166,22 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
     var desc = Description()..enabled = false;
     controller = LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft.enabled = (false);
+          axisLeft!.enabled = (false);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight
+          axisRight!
             ..drawAxisLine = (false)
             ..drawGridLines = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
             ..orientation = (LegendOrientation.VERTICAL)
             ..drawInside = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..drawAxisLine = (false)
             ..drawGridLines = (false);
         },
@@ -198,14 +198,14 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
   }
 
   void _initLineData(int count, double range) async {
-    List<ui.Image> imgs = List(3);
+    List<ui.Image?> imgs = []..length = (3);
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
     imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
     imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
-    List<ILineDataSet> dataSets = List();
+    List<ILineDataSet> dataSets = [];
 
     for (int z = 0; z < 3; z++) {
-      List<Entry> values = List();
+      List<Entry> values = [];
 
       for (int i = 0; i < count; i++) {
         double val = (random.nextDouble() * range) + 3;
@@ -228,7 +228,7 @@ class LineChartMultipleState extends LineActionState<LineChartMultiple>
     (dataSets[0] as LineDataSet).setColors1(ColorUtils.VORDIPLOM_COLORS);
     (dataSets[0] as LineDataSet).setCircleColors(ColorUtils.VORDIPLOM_COLORS);
 
-    controller.data = LineData.fromList(dataSets);
+    controller!.data = LineData.fromList(dataSets);
 
     setState(() {});
   }

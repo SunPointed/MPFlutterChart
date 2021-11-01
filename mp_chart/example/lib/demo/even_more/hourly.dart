@@ -47,7 +47,7 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
           left: 0,
           top: 0,
           bottom: 100,
-          child: LineChart(controller),
+          child: LineChart(controller!),
         ),
         Positioned(
           left: 0,
@@ -98,7 +98,7 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
     var desc = Description()..enabled = false;
     controller = LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..position = (YAxisLabelPosition.INSIDE_CHART)
 //      ..setTypeface(tfLight)
             ..textColor = (Color.fromARGB(255, 51, 181, 229))
@@ -110,14 +110,14 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
             ..textColor = (Color.fromARGB(255, 255, 192, 56));
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
           (controller as LineChartController).setViewPortOffsets(0, 0, 0, 0);
-          legend.enabled = (false);
+          legend!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..position = (XAxisPosition.TOP_INSIDE)
 //        ..setTypeface(tfLight)
             ..textSize = (10)
@@ -146,7 +146,7 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
     // now in hours
     int now = Util.currentTimeMillis();
 
-    List<Entry> values = List();
+    List<Entry> values = [];
 
     // count = hours
     double to = now + count;
@@ -171,8 +171,8 @@ class EvenMoreHourlyState extends LineActionState<EvenMoreHourly> {
     set1.setDrawCircleHole(false);
 
     // create a data object with the data sets
-    controller.data = LineData.fromList(List()..add(set1));
-    controller.data
+    controller!.data = LineData.fromList(<LineDataSet>[]..add(set1));
+    controller!.data!
       ..setValueTextColor(ColorUtils.getHoloBlue())
       ..setValueTextSize(9);
 
@@ -188,7 +188,7 @@ class A extends ValueFormatter {
   final intl.DateFormat mFormat = intl.DateFormat("dd MMM HH:mm");
 
   @override
-  String getFormattedValue1(double value) {
+  String getFormattedValue1(double? value) {
     return mFormat.format(DateTime.now());
   }
 }

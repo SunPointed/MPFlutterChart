@@ -26,6 +26,10 @@ import 'package:mp_chart/mp/core/chart_trans_listener.dart';
 import 'package:mp_chart/mp/core/utils/color_utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/day_axis_value_formatter.dart';
 import 'package:mp_chart/mp/core/value_formatter/my_value_formatter.dart';
+import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
+import 'package:mp_chart/mp/painter/bar_line_chart_painter.dart';
+import 'package:mp_chart/mp/core/data_interfaces/i_bar_line_scatter_candle_bubble_data_set.dart';
+import 'package:mp_chart/mp/core/data/bar_line_scatter_candle_bubble_data.dart';
 
 class BarChartBasic extends StatefulWidget {
   @override
@@ -143,7 +147,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     controller = BarChartController(
         chartTransListener: MyChartTransListener(),
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..setLabelCount2(8, false)
             ..typeface = Util.LIGHT
             ..setValueFormatter(MyValueFormatter("\$"))
@@ -152,7 +156,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..setAxisMinimum(0);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight
+          axisRight!
             ..drawGridLines = false
             ..typeface = Util.LIGHT
             ..setLabelCount2(8, false)
@@ -161,7 +165,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..setAxisMinimum(0);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = LegendVerticalAlignment.BOTTOM
             ..orientation = LegendOrientation.HORIZONTAL
             ..drawInside = false
@@ -172,13 +176,13 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
             ..xEntrySpace = 4;
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..typeface = Util.LIGHT
             ..position = XAxisPosition.BOTTOM
             ..drawGridLines = false
             ..setGranularity(1.0)
             ..setLabelCount1(7)
-            ..setValueFormatter(DayAxisValueFormatter(controller));
+            ..setValueFormatter(DayAxisValueFormatter(controller as BarLineScatterCandleBubbleController<BarLineChartBasePainter<BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<Entry?>>?>>));
         },
         selectionListener: this,
         drawBarShadow: false,
@@ -197,7 +201,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
   void _initData(int count, double range, ui.Image img) {
     double start = 1;
 
-    List<BarEntry> values = List();
+    List<BarEntry> values = [];
 
     for (int i = start.toInt(); i < start + count; i++) {
       double val = (random.nextDouble() * (range + 1));
@@ -228,7 +232,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
     Color endColor4 = ColorUtils.HOLO_RED_DARK;
     Color endColor5 = ColorUtils.HOLO_ORANGE_DARK;
 
-    List<GradientColor> gradientColors = List();
+    List<GradientColor> gradientColors = [];
     gradientColors.add(GradientColor(startColor1, endColor1));
     gradientColors.add(GradientColor(startColor2, endColor2));
     gradientColors.add(GradientColor(startColor3, endColor3));
@@ -237,11 +241,11 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
 
     set1.setGradientColors(gradientColors);
 
-    List<IBarDataSet> dataSets = List();
+    List<IBarDataSet> dataSets = [];
     dataSets.add(set1);
 
     controller.data = BarData(dataSets);
-    controller.data
+    controller.data!
       ..setValueTextSize(10)
       ..setValueTypeface(Util.LIGHT)
       ..barWidth = 0.9;
@@ -257,7 +261,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {
+  void onValueSelected(Entry? e, Highlight? h) {
 //    if (e == null)
 //      return;
 //
@@ -278,7 +282,7 @@ class BarChartBasicState extends BarActionState<BarChartBasic>
 
 class MyChartTransListener with ChartTransListener {
   @override
-  void scale(double scaleX, double scaleY, double x, double y) {
+  void scale(double scaleX, double scaleY, double? x, double? y) {
     print("scale scaleX: $scaleX, scaleY: $scaleY, x: $x, y: $y");
   }
 
@@ -290,47 +294,47 @@ class MyChartTransListener with ChartTransListener {
 
 class MyTouchEventListener with OnTouchEventListener {
   @override
-  void onDoubleTapUp(double x, double y) {
+  void onDoubleTapUp(double? x, double? y) {
     print("onDoubleTapUp x: $x, y: $y");
   }
 
   @override
-  void onMoveEnd(double x, double y) {
+  void onMoveEnd(double? x, double? y) {
     print("onMoveEnd x: $x, y: $y");
   }
 
   @override
-  void onMoveStart(double x, double y) {
+  void onMoveStart(double? x, double? y) {
     print("onMoveStart x: $x, y: $y");
   }
 
   @override
-  void onMoveUpdate(double x, double y) {
+  void onMoveUpdate(double? x, double? y) {
     print("onMoveUpdate x: $x, y: $y");
   }
 
   @override
-  void onScaleEnd(double x, double y) {
+  void onScaleEnd(double? x, double? y) {
     print("onScaleEnd x: $x, y: $y");
   }
 
   @override
-  void onScaleStart(double x, double y) {
+  void onScaleStart(double? x, double? y) {
     print("onScaleStart x: $x, y: $y");
   }
 
   @override
-  void onScaleUpdate(double x, double y) {
+  void onScaleUpdate(double? x, double? y) {
     print("onScaleUpdate x: $x, y: $y");
   }
 
   @override
-  void onSingleTapUp(double x, double y) {
+  void onSingleTapUp(double? x, double? y) {
     print("onSingleTapUp x: $x, y: $y");
   }
 
   @override
-  void onTapDown(double x, double y) {
+  void onTapDown(double? x, double? y) {
     print("onTapDown x: $x, y: $y");
   }
 
@@ -340,17 +344,17 @@ class MyTouchEventListener with OnTouchEventListener {
   }
 
   @override
-  void onDragEnd(double x, double y) {
+  void onDragEnd(double? x, double? y) {
     print("onDragEnd x: $x, y: $y");
   }
 
   @override
-  void onDragStart(double x, double y) {
+  void onDragStart(double? x, double? y) {
     print("onDragStart x: $x, y: $y");
   }
 
   @override
-  void onDragUpdate(double x, double y) {
+  void onDragUpdate(double? x, double? y) {
     print("onDragUpdate x: $x, y: $y");
   }
 }

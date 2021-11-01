@@ -17,22 +17,22 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   Mode _mode = Mode.LINEAR;
 
   /// List representing all colors that are used for the circles
-  List<Color> _circleColors;
+  List<Color>? _circleColors;
 
   /// the color of the inner circles
   Color _circleHoleColor = ColorUtils.WHITE;
 
   /// the radius of the circle-shaped value indicators
-  double _circleRadius = 8;
+  double? _circleRadius = 8;
 
   /// the hole radius of the circle-shaped value indicators
-  double _circleHoleRadius = 4;
+  double? _circleHoleRadius = 4;
 
   /// sets the intensity of the cubic lines
   double _cubicIntensity = 0.2;
 
   /// the path effect of this DataSet that makes dashed lines possible
-  DashPathEffect _dashPathEffect;
+  DashPathEffect? _dashPathEffect;
 
   /// formatter for customizing the position of the fill-line
   IFillFormatter _fillFormatter = DefaultFillFormatter();
@@ -47,14 +47,14 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
     // mLineWidth = Utils.convertDpToPixel(1f);
 
     if (_circleColors == null) {
-      _circleColors = List();
+      _circleColors = [];
     }
-    _circleColors.clear();
+    _circleColors!.clear();
 
     // default colors
     // mColors.add(Color.rgb(192, 255, 140));
     // mColors.add(Color.rgb(255, 247, 140));
-    _circleColors.add(Color.fromARGB(255, 140, 234, 255));
+    _circleColors!.add(Color.fromARGB(255, 140, 234, 255));
   }
 
   @override
@@ -117,7 +117,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   }
 
   @override
-  double getCircleRadius() {
+  double? getCircleRadius() {
     return _circleRadius;
   }
 
@@ -132,7 +132,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   }
 
   @override
-  double getCircleHoleRadius() {
+  double? getCircleHoleRadius() {
     return _circleHoleRadius;
   }
 
@@ -147,7 +147,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   }
 
   /// This function is deprecated because of unclarity. Use getCircleRadius instead.
-  double getCircleSize() {
+  double? getCircleSize() {
     return getCircleRadius();
   }
 
@@ -173,7 +173,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   }
 
   @override
-  DashPathEffect getDashPathEffect() {
+  DashPathEffect? getDashPathEffect() {
     return _dashPathEffect;
   }
 
@@ -209,18 +209,18 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   /// returns all colors specified for the circles
   ///
   /// @return
-  List<Color> getCircleColors() {
+  List<Color>? getCircleColors() {
     return _circleColors;
   }
 
   @override
   Color getCircleColor(int index) {
-    return _circleColors[index];
+    return _circleColors![index];
   }
 
   @override
   int getCircleColorCount() {
-    return _circleColors.length;
+    return _circleColors!.length;
   }
 
   /// Sets the colors that should be used for the circles of this DataSet.
@@ -240,15 +240,15 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   /// @param color
   void setCircleColor(Color color) {
     resetCircleColors();
-    _circleColors.add(color);
+    _circleColors!.add(color);
   }
 
   /// resets the circle-colors array and creates a  one
   void resetCircleColors() {
     if (_circleColors == null) {
-      _circleColors = List();
+      _circleColors = [];
     }
-    _circleColors.clear();
+    _circleColors!.clear();
   }
 
   /// Sets the color of the inner circle of the line-circles.
@@ -292,14 +292,14 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   }
 
   @override
-  DataSet<Entry> copy1() {
-    List<Entry> entries = List();
-    for (int i = 0; i < values.length; i++) {
+  DataSet<Entry?> copy1() {
+    List<Entry> entries = [];
+    for (int i = 0; i < values!.length; i++) {
       entries.add(Entry(
-          x: values[i].x,
-          y: values[i].y,
-          icon: values[i].mIcon,
-          data: values[i].mData));
+          x: values![i]!.x,
+          y: values![i]!.y,
+          icon: values![i]!.mIcon,
+          data: values![i]!.mData));
     }
     LineDataSet copied = LineDataSet(entries, getLabel());
     copy(copied);
