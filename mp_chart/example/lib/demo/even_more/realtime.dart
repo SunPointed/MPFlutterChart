@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:example/demo/action_state.dart';
 import 'package:example/demo/util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mp_chart/mp/chart/line_chart.dart';
 import 'package:mp_chart/mp/controller/line_chart_controller.dart';
 import 'package:mp_chart/mp/core/common_interfaces.dart';

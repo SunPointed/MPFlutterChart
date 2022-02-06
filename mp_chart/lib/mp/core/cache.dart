@@ -2,7 +2,6 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'dart:ui';
 
-import 'package:flutter/painting.dart';
 import 'package:mp_chart/mp/core/data_interfaces/i_line_data_set.dart';
 
 class DataSetImageCache {
