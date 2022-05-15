@@ -131,7 +131,7 @@ class ScreenUtils {
   /// 返回根据屏幕宽适配后尺寸（单位 dp or pt）
   /// size 单位 dp or pt
   static double getScaleW(BuildContext context, double size) {
-    if (context == null || getScreenW(context) == 0.0) return size;
+    if (getScreenW(context) == 0.0) return size;
     return size * getScreenW(context) / _designW;
   }
 
@@ -139,7 +139,7 @@ class ScreenUtils {
   /// 返回根据屏幕高适配后尺寸 （单位 dp or pt）
   /// size unit dp or pt
   static double getScaleH(BuildContext context, double size) {
-    if (context == null || getScreenH(context) == 0.0) return size;
+    if (getScreenH(context) == 0.0) return size;
     return size * getScreenH(context) / _designH;
   }
 
@@ -147,7 +147,7 @@ class ScreenUtils {
   /// 返回根据屏幕宽适配后字体尺寸
   /// fontSize 字体尺寸
   static double getScaleSp(BuildContext context, double fontSize) {
-    if (context == null || getScreenDensity(context) == 0.0) return fontSize;
+    if (getScreenDensity(context) == 0.0) return fontSize;
     return fontSize * getScreenW(context) / _designW;
   }
 

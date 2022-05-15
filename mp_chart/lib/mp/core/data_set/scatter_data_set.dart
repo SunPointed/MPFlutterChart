@@ -134,7 +134,5 @@ class ScatterDataSet extends LineScatterCandleRadarDataSet<Entry>
       case ScatterShape.CHEVRON_DOWN:
         return ChevronDownShapeRenderer();
     }
-
-    return null;
   }
 }

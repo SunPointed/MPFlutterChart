@@ -1,3 +1,12 @@
+## 0.3.3 2022-05-16
+* Flutter 3 fixes.
+* Upgrade dependencies path_provider, vector_math.
+* Example app:
+** Use Uri instead of deprecated String in launchUrl 
+** Upgrade dependencies, url_launcher, permission_handler 
+## 0.3.2 2022-02-06
+* Null safety updates.
+* Upgrade dependencies.
 ## 0.3.1 2020-10-30
 * Updated for Flutter 1.22.0 to use updated Dart intl package 0.17.0-nullsafety.1.
 ## 0.3.0 2020-09-18
