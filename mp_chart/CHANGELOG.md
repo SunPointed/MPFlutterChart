@@ -1,3 +1,9 @@
+## 1.0.0 2022-10-16
+* Flutter 3.3 fixes
+* Upgrade dependencies path_provider, path_drawing, optimized_gesture_detector
+* bump sdk from >=2.12.0 to >=2.17.0
+* Example app:
+  ** Upgrade dependencies, url_launcher, permission_handler, cupertino_icons
 ## 0.3.3 2022-05-16
 * Flutter 3 fixes.
 * Upgrade dependencies path_provider, vector_math.
