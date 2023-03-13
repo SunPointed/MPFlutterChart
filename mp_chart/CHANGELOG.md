@@ -1,3 +1,5 @@
+## 1.1.0 2023-03-13
+* Upgrade dependencies path_provider, screenshot, url_launcher, permission_handler
 ## 1.0.0 2022-10-16
 * Flutter 3.3 fixes
 * Upgrade dependencies path_provider, path_drawing, optimized_gesture_detector
