@@ -1,3 +1,5 @@
+## 1.2.0 2023-03-13
+* Disable image saver(image_gallery_saver) for now, as it's using a very old kotlin-gradle-plugin
 ## 1.1.0 2023-03-13
 * Upgrade dependencies path_provider, screenshot, url_launcher, permission_handler
 ## 1.0.0 2022-10-16
