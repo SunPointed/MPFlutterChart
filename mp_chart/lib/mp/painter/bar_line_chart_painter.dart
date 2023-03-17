@@ -33,8 +33,8 @@ import 'package:mp_chart/mp/painter/painter.dart';
 
 abstract class BarLineChartBasePainter<
         T extends BarLineScatterCandleBubbleData<
-            IBarLineScatterCandleBubbleDataSet<Entry?>>?> extends ChartPainter<T>
-    implements BarLineScatterCandleBubbleDataProvider {
+            IBarLineScatterCandleBubbleDataSet<Entry?>>?>
+    extends ChartPainter<T> implements BarLineScatterCandleBubbleDataProvider {
   final ChartTransListener? _chartTransListener;
 
   /// the maximum number of entries to which values will be drawn
@@ -284,7 +284,8 @@ abstract class BarLineChartBasePainter<
 
     renderer!.drawData(canvas);
 
-    if (!xAxis!.drawGridLinesBehindData) _xAxisRenderer!.renderGridLines(canvas);
+    if (!xAxis!.drawGridLinesBehindData)
+      _xAxisRenderer!.renderGridLines(canvas);
 
     if (!_axisLeft!.drawGridLinesBehindData)
       _axisRendererLeft!.renderGridLines(canvas);
@@ -350,20 +351,21 @@ abstract class BarLineChartBasePainter<
     final double fromX = getLowestVisibleX();
     final double toX = getHighestVisibleX();
 
-    getData()!.calcMinMaxY(fromX, toX);
+    final data = getData()!;
+    data.calcMinMaxY(fromX, toX);
 
-    xAxis!.calculate(getData()!.xMin, getData()!.xMax);
+    xAxis!.calculate(data.xMin, data.xMax);
 
     // calculate axis range (min / max) according to provided data
 
     if (axisLeft!.enabled) {
-      axisLeft!.calculate(getData()!.getYMin2(AxisDependency.LEFT),
-          getData()!.getYMax2(AxisDependency.LEFT));
+      axisLeft!.calculate(data.getYMin2(AxisDependency.LEFT),
+          data.getYMax2(AxisDependency.LEFT));
     }
 
     if (axisRight!.enabled) {
-      axisRight!.calculate(getData()!.getYMin2(AxisDependency.RIGHT),
-          getData()!.getYMax2(AxisDependency.RIGHT));
+      axisRight!.calculate(data.getYMin2(AxisDependency.RIGHT),
+          data.getYMax2(AxisDependency.RIGHT));
     }
 
     calculateOffsets();
@@ -371,12 +373,13 @@ abstract class BarLineChartBasePainter<
 
   @override
   void calcMinMax() {
-    xAxis!.calculate(getData()!.xMin, getData()!.xMax);
+    final data = getData()!;
+    xAxis!.calculate(data.xMin, data.xMax);
     // calculate axis range (min / max) according to provided data
-    _axisLeft!.calculate(getData()!.getYMin2(AxisDependency.LEFT),
-        getData()!.getYMax2(AxisDependency.LEFT));
-    _axisRight!.calculate(getData()!.getYMin2(AxisDependency.RIGHT),
-        getData()!.getYMax2(AxisDependency.RIGHT));
+    _axisLeft!.calculate(
+        data.getYMin2(AxisDependency.LEFT), data.getYMax2(AxisDependency.LEFT));
+    _axisRight!.calculate(data.getYMin2(AxisDependency.RIGHT),
+        data.getYMax2(AxisDependency.RIGHT));
   }
 
   Rect calculateLegendOffsets(Rect offsets) {
@@ -489,12 +492,13 @@ abstract class BarLineChartBasePainter<
     }
 
     if (_axisRight!.enabled) {
-      _axisRendererRight!.computeAxis(
-          _axisRight!.axisMinimum, _axisRight!.axisMaximum, _axisRight!.inverted);
+      _axisRendererRight!.computeAxis(_axisRight!.axisMinimum,
+          _axisRight!.axisMaximum, _axisRight!.inverted);
     }
 
     if (xAxis!.enabled) {
-      _xAxisRenderer!.computeAxis(xAxis!.axisMinimum, xAxis!.axisMaximum, false);
+      _xAxisRenderer!
+          .computeAxis(xAxis!.axisMinimum, xAxis!.axisMaximum, false);
     }
   }
 
@@ -521,8 +525,8 @@ abstract class BarLineChartBasePainter<
       }
 
       if (_axisRight!.needsOffset()) {
-        offsetRight +=
-            _axisRight!.getRequiredWidthSpace(_axisRendererRight!.axisLabelPaint);
+        offsetRight += _axisRight!
+            .getRequiredWidthSpace(_axisRendererRight!.axisLabelPaint);
       }
 
       if (xAxis!.enabled && xAxis!.drawLabels) {
@@ -640,8 +644,9 @@ abstract class BarLineChartBasePainter<
   /// @param axis
   void setVisibleYRange(
       double minYRange, double maxYRange, AxisDependency axis) {
-    double minScale = getAxisRange(axis) / minYRange;
-    double maxScale = getAxisRange(axis) / maxYRange;
+    final axisRange = getAxisRange(axis);
+    double minScale = axisRange / minYRange;
+    double maxScale = axisRange / maxYRange;
     viewPortHandler!.setMinMaxScaleY(minScale, maxScale);
   }
 
@@ -879,7 +884,8 @@ abstract class BarLineChartBasePainter<
 
   @override
   BarLineScatterCandleBubbleData? getData() {
-    return super.getData() as BarLineScatterCandleBubbleData<IBarLineScatterCandleBubbleDataSet<Entry?>>?;
+    return super.getData() as BarLineScatterCandleBubbleData<
+        IBarLineScatterCandleBubbleDataSet<Entry?>>?;
   }
 
   /// Returns true if either the left or the right or both axes are inverted.
@@ -891,25 +897,25 @@ abstract class BarLineChartBasePainter<
     return false;
   }
 
-  bool updateEntry(int index, Entry entry, int dataSetIndex){
-    var dataSet = getData()!.getDataSetByIndex(dataSetIndex);
-    if(dataSet == null) {
+  bool updateEntry(int index, Entry entry, int dataSetIndex) {
+    final dataSet = getData()!.getDataSetByIndex(dataSetIndex);
+    if (dataSet == null) {
       return false;
     }
 
     return dataSet.updateEntryByIndex(index, entry);
   }
 
-  void addEntryByIndex(int index, Entry entry, int dataSetIndex){
-    var dataSet = getData()!.getDataSetByIndex(dataSetIndex);
-    if(dataSet != null){
+  void addEntryByIndex(int index, Entry entry, int dataSetIndex) {
+    final dataSet = getData()!.getDataSetByIndex(dataSetIndex);
+    if (dataSet != null) {
       dataSet.addEntryByIndex(index, entry);
     }
   }
 
-  void addEntry(Entry entry, int dataSetIndex){
-    var dataSet = getData()!.getDataSetByIndex(dataSetIndex);
-    if(dataSet != null) {
+  void addEntry(Entry entry, int dataSetIndex) {
+    final dataSet = getData()!.getDataSetByIndex(dataSetIndex);
+    if (dataSet != null) {
       addEntryByIndex(dataSet.getEntryCount(), entry, dataSetIndex);
     }
   }
