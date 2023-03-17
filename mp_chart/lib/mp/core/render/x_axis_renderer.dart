@@ -203,7 +203,7 @@ class XAxisRenderer extends AxisRenderer {
 
       if (viewPortHandler!.isInBoundsX(x)) {
         String label = _xAxis!
-            .getValueFormatter()!
+            .getValueFormatter()
             .getAxisLabel(_xAxis!.entries[i ~/ 2], _xAxis);
 
         if (_xAxis!.avoidFirstLastClipping) {

@@ -183,8 +183,8 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
     if (data != null) {
       ILineDataSet? set = data.getDataSetByIndex(0);
       if (set != null) {
-        Entry e = set.getEntryForXValue2(
-            (set.getEntryCount() - 1).toDouble(), double.nan)!;
+        Entry? e = set.getEntryForXValue2(
+            (set.getEntryCount() - 1).toDouble(), double.nan);
         data.removeEntry1(e, 0);
       }
     }
@@ -218,7 +218,7 @@ class EvenMoreDynamicState extends ActionState<EvenMoreDynamic>
   void _removeDataSet() {
     LineData? data = controller!.data;
     if (data != null) {
-      data.removeDataSet1(data.getDataSetByIndex(data.getDataSetCount() - 1)!);
+      data.removeDataSet1(data.getDataSetByIndex(data.getDataSetCount() - 1));
     }
   }
 }

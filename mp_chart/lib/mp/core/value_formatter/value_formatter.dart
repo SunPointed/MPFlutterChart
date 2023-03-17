@@ -18,7 +18,7 @@ abstract class ValueFormatter {
   }
 
   String getFormattedValue1(double? value) {
-    return value.toString();
+    return value?.toString() ?? '';
   }
 
   String getAxisLabel(double? value, AxisBase? axis) {

@@ -250,8 +250,6 @@ class HorizontalBarChartPainter extends BarChartPainter {
   /// @return
   @override
   MPPointF? getPosition(Entry e, AxisDependency axis) {
-    if (e == null) return null;
-
     List<double?> vals = mGetPositionBuffer;
     vals[0] = e.y;
     vals[1] = e.x;

@@ -363,10 +363,8 @@ class ViewPortHandler {
     double width = 0;
     double height = 0;
 
-    if (content != null) {
-      width = content.width;
-      height = content.height;
-    }
+    width = content.width;
+    height = content.height;
 
     double maxTransX = -width * (_scaleX - 1);
     _transX = min(max(curTransX, maxTransX - _transOffsetX!), _transOffsetX!);

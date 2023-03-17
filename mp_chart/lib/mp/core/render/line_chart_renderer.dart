@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:mp_chart/mp/core/adapter_android_mp.dart';
@@ -128,7 +127,9 @@ class LineChartRenderer extends LineRadarRenderer {
       list.add(cur.x);
       list.add(cur.y! * phaseY);
 
-      for (int j = xBounds!.min! + 1; j <= xBounds!.range! + xBounds!.min!; j++) {
+      for (int j = xBounds!.min! + 1;
+          j <= xBounds!.range! + xBounds!.min!;
+          j++) {
         prev = cur;
         cur = dataSet.getEntryForIndex(j)!;
 
@@ -167,8 +168,8 @@ class LineChartRenderer extends LineRadarRenderer {
       _cubicPath.cubicTo(list[i]!, list[i + 1]!, list[i + 2]!, list[i + 3]!,
           list[i + 4]!, list[i + 5]!);
       if (dataSet.isDrawFilledEnabled()) {
-        _cubicFillPath.cubicTo(list[i]!, list[i + 1]!, list[i + 2]!, list[i + 3]!,
-            list[i + 4]!, list[i + 5]!);
+        _cubicFillPath.cubicTo(list[i]!, list[i + 1]!, list[i + 2]!,
+            list[i + 3]!, list[i + 4]!, list[i + 5]!);
       }
       i += 6;
     }
@@ -222,7 +223,9 @@ class LineChartRenderer extends LineRadarRenderer {
       list.add(cur.x);
       list.add(cur.y! * phaseY);
 
-      for (int j = xBounds!.min! + 1; j <= xBounds!.range! + xBounds!.min!; j++) {
+      for (int j = xBounds!.min! + 1;
+          j <= xBounds!.range! + xBounds!.min!;
+          j++) {
         prevPrev = prev;
         prev = cur;
         cur = nextIndex == j ? next : dataSet.getEntryForIndex(j);
@@ -268,8 +271,8 @@ class LineChartRenderer extends LineRadarRenderer {
       _cubicPath.cubicTo(list[i]!, list[i + 1]!, list[i + 2]!, list[i + 3]!,
           list[i + 4]!, list[i + 5]!);
       if (dataSet.isDrawFilledEnabled()) {
-        _cubicFillPath.cubicTo(list[i]!, list[i + 1]!, list[i + 2]!, list[i + 3]!,
-            list[i + 4]!, list[i + 5]!);
+        _cubicFillPath.cubicTo(list[i]!, list[i + 1]!, list[i + 2]!,
+            list[i + 3]!, list[i + 4]!, list[i + 5]!);
       }
       i += 6;
     }
@@ -407,8 +410,8 @@ class LineChartRenderer extends LineRadarRenderer {
 
       if (mLineBuffer.length <
           max((entryCount) * pointsPerEntryPair, pointsPerEntryPair) * 2)
-        mLineBuffer = []..length = (
-            max((entryCount) * pointsPerEntryPair, pointsPerEntryPair) * 4);
+        mLineBuffer = []..length =
+            (max((entryCount) * pointsPerEntryPair, pointsPerEntryPair) * 4);
 
       Entry? e1, e2;
 
@@ -642,8 +645,8 @@ class LineChartRenderer extends LineRadarRenderer {
     valuePaint = PainterUtils.create(valuePaint, valueText, color, textSize,
         fontFamily: typeFace?.fontFamily, fontWeight: typeFace?.fontWeight);
     valuePaint!.layout();
-    valuePaint!.paint(
-        c, Offset(x - valuePaint!.width / 2, y - valuePaint!.height));
+    valuePaint!
+        .paint(c, Offset(x - valuePaint!.width / 2, y - valuePaint!.height));
   }
 
   @override
@@ -731,12 +734,6 @@ class LineChartRenderer extends LineRadarRenderer {
         }
       }
     }
-  }
-
-  // ignore: unused_element
-  Future<Codec> _loadImage(ByteData data) async {
-    if (data == null) throw 'Unable to read data';
-    return await instantiateImageCodec(data.buffer.asUint8List());
   }
 
   @override

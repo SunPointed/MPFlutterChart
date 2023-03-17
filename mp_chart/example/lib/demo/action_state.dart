@@ -582,7 +582,7 @@ abstract class CombinedActionState<T extends StatefulWidget>
           int rnd = _getRandom(controller.data!.getDataSetCount().toDouble(), 0)
               .toInt();
           controller.data!
-              .removeDataSet1(controller.data!.getDataSetByIndex(rnd)!);
+              .removeDataSet1(controller.data!.getDataSetByIndex(rnd));
           controller.data!.notifyDataChanged();
           controller.state!.setStateIfNotDispose();
         }

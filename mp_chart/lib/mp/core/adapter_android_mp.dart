@@ -16,9 +16,6 @@ class DashPathEffect {
         _dashOffset = DashOffset.absolute(value);
 
   Path convert2DashPath(Path path) {
-    if (_circularIntervalList == null) {
-      return path;
-    }
     return dashPath(path,
         dashArray: _circularIntervalList, dashOffset: _dashOffset);
   }

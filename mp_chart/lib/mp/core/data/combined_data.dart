@@ -184,7 +184,7 @@ class CombinedData extends BarLineScatterCandleBubbleData<
   }
 
   @override
-  bool removeDataSet1(IBarLineScatterCandleBubbleDataSet<Entry?> d) {
+  bool removeDataSet1(IBarLineScatterCandleBubbleDataSet<Entry?>? d) {
     List<BarLineScatterCandleBubbleData?> datas = getAllData();
     bool success = false;
     for (ChartData? data in datas) {

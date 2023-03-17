@@ -1,3 +1,7 @@
+## 1.2.1 2023-03-17
+* Flutter 3.7 updates
+* Null safety cleanups.
+* Upgrade dependency vector_math
 ## 1.2.0 2023-03-13
 * Disable image saver(image_gallery_saver) for now, as it's using a very old kotlin-gradle-plugin
 ## 1.1.0 2023-03-13

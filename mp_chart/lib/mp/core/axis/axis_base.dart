@@ -301,7 +301,7 @@ abstract class AxisBase extends ComponentBase {
     for (int i = 0; i < _entries.length; i++) {
       String text = getFormattedLabel(i);
 
-      if (text != null && longest.length < text.length) longest = text;
+      if (longest.length < text.length) longest = text;
     }
 
     return longest;
@@ -311,7 +311,7 @@ abstract class AxisBase extends ComponentBase {
     if (index < 0 || index >= _entries.length)
       return "";
     else
-      return getValueFormatter()!.getAxisLabel(_entries[index], this);
+      return getValueFormatter().getAxisLabel(_entries[index], this);
   }
 
   /// Sets the formatter to be used for formatting the axis labels. If no formatter is set, the
@@ -322,23 +322,20 @@ abstract class AxisBase extends ComponentBase {
   ///
   /// @param f
   void setValueFormatter(ValueFormatter f) {
-    if (f == null)
-      _axisValueFormatter = DefaultAxisValueFormatter(_decimals);
-    else
-      _axisValueFormatter = f;
+    _axisValueFormatter = f;
   }
 
   /// Returns the formatter used for formatting the axis labels.
   ///
   /// @return
-  ValueFormatter? getValueFormatter() {
+  ValueFormatter getValueFormatter() {
     if (_axisValueFormatter == null ||
         (_axisValueFormatter is DefaultAxisValueFormatter &&
             (_axisValueFormatter as DefaultAxisValueFormatter).digits !=
                 _decimals))
       _axisValueFormatter = DefaultAxisValueFormatter(_decimals);
 
-    return _axisValueFormatter;
+    return _axisValueFormatter!;
   }
 
   /// Enables the grid line to be drawn in dashed mode, e.g. like this
@@ -381,7 +378,6 @@ abstract class AxisBase extends ComponentBase {
   /// @param spaceLength the length of space in between the pieces
   /// @param phase       offset, in degrees (normally, use 0)
   void enableAxisLineDashedLine(
-
       double lineLength, double spaceLength, double phase) {
     _axisLineDashPathEffect = DashPathEffect(lineLength, spaceLength, phase);
   }

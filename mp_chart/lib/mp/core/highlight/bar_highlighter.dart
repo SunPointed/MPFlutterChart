@@ -53,9 +53,9 @@ class BarHighlighter extends ChartHighlighter<BarDataProvider> {
     if (entry.yVals == null) {
       return high;
     } else {
-      List<Range?> ranges = entry.ranges!;
+      List<Range?>? ranges = entry.ranges;
 
-      if (ranges.length > 0) {
+      if (ranges != null && ranges.length > 0) {
         int stackIndex = getClosestStackIndex(ranges, yVal);
 
         MPPointD pixels = provider!
@@ -86,7 +86,7 @@ class BarHighlighter extends ChartHighlighter<BarDataProvider> {
   /// @param ranges
   /// @param value
   /// @return
-  int getClosestStackIndex(List<Range?> ranges, double? value) {
+  int getClosestStackIndex(List<Range?>? ranges, double? value) {
     if (ranges == null || ranges.length == 0) return 0;
     int stackIndex = 0;
     for (Range? range in ranges) {

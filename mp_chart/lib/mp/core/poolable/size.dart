@@ -45,7 +45,7 @@ class FSize extends Poolable {
 
   FSize(this._width, this._height);
 
-  bool equals(final Object obj) {
+  bool equals(final Object? obj) {
     if (obj == null) {
       return false;
     }

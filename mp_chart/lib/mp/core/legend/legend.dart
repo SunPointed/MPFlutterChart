@@ -95,10 +95,6 @@ class Legend extends ComponentBase {
     this.textSize = Utils.convertDpToPixel(10)!;
     this.xOffset = Utils.convertDpToPixel(5);
     this.yOffset = Utils.convertDpToPixel(3);
-    if (entries == null) {
-      throw new Exception("entries array is NULL");
-    }
-
     this._entries = entries;
   }
 

@@ -41,7 +41,7 @@ class XAxisRendererRadarChart extends XAxisRenderer {
         i < _painter.getData()!.getMaxEntryCountSet()!.getEntryCount();
         i++) {
       String label =
-          xAxis!.getValueFormatter()!.getAxisLabel(i.toDouble(), xAxis);
+          xAxis!.getValueFormatter().getAxisLabel(i.toDouble(), xAxis);
 
       double angle = (sliceangle * i + _painter.getRotationAngle()) % 360;
 

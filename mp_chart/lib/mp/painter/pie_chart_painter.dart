@@ -65,10 +65,10 @@ class PieChartPainter extends PieRadarChartPainter<PieData?> {
   Rect _circleBox = Rect.zero;
 
   /// array that holds the width of each pie-slice in degrees
-  List<double?> _drawAngles = []..length =1;
+  List<double?> _drawAngles = []..length = 1;
 
   /// array that holds the absolute angle in degrees of each slice
-  List<double?> _absoluteAngles = []..length =1;
+  List<double?> _absoluteAngles = []..length = 1;
 
   /// Hole color
   Color _holeColor;
@@ -76,14 +76,17 @@ class PieChartPainter extends PieRadarChartPainter<PieData?> {
   MPPointF _centerTextOffset;
 
   TypeFace? _centerTextTypeface;
+
   TypeFace? get centerTextTypeface => _centerTextTypeface;
 
   /// Center text color
   final Color? _centerTextColor;
+
   Color? get centerTextColor => _centerTextColor;
 
   /// Center text font size
   final double? _centerTextSize;
+
   double? get centerTextSize => _centerTextSize;
   TypeFace? _entryLabelTypeface;
 
@@ -268,7 +271,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData?> {
         center.y!);
 
     MPPointF.recycleInstance(center);
-    return <double>[x,y];
+    return <double>[x, y];
   }
 
   /// calculates the needed angles for the chart slices
@@ -336,7 +339,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData?> {
       // Correct bigger slices by relatively reducing their angles based on the total angle needed to subtract
       // This requires that `entryCount * _minAngleForSlices <= _maxAngle` be true to properly work!
       for (int i = 0; i < entryCount; i++) {
-        minAngles[i] = minAngles[i]! - ( (minAngles[i]! - _minAngleForSlices) / diff * offset);
+        minAngles[i] = minAngles[i]! -
+            ((minAngles[i]! - _minAngleForSlices) / diff * offset);
         if (i == 0) {
           _absoluteAngles[0] = minAngles[0];
         } else {
@@ -456,9 +460,8 @@ class PieChartPainter extends PieRadarChartPainter<PieData?> {
 
   @override
   double getRequiredLegendOffset() {
-    // ignore: null_aware_before_operator
-    var offset = legendRenderer!.legendLabelPaint!.text!.style!.fontSize! * 2.0;
-    return offset == null ? Utils.convertDpToPixel(9)! : offset;
+    var offset = legendRenderer?.legendLabelPaint?.text?.style?.fontSize;
+    return offset == null ? Utils.convertDpToPixel(9)! : offset * 2.0;
   }
 
   @override
@@ -468,10 +471,7 @@ class PieChartPainter extends PieRadarChartPainter<PieData?> {
 
   @override
   double getRadius() {
-    if (_circleBox == null)
-      return 0;
-    else
-      return min(_circleBox.width / 2.0, _circleBox.height / 2.0);
+    return min(_circleBox.width / 2.0, _circleBox.height / 2.0);
   }
 
   /// returns the circlebox, the boundingbox of the pie-chart slices

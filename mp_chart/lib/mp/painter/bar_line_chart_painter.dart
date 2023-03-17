@@ -670,8 +670,6 @@ abstract class BarLineChartBasePainter<
   /// @param e
   /// @return
   MPPointF? getPosition(Entry e, AxisDependency axis) {
-    if (e == null) return null;
-
     mGetPositionBuffer[0] = e.x;
     mGetPositionBuffer[1] = e.y;
 

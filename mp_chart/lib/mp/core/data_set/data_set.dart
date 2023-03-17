@@ -122,9 +122,8 @@ abstract class DataSet<T extends Entry?> extends BaseDataSet<T?> {
   /// @return
   String toSimpleString() {
     StringBuffer buffer = StringBuffer();
-    buffer.write("DataSet, label: " +
-        (getLabel() == null ? "" : getLabel()) +
-        ", entries:${_values!.length}\n");
+    buffer.write(
+        "DataSet, label: " + getLabel() + ", entries:${_values!.length}\n");
     return buffer.toString();
   }
 

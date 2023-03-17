@@ -280,10 +280,7 @@ class LineDataSet extends LineRadarDataSet<Entry> implements ILineDataSet {
   ///
   /// @param formatter
   void setFillFormatter(IFillFormatter formatter) {
-    if (formatter == null)
-      _fillFormatter = DefaultFillFormatter();
-    else
-      _fillFormatter = formatter;
+    _fillFormatter = formatter;
   }
 
   @override

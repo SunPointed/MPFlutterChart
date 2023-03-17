@@ -58,6 +58,7 @@ class ChartData<T extends IDataSet<Entry?>> {
   /// @param fromX the x-value to start the calculation from
   /// @param toX   the x-value to which the calculation should be performed
   void calcMinMaxY(double fromX, double toX) {
+    if (_dataSets == null) return;
     for (T set in _dataSets!) {
       set.calcMinMaxY(fromX, toX);
     }
@@ -234,6 +235,7 @@ class ChartData<T extends IDataSet<Entry?>> {
   ///
   /// @return
   List<String?> getDataSetLabels() {
+    if (_dataSets == null) return [''];
     List<String?> types = []..length = (_dataSets!.length);
 
     for (int i = 0; i < _dataSets!.length; i++) {
@@ -248,7 +250,9 @@ class ChartData<T extends IDataSet<Entry?>> {
   /// @param highlight
   /// @return the entry that is highlighted
   Entry? getEntryForHighlight(Highlight? highlight) {
-    if (highlight == null || highlight.dataSetIndex! >= _dataSets!.length)
+    if (highlight == null ||
+        _dataSets == null ||
+        highlight.dataSetIndex! >= _dataSets!.length)
       return null;
     else {
       return _dataSets![highlight.dataSetIndex!]
@@ -264,6 +268,7 @@ class ChartData<T extends IDataSet<Entry?>> {
   /// @param ignorecase
   /// @return
   T? getDataSetByLabel(String label, bool ignorecase) {
+    if (_dataSets == null) return null;
     int index = getDataSetIndexByLabel(_dataSets, label, ignorecase);
 
     if (index < 0 || index >= _dataSets!.length)
@@ -283,10 +288,8 @@ class ChartData<T extends IDataSet<Entry?>> {
   ///
   /// @param d
   void addDataSet(T d) {
-    if (d == null) return;
-
     calcMinMax3(d);
-
+    if (_dataSets == null) _dataSets = [d];
     _dataSets!.add(d);
   }
 
@@ -295,8 +298,9 @@ class ChartData<T extends IDataSet<Entry?>> {
   /// if no DataSet could be removed.
   ///
   /// @param d
-  bool removeDataSet1(T d) {
+  bool removeDataSet1(T? d) {
     if (d == null) return false;
+    if (_dataSets == null) return false;
 
     bool removed = _dataSets!.remove(d);
 
@@ -314,6 +318,7 @@ class ChartData<T extends IDataSet<Entry?>> {
   ///
   /// @param index
   bool removeDataSet2(int index) {
+    if (_dataSets == null) return false;
     if (index >= _dataSets!.length || index < 0) return false;
 
     T set = _dataSets![index];
@@ -398,11 +403,11 @@ class ChartData<T extends IDataSet<Entry?>> {
   ///
   /// @param e
   /// @param dataSetIndex
-  bool removeEntry1(Entry e, int dataSetIndex) {
-    // entry null, outofbounds
+  bool removeEntry1(Entry? e, int dataSetIndex) {
+    // entry null, out of bounds
     if (e == null || dataSetIndex >= _dataSets!.length) return false;
 
-    IDataSet set = _dataSets![dataSetIndex];
+    IDataSet? set = _dataSets?[dataSetIndex];
 
     if (set != null) {
       // remove the entry from the dataset
@@ -441,8 +446,7 @@ class ChartData<T extends IDataSet<Entry?>> {
   /// @param e
   /// @return
   T? getDataSetForEntry(Entry e) {
-    if (e == null) return null;
-
+    if (_dataSets == null) return null;
     for (int i = 0; i < _dataSets!.length; i++) {
       T set = _dataSets![i];
 
@@ -516,12 +520,9 @@ class ChartData<T extends IDataSet<Entry?>> {
   ///
   /// @param f
   void setValueFormatter(ValueFormatter f) {
-    if (f == null)
-      return;
-    else {
-      for (IDataSet set in _dataSets!) {
-        set.setValueFormatter(f);
-      }
+    if (_dataSets == null) return;
+    for (IDataSet set in _dataSets!) {
+      set.setValueFormatter(f);
     }
   }
 
@@ -610,6 +611,7 @@ class ChartData<T extends IDataSet<Entry?>> {
   /// @param dataSet
   /// @return
   bool contains(T dataSet) {
+    if (_dataSets == null) return false;
     for (T set in _dataSets!) {
       if (set == dataSet) return true;
     }
