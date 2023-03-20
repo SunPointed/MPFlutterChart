@@ -3,6 +3,7 @@
 * Null safety cleanups
 * BarLineChartBasePainter getData, getAxisRange getter improvements
 * Upgrade dependency vector_math
+* Bump sdk constraints to >=2.18.0
 ## 1.2.0 2023-03-13
 * Disable image saver(image_gallery_saver) for now, as it's using a very old kotlin-gradle-plugin
 ## 1.1.0 2023-03-13
