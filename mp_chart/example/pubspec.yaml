@@ -17,7 +17,7 @@ environment:
   sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
-  url_launcher: ^6.1.10
+  url_launcher: ^6.1.11
   permission_handler: ^10.2.0
   flutter:
     sdk: flutter

@@ -1,3 +1,5 @@
+## 1.2.2 2023-06-03
+* Upgrade dependencies path_provider, url_launcher
 ## 1.2.1 2023-03-17
 * Flutter 3.7 updates
 * Null safety cleanups
