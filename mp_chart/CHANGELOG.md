@@ -1,3 +1,6 @@
+## 1.3.0 2023-06-11
+* Flutter 3.10 updates
+* Upgrade dependencies intl, screenshot, permission_handler 
 ## 1.2.2 2023-06-03
 * Upgrade dependencies path_provider, url_launcher
 ## 1.2.1 2023-03-17
