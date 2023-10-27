@@ -1,3 +1,7 @@
+## 1.4.0 2023-10-27
+* Update sdk constraints to >=3.0.0 <4.0.0
+* Upgrade dependencies intl, path_provider
+* Upgrade example app dependencies url_launcher, permission_handler, cupertino_icons, intl
 ## 1.3.0 2023-06-11
 * Flutter 3.10 updates
 * Upgrade dependencies intl, screenshot, permission_handler 
