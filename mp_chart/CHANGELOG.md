@@ -1,3 +1,9 @@
+## 1.5.0 2023-12-21
+* Rename Easing to MpEasing to not conflict with Flutter Easing
+* Export most classes in mp_chart so that users only import mp_chart instead of individual classes
+* Flutter 3.16 updates
+* Upgrade dependencies intl
+* Upgrade example app dependencies url_launcher, permission_handler, intl
 ## 1.4.0 2023-10-27
 * Update sdk constraints to >=3.0.0 <4.0.0
 * Upgrade dependencies intl, path_provider

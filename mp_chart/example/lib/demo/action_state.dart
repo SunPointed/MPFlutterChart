@@ -239,7 +239,7 @@ abstract class LineActionState<T extends StatefulWidget>
       case 'M':
         controller!.animator!
           ..reset()
-          ..animateY2(2000, Easing.EaseInCubic);
+          ..animateY2(2000, MpEasing.EaseInCubic);
         break;
       case 'N':
         controller!.animator!
@@ -514,7 +514,7 @@ abstract class PieActionState<T extends StatefulWidget> extends ActionState<T> {
         controller.animator!
           ..reset()
           ..spin(2000, controller.rotationAngle, controller.rotationAngle + 360,
-              Easing.EaseInOutCubic);
+              MpEasing.EaseInOutCubic);
         break;
       case 'K':
         controller.animator!
@@ -932,7 +932,7 @@ abstract class RadarActionState<T extends StatefulWidget>
         controller.animator!
           ..reset()
           ..spin(2000, controller.rotationAngle, controller.rotationAngle + 360,
-              Easing.EaseInOutCubic);
+              MpEasing.EaseInOutCubic);
         break;
       case 'K':
         controller.animator!

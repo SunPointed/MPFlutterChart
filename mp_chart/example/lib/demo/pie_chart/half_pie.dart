@@ -150,7 +150,7 @@ class PieChartHalfPieState extends SimpleActionState<PieChartHalfPie> {
 
   Widget _initPieChart() {
     var pieChart = PieChart(_controller);
-    _controller.animator!.animateY2(1400, Easing.EaseInOutQuad);
+    _controller.animator!.animateY2(1400, MpEasing.EaseInOutQuad);
     return pieChart;
   }
 }

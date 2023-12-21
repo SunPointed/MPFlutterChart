@@ -152,7 +152,7 @@ class OtherChartRadarState extends RadarActionState<OtherChartRadar> {
     var radarChart = RadarChart(controller);
     controller.animator!
       ..reset()
-      ..animateXY2(1400, 1400, Easing.EaseInOutQuad);
+      ..animateXY2(1400, 1400, MpEasing.EaseInOutQuad);
     return radarChart;
   }
 }

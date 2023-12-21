@@ -246,7 +246,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
     var pieChart = PieChart(controller);
     controller.animator!
       ..reset()
-      ..animateY2(1400, Easing.EaseInOutQuad);
+      ..animateY2(1400, MpEasing.EaseInOutQuad);
     return pieChart;
   }
 

@@ -31,7 +31,7 @@ abstract class Animator {
   ///
   /// @param durationMillis animation duration
   void animateX1(int durationMillis) {
-    animateX2(durationMillis, Easing.Linear);
+    animateX2(durationMillis, MpEasing.Linear);
   }
 
   /// Animates values along the X axis.
@@ -45,7 +45,7 @@ abstract class Animator {
   /// @param durationMillisX animation duration along the X axis
   /// @param durationMillisY animation duration along the Y axis
   void animateXY1(int durationMillisX, int durationMillisY) {
-    animateXY3(durationMillisX, durationMillisY, Easing.Linear, Easing.Linear);
+    animateXY3(durationMillisX, durationMillisY, MpEasing.Linear, MpEasing.Linear);
   }
 
   /// Animates values along both the X and Y axes.
@@ -69,7 +69,7 @@ abstract class Animator {
   ///
   /// @param durationMillis animation duration
   void animateY1(int durationMillis) {
-    animateY2(durationMillis, Easing.Linear);
+    animateY2(durationMillis, MpEasing.Linear);
   }
 
   /// Animates values along the Y axis.
@@ -512,7 +512,7 @@ mixin EasingFunction {
 
 const double DOUBLE_PI = 2 * pi;
 
-abstract class Easing {
+abstract class MpEasing {
   static const EasingFunction Linear = LinearEasingFunction();
   static const EasingFunction EaseInQuad = EaseInQuadEasingFunction();
   static const EasingFunction EaseOutQuad = EaseOutQuadEasingFunction();
@@ -550,9 +550,9 @@ class EaseInOutBounceEasingFunction implements EasingFunction {
   @override
   double getInterpolation(double input) {
     if (input < 0.5) {
-      return Easing.EaseInBounce.getInterpolation(input * 2) * 0.5;
+      return MpEasing.EaseInBounce.getInterpolation(input * 2) * 0.5;
     }
-    return Easing.EaseOutBounce.getInterpolation(input * 2 - 1) * 0.5 + 0.5;
+    return MpEasing.EaseOutBounce.getInterpolation(input * 2 - 1) * 0.5 + 0.5;
   }
 }
 
@@ -578,7 +578,7 @@ class EaseInBounceEasingFunction implements EasingFunction {
 
   @override
   double getInterpolation(double input) {
-    return 1 - Easing.EaseOutBounce.getInterpolation(1 - input);
+    return 1 - MpEasing.EaseOutBounce.getInterpolation(1 - input);
   }
 }
 
