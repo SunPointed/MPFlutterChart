@@ -18,29 +18,29 @@ import 'package:mp_chart/mp/core/transformer/transformer.dart';
 import 'package:mp_chart/mp/core/view_port.dart';
 import 'package:mp_chart/mp/painter/bar_line_chart_painter.dart';
 
-class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
+class CandlestickChartPainter extends BarLineChartBasePainter<CandleData?>
     implements CandleDataProvider {
   CandlestickChartPainter(
-      CandleData data,
-      Animator animator,
-      ViewPortHandler viewPortHandler,
-      double maxHighlightDistance,
+      CandleData? data,
+      Animator? animator,
+      ViewPortHandler? viewPortHandler,
+      double? maxHighlightDistance,
       bool highLightPerTapEnabled,
       double extraLeftOffset,
       double extraTopOffset,
       double extraRightOffset,
       double extraBottomOffset,
-      IMarker marker,
-      Description desc,
+      IMarker? marker,
+      Description? desc,
       bool drawMarkers,
-      Color infoBgColor,
-      TextPainter infoPainter,
-      TextPainter descPainter,
-      XAxis xAxis,
-      Legend legend,
-      LegendRenderer legendRenderer,
-      DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectedListener,
+      Color? infoBgColor,
+      TextPainter? infoPainter,
+      TextPainter? descPainter,
+      XAxis? xAxis,
+      Legend? legend,
+      LegendRenderer? legendRenderer,
+      DataRendererSettingFunction? rendererSettingFunction,
+      OnChartValueSelectedListener? selectedListener,
       int maxVisibleCount,
       bool autoScaleMinMaxEnabled,
       bool pinchZoomEnabled,
@@ -50,25 +50,25 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
       bool dragYEnabled,
       bool scaleXEnabled,
       bool scaleYEnabled,
-      Paint gridBackgroundPaint,
-      Paint backgroundPaint,
-      Paint borderPaint,
+      Paint? gridBackgroundPaint,
+      Paint? backgroundPaint,
+      Paint? borderPaint,
       bool drawGridBackground,
       bool drawBorders,
       bool clipValuesToContent,
       double minOffset,
       bool keepPositionOnRotation,
-      OnDrawListener drawListener,
-      YAxis axisLeft,
-      YAxis axisRight,
-      YAxisRenderer axisRendererLeft,
-      YAxisRenderer axisRendererRight,
-      Transformer leftAxisTransformer,
-      Transformer rightAxisTransformer,
-      XAxisRenderer xAxisRenderer,
-      Matrix4 zoomMatrixBuffer,
+      OnDrawListener? drawListener,
+      YAxis? axisLeft,
+      YAxis? axisRight,
+      YAxisRenderer? axisRendererLeft,
+      YAxisRenderer? axisRendererRight,
+      Transformer? leftAxisTransformer,
+      Transformer? rightAxisTransformer,
+      XAxisRenderer? xAxisRenderer,
+      Matrix4? zoomMatrixBuffer,
       bool customViewPortEnabled,
-      ChartTransListener chartTransListener)
+      ChartTransListener? chartTransListener)
       : super(
             data,
             animator,
@@ -123,12 +123,12 @@ class CandlestickChartPainter extends BarLineChartBasePainter<CandleData>
   void initDefaultWithData() {
     super.initDefaultWithData();
     renderer = CandleStickChartRenderer(this, animator, viewPortHandler);
-    xAxis.spaceMin = (0.5);
-    xAxis.spaceMax = (0.5);
+    xAxis!.spaceMin = (0.5);
+    xAxis!.spaceMax = (0.5);
   }
 
   @override
-  CandleData getCandleData() {
-    return getData();
+  CandleData? getCandleData() {
+    return getData() as CandleData?;
   }
 }

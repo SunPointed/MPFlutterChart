@@ -22,7 +22,7 @@ class ScrollingChartTallBar extends StatefulWidget {
 
 class ScrollingChartTallBarState
     extends SimpleActionState<ScrollingChartTallBar> {
-  BarChartController _controller;
+  late BarChartController _controller;
   var random = Random(1);
   bool _isParentMove = true;
   double _curX = 0.0;
@@ -89,7 +89,7 @@ class ScrollingChartTallBarState
 
   Widget _renderItem() {
     var barChart = BarChart(_controller);
-    _controller.animator
+    _controller.animator!
       ..reset()
       ..animateY1(800);
     return Column(
@@ -132,13 +132,13 @@ class ScrollingChartTallBarState
     var desc = Description()..enabled = false;
     _controller = BarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft.drawGridLines = (false);
+          axisLeft!.drawGridLines = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.enabled = (false);
+          legend!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..position = (XAxisPosition.BOTTOM)
             ..drawGridLines = (false);
         },
@@ -158,7 +158,7 @@ class ScrollingChartTallBarState
   }
 
   BarData generateData() {
-    List<BarEntry> entries = List();
+    List<BarEntry> entries = [];
 
     for (int i = 0; i < 10; i++) {
       entries
@@ -169,7 +169,7 @@ class ScrollingChartTallBarState
     d.setColors1(ColorUtils.VORDIPLOM_COLORS);
     d.setDrawValues(false);
 
-    List<IBarDataSet> sets = List();
+    List<IBarDataSet> sets = [];
     sets.add(d);
 
     return BarData(sets);

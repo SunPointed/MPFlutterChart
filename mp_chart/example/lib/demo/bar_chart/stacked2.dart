@@ -55,46 +55,46 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
   void _initBarData() async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
     // IMPORTANT: When using negative values in stacked bars, always make sure the negative values are in the array first
-    List<BarEntry> values = List();
+    List<BarEntry> values = [];
     values.add(BarEntry.fromListYVals(
-        x: 5, vals: List<double>()..add(-10)..add(10), icon: img));
+        x: 5, vals: <double>[]..add(-10)..add(10), icon: img));
     values.add(BarEntry.fromListYVals(
-        x: 15, vals: List<double>()..add(-12)..add(13), icon: img));
+        x: 15, vals: <double>[]..add(-12)..add(13), icon: img));
     values.add(BarEntry.fromListYVals(
-        x: 25, vals: List<double>()..add(-15)..add(15), icon: img));
+        x: 25, vals: <double>[]..add(-15)..add(15), icon: img));
     values.add(BarEntry.fromListYVals(
-        x: 35, vals: List<double>()..add(-17)..add(17), icon: img));
+        x: 35, vals: <double>[]..add(-17)..add(17), icon: img));
     values.add(BarEntry.fromListYVals(
-        x: 45, vals: List<double>()..add(-19)..add(20), icon: img));
+        x: 45, vals: <double>[]..add(-19)..add(20), icon: img));
     values.add(BarEntry.fromListYVals(
-        x: 45, vals: List<double>()..add(-19)..add(20), icon: img
+        x: 45, vals: <double>[]..add(-19)..add(20), icon: img
 //        getResources().getDrawable(R.drawable.star)
         ));
     values.add(BarEntry.fromListYVals(
-        x: 55, vals: List<double>()..add(-19)..add(19), icon: img));
+        x: 55, vals: <double>[]..add(-19)..add(19), icon: img));
     values.add(BarEntry.fromListYVals(
-        x: 65, vals: List<double>()..add(-16)..add(16), icon: img));
+        x: 65, vals: <double>[]..add(-16)..add(16), icon: img));
     values.add(BarEntry.fromListYVals(
-        x: 75, vals: List<double>()..add(-13)..add(14), icon: img));
+        x: 75, vals: <double>[]..add(-13)..add(14), icon: img));
     values.add(BarEntry.fromListYVals(
-        x: 85, vals: List<double>()..add(-10)..add(11), icon: img));
+        x: 85, vals: <double>[]..add(-10)..add(11), icon: img));
     values.add(BarEntry.fromListYVals(
-        x: 95, vals: List<double>()..add(-5)..add(6), icon: img));
+        x: 95, vals: <double>[]..add(-5)..add(6), icon: img));
     values.add(BarEntry.fromListYVals(
-        x: 105, vals: List<double>()..add(-1)..add(2), icon: img));
+        x: 105, vals: <double>[]..add(-1)..add(2), icon: img));
 
     BarDataSet set = BarDataSet(values, "Age Distribution");
     set.setDrawIcons(false);
     set.setValueFormatter(B());
     set.setValueTextSize(7);
     set.setAxisDependency(AxisDependency.RIGHT);
-    set.setColors1(List()
+    set.setColors1(<Color>[]
       ..add(Color.fromARGB(255, 67, 67, 72))
       ..add(Color.fromARGB(255, 124, 181, 236)));
-    set.setStackLabels(List()..add("Men")..add("Women"));
+    set.setStackLabels(<String>[]..add("Men")..add("Women"));
 
-    controller.data = BarData(List()..add(set));
-    controller.data.barWidth = (8.5);
+    controller.data = BarData(<BarDataSet>[]..add(set));
+    controller.data!.barWidth = (8.5);
 
     setState(() {});
   }
@@ -103,10 +103,10 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
     var desc = Description()..enabled = false;
     controller = HorizontalBarChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft.enabled = (false);
+          axisLeft!.enabled = (false);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight
+          axisRight!
             ..setAxisMaximum(25)
             ..setAxisMinimum(-25)
             ..drawGridLines = (false)
@@ -116,7 +116,7 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
             ..textSize = (9);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.BOTTOM)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
             ..orientation = (LegendOrientation.HORIZONTAL)
@@ -126,7 +126,7 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
             ..xEntrySpace = (6);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..position = (XAxisPosition.BOTH_SIDED)
             ..drawGridLines = (false)
             ..drawAxisLine = (false)
@@ -155,31 +155,31 @@ class BarChartStacked2State extends HorizontalBarActionState<BarChartStacked2>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {}
+  void onValueSelected(Entry? e, Highlight? h) {}
 }
 
 class A extends ValueFormatter {
-  NumberFormat mFormat;
+  late NumberFormat mFormat;
 
   A() {
     mFormat = NumberFormat("###");
   }
 
   @override
-  String getFormattedValue1(double value) {
-    return mFormat.format(value.abs()) + "m";
+  String getFormattedValue1(double? value) {
+    return mFormat.format(value!.abs()) + "m";
   }
 }
 
 class B extends ValueFormatter {
-  NumberFormat mFormat;
+  late NumberFormat mFormat;
 
   B() {
     mFormat = NumberFormat("###");
   }
 
   @override
-  String getFormattedValue1(double value) {
-    return mFormat.format(value) + "-" + mFormat.format(value + 10);
+  String getFormattedValue1(double? value) {
+    return mFormat.format(value) + "-" + mFormat.format(value! + 10);
   }
 }

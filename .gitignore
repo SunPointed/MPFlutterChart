@@ -66,6 +66,7 @@ pubspec.lock
 **/ios/Flutter/flutter_assets/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Flutter/Flutter.podspec
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3
@@ -73,3 +74,4 @@ pubspec.lock
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+mp_chart/.flutter-plugins-dependencies

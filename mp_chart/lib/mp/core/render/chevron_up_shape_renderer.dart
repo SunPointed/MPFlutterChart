@@ -10,17 +10,17 @@ class ChevronUpShapeRenderer implements IShapeRenderer {
   void renderShape(
       Canvas c,
       IScatterDataSet dataSet,
-      ViewPortHandler viewPortHandler,
-      double posX,
-      double posY,
-      Paint renderPaint) {
+      ViewPortHandler? viewPortHandler,
+      double? posX,
+      double? posY,
+      Paint? renderPaint) {
     final double shapeHalf = dataSet.getScatterShapeSize() / 2;
 
-    renderPaint
+    renderPaint!
       ..style = PaintingStyle.stroke
-      ..strokeWidth = Utils.convertDpToPixel(1);
+      ..strokeWidth = Utils.convertDpToPixel(1)!;
 
-    c.drawLine(Offset(posX, posY - (2 * shapeHalf)),
+    c.drawLine(Offset(posX!, posY! - (2 * shapeHalf)),
         Offset(posX + (2 * shapeHalf), posY), renderPaint);
 
     c.drawLine(Offset(posX, posY - (2 * shapeHalf)),

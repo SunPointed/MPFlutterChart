@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mp_chart/mp/core/animator.dart';
 import 'package:mp_chart/mp/core/axis/x_axis.dart';
@@ -34,9 +33,9 @@ import 'package:mp_chart/mp/painter/painter.dart';
 
 abstract class BarLineChartBasePainter<
         T extends BarLineScatterCandleBubbleData<
-            IBarLineScatterCandleBubbleDataSet<Entry>>> extends ChartPainter<T>
-    implements BarLineScatterCandleBubbleDataProvider {
-  final ChartTransListener _chartTransListener;
+            IBarLineScatterCandleBubbleDataSet<Entry?>>?>
+    extends ChartPainter<T> implements BarLineScatterCandleBubbleDataProvider {
+  final ChartTransListener? _chartTransListener;
 
   /// the maximum number of entries to which values will be drawn
   /// (entry numbers greater than this value will cause value-labels to disappear)
@@ -66,11 +65,11 @@ abstract class BarLineChartBasePainter<
   final bool _scaleYEnabled;
 
   /// paint object for the (by default) lightgrey background of the grid
-  final Paint _gridBackgroundPaint;
+  final Paint? _gridBackgroundPaint;
 
-  final Paint _backgroundPaint;
+  final Paint? _backgroundPaint;
 
-  final Paint _borderPaint;
+  final Paint? _borderPaint;
 
   /// flag indicating if the grid background should be drawn or not
   final bool _drawGridBackground;
@@ -88,46 +87,46 @@ abstract class BarLineChartBasePainter<
 
   /// the listener for user drawing on the chart
   // ignore: unused_field
-  final OnDrawListener _drawListener;
+  final OnDrawListener? _drawListener;
 
   /// the object representing the labels on the left y-axis
-  final YAxis _axisLeft;
+  final YAxis? _axisLeft;
 
   /// the object representing the labels on the right y-axis
-  final YAxis _axisRight;
+  final YAxis? _axisRight;
 
-  final YAxisRenderer _axisRendererLeft;
-  final YAxisRenderer _axisRendererRight;
+  final YAxisRenderer? _axisRendererLeft;
+  final YAxisRenderer? _axisRendererRight;
 
-  final Transformer _leftAxisTransformer;
-  final Transformer _rightAxisTransformer;
+  final Transformer? _leftAxisTransformer;
+  final Transformer? _rightAxisTransformer;
 
-  final XAxisRenderer _xAxisRenderer;
+  final XAxisRenderer? _xAxisRenderer;
 
   /// flag that indicates if a custom viewport offset has been set
   bool _customViewPortEnabled;
 
   /// CODE BELOW THIS RELATED TO SCALING AND GESTURES AND MODIFICATION OF THE
   /// VIEWPORT
-  final Matrix4 _zoomMatrixBuffer;
+  final Matrix4? _zoomMatrixBuffer;
 
   /////////////////////////////////
 
   Rect _offsetsBuffer = Rect.zero;
 
-  YAxis get axisLeft => _axisLeft;
+  YAxis? get axisLeft => _axisLeft;
 
-  YAxis get axisRight => _axisRight;
+  YAxis? get axisRight => _axisRight;
 
-  YAxisRenderer get axisRendererLeft => _axisRendererLeft;
+  YAxisRenderer? get axisRendererLeft => _axisRendererLeft;
 
-  YAxisRenderer get axisRendererRight => _axisRendererRight;
+  YAxisRenderer? get axisRendererRight => _axisRendererRight;
 
   double get minOffset => _minOffset;
 
-  Transformer get leftAxisTransformer => _leftAxisTransformer;
+  Transformer? get leftAxisTransformer => _leftAxisTransformer;
 
-  Transformer get rightAxisTransformer => _rightAxisTransformer;
+  Transformer? get rightAxisTransformer => _rightAxisTransformer;
 
   bool get highlightPerDragEnabled => _highlightPerDragEnabled;
 
@@ -143,25 +142,25 @@ abstract class BarLineChartBasePainter<
 
   BarLineChartBasePainter(
       T data,
-      Animator animator,
-      ViewPortHandler viewPortHandler,
-      double maxHighlightDistance,
+      Animator? animator,
+      ViewPortHandler? viewPortHandler,
+      double? maxHighlightDistance,
       bool highLightPerTapEnabled,
       double extraLeftOffset,
       double extraTopOffset,
       double extraRightOffset,
       double extraBottomOffset,
-      IMarker marker,
-      Description desc,
+      IMarker? marker,
+      Description? desc,
       bool drawMarkers,
-      Color infoBgColor,
-      TextPainter infoPainter,
-      TextPainter descPainter,
-      XAxis xAxis,
-      Legend legend,
-      LegendRenderer legendRenderer,
-      DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectedListener,
+      Color? infoBgColor,
+      TextPainter? infoPainter,
+      TextPainter? descPainter,
+      XAxis? xAxis,
+      Legend? legend,
+      LegendRenderer? legendRenderer,
+      DataRendererSettingFunction? rendererSettingFunction,
+      OnChartValueSelectedListener? selectedListener,
       int maxVisibleCount,
       bool autoScaleMinMaxEnabled,
       bool pinchZoomEnabled,
@@ -171,25 +170,25 @@ abstract class BarLineChartBasePainter<
       bool dragYEnabled,
       bool scaleXEnabled,
       bool scaleYEnabled,
-      Paint gridBackgroundPaint,
-      Paint borderPaint,
+      Paint? gridBackgroundPaint,
+      Paint? borderPaint,
       bool drawGridBackground,
       bool drawBorders,
       bool clipValuesToContent,
       double minOffset,
       bool keepPositionOnRotation,
-      OnDrawListener drawListener,
-      YAxis axisLeft,
-      YAxis axisRight,
-      YAxisRenderer axisRendererLeft,
-      YAxisRenderer axisRendererRight,
-      Transformer leftAxisTransformer,
-      Transformer rightAxisTransformer,
-      XAxisRenderer xAxisRenderer,
-      Matrix4 zoomMatrixBuffer,
+      OnDrawListener? drawListener,
+      YAxis? axisLeft,
+      YAxis? axisRight,
+      YAxisRenderer? axisRendererLeft,
+      YAxisRenderer? axisRendererRight,
+      Transformer? leftAxisTransformer,
+      Transformer? rightAxisTransformer,
+      XAxisRenderer? xAxisRenderer,
+      Matrix4? zoomMatrixBuffer,
       bool customViewPortEnabled,
-      Paint backgroundPaint,
-      ChartTransListener chartTransListener)
+      Paint? backgroundPaint,
+      ChartTransListener? chartTransListener)
       : _keepPositionOnRotation = keepPositionOnRotation,
         _leftAxisTransformer = leftAxisTransformer,
         _rightAxisTransformer = rightAxisTransformer,
@@ -250,7 +249,7 @@ abstract class BarLineChartBasePainter<
   void onPaint(Canvas canvas, Size size) {
     if (_backgroundPaint != null) {
       canvas.drawRect(
-          Rect.fromLTRB(0, 0, size.width, size.height), _backgroundPaint);
+          Rect.fromLTRB(0, 0, size.width, size.height), _backgroundPaint!);
     }
 
     // execute all drawing commands
@@ -258,75 +257,76 @@ abstract class BarLineChartBasePainter<
 
     compute();
 
-    _xAxisRenderer.renderAxisLine(canvas);
-    _axisRendererLeft.renderAxisLine(canvas);
-    _axisRendererRight.renderAxisLine(canvas);
+    _xAxisRenderer!.renderAxisLine(canvas);
+    _axisRendererLeft!.renderAxisLine(canvas);
+    _axisRendererRight!.renderAxisLine(canvas);
 
-    if (xAxis.drawGridLinesBehindData) _xAxisRenderer.renderGridLines(canvas);
+    if (xAxis!.drawGridLinesBehindData) _xAxisRenderer!.renderGridLines(canvas);
 
-    if (_axisLeft.drawGridLinesBehindData)
-      _axisRendererLeft.renderGridLines(canvas);
+    if (_axisLeft!.drawGridLinesBehindData)
+      _axisRendererLeft!.renderGridLines(canvas);
 
-    if (_axisRight.drawGridLinesBehindData)
-      _axisRendererRight.renderGridLines(canvas);
+    if (_axisRight!.drawGridLinesBehindData)
+      _axisRendererRight!.renderGridLines(canvas);
 
-    if (xAxis.enabled && xAxis.drawLimitLineBehindData)
-      _xAxisRenderer.renderLimitLines(canvas);
+    if (xAxis!.enabled && xAxis!.drawLimitLineBehindData)
+      _xAxisRenderer!.renderLimitLines(canvas);
 
-    if (_axisLeft.enabled && _axisLeft.drawLimitLineBehindData)
-      _axisRendererLeft.renderLimitLines(canvas);
+    if (_axisLeft!.enabled && _axisLeft!.drawLimitLineBehindData)
+      _axisRendererLeft!.renderLimitLines(canvas);
 
-    if (_axisRight.enabled && _axisRight.drawLimitLineBehindData)
-      _axisRendererRight.renderLimitLines(canvas);
+    if (_axisRight!.enabled && _axisRight!.drawLimitLineBehindData)
+      _axisRendererRight!.renderLimitLines(canvas);
 
     // make sure the data cannot be drawn outside the content-rect
     canvas.save();
-    canvas.clipRect(viewPortHandler.getContentRect());
+    canvas.clipRect(viewPortHandler!.getContentRect());
 
-    renderer.drawData(canvas);
+    renderer!.drawData(canvas);
 
-    if (!xAxis.drawGridLinesBehindData) _xAxisRenderer.renderGridLines(canvas);
+    if (!xAxis!.drawGridLinesBehindData)
+      _xAxisRenderer!.renderGridLines(canvas);
 
-    if (!_axisLeft.drawGridLinesBehindData)
-      _axisRendererLeft.renderGridLines(canvas);
+    if (!_axisLeft!.drawGridLinesBehindData)
+      _axisRendererLeft!.renderGridLines(canvas);
 
-    if (!_axisRight.drawGridLinesBehindData)
-      _axisRendererRight.renderGridLines(canvas);
+    if (!_axisRight!.drawGridLinesBehindData)
+      _axisRendererRight!.renderGridLines(canvas);
 
     // if highlighting is enabled
     if (valuesToHighlight())
-      renderer.drawHighlighted(canvas, indicesToHighlight);
+      renderer!.drawHighlighted(canvas, indicesToHighlight);
 
     // Removes clipping rectangle
     canvas.restore();
 
-    renderer.drawExtras(canvas);
+    renderer!.drawExtras(canvas);
 
-    if (xAxis.enabled && !xAxis.drawLimitLineBehindData)
-      _xAxisRenderer.renderLimitLines(canvas);
+    if (xAxis!.enabled && !xAxis!.drawLimitLineBehindData)
+      _xAxisRenderer!.renderLimitLines(canvas);
 
-    if (_axisLeft.enabled && !_axisLeft.drawLimitLineBehindData)
-      _axisRendererLeft.renderLimitLines(canvas);
+    if (_axisLeft!.enabled && !_axisLeft!.drawLimitLineBehindData)
+      _axisRendererLeft!.renderLimitLines(canvas);
 
-    if (_axisRight.enabled && !_axisRight.drawLimitLineBehindData)
-      _axisRendererRight.renderLimitLines(canvas);
+    if (_axisRight!.enabled && !_axisRight!.drawLimitLineBehindData)
+      _axisRendererRight!.renderLimitLines(canvas);
 
-    _xAxisRenderer.renderAxisLabels(canvas);
-    _axisRendererLeft.renderAxisLabels(canvas);
-    _axisRendererRight.renderAxisLabels(canvas);
+    _xAxisRenderer!.renderAxisLabels(canvas);
+    _axisRendererLeft!.renderAxisLabels(canvas);
+    _axisRendererRight!.renderAxisLabels(canvas);
 
     if (_clipValuesToContent) {
       canvas.save();
-      canvas.clipRect(viewPortHandler.getContentRect());
+      canvas.clipRect(viewPortHandler!.getContentRect());
 
-      renderer.drawValues(canvas);
+      renderer!.drawValues(canvas);
 
       canvas.restore();
     } else {
-      renderer.drawValues(canvas);
+      renderer!.drawValues(canvas);
     }
 
-    legendRenderer.renderLegend(canvas);
+    legendRenderer!.renderLegend(canvas);
 
     drawDescription(canvas, size);
 
@@ -334,16 +334,16 @@ abstract class BarLineChartBasePainter<
   }
 
   void prepareValuePxMatrix() {
-    _rightAxisTransformer.prepareMatrixValuePx(xAxis.axisMinimum,
-        xAxis.axisRange, _axisRight.axisRange, _axisRight.axisMinimum);
+    _rightAxisTransformer!.prepareMatrixValuePx(xAxis!.axisMinimum!,
+        xAxis!.axisRange, _axisRight!.axisRange, _axisRight!.axisMinimum!);
 
-    _leftAxisTransformer.prepareMatrixValuePx(xAxis.axisMinimum,
-        xAxis.axisRange, _axisLeft.axisRange, _axisLeft.axisMinimum);
+    _leftAxisTransformer!.prepareMatrixValuePx(xAxis!.axisMinimum!,
+        xAxis!.axisRange, _axisLeft!.axisRange, _axisLeft!.axisMinimum!);
   }
 
   void prepareOffsetMatrix() {
-    _rightAxisTransformer.prepareMatrixOffset(_axisRight.inverted);
-    _leftAxisTransformer.prepareMatrixOffset(_axisLeft.inverted);
+    _rightAxisTransformer!.prepareMatrixOffset(_axisRight!.inverted);
+    _leftAxisTransformer!.prepareMatrixOffset(_axisLeft!.inverted);
   }
 
   /// Performs auto scaling of the axis by recalculating the minimum and maximum y-values based on the entries currently in view.
@@ -351,20 +351,21 @@ abstract class BarLineChartBasePainter<
     final double fromX = getLowestVisibleX();
     final double toX = getHighestVisibleX();
 
-    getData().calcMinMaxY(fromX, toX);
+    final data = getData()!;
+    data.calcMinMaxY(fromX, toX);
 
-    xAxis.calculate(getData().xMin, getData().xMax);
+    xAxis!.calculate(data.xMin, data.xMax);
 
     // calculate axis range (min / max) according to provided data
 
-    if (axisLeft.enabled) {
-      axisLeft.calculate(getData().getYMin2(AxisDependency.LEFT),
-          getData().getYMax2(AxisDependency.LEFT));
+    if (axisLeft!.enabled) {
+      axisLeft!.calculate(data.getYMin2(AxisDependency.LEFT),
+          data.getYMax2(AxisDependency.LEFT));
     }
 
-    if (axisRight.enabled) {
-      axisRight.calculate(getData().getYMin2(AxisDependency.RIGHT),
-          getData().getYMax2(AxisDependency.RIGHT));
+    if (axisRight!.enabled) {
+      axisRight!.calculate(data.getYMin2(AxisDependency.RIGHT),
+          data.getYMax2(AxisDependency.RIGHT));
     }
 
     calculateOffsets();
@@ -372,28 +373,29 @@ abstract class BarLineChartBasePainter<
 
   @override
   void calcMinMax() {
-    xAxis.calculate(getData().xMin, getData().xMax);
+    final data = getData()!;
+    xAxis!.calculate(data.xMin, data.xMax);
     // calculate axis range (min / max) according to provided data
-    _axisLeft.calculate(getData().getYMin2(AxisDependency.LEFT),
-        getData().getYMax2(AxisDependency.LEFT));
-    _axisRight.calculate(getData().getYMin2(AxisDependency.RIGHT),
-        getData().getYMax2(AxisDependency.RIGHT));
+    _axisLeft!.calculate(
+        data.getYMin2(AxisDependency.LEFT), data.getYMax2(AxisDependency.LEFT));
+    _axisRight!.calculate(data.getYMin2(AxisDependency.RIGHT),
+        data.getYMax2(AxisDependency.RIGHT));
   }
 
   Rect calculateLegendOffsets(Rect offsets) {
     offsets = Rect.fromLTRB(0.0, 0.0, 0.0, 0.0);
     // setup offsets for legend
-    if (legend != null && legend.enabled && !legend.drawInside) {
-      switch (legend.orientation) {
+    if (legend != null && legend!.enabled && !legend!.drawInside) {
+      switch (legend!.orientation) {
         case LegendOrientation.VERTICAL:
-          switch (legend.horizontalAlignment) {
+          switch (legend!.horizontalAlignment) {
             case LegendHorizontalAlignment.LEFT:
               offsets = Rect.fromLTRB(
                   min(
-                          legend.neededWidth,
-                          viewPortHandler.getChartWidth() *
-                              legend.maxSizePercent) +
-                      legend.xOffset,
+                          legend!.neededWidth,
+                          viewPortHandler!.getChartWidth() *
+                              legend!.maxSizePercent) +
+                      legend!.xOffset!,
                   0.0,
                   0.0,
                   0.0);
@@ -404,23 +406,23 @@ abstract class BarLineChartBasePainter<
                   0.0,
                   0.0,
                   min(
-                          legend.neededWidth,
-                          viewPortHandler.getChartWidth() *
-                              legend.maxSizePercent) +
-                      legend.xOffset,
+                          legend!.neededWidth,
+                          viewPortHandler!.getChartWidth() *
+                              legend!.maxSizePercent) +
+                      legend!.xOffset!,
                   0.0);
               break;
 
             case LegendHorizontalAlignment.CENTER:
-              switch (legend.verticalAlignment) {
+              switch (legend!.verticalAlignment) {
                 case LegendVerticalAlignment.TOP:
                   offsets = Rect.fromLTRB(
                       0.0,
                       min(
-                              legend.neededHeight,
-                              viewPortHandler.getChartHeight() *
-                                  legend.maxSizePercent) +
-                          legend.yOffset,
+                              legend!.neededHeight,
+                              viewPortHandler!.getChartHeight() *
+                                  legend!.maxSizePercent) +
+                          legend!.yOffset!,
                       0.0,
                       0.0);
                   break;
@@ -431,10 +433,10 @@ abstract class BarLineChartBasePainter<
                       0.0,
                       0.0,
                       min(
-                              legend.neededHeight,
-                              viewPortHandler.getChartHeight() *
-                                  legend.maxSizePercent) +
-                          legend.yOffset);
+                              legend!.neededHeight,
+                              viewPortHandler!.getChartHeight() *
+                                  legend!.maxSizePercent) +
+                          legend!.yOffset!);
                   break;
 
                 default:
@@ -445,15 +447,15 @@ abstract class BarLineChartBasePainter<
           break;
 
         case LegendOrientation.HORIZONTAL:
-          switch (legend.verticalAlignment) {
+          switch (legend!.verticalAlignment) {
             case LegendVerticalAlignment.TOP:
               offsets = Rect.fromLTRB(
                   0.0,
                   min(
-                          legend.neededHeight,
-                          viewPortHandler.getChartHeight() *
-                              legend.maxSizePercent) +
-                      legend.yOffset,
+                          legend!.neededHeight,
+                          viewPortHandler!.getChartHeight() *
+                              legend!.maxSizePercent) +
+                      legend!.yOffset!,
                   0.0,
                   0.0);
               break;
@@ -464,10 +466,10 @@ abstract class BarLineChartBasePainter<
                   0.0,
                   0.0,
                   min(
-                          legend.neededHeight,
-                          viewPortHandler.getChartHeight() *
-                              legend.maxSizePercent) +
-                      legend.yOffset);
+                          legend!.neededHeight,
+                          viewPortHandler!.getChartHeight() *
+                              legend!.maxSizePercent) +
+                      legend!.yOffset!);
               break;
 
             default:
@@ -484,24 +486,25 @@ abstract class BarLineChartBasePainter<
       autoScale();
     }
 
-    if (_axisLeft.enabled) {
-      _axisRendererLeft.computeAxis(
-          _axisLeft.axisMinimum, _axisLeft.axisMaximum, _axisLeft.inverted);
+    if (_axisLeft!.enabled) {
+      _axisRendererLeft!.computeAxis(
+          _axisLeft!.axisMinimum, _axisLeft!.axisMaximum, _axisLeft!.inverted);
     }
 
-    if (_axisRight.enabled) {
-      _axisRendererRight.computeAxis(
-          _axisRight.axisMinimum, _axisRight.axisMaximum, _axisRight.inverted);
+    if (_axisRight!.enabled) {
+      _axisRendererRight!.computeAxis(_axisRight!.axisMinimum,
+          _axisRight!.axisMaximum, _axisRight!.inverted);
     }
 
-    if (xAxis.enabled) {
-      _xAxisRenderer.computeAxis(xAxis.axisMinimum, xAxis.axisMaximum, false);
+    if (xAxis!.enabled) {
+      _xAxisRenderer!
+          .computeAxis(xAxis!.axisMinimum, xAxis!.axisMaximum, false);
     }
   }
 
   @override
   void calculateOffsets() {
-    if (legend != null) legendRenderer.computeLegend(getData());
+    if (legend != null) legendRenderer!.computeLegend(getData());
     renderer?.initBuffers();
     calcMinMax();
 
@@ -516,27 +519,27 @@ abstract class BarLineChartBasePainter<
       offsetBottom += _offsetsBuffer.bottom;
 
       // offsets for y-labels
-      if (_axisLeft.needsOffset()) {
+      if (_axisLeft!.needsOffset()) {
         offsetLeft +=
-            _axisLeft.getRequiredWidthSpace(_axisRendererLeft.axisLabelPaint);
+            _axisLeft!.getRequiredWidthSpace(_axisRendererLeft!.axisLabelPaint);
       }
 
-      if (_axisRight.needsOffset()) {
-        offsetRight +=
-            _axisRight.getRequiredWidthSpace(_axisRendererRight.axisLabelPaint);
+      if (_axisRight!.needsOffset()) {
+        offsetRight += _axisRight!
+            .getRequiredWidthSpace(_axisRendererRight!.axisLabelPaint);
       }
 
-      if (xAxis.enabled && xAxis.drawLabels) {
-        double xLabelHeight = xAxis.labelRotatedHeight +
-            xAxis.yOffset +
-            xAxis.getRequiredHeightSpace(_xAxisRenderer.axisLabelPaint);
+      if (xAxis!.enabled && xAxis!.drawLabels) {
+        double xLabelHeight = xAxis!.labelRotatedHeight +
+            xAxis!.yOffset! +
+            xAxis!.getRequiredHeightSpace(_xAxisRenderer!.axisLabelPaint);
 
         // offsets for x-labels
-        if (xAxis.position == XAxisPosition.BOTTOM) {
+        if (xAxis!.position == XAxisPosition.BOTTOM) {
           offsetBottom += xLabelHeight;
-        } else if (xAxis.position == XAxisPosition.TOP) {
+        } else if (xAxis!.position == XAxisPosition.TOP) {
           offsetTop += xLabelHeight;
-        } else if (xAxis.position == XAxisPosition.BOTH_SIDED) {
+        } else if (xAxis!.position == XAxisPosition.BOTH_SIDED) {
           offsetBottom += xLabelHeight;
           offsetTop += xLabelHeight;
         }
@@ -547,9 +550,9 @@ abstract class BarLineChartBasePainter<
       offsetBottom += extraBottomOffset;
       offsetLeft += extraLeftOffset;
 
-      double minOffset = Utils.convertDpToPixel(_minOffset);
+      double minOffset = Utils.convertDpToPixel(_minOffset)!;
 
-      viewPortHandler.restrainViewPort(
+      viewPortHandler!.restrainViewPort(
           max(minOffset, offsetLeft),
           max(minOffset, offsetTop),
           max(minOffset, offsetRight),
@@ -564,11 +567,11 @@ abstract class BarLineChartBasePainter<
   void drawGridBackground(Canvas c) {
     if (_drawGridBackground) {
       // draw the grid background
-      c.drawRect(viewPortHandler.getContentRect(), _gridBackgroundPaint);
+      c.drawRect(viewPortHandler!.getContentRect(), _gridBackgroundPaint!);
     }
 
     if (_drawBorders) {
-      c.drawRect(viewPortHandler.getContentRect(), _borderPaint);
+      c.drawRect(viewPortHandler!.getContentRect(), _borderPaint!);
     }
   }
 
@@ -577,7 +580,7 @@ abstract class BarLineChartBasePainter<
   /// backwards.
   ///
   /// @return
-  Transformer getTransformer(AxisDependency which) {
+  Transformer? getTransformer(AxisDependency which) {
     if (which == AxisDependency.LEFT)
       return _leftAxisTransformer;
     else
@@ -591,7 +594,7 @@ abstract class BarLineChartBasePainter<
   /// @param scaleY if < 1f --> zoom out, if > 1f --> zoom in
   /// @param x
   /// @param y
-  void zoom(double scaleX, double scaleY, double x, double y) {
+  void zoom(double scaleX, double scaleY, double? x, double? y) {
     if (scaleX.isInfinite ||
         scaleX.isNaN ||
         scaleY.isInfinite ||
@@ -599,19 +602,19 @@ abstract class BarLineChartBasePainter<
       return;
     }
 
-    viewPortHandler.zoom4(scaleX, scaleY, x, -y, _zoomMatrixBuffer);
-    viewPortHandler.refresh(_zoomMatrixBuffer);
+    viewPortHandler!.zoom4(scaleX, scaleY, x!, -y!, _zoomMatrixBuffer!);
+    viewPortHandler!.refresh(_zoomMatrixBuffer!);
     if (_chartTransListener != null) {
-      _chartTransListener.scale(scaleX, scaleY, x, y);
+      _chartTransListener!.scale(scaleX, scaleY, x, y);
     }
   }
 
   void translate(double dx, double dy) {
-    Matrix4Utils.postTranslate(viewPortHandler.matrixTouch, dx, dy);
-    viewPortHandler.limitTransAndScale(
-        viewPortHandler.matrixTouch, viewPortHandler.contentRect);
+    Matrix4Utils.postTranslate(viewPortHandler!.matrixTouch, dx, dy);
+    viewPortHandler!.limitTransAndScale(
+        viewPortHandler!.matrixTouch, viewPortHandler!.contentRect);
     if (_chartTransListener != null) {
-      _chartTransListener.translate(dx, dy);
+      _chartTransListener!.translate(dx, dy);
     }
   }
 
@@ -622,7 +625,7 @@ abstract class BarLineChartBasePainter<
   /// @param axis      the axis for which this limit should apply
   void setVisibleYRangeMaximum(double maxYRange, AxisDependency axis) {
     double yScale = getAxisRange(axis) / maxYRange;
-    viewPortHandler.setMinimumScaleY(yScale);
+    viewPortHandler!.setMinimumScaleY(yScale);
   }
 
   /// Sets the size of the area (range on the y-axis) that should be minimum visible at once, no further zooming in possible.
@@ -631,7 +634,7 @@ abstract class BarLineChartBasePainter<
   /// @param axis      the axis for which this limit should apply
   void setVisibleYRangeMinimum(double minYRange, AxisDependency axis) {
     double yScale = getAxisRange(axis) / minYRange;
-    viewPortHandler.setMaximumScaleY(yScale);
+    viewPortHandler!.setMaximumScaleY(yScale);
   }
 
   /// Limits the maximum and minimum y range that can be visible by pinching and zooming.
@@ -641,9 +644,10 @@ abstract class BarLineChartBasePainter<
   /// @param axis
   void setVisibleYRange(
       double minYRange, double maxYRange, AxisDependency axis) {
-    double minScale = getAxisRange(axis) / minYRange;
-    double maxScale = getAxisRange(axis) / maxYRange;
-    viewPortHandler.setMinMaxScaleY(minScale, maxScale);
+    final axisRange = getAxisRange(axis);
+    double minScale = axisRange / minYRange;
+    double maxScale = axisRange / maxYRange;
+    viewPortHandler!.setMinMaxScaleY(minScale, maxScale);
   }
 
   /**
@@ -657,12 +661,12 @@ abstract class BarLineChartBasePainter<
   /// @return
   double getAxisRange(AxisDependency axis) {
     if (axis == AxisDependency.LEFT)
-      return _axisLeft.axisRange;
+      return _axisLeft!.axisRange;
     else
-      return _axisRight.axisRange;
+      return _axisRight!.axisRange;
   }
 
-  List<double> mGetPositionBuffer = List(2);
+  List<double?> mGetPositionBuffer = []..length = 2;
 
   /// Returns a recyclable MPPointF instance.
   /// Returns the position (in pixels) the provided Entry has inside the chart
@@ -670,13 +674,11 @@ abstract class BarLineChartBasePainter<
   ///
   /// @param e
   /// @return
-  MPPointF getPosition(Entry e, AxisDependency axis) {
-    if (e == null) return null;
-
+  MPPointF? getPosition(Entry e, AxisDependency axis) {
     mGetPositionBuffer[0] = e.x;
     mGetPositionBuffer[1] = e.y;
 
-    getTransformer(axis).pointValuesToPixel(mGetPositionBuffer);
+    getTransformer(axis)!.pointValuesToPixel(mGetPositionBuffer);
 
     return MPPointF.getInstance1(mGetPositionBuffer[0], mGetPositionBuffer[1]);
   }
@@ -686,21 +688,21 @@ abstract class BarLineChartBasePainter<
   ///
   /// @param color
   void setGridBackgroundColor(Color color) {
-    _gridBackgroundPaint..color = color;
+    _gridBackgroundPaint!..color = color;
   }
 
   /// Sets the width of the border lines in dp.
   ///
   /// @param width
   void setBorderWidth(double width) {
-    _borderPaint..strokeWidth = Utils.convertDpToPixel(width);
+    _borderPaint!..strokeWidth = Utils.convertDpToPixel(width)!;
   }
 
   /// Sets the color of the chart border lines.
   ///
   /// @param color
   void setBorderColor(Color color) {
-    _borderPaint..color = color;
+    _borderPaint!..color = color;
   }
 
   /// Returns a recyclable MPPointD instance
@@ -720,7 +722,7 @@ abstract class BarLineChartBasePainter<
 
   void getValuesByTouchPoint2(
       double x, double y, AxisDependency axis, MPPointD outputPoint) {
-    getTransformer(axis).getValuesByTouchPoint2(x, y, outputPoint);
+    getTransformer(axis)!.getValuesByTouchPoint2(x, y, outputPoint);
   }
 
   /// Returns a recyclable MPPointD instance
@@ -731,7 +733,7 @@ abstract class BarLineChartBasePainter<
   /// @param y
   /// @return
   MPPointD getPixelForValues(double x, double y, AxisDependency axis) {
-    return getTransformer(axis).getPixelForValues(x, y);
+    return getTransformer(axis)!.getPixelForValues(x, y);
   }
 
   /// returns the Entry object displayed at the touched position of the chart
@@ -739,10 +741,10 @@ abstract class BarLineChartBasePainter<
   /// @param x
   /// @param y
   /// @return
-  Entry getEntryByTouchPoint(double x, double y) {
-    Highlight h = getHighlightByTouchPoint(x, y);
+  Entry? getEntryByTouchPoint(double x, double y) {
+    Highlight? h = getHighlightByTouchPoint(x, y);
     if (h != null) {
-      return getData().getEntryForHighlight(h);
+      return getData()!.getEntryForHighlight(h);
     }
     return null;
   }
@@ -752,11 +754,11 @@ abstract class BarLineChartBasePainter<
   /// @param x
   /// @param y
   /// @return
-  IBarLineScatterCandleBubbleDataSet getDataSetByTouchPoint(
+  IBarLineScatterCandleBubbleDataSet? getDataSetByTouchPoint(
       double x, double y) {
-    Highlight h = getHighlightByTouchPoint(x, y);
+    Highlight? h = getHighlightByTouchPoint(x, y);
     if (h != null) {
-      return getData().getDataSetByIndex(h.dataSetIndex);
+      return getData()!.getDataSetByIndex(h.dataSetIndex);
     }
     return null;
   }
@@ -770,11 +772,11 @@ abstract class BarLineChartBasePainter<
   /// @return
   @override
   double getLowestVisibleX() {
-    getTransformer(AxisDependency.LEFT).getValuesByTouchPoint2(
-        viewPortHandler.contentLeft(),
-        viewPortHandler.contentBottom(),
+    getTransformer(AxisDependency.LEFT)!.getValuesByTouchPoint2(
+        viewPortHandler!.contentLeft(),
+        viewPortHandler!.contentBottom(),
         posForGetLowestVisibleX);
-    double result = max(xAxis.axisMinimum, posForGetLowestVisibleX.x);
+    double result = max(xAxis!.axisMinimum!, posForGetLowestVisibleX.x!);
     return result;
   }
 
@@ -787,11 +789,11 @@ abstract class BarLineChartBasePainter<
   /// @return
   @override
   double getHighestVisibleX() {
-    getTransformer(AxisDependency.LEFT).getValuesByTouchPoint2(
-        viewPortHandler.contentRight(),
-        viewPortHandler.contentBottom(),
+    getTransformer(AxisDependency.LEFT)!.getValuesByTouchPoint2(
+        viewPortHandler!.contentRight(),
+        viewPortHandler!.contentBottom(),
         posForGetHighestVisibleX);
-    double result = min(xAxis.axisMaximum, posForGetHighestVisibleX.x);
+    double result = min(xAxis!.axisMaximum!, posForGetHighestVisibleX.x!);
     return result;
   }
 
@@ -807,7 +809,7 @@ abstract class BarLineChartBasePainter<
     if (viewPortHandler == null)
       return 1;
     else
-      return viewPortHandler.getScaleX();
+      return viewPortHandler!.getScaleX();
   }
 
   /// returns the current y-scale factor
@@ -815,14 +817,14 @@ abstract class BarLineChartBasePainter<
     if (viewPortHandler == null)
       return 1;
     else
-      return viewPortHandler.getScaleY();
+      return viewPortHandler!.getScaleY();
   }
 
   /// if the chart is fully zoomed out, return true
   ///
   /// @return
   bool isFullyZoomedOut() {
-    return viewPortHandler.isFullyZoomedOut();
+    return viewPortHandler!.isFullyZoomedOut();
   }
 
   /// Returns the y-axis object to the corresponding AxisDependency. In the
@@ -830,7 +832,7 @@ abstract class BarLineChartBasePainter<
   ///
   /// @param axis
   /// @return
-  YAxis getAxis(AxisDependency axis) {
+  YAxis? getAxis(AxisDependency axis) {
     if (axis == AxisDependency.LEFT)
       return _axisLeft;
     else
@@ -839,7 +841,7 @@ abstract class BarLineChartBasePainter<
 
   @override
   bool isInverted(AxisDependency axis) {
-    return getAxis(axis).inverted;
+    return getAxis(axis)!.inverted;
   }
 
   /// Set an offset in dp that allows the user to drag the chart over it's
@@ -847,7 +849,7 @@ abstract class BarLineChartBasePainter<
   ///
   /// @param offset
   void setDragOffsetX(double offset) {
-    viewPortHandler.setDragOffsetX(offset);
+    viewPortHandler!.setDragOffsetX(offset);
   }
 
   /// Set an offset in dp that allows the user to drag the chart over it's
@@ -855,24 +857,24 @@ abstract class BarLineChartBasePainter<
   ///
   /// @param offset
   void setDragOffsetY(double offset) {
-    viewPortHandler.setDragOffsetY(offset);
+    viewPortHandler!.setDragOffsetY(offset);
   }
 
   /// Returns true if both drag offsets (x and y) are zero or smaller.
   ///
   /// @return
   bool hasNoDragOffset() {
-    return viewPortHandler.hasNoDragOffset();
+    return viewPortHandler!.hasNoDragOffset();
   }
 
   @override
   double getYChartMax() {
-    return max(_axisLeft.axisMaximum, _axisRight.axisMaximum);
+    return max(_axisLeft!.axisMaximum!, _axisRight!.axisMaximum!);
   }
 
   @override
   double getYChartMin() {
-    return min(_axisLeft.axisMinimum, _axisRight.axisMinimum);
+    return min(_axisLeft!.axisMinimum!, _axisRight!.axisMinimum!);
   }
 
   @override
@@ -881,38 +883,39 @@ abstract class BarLineChartBasePainter<
   }
 
   @override
-  BarLineScatterCandleBubbleData getData() {
-    return super.getData();
+  BarLineScatterCandleBubbleData? getData() {
+    return super.getData() as BarLineScatterCandleBubbleData<
+        IBarLineScatterCandleBubbleDataSet<Entry?>>?;
   }
 
   /// Returns true if either the left or the right or both axes are inverted.
   ///
   /// @return
   bool isAnyAxisInverted() {
-    if (_axisLeft.inverted) return true;
-    if (_axisRight.inverted) return true;
+    if (_axisLeft!.inverted) return true;
+    if (_axisRight!.inverted) return true;
     return false;
   }
 
-  bool updateEntry(int index, Entry entry, int dataSetIndex){
-    var dataSet = getData().getDataSetByIndex(dataSetIndex);
-    if(dataSet == null) {
+  bool updateEntry(int index, Entry entry, int dataSetIndex) {
+    final dataSet = getData()!.getDataSetByIndex(dataSetIndex);
+    if (dataSet == null) {
       return false;
     }
 
     return dataSet.updateEntryByIndex(index, entry);
   }
 
-  void addEntryByIndex(int index, Entry entry, int dataSetIndex){
-    var dataSet = getData().getDataSetByIndex(dataSetIndex);
-    if(dataSet != null){
+  void addEntryByIndex(int index, Entry entry, int dataSetIndex) {
+    final dataSet = getData()!.getDataSetByIndex(dataSetIndex);
+    if (dataSet != null) {
       dataSet.addEntryByIndex(index, entry);
     }
   }
 
-  void addEntry(Entry entry, int dataSetIndex){
-    var dataSet = getData().getDataSetByIndex(dataSetIndex);
-    if(dataSet != null) {
+  void addEntry(Entry entry, int dataSetIndex) {
+    final dataSet = getData()!.getDataSetByIndex(dataSetIndex);
+    if (dataSet != null) {
       addEntryByIndex(dataSet.getEntryCount(), entry, dataSetIndex);
     }
   }

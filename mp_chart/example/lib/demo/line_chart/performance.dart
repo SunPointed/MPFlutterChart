@@ -20,7 +20,7 @@ class LineChartPerformance extends StatefulWidget {
 
 class LineChartPerformanceState
     extends SimpleActionState<LineChartPerformance> {
-  LineChartController _controller;
+  late LineChartController _controller;
   var random = Random(1);
   double _range = 100.0;
   int _count = 0;
@@ -94,16 +94,16 @@ class LineChartPerformanceState
     var desc = Description()..enabled = false;
     _controller = LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft.drawGridLines = (false);
+          axisLeft!.drawGridLines = (false);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight.enabled = (false);
+          axisRight!.enabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend.enabled = (false);
+          legend!.enabled = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..drawGridLines = (true)
             ..drawAxisLine = (false);
         },
@@ -117,7 +117,7 @@ class LineChartPerformanceState
   }
 
   void _initLineData(double range) {
-    List<Entry> values = List();
+    List<Entry> values = [];
 
     _count = (range + 1000).toInt();
 
@@ -137,7 +137,7 @@ class LineChartPerformanceState
     set1.setDrawFilled(false);
 
     // create a data object with the data sets
-    _controller.data = LineData.fromList(List()..add(set1));
+    _controller.data = LineData.fromList(<LineDataSet>[]..add(set1));
 
     setState(() {});
   }

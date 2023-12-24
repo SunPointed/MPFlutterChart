@@ -14,15 +14,15 @@ import 'package:mp_chart/mp/painter/radar_chart_painter.dart';
 class RadarChartController extends PieRadarController<RadarChartPainter> {
   double webLineWidth;
   double innerWebLineWidth;
-  Color webColor;
-  Color webColorInner;
+  Color? webColor;
+  Color? webColorInner;
   int webAlpha;
   bool drawWeb;
   int skipWebLineCount;
-  YAxis yAxis;
-  Color backgroundColor;
+  YAxis? yAxis;
+  Color? backgroundColor;
 
-  YAxisSettingFunction yAxisSettingFunction;
+  YAxisSettingFunction? yAxisSettingFunction;
 
   RadarChartController({
     this.webLineWidth = 1.5,
@@ -35,12 +35,12 @@ class RadarChartController extends PieRadarController<RadarChartPainter> {
     this.yAxis,
     this.backgroundColor,
     this.yAxisSettingFunction,
-    IMarker marker,
-    Description description,
-    XAxisSettingFunction xAxisSettingFunction,
-    LegendSettingFunction legendSettingFunction,
-    DataRendererSettingFunction rendererSettingFunction,
-    OnChartValueSelectedListener selectionListener,
+    IMarker? marker,
+    Description? description,
+    XAxisSettingFunction? xAxisSettingFunction,
+    LegendSettingFunction? legendSettingFunction,
+    DataRendererSettingFunction? rendererSettingFunction,
+    OnChartValueSelectedListener? selectionListener,
     double rotationAngle = 270,
     double rawRotationAngle = 270,
     bool rotateEnabled = true,
@@ -57,9 +57,9 @@ class RadarChartController extends PieRadarController<RadarChartPainter> {
     bool resolveGestureVerticalConflict = false,
     double descTextSize = 12,
     double infoTextSize = 12,
-    Color descTextColor,
-    Color infoTextColor,
-    Color infoBgColor,
+    Color? descTextColor,
+    Color? infoTextColor,
+    Color? infoBgColor,
   }) : super(
             marker: marker,
             noDataText: noDataText,
@@ -92,11 +92,11 @@ class RadarChartController extends PieRadarController<RadarChartPainter> {
 
   YAxis initYAxis() => YAxis(position: AxisDependency.LEFT);
 
-  RadarData get data => super.data;
+  RadarData? get data => super.data as RadarData?;
 
-  RadarChartPainter get painter => super.painter;
+  RadarChartPainter? get painter => super.painter;
 
-  RadarChartState get state => super.state;
+  RadarChartState? get state => super.state as RadarChartState?;
 
   @override
   void initialPainter() {
@@ -143,7 +143,7 @@ class RadarChartController extends PieRadarController<RadarChartPainter> {
     webColorInner ??= Color.fromARGB(255, 122, 122, 122);
     yAxis = initYAxis();
     if (yAxisSettingFunction != null) {
-      yAxisSettingFunction(yAxis, this);
+      yAxisSettingFunction!(yAxis, this);
     }
   }
 

@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/painting.dart';
 import 'package:mp_chart/mp/core/entry/entry.dart';
@@ -11,18 +10,18 @@ import 'package:mp_chart/mp/core/utils/utils.dart';
 import 'package:mp_chart/mp/core/value_formatter/default_value_formatter.dart';
 
 class LineChartMarker implements IMarker {
-  Entry _entry;
+  late Entry _entry;
   // ignore: unused_field
-  Highlight _highlight;
+  Highlight? _highlight;
   double _dx = 0.0;
   double _dy = 0.0;
 
-  DefaultValueFormatter _formatter;
-  Color _textColor;
-  Color _backColor;
-  double _fontSize;
+  late DefaultValueFormatter _formatter;
+  Color? _textColor;
+  Color? _backColor;
+  double? _fontSize;
 
-  LineChartMarker({Color textColor, Color backColor, double fontSize})
+  LineChartMarker({Color? textColor, Color? backColor, double? fontSize})
       : _textColor = textColor,
         _backColor = backColor,
         _fontSize = fontSize {
@@ -35,14 +34,14 @@ class LineChartMarker implements IMarker {
   }
 
   @override
-  void draw(Canvas canvas, double posX, double posY) {
+  void draw(Canvas canvas, double? posX, double? posY) {
     TextPainter painter = PainterUtils.create(
         null,
         "${_formatter.getFormattedValue1(_entry.x)},${_formatter.getFormattedValue1(_entry.y)}",
         _textColor,
         _fontSize);
     Paint paint = Paint()
-      ..color = _backColor
+      ..color = _backColor!
       ..strokeWidth = 2
       ..isAntiAlias = true
       ..style = PaintingStyle.fill;
@@ -54,7 +53,7 @@ class LineChartMarker implements IMarker {
 //    canvas.translate(posX + offset.x, posY + offset.y);
     painter.layout();
     Offset pos = calculatePos(
-        posX + offset.x, posY + offset.y, painter.width, painter.height);
+        posX! + offset.x!, posY! + offset.y!, painter.width, painter.height);
     canvas.drawRRect(
         RRect.fromLTRBR(pos.dx - 5, pos.dy - 5, pos.dx + painter.width + 5,
             pos.dy + painter.height + 5, Radius.circular(5)),
@@ -73,7 +72,7 @@ class LineChartMarker implements IMarker {
   }
 
   @override
-  MPPointF getOffsetForDrawingAtPoint(double posX, double posY) {
+  MPPointF getOffsetForDrawingAtPoint(double? posX, double? posY) {
     return getOffset();
   }
 

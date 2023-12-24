@@ -5,8 +5,8 @@ import 'package:mp_chart/mp/core/data_set/base_data_set.dart';
 import 'package:mp_chart/mp/core/data_set/data_set.dart';
 import 'package:mp_chart/mp/core/entry/entry.dart';
 
-abstract class BarLineScatterCandleBubbleDataSet<T extends Entry>
-    extends DataSet<T> implements IBarLineScatterCandleBubbleDataSet<T> {
+abstract class BarLineScatterCandleBubbleDataSet<T extends Entry?>
+    extends DataSet<T> implements IBarLineScatterCandleBubbleDataSet<T?> {
   Color _highLightColor = Color.fromARGB(255, 255, 187, 115);
 
   BarLineScatterCandleBubbleDataSet(List<T> yVals, String label)

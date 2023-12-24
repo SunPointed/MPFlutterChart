@@ -20,7 +20,7 @@ class CombinedChartController
   bool highlightFullBarEnabled;
   bool drawBarShadow;
   bool fitBars;
-  List<DrawOrder> drawOrder;
+  List<DrawOrder>? drawOrder;
 
   CombinedChartController(
       {this.drawValueAboveBar = false,
@@ -40,34 +40,34 @@ class CombinedChartController
       bool drawBorders = false,
       bool clipValuesToContent = false,
       double minOffset = 30.0,
-      OnDrawListener drawListener,
-      YAxis axisLeft,
-      YAxis axisRight,
-      YAxisRenderer axisRendererLeft,
-      YAxisRenderer axisRendererRight,
-      Transformer leftAxisTransformer,
-      Transformer rightAxisTransformer,
-      XAxisRenderer xAxisRenderer,
+      OnDrawListener? drawListener,
+      YAxis? axisLeft,
+      YAxis? axisRight,
+      YAxisRenderer? axisRendererLeft,
+      YAxisRenderer? axisRendererRight,
+      Transformer? leftAxisTransformer,
+      Transformer? rightAxisTransformer,
+      XAxisRenderer? xAxisRenderer,
       bool customViewPortEnabled = false,
-      Matrix4 zoomMatrixBuffer,
+      Matrix4? zoomMatrixBuffer,
       bool pinchZoomEnabled = true,
       bool keepPositionOnRotation = false,
-      Paint gridBackgroundPaint,
-      Paint borderPaint,
-      Color backgroundColor,
-      Color gridBackColor,
-      Color borderColor,
+      Paint? gridBackgroundPaint,
+      Paint? borderPaint,
+      Color? backgroundColor,
+      Color? gridBackColor,
+      Color? borderColor,
       double borderStrokeWidth = 1.0,
-      AxisLeftSettingFunction axisLeftSettingFunction,
-      AxisRightSettingFunction axisRightSettingFunction,
-      OnTouchEventListener touchEventListener,
-      IMarker marker,
-      Description description,
+      AxisLeftSettingFunction? axisLeftSettingFunction,
+      AxisRightSettingFunction? axisRightSettingFunction,
+      OnTouchEventListener? touchEventListener,
+      IMarker? marker,
+      Description? description,
       String noDataText = "No chart data available.",
-      XAxisSettingFunction xAxisSettingFunction,
-      LegendSettingFunction legendSettingFunction,
-      DataRendererSettingFunction rendererSettingFunction,
-      OnChartValueSelectedListener selectionListener,
+      XAxisSettingFunction? xAxisSettingFunction,
+      LegendSettingFunction? legendSettingFunction,
+      DataRendererSettingFunction? rendererSettingFunction,
+      OnChartValueSelectedListener? selectionListener,
       double maxHighlightDistance = 100.0,
       bool highLightPerTapEnabled = true,
       double extraTopOffset = 0.0,
@@ -79,10 +79,10 @@ class CombinedChartController
       bool resolveGestureVerticalConflict = false,
       double descTextSize = 12,
       double infoTextSize = 12,
-      Color descTextColor,
-      Color infoTextColor,
-      Color infoBgColor,
-      ChartTransListener chartTransListener})
+      Color? descTextColor,
+      Color? infoTextColor,
+      Color? infoBgColor,
+      ChartTransListener? chartTransListener})
       : super(
             marker: marker,
             description: description,
@@ -140,11 +140,11 @@ class CombinedChartController
             touchEventListener: touchEventListener,
             chartTransListener: chartTransListener);
 
-  CombinedData get data => super.data;
+  CombinedData? get data => super.data as CombinedData?;
 
-  CombinedChartPainter get painter => super.painter;
+  CombinedChartPainter? get painter => super.painter;
 
-  CombinedChartState get state => super.state;
+  CombinedChartState? get state => super.state as CombinedChartState?;
 
   @override
   void initialPainter() {

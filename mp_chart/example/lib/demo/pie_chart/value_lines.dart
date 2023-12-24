@@ -132,7 +132,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
   }
 
   // ignore: non_constant_identifier_names
-  final List<String> PARTIES = List()
+  final List<String> PARTIES = []
     ..add("Party A")
     ..add("Party B")
     ..add("Party C")
@@ -164,8 +164,8 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
     var desc = Description()..enabled = false;
     controller = PieChartController(
         legendSettingFunction: (legend, controller) {
-          _formatter.setPieChartPainter(controller);
-          legend
+          _formatter.setPieChartPainter(controller as PieChartController);
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
             ..orientation = (LegendOrientation.VERTICAL)
@@ -199,7 +199,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
 
   void _initPieData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
-    List<PieEntry> entries = List();
+    List<PieEntry> entries = [];
 
     // NOTE: The order of the entries when being added to the entries array determines their position around the center of
     // the chart.
@@ -217,7 +217,7 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
     dataSet.setSelectionShift(5);
 
     // add a lot of colors
-    List<Color> colors = List();
+    List<Color> colors = [];
     for (Color c in ColorUtils.VORDIPLOM_COLORS) colors.add(c);
     for (Color c in ColorUtils.JOYFUL_COLORS) colors.add(c);
     for (Color c in ColorUtils.COLORFUL_COLORS) colors.add(c);
@@ -244,9 +244,9 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
 
   Widget _initPieChart() {
     var pieChart = PieChart(controller);
-    controller.animator
+    controller.animator!
       ..reset()
-      ..animateY2(1400, Easing.EaseInOutQuad);
+      ..animateY2(1400, MpEasing.EaseInOutQuad);
     return pieChart;
   }
 
@@ -254,5 +254,5 @@ class PieChartValueLinesState extends PieActionState<PieChartValueLines>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {}
+  void onValueSelected(Entry? e, Highlight? h) {}
 }

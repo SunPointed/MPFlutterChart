@@ -8,39 +8,39 @@ import 'package:mp_chart/mp/core/enums/rounding.dart';
 
 class XBounds {
   /// minimum visible entry index
-  int _min;
+  int? _min;
 
   /// maximum visible entry index
-  int _max;
+  int? _max;
 
   /// range of visible entry indices
-  int _range;
+  int? _range;
 
-  Animator _animator;
+  Animator? _animator;
 
   XBounds(this._animator);
 
   // ignore: unnecessary_getters_setters
-  int get range => _range;
+  int? get range => _range;
 
   // ignore: unnecessary_getters_setters
-  set range(int value) {
+  set range(int? value) {
     _range = value;
   }
 
   // ignore: unnecessary_getters_setters
-  int get max => _max;
+  int? get max => _max;
 
   // ignore: unnecessary_getters_setters
-  set max(int value) {
+  set max(int? value) {
     _max = value;
   }
 
   // ignore: unnecessary_getters_setters
-  int get min => _min;
+  int? get min => _min;
 
   // ignore: unnecessary_getters_setters
-  set min(int value) {
+  set min(int? value) {
     _min = value;
   }
 
@@ -50,23 +50,23 @@ class XBounds {
   /// @param dataSet
   void set(BarLineScatterCandleBubbleDataProvider chart,
       IBarLineScatterCandleBubbleDataSet dataSet) {
-    double phaseX = math.max(0.0, math.min(1.0, _animator.getPhaseX()));
+    double phaseX = math.max(0.0, math.min(1.0, _animator!.getPhaseX()));
 
     double low = chart.getLowestVisibleX();
     double high = chart.getHighestVisibleX();
-    Entry entryFrom =
+    Entry? entryFrom =
         dataSet.getEntryForXValue1(low, double.nan, Rounding.DOWN);
-    Entry entryTo = dataSet.getEntryForXValue1(high, double.nan, Rounding.UP);
+    Entry? entryTo = dataSet.getEntryForXValue1(high, double.nan, Rounding.UP);
 
     _min = entryFrom == null ? 0 : dataSet.getEntryIndex2(entryFrom);
     _max = entryTo == null ? 0 : dataSet.getEntryIndex2(entryTo);
 
-    if (_min > _max) {
+    if (_min! > _max!) {
       var t = _min;
       _min = _max;
       _max = t;
     }
 
-    _range = ((_max - _min) * phaseX).toInt();
+    _range = ((_max! - _min!) * phaseX).toInt();
   }
 }

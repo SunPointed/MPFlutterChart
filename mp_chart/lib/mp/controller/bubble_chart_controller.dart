@@ -1,4 +1,3 @@
-import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mp_chart/mp/chart/bubble_chart.dart';
 import 'package:mp_chart/mp/controller/bar_line_scatter_candle_bubble_controller.dart';
@@ -30,35 +29,35 @@ class BubbleChartController
     bool drawBorders = false,
     bool clipValuesToContent = false,
     double minOffset = 30.0,
-    OnDrawListener drawListener,
-    YAxis axisLeft,
-    YAxis axisRight,
-    YAxisRenderer axisRendererLeft,
-    YAxisRenderer axisRendererRight,
-    Transformer leftAxisTransformer,
-    Transformer rightAxisTransformer,
-    XAxisRenderer xAxisRenderer,
+    OnDrawListener? drawListener,
+    YAxis? axisLeft,
+    YAxis? axisRight,
+    YAxisRenderer? axisRendererLeft,
+    YAxisRenderer? axisRendererRight,
+    Transformer? leftAxisTransformer,
+    Transformer? rightAxisTransformer,
+    XAxisRenderer? xAxisRenderer,
     bool customViewPortEnabled = false,
-    Matrix4 zoomMatrixBuffer,
+    Matrix4? zoomMatrixBuffer,
     bool pinchZoomEnabled = true,
     bool keepPositionOnRotation = false,
-    Paint gridBackgroundPaint,
-    Paint borderPaint,
-    Color backgroundColor,
-    Color gridBackColor,
-    Color borderColor,
+    Paint? gridBackgroundPaint,
+    Paint? borderPaint,
+    Color? backgroundColor,
+    Color? gridBackColor,
+    Color? borderColor,
     double borderStrokeWidth = 1.0,
-    AxisLeftSettingFunction axisLeftSettingFunction,
-    AxisRightSettingFunction axisRightSettingFunction,
-    OnTouchEventListener touchEventListener,
-    ChartTransListener chartTransListener,
-    IMarker marker,
-    Description description,
+    AxisLeftSettingFunction? axisLeftSettingFunction,
+    AxisRightSettingFunction? axisRightSettingFunction,
+    OnTouchEventListener? touchEventListener,
+    ChartTransListener? chartTransListener,
+    IMarker? marker,
+    Description? description,
     String noDataText = "No chart data available.",
-    XAxisSettingFunction xAxisSettingFunction,
-    LegendSettingFunction legendSettingFunction,
-    DataRendererSettingFunction rendererSettingFunction,
-    OnChartValueSelectedListener selectionListener,
+    XAxisSettingFunction? xAxisSettingFunction,
+    LegendSettingFunction? legendSettingFunction,
+    DataRendererSettingFunction? rendererSettingFunction,
+    OnChartValueSelectedListener? selectionListener,
     double maxHighlightDistance = 100.0,
     bool highLightPerTapEnabled = true,
     double extraTopOffset = 0.0,
@@ -70,9 +69,9 @@ class BubbleChartController
     bool resolveGestureVerticalConflict = false,
     double descTextSize = 12,
     double infoTextSize = 12,
-    Color descTextColor,
-    Color infoTextColor,
-    Color infoBgColor,
+    Color? descTextColor,
+    Color? infoTextColor,
+    Color? infoBgColor,
   }) : super(
             marker: marker,
             description: description,
@@ -130,11 +129,11 @@ class BubbleChartController
             touchEventListener: touchEventListener,
             chartTransListener: chartTransListener);
 
-  BubbleData get data => super.data;
+  BubbleData? get data => super.data as BubbleData?;
 
-  BubbleChartState get state => super.state;
+  BubbleChartState? get state => super.state as BubbleChartState?;
 
-  BubbleChartPainter get painter => super.painter;
+  BubbleChartPainter? get painter => super.painter;
 
   @override
   void initialPainter() {

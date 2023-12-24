@@ -133,11 +133,11 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {
+  void onValueSelected(Entry? e, Highlight? h) {
     controller?.centerViewToAnimated(
-        e.x,
-        e.y,
-        controller.data.getDataSetByIndex(h.dataSetIndex).getAxisDependency(),
+        e!.x!,
+        e.y!,
+        controller!.data!.getDataSetByIndex(h!.dataSetIndex)!.getAxisDependency(),
         500);
   }
 
@@ -145,7 +145,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
     var desc = Description()..enabled = false;
     controller = LineChartController(
         axisLeftSettingFunction: (axisLeft, controller) {
-          axisLeft
+          axisLeft!
             ..textColor = (ColorUtils.HOLO_BLUE)
             ..setAxisMaximum(200.0)
             ..setAxisMinimum(0.0)
@@ -155,7 +155,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
             ..granularityEnabled = (true);
         },
         axisRightSettingFunction: (axisRight, controller) {
-          axisRight
+          axisRight!
             ..textColor = (ColorUtils.RED)
             ..setAxisMaximum(900.0)
             ..setAxisMinimum(-200)
@@ -165,7 +165,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
             ..granularityEnabled = (false);
         },
         legendSettingFunction: (legend, controller) {
-          legend
+          legend!
             ..shape = (LegendForm.LINE)
             ..textSize = (11)
             ..typeface = Util.LIGHT
@@ -176,7 +176,7 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
             ..drawInside = (false);
         },
         xAxisSettingFunction: (xAxis, controller) {
-          xAxis
+          xAxis!
             ..typeface = Util.LIGHT
             ..textColor = (ColorUtils.WHITE)
             ..textSize = (11)
@@ -197,25 +197,25 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
   }
 
   void _initLineData(int count, double range) async {
-    List<ui.Image> imgs = List(3);
+    List<ui.Image?> imgs = []..length = (3);
     imgs[0] = await ImageLoader.loadImage('assets/img/star.png');
     imgs[1] = await ImageLoader.loadImage('assets/img/add.png');
     imgs[2] = await ImageLoader.loadImage('assets/img/close.png');
-    List<Entry> values1 = List();
+    List<Entry> values1 = [];
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * (range / 2.0)) + 50;
       values1.add(Entry(x: i.toDouble(), y: val, icon: imgs[0]));
     }
 
-    List<Entry> values2 = List();
+    List<Entry> values2 = [];
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 450;
       values2.add(new Entry(x: i.toDouble(), y: val, icon: imgs[1]));
     }
 
-    List<Entry> values3 = List();
+    List<Entry> values3 = [];
 
     for (int i = 0; i < count; i++) {
       double val = (random.nextDouble() * range) + 500;
@@ -267,9 +267,9 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
     set3.setHighLightColor(Color.fromARGB(255, 244, 117, 117));
 
     // create a data object with the data sets
-    controller.data =
-        LineData.fromList(List()..add(set1)..add(set2)..add(set3));
-    controller.data
+    controller!.data =
+        LineData.fromList(<LineDataSet>[]..add(set1)..add(set2)..add(set3));
+    controller!.data!
       ..setValueTextColor(ColorUtils.WHITE)
       ..setValueTextSize(9);
 
@@ -277,8 +277,8 @@ class LineChartDualAxisState extends LineActionState<LineChartDualAxis>
   }
 
   Widget _initLineChart() {
-    var lineChart = LineChart(controller);
-    controller.animator
+    var lineChart = LineChart(controller!);
+    controller!.animator!
       ..reset()
       ..animateX1(1500);
     return lineChart;

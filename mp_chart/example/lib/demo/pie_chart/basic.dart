@@ -131,7 +131,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
   }
 
   // ignore: non_constant_identifier_names
-  final List<String> PARTIES = List()
+  final List<String> PARTIES = <String>[]
     ..add("Party A")
     ..add("Party B")
     ..add("Party C")
@@ -165,8 +165,8 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
       ..enabled = true;
     controller = PieChartController(
         legendSettingFunction: (legend, controller) {
-          _formatter.setPieChartPainter(controller);
-          legend
+          _formatter.setPieChartPainter(controller as PieChartController);
+          legend!
             ..verticalAlignment = (LegendVerticalAlignment.TOP)
             ..horizontalAlignment = (LegendHorizontalAlignment.RIGHT)
             ..orientation = (LegendOrientation.VERTICAL)
@@ -201,7 +201,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
 
   void _initPieData(int count, double range) async {
     var img = await ImageLoader.loadImage('assets/img/star.png');
-    List<PieEntry> entries = List();
+    List<PieEntry> entries = [];
 
     // NOTE: The order of the entries when being added to the entries array determines their position around the center of
     // the chart.
@@ -222,7 +222,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
     dataSet.setSelectionShift(5);
 
     // add a lot of colors
-    List<Color> colors = List();
+    List<Color> colors = [];
     for (Color c in ColorUtils.VORDIPLOM_COLORS) colors.add(c);
     for (Color c in ColorUtils.JOYFUL_COLORS) colors.add(c);
     for (Color c in ColorUtils.COLORFUL_COLORS) colors.add(c);
@@ -232,7 +232,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
     dataSet.setColors1(colors);
 
     controller.data = PieData(dataSet);
-    controller.data
+    controller.data!
       ..setValueFormatter(_formatter)
       ..setValueTextSize(11)
       ..setValueTextColor(ColorUtils.WHITE)
@@ -245,7 +245,7 @@ class PieChartBasicState extends PieActionState<PieChartBasic>
   void onNothingSelected() {}
 
   @override
-  void onValueSelected(Entry e, Highlight h) {}
+  void onValueSelected(Entry? e, Highlight? h) {}
 
   String _generateCenterSpannableText() {
     return "basic pie chart";

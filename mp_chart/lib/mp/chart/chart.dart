@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+// import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:mp_chart/mp/controller/controller.dart';
 import 'package:optimized_gesture_detector/details.dart';
 import 'package:optimized_gesture_detector/optimized_gesture_detector.dart';
@@ -10,7 +10,7 @@ abstract class Chart<C extends Controller> extends StatefulWidget {
 
   @override
   State createState() {
-    return controller.createChartState();
+    return controller.createChartState()!;
   }
 
   const Chart(this.controller);
@@ -32,12 +32,14 @@ abstract class ChartState<T extends Chart> extends State<T> {
     if (isCapturing) return;
     isCapturing = true;
 
-    _screenshotController.capture(pixelRatio: 3.0).then((imgFile) {
-      ImageGallerySaver.saveImage(imgFile);
-      isCapturing = false;
-    }).catchError((error) {
-      isCapturing = false;
-    });
+    // (TODO) once image_gallery_saver is updated for kotlin-gradle-plugin revert the comment and remove "isCapturing = false" from the end
+    // _screenshotController.capture(pixelRatio: 3.0).then((imgFile) {
+    //   ImageGallerySaver.saveImage(imgFile!);
+    //   isCapturing = false;
+    // }).catchError((error) {
+    //   isCapturing = false;
+    // });
+    isCapturing = false;
   }
 
   @override

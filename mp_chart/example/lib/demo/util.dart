@@ -18,9 +18,13 @@ abstract class Util {
   }
 
   static void _launchURL() async {
-    const url = 'https://github.com/SunPointed/mp_flutter_chart';
-    if (await canLaunch(url)) {
-      await launch(url);
+    final Uri url = Uri(
+      scheme: 'https',
+      host: 'github.com',
+      path: '/SunPointed/mp_flutter_chart',
+    );
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
     } else {
       throw 'Could not launch $url';
     }

@@ -6,28 +6,28 @@ import 'package:mp_chart/mp/core/fill_formatter/i_fill_formatter.dart';
 class DefaultFillFormatter implements IFillFormatter {
   @override
   double getFillLinePosition(
-      ILineDataSet dataSet, LineDataProvider dataProvider) {
-    double fillMin = 0;
-    double chartMaxY = dataProvider.getYChartMax();
-    double chartMinY = dataProvider.getYChartMin();
+      ILineDataSet dataSet, LineDataProvider? dataProvider) {
+    double? fillMin = 0;
+    double? chartMaxY = dataProvider!.getYChartMax();
+    double? chartMinY = dataProvider.getYChartMin();
 
-    LineData data = dataProvider.getLineData();
+    LineData? data = dataProvider.getLineData();
 
-    if (dataSet.getYMax() > 0 && dataSet.getYMin() < 0) {
+    if (dataSet.getYMax()! > 0 && dataSet.getYMin()! < 0) {
       fillMin = 0;
     } else {
-      double max, min;
+      double? max, min;
 
-      if (data.getYMax1() > 0)
+      if (data!.getYMax1()! > 0)
         max = 0;
       else
         max = chartMaxY;
-      if (data.getYMin1() < 0)
+      if (data.getYMin1()! < 0)
         min = 0;
       else
         min = chartMinY;
 
-      fillMin = dataSet.getYMin() >= 0 ? min : max;
+      fillMin = dataSet.getYMin()! >= 0 ? min! : max!;
     }
     return fillMin;
   }

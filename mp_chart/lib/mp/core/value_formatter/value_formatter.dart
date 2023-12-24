@@ -17,11 +17,11 @@ abstract class ValueFormatter {
     return getFormattedValue1(value);
   }
 
-  String getFormattedValue1(double value) {
-    return value.toString();
+  String getFormattedValue1(double? value) {
+    return value?.toString() ?? '';
   }
 
-  String getAxisLabel(double value, AxisBase axis) {
+  String getAxisLabel(double? value, AxisBase? axis) {
     return getFormattedValue1(value);
   }
 
@@ -37,7 +37,7 @@ abstract class ValueFormatter {
     return getFormattedValue1(entry.y);
   }
 
-  String getPieLabel(double value, PieEntry pieEntry) {
+  String getPieLabel(double? value, PieEntry pieEntry) {
     return getFormattedValue1(value);
   }
 

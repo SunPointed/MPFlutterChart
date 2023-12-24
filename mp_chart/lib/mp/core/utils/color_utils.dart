@@ -71,51 +71,56 @@ abstract class ColorUtils {
   static const Color HOLO_ORANGE_DARK = Color(0xffff8800);
 
 // ignore: non_constant_identifier_names
-  static final List<Color> VORDIPLOM_COLORS = List()
-    ..add(Color.fromARGB(255, 192, 255, 140))
-    ..add(Color.fromARGB(255, 255, 247, 140))
-    ..add(Color.fromARGB(255, 255, 208, 140))
-    ..add(Color.fromARGB(255, 140, 234, 255))
-    ..add(Color.fromARGB(255, 255, 140, 157));
+  static final List<Color> VORDIPLOM_COLORS = <Color>[
+    Color.fromARGB(255, 192, 255, 140),
+    Color.fromARGB(255, 255, 247, 140),
+    Color.fromARGB(255, 255, 208, 140),
+    Color.fromARGB(255, 140, 234, 255),
+    Color.fromARGB(255, 255, 140, 157)];
 
 // ignore: non_constant_identifier_names
-  static final List<Color> JOYFUL_COLORS = List()
-    ..add(Color.fromARGB(255, 217, 80, 138))
-    ..add(Color.fromARGB(255, 254, 149, 7))
-    ..add(Color.fromARGB(255, 254, 247, 120))
-    ..add(Color.fromARGB(255, 106, 167, 134))
-    ..add(Color.fromARGB(255, 53, 194, 209));
+  static final List<Color> JOYFUL_COLORS = <Color>[
+    Color.fromARGB(255, 217, 80, 138),
+    Color.fromARGB(255, 254, 149, 7),
+    Color.fromARGB(255, 254, 247, 120),
+    Color.fromARGB(255, 106, 167, 134),
+    Color.fromARGB(255, 53, 194, 209),
+    ];
 
 // ignore: non_constant_identifier_names
-  static final List<Color> MATERIAL_COLORS = List()
-    ..add(Color(0xFF2ecc71))
-    ..add(Color(0xFFf1c40f))
-    ..add(Color(0xFFe74c3c))
-    ..add(Color(0xFF3498db));
+  static final List<Color> MATERIAL_COLORS = <Color>[
+    Color(0xFF2ecc71),
+    Color(0xFFf1c40f),
+    Color(0xFFe74c3c),
+    Color(0xFF3498db),
+    ];
 
 // ignore: non_constant_identifier_names
-  static final List<Color> COLORFUL_COLORS = List()
-    ..add(Color.fromARGB(255, 193, 37, 82))
-    ..add(Color.fromARGB(255, 255, 102, 0))
-    ..add(Color.fromARGB(255, 245, 199, 0))
-    ..add(Color.fromARGB(255, 106, 150, 31))
-    ..add(Color.fromARGB(255, 179, 100, 53));
+  static final List<Color> COLORFUL_COLORS = <Color>[
+    Color.fromARGB(255, 193, 37, 82),
+    Color.fromARGB(255, 255, 102, 0),
+    Color.fromARGB(255, 245, 199, 0),
+    Color.fromARGB(255, 106, 150, 31),
+    Color.fromARGB(255, 179, 100, 53),
+    ];
 
 // ignore: non_constant_identifier_names
-  static final List<Color> LIBERTY_COLORS = List()
-    ..add(Color.fromARGB(255, 207, 248, 246))
-    ..add(Color.fromARGB(255, 148, 212, 212))
-    ..add(Color.fromARGB(255, 136, 180, 187))
-    ..add(Color.fromARGB(255, 118, 174, 175))
-    ..add(Color.fromARGB(255, 42, 109, 130));
+  static final List<Color> LIBERTY_COLORS = <Color>[
+    Color.fromARGB(255, 207, 248, 246),
+    Color.fromARGB(255, 148, 212, 212),
+    Color.fromARGB(255, 136, 180, 187),
+    Color.fromARGB(255, 118, 174, 175),
+    Color.fromARGB(255, 42, 109, 130),
+    ];
 
 // ignore: non_constant_identifier_names
-  static final List<Color> PASTEL_COLORS = List()
-    ..add(Color.fromARGB(255, 64, 89, 128))
-    ..add(Color.fromARGB(255, 149, 165, 124))
-    ..add(Color.fromARGB(255, 217, 184, 162))
-    ..add(Color.fromARGB(255, 191, 134, 134))
-    ..add(Color.fromARGB(255, 179, 48, 80));
+  static final List<Color> PASTEL_COLORS = <Color>[
+    Color.fromARGB(255, 64, 89, 128),
+    Color.fromARGB(255, 149, 165, 124),
+    Color.fromARGB(255, 217, 184, 162),
+    Color.fromARGB(255, 191, 134, 134),
+    Color.fromARGB(255, 179, 48, 80),
+    ];
 
   static Color colorWithAlpha(Color strokeColor, int alpha) {
     return Color.fromARGB(
